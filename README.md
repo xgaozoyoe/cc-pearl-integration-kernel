@@ -1,235 +1,148 @@
-# Open Pearl Miner
+# CC Pearl Integration Kernel
 
-A high-performance **Pearl (PRL)** proof-of-work miner for **NVIDIA GPUs** — Pascal
-(Tesla P40, GTX 1070 / 1080, other `sm_61` DP4A cards) **and Ampere / Ada (`sm_80+`)
-via a fused int8 tensor-core GEMM**.
+This repository is a fork of [Muskwak/Open-Pearl-Miner](https://github.com/Muskwak/Open-Pearl-Miner), originally developed as Pascal Pearl Miner. Credit for the original miner, Pascal DP4A and Ampere/Ada tensor-core backends, pool integration, and packaging belongs to the upstream project and its contributors.
 
-No Python, CUDA toolkit, or PyTorch required **to run** — the CUDA runtime is bundled
-in pre-built releases. Just an NVIDIA driver and the standalone binary.
-Build it yourself or grab a pre-built release. See [License](#license) for dev-fee terms.
+Our work focuses on **Pearl certificate V3 integration, the CPU/GPU mining pipeline, and RTX 4090 (Ada / SM89) kernel optimization**. This is a research and integration checkpoint: it includes working miner changes, isolated experimental kernels, benchmark tools, and records of both successful and rejected approaches.
 
-> Mixed-GPU rigs are supported. Ampere/Ada cards run a fused int8 tensor-core kernel
-> (GEMM + in-mainloop transcript fold + tensor-core noise generation), bit-exact with
-> the Pascal DP4A path; Pascal cards run DP4A.
-> 
-## Features
+## Current work
 
-- **~7.0 TH/s** sustained on a single Tesla P40 (Pascal DP4A).
-- **~30 TH/s** on a single RTX 4050 mobile (Ada) — fused int8 **tensor-core** GEMM +
-  in-mainloop transcript fold + tensor-core noise generation, all bit-exact with DP4A.
-- **Multi-GPU** — auto-detects every GPU and runs one worker per card, near-linear scaling.
-- **Continuous mining** — no idle time waiting between pool jobs.
-- **Background proof submission** — finding a share never stalls the search.
-- **Solo mining** — mine to your local pearl-gateway node.
-- **Pool mining** — built for LuckyPool's Pearl stratum (default) with more pool protocols planned.
-- **HiveOS** — full HiveOS custom-miner package.
+### V3 compatibility
 
-## Roadmap
+- Bind keyed Merkle roots to matrix row counts using the V3 salts in CPU and CUDA noise-seed derivation.
+- Pass matrix dimensions through the CUDA C API and PyTorch bindings.
+- Use `pearl_mining.penalized_target_bound` for pool and solo target calculation.
+- Check GPU seed parity against the CPU reference and validate experimental transcripts and proofs.
 
-- **AMD RDNA (HIP / ROCm)** — int8 WMMA GEMM + transcript-fold path for RDNA2/RDNA3
-  (`gfx10xx` / `gfx11xx`). Experimental kernels in progress.
-- **Apple Silicon (Metal)** — Metal `simdgroup_matrix` int8 path for M-series GPUs.
-- **More pools** — additional Pearl stratum protocols beyond LuckyPool.
-- **Per-kernel autotuning** — pick tile/stage parameters per GPU at startup.
+### Proof and pool pipeline
 
-## Pre-built Releases
+- Move CPU proof generation into a separate Linux process so CPU extension work holding the GIL does not block the CUDA launch thread.
+- Share A/B-transpose snapshots through `memfd`, with two reusable buffers and bounded backpressure. At the production dimensions these buffers total approximately 2 GiB.
+- Match unique submission IDs while processing job and difficulty notifications; make new jobs available to mining while a submission is pending, and surface closed connections for reconnect handling.
+- Report snapshot, proof, queue, and submission latency, plus rolling useful-work rates that include setup and HIT pauses. Effective rates account for rank normalization.
 
-Grab the latest binary from the [Releases](https://github.com/Muskwak/Open-Pearl-Miner/releases) page:
+The process backend is enabled on supported Linux source runs. `PEARL_PROOF_PROCESS=0` selects the legacy thread backend; frozen builds and platforms without `memfd_create` also use the fallback. Snapshot copies and backpressure can still pause mining.
 
-| File | Platform |
-|------|----------|
-| `p40-miner-windows-x64.zip` | Windows x64 |
-| `p40-miner-linux-x64.tar.gz` | Linux (glibc >= 2.31) |
-| `p40-miner-hiveos-<ver>.tar.gz` | HiveOS custom miner |
+### Ada / RTX 4090 experiments
 
-**Requirements:** an NVIDIA Pascal GPU (Tesla P40, GTX 1070/1080, or other `sm_61`), an
-up-to-date NVIDIA driver, and **Windows x64**, **Linux x86-64** (glibc >= 2.31), or **HiveOS**.
+The separate SM89 kernel and experiment scripts explore:
 
-### Quick Start
+- INT8 MMA layouts, shared-memory swizzles, tile sizes, K64/K128 stages, and operand prepacking.
+- A streaming, B prefetch, copy scheduling, register lifetimes, and accumulator reuse.
+- R128/R256 transcript folding, XOR/REDUX scheduling, and transcript state placement.
+- CTA and named barriers, ready/free handoffs, deferred publication, and producer/consumer warp groups.
+- Persistent and warp-specialized execution, controlled ablations, and SASS/PC-stall analysis.
 
-```bat
-:: Windows
-p40-miner.exe --wallet prl1YOURWALLET --worker rig1
-```
+Experimental variants are built as separate libraries. The standard miner build does **not** automatically select them. In particular, the R128 trial uses its own runner and kernel; changing the standard miner's rank constant alone is insufficient.
+
+## Recorded results and limitations
+
+These are historical measurements from the checked-in experiment reports, not a fresh benchmark of every variant in this checkout.
+
+| Experiment | Recorded observation | Scope |
+|---|---|---|
+| [Ada rank comparison](artifacts/ada-rank-report.txt) | R128 reported about **213–214 effective TH/s**, versus **110–111** for matched R256 after rank normalization. Raw compute throughput declined slightly. | Full-grid benchmark without HITs; the report separately records two accepted R128 trial shares. |
+| [Proof pipeline isolation](artifacts/pool-pipeline-report.txt) | About **83% higher work rate** with process isolation under the tested injected-HIT frequency; substantially shorter launch-thread stalls. | Controlled workload with a fake submitter, not a prediction of live pool earnings. |
+| [A-stream transcript ablation](artifacts/rank128-astream-ablation-profile/conclusions.txt) | Disabling transcript work reduced matched profiled kernel time by roughly **8–9%**. | Diagnostic headroom; the disabled mode is not a valid mining kernel. |
+| [Main-loop scheduling](artifacts/mainloop-optimization-report.md) | Several region-level improvements did not produce a repeatable full-grid gain. | Includes slower and rejected candidates. |
+| [Stage-management layers](artifacts/rank128-layers-current-report.txt) | Synthetic controls help separate operand delivery, synchronization, and transcript effects. | Timing differences are not independent instruction costs or achieved mining gains. |
+
+Kernel timings, full-grid work rates, rank-normalized rates, and live pool performance measure different things. Reports document their shapes, ranks, validation, and measurement limitations; many runs used unlocked GPU clocks. No blanket speedup or correctness claim applies to all experimental variants.
+
+## Repository map
+
+| Path | Purpose |
+|---|---|
+| [`csrc/capi/`](csrc/capi/) | Torch-free CUDA C API used by the standalone miner. |
+| [`csrc/tensor_hash/`](csrc/tensor_hash/) | GPU Merkle hashing and V3 noise-seed derivation. |
+| [`csrc/gemm/`](csrc/gemm/) | Inherited DP4A/tensor-core paths and the isolated Ada v2 kernel. |
+| [`python/`](python/) | Miner, pool protocol, CPU reference/proof code, and process-isolated snapshots. |
+| [`tests/`](tests/) | Regression tests, transcript validation, CUDA microbenchmarks, and benchmark drivers. |
+| [`tools/`](tools/) | Experimental builders, runners, profiling, and analysis scripts. |
+| [`artifacts/`](artifacts/) | Curated reports, compact results, patches, and source snapshots. |
+| [`packaging/`](packaging/) | Inherited standalone and HiveOS packaging. |
+
+Compiled libraries, raw profiler captures, large PC-stall JSON files, downloaded tools, logs, and local backups are not bundled. The `artifacts/` output directory is ignored for new files; selected evidence is explicitly tracked. Historical reports can reference omitted captures, machine-specific paths, or deployment state at the time of the experiment.
+
+## Build and run from source
+
+The current optimization work targets Linux and RTX 4090. The inherited standard build also contains Pascal (`sm_61`) and Ampere/Ada (`sm_80+`) paths. Windows and HiveOS packaging remain in the repository but have not been revalidated as part of this checkpoint.
+
+You need Python 3.12+, a compatible NVIDIA driver and CUDA toolkit, CUTLASS headers, and `numpy`, `blake3`, and `py-pearl-mining`. The consensus package must expose the V3 APIs used by this checkout, including `penalized_target_bound`. Experimental builders commonly reference CUDA 12.6 and local CUTLASS paths; inspect and adjust those paths for your machine.
 
 ```bash
-# Linux
-./p40-miner --wallet prl1YOURWALLET --worker rig1
-```
+git clone https://github.com/xgaozoyoe/cc-pearl-integration-kernel.git
+cd cc-pearl-integration-kernel
 
-That's it — it auto-detects all GPUs and starts mining.
-
-## Build from Source
-
-### Prerequisites
-
-| Dependency | Windows | Linux |
-|---|---|---|
-| **CUDA Toolkit** | 12.x ([NVIDIA](https://developer.nvidia.com/cuda-downloads)) | 12.x |
-| **CUTLASS headers** | `git clone --depth 1 https://github.com/NVIDIA/cutlass` | same |
-| **Python** | >= 3.12 | >= 3.12 |
-| **MSVC** | Visual Studio 2022 (C++ workload) | — |
-| **pip packages** | `numpy`, `blake3`, `py-pearl-mining` | same |
-
-Set `CUTLASS_DIR` to the directory containing `cutlass/` and `cute/` headers.
-
-### Windows
-
-```bat
-git clone https://github.com/Muskwak/Pascal-Pearl-Miner.git
-cd Pascal-Pearl-Miner
-
-:: 1. Build the CUDA library (p40cuda.dll)
-packaging\build_capi.bat
-
-:: 2. Install Python deps
+python3 -m venv .venv
+source .venv/bin/activate
 pip install numpy blake3 py-pearl-mining
 
-:: 3. Run directly from source
-python packaging\p40_miner_lite_main.py --wallet prl1YOURWALLET
-
-:: Or freeze a standalone binary with PyInstaller:
-pip install pyinstaller
-pyinstaller packaging\p40-miner-lite.spec --noconfirm --distpath dist --workpath build_pyi
-dist\p40-miner\p40-miner.exe --wallet prl1YOURWALLET
-```
-
-To rebuild the full CUDA extension (includes torch bindings):
-
-```bat
-pip install -e .   # requires torch + CUTLASS_DIR
-```
-
-### Linux
-
-```bash
-git clone https://github.com/Muskwak/Pascal-Pearl-Miner.git
-cd Pascal-Pearl-Miner
-
-# 1. Build the CUDA library (libp40cuda.so)
+# CUTLASS_DIR must contain the cutlass/ and cute/ header directories.
 CUTLASS_DIR=/path/to/cutlass/include bash packaging/build_capi.sh
 
-# 2. Install Python deps
-pip install numpy blake3 py-pearl-mining
-
-# 3. Run directly from source
-python packaging/p40_miner_lite_main.py --wallet prl1YOURWALLET
-
-# Or freeze a standalone binary:
-pip install pyinstaller
-pyinstaller packaging/p40-miner-lite.spec --noconfirm --distpath dist --workpath build_pyi
-./dist/p40-miner/p40-miner --wallet prl1YOURWALLET
+# Standard miner path; experimental Ada kernels are built separately.
+python packaging/p40_miner_lite_main.py --wallet prl1YOURWALLET --worker rig1
 ```
 
-### HiveOS Package
+The standard builder accepts `NVCC`, `CUTLASS_DIR`, and `GENCODE` overrides. Rebuild `libp40cuda.so` when changing CUDA code, including the V3 seed implementation; an old local binary will not pick up source changes.
 
-Build the Linux binary first, then:
+### Standard miner options
+
+| Option | Purpose |
+|---|---|
+| `--wallet prl1YOURWALLET` | Payout address for pool mining. |
+| `--worker rig1` | Worker name. |
+| `--devices 0,1` | Select GPUs; the default is automatic detection. |
+| `--pool HOST:PORT` | Override the configured LuckyPool endpoint. |
+| `--region 4096` | Set the sub-output search region. |
+| `--solo GATEWAY_HOST:PORT` | Mine through a local Pearl gateway. |
+
+Run the entry point with `--help` for the complete option list. Pool support uses the inherited LuckyPool Stratum protocol. Each selected GPU runs in its own process.
+
+### Isolated R128 trial
+
+After building the standard CUDA library, inspect the compiler/header paths in [`tools/build_ada_rank.py`](tools/build_ada_rank.py), then build and validate the separate SM89 library:
 
 ```bash
-bash packaging/hiveos/build_hiveos_package.sh  # -> p40-miner-hiveos-<ver>.tar.gz
+python tools/build_ada_rank.py
+python tests/bench_ada_rank.py validate
 ```
 
-Upload to a URL or `scp` to the rig, then add as a Custom miner in HiveOS.
-
-### Development Install
+To explicitly start a single-GPU mining trial:
 
 ```bash
-pip install -e .   # editable install of the torch-based extension
-CUTLASS_DIR=... python -c "import p40_pearl_gemm"  # smoke test
+python tools/run_rank128.py --gpu 0 --wallet prl1YOURWALLET \
+  --worker ada-rank128-test --region 8192
 ```
 
-## Usage
+The runner defaults to `artifacts/libpearl-rank.so` and supports `--library` for an alternate build. Select an available GPU; do not overlap the trial with another miner on that device. Other experiment families have their own build and validation commands in the corresponding reports.
 
-### Options
+## Validation
 
-| Flag | Default | Description |
-|---|---|---|
-| `--wallet` | _(required)_ | Your Pearl payout address |
-| `--worker` | `p40` | Worker name shown on the pool |
-| `--pool` | _(auto by GPU)_ | Stratum `host:port`. Auto: Pascal→`pearl-cpu-eu1…:3370`, sm_80+→`pearl-eu2…:3360` |
-| `--devices` | _(auto-detect all)_ | GPU selection, e.g. `0,1,2` or `all` |
-| `--region` | `4096` | Sub-output search size |
-| `--solo` | _(off)_ | Solo mine to local pearl-gateway `HOST:PORT` |
+Run the offline CPU/proof/pool regression suite:
 
-### Multi-GPU
-
-Auto-detects every GPU and runs one worker per card (workers named `<worker>-gpu0`,
-`-gpu1`, ...) with a combined-hashrate summary. Each GPU runs as an independent pinned
-process with blocking-sync CUDA, giving near-linear scaling on 4–8 GPU rigs. Just run it:
-
-```
-p40-miner.exe --wallet prl1YOURWALLET
+```bash
+python tests/test_pool_pipeline.py
 ```
 
-Use `--devices` to select specific cards:
+This checks proof-byte parity between thread/process paths, snapshot reuse, response routing, job handoff, connection closure, and wall-rate accounting. It uses local sockets and requires no pool connection or CUDA device.
 
-```
-p40-miner.exe --wallet prl1YOURWALLET --devices 0,2
-```
+After rebuilding the standard CUDA library, check GPU V3 seed parity:
 
-### Pool Mining
-
-The default pool is picked automatically by GPU class: **tensor-core cards (`sm_80+`)**
-use `pearl-eu2.luckypool.io:3360` (GPU difficulty), while **Pascal / DP4A cards** (P40,
-GTX 10-series) use `pearl-cpu-eu1.luckypool.io:3370`. On a mixed rig each card picks its
-own. Override for any card with `--pool`:
-
-```
-p40-miner.exe --wallet prl1YOURWALLET --pool pearl-cpu-eu1.luckypool.io:3370
+```bash
+CUDA_VISIBLE_DEVICES=0 python tests/test_v3_gpu_seeds.py
 ```
 
-(The CPU pool's low difficulty produces frequent shares whose ~1 GB proof snapshot
-stalls a fast GPU between grids — hence the GPU-difficulty default for tensor-core
-cards.) Currently only LuckyPool's stratum protocol is supported; more planned.
+The seed test includes production-size matrices and needs sufficient GPU and host memory. Experiment validation may additionally compare CPU/DP4A transcripts, proof verification, edge shapes, and Compute Sanitizer results. Consult each report for what was actually checked.
 
-### Solo Mining
+At the research checkpoint, all six offline pipeline regressions passed, selected Python files parsed successfully, and all 70 shell scripts passed `bash -n`. The full GPU experiment matrix was not rerun for that checkpoint.
 
-```
-p40-miner.exe --solo GATEWAY_HOST:PORT
-```
+## Upstream releases and attribution
 
-No wallet flag needed — the node's configured address receives block rewards.
-The same 2% dev fee applies (GPU mines to the dev's pool wallet during the 2% window).
+[Open-Pearl-Miner releases](https://github.com/Muskwak/Open-Pearl-Miner/releases) belong to the upstream project. They should not be assumed to include this fork's V3 integration, process backend, or Ada experiments. Build this checkout to use the changes described here.
 
-## HiveOS
+The original miner and packaging are credited to **Muskwak and the Open-Pearl-Miner contributors**. This fork retains the upstream license and developer-fee implementation.
 
-Download `p40-miner-1.6.1.tar.gz` and install it as a **Custom** miner:
+## License and developer fee
 
-1. **Flight Sheet → Miner = Custom.**
-2. Set the **Installation URL** to the tarball, *or* `scp` it to the rig and run
-   `tar -C /hive/miners/custom -xzf p40-miner-1.6.1.tar.gz`.
-3. **Wallet and worker:** your Pearl wallet `prl1...` (worker name auto-appended).
-4. **Pool URL:** `pearl-eu2.luckypool.io:3360` (default LuckyPool GPU pool).
-5. **Extra config arguments** (optional): `--devices 0,1`, `--region 4096`, etc.
-
-The miner reports per-GPU TH/s and accepted shares to the HiveOS dashboard.
-Built against glibc 2.31, so it runs on both the *focal* (20.04) and *jammy* (22.04)
-HiveOS images and newer.
-
-## Dev Fee
-
-A transparent **2%** dev fee is included: for 2% of cumulative mining time the miner
-mines to the developer's address. This is disclosed at startup and logged on every
-switch, so you can always see exactly when it is active. The 2% applies to both pool
-and solo mining — in solo mode the GPU mines to the dev's pool wallet during the 2%
-window; the rest of the time solo block rewards go to your node's configured address.
-
-Thank you for supporting development!
-
-## Tip / Donate
-
-If this miner helped you save time or earn PRL, consider donating to the developer:
-
-```
-prl1pfu7yr6u6mfkku3mh2deyuwegcnpaunjz4vlsvaj2shg2qjkaux2q76uyud
-```
-
-Every tip is appreciated and helps fund continued development.
-
-## License
-
-**Pascal Pearl Miner License** — see [LICENSE](LICENSE).
-
-- Free to use, modify, and distribute (including commercially), **provided the 2% dev fee is retained**.
-- Removal or bypass of the dev fee is a license violation in any distributed or commercial deployment.
-- **Personal-use exemption**: you may disable the dev fee for strictly personal, non-commercial mining on your own hardware — but the modified version must not be distributed.
+See [LICENSE](LICENSE) for the Pascal Pearl Miner License and its full terms. The inherited **2% developer fee** remains in place, directed to the upstream developer's configured address. Distribution must retain that fee as specified by the license; the license also describes a limited personal-use exemption.
