@@ -1,0 +1,22 @@
+{
+  "note": "Summed kernel durations may overlap; not full-grid wall time or useful MMA counts.",
+  "kernels": [
+    {
+      "kernel": "void rank128_stages_baseline::kernel<(int)2, (int)64, (bool)0, (bool)1, (bool)0, (bool)0, (int)2, (bool)0, (int)6>(const signed char *, const signed char *, int, int, int, int, unsigned int *)",
+      "deviceId": 0,
+      "contextId": 1,
+      "gridX": 32,
+      "gridY": 43,
+      "gridZ": 1,
+      "blockX": 384,
+      "blockY": 1,
+      "blockZ": 1,
+      "registersPerThread": 168,
+      "staticSharedMemory": 0,
+      "dynamicSharedMemory": 69632,
+      "launches": 40,
+      "sum_kernel_ms": 47.602767,
+      "mean_kernel_ms": 1.190069175
+    }
+  ]
+}

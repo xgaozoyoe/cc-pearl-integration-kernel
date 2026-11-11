@@ -1,0 +1,14 @@
+Fastest frozen binary barrier attribution, no new kernel edits/profile runs.
+Latest source: artifacts/c-dependency/profile/pc-stalls.json, variant0,3 launches.
+Loop K4096/K64=64 iterations. Named peer/own barriers alternate IDs4/5 and6/7; groups8warps+4warps.
+0x0ba0: prologue BAR.SYNC0, once. Deferred barrier sample PC0xc60:583 (0.44% of barrier samples).
+0x2a00: per-K64 BAR.SYNC R161,384. Deferred sample PC0x2a30:130417 (98.62% of barrier samples). The sampled CALL is not itself the source of CTA synchronization.
+0x2a50: final BAR.SYNC0, once. Deferred sample PC0x2a70:1238 (0.94% of barrier samples).
+Global barrier stall metric14.28% is warp-stall percentage, not elapsed kernel time or recoverable speedup.
+0x16c0 DEPBAR.LE SB0,0 waits for async copies;0x16d0 BAR.ARV publishes this group to peer barrier.
+0x16d0 also waits SB1/SB2 for final LDSM at0x1660/0x16b0; short-scoreboard8151/71004=11.48%. This is not barrier waiting for peers.
+Last16IMMA and transcript run after publish, then own-barrier wait at2a00. Main named barrier protects stage readiness and safe old-stage reuse.
+Cannot derive which warp arrives last, whether its copy/read completion or scheduling delays it, or the marginal kernel-time cost, from aggregate PC samples alone.
+No barrier was removed from the working baseline. Rejected cross-loop diagnostics are disabled, no timing conclusions reported. Native validation passed after stopping diagnostic processes.
+Any further causal ablation must preserve memory synchronization or explicitly document a changed workload; simply deleting BAR.SYNC under live shared traffic is invalid.
+Recommended next observational measurement: sparse per-warp arrival/exit timestamps at16c0,16d0,2a00 while retaining loop/order/barriers; quantify instrumentation overhead against native and do not use instrumented times as performance benchmark.

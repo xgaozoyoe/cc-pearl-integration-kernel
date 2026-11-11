@@ -1,0 +1,26 @@
+[
+  {
+    "function": "_ZN16smem_state_trial6kernelILb1EEEvPKaS2_iiPj",
+    "instructions": 1184,
+    "counts": {
+      "IMMA": 64,
+      "LDSM": 64,
+      "LDS": 89,
+      "STS": 80,
+      "LDL": 0,
+      "STL": 0
+    }
+  },
+  {
+    "function": "_ZN16smem_state_trial6kernelILb0EEEvPKaS2_iiPj",
+    "instructions": 1024,
+    "counts": {
+      "IMMA": 64,
+      "LDSM": 64,
+      "LDS": 25,
+      "STS": 16,
+      "LDL": 0,
+      "STL": 0
+    }
+  }
+]

@@ -1,0 +1,23 @@
+{
+  "description": "No-fold/fold work unchanged. All64named syncs retained. Continuing path prepares next iteration without clobbering its P2 before dc0.",
+  "variants": {
+    "native": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "104c0c1b265260dea5c9ab0bb174ebbbe7ee9cceb0cf0acebf2a9d1dfa4d50aa",
+      "smem": 69632,
+      "correct": true
+    },
+    "relocated_control": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "ecb115d497394f15908b334865e135f5f5e44bdfdadcfc5f0ff9444a8cfc98f2",
+      "smem": 69632,
+      "correct": true
+    },
+    "deferred_prefix": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "0b1bab7971d8c9a5c893a525efcff1eea3923fb090a1edfb10bd953a43462bc9",
+      "smem": 69632,
+      "correct": true
+    }
+  }
+}

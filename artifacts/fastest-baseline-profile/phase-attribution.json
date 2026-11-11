@@ -1,0 +1,4774 @@
+[
+  {
+    "capture": 0,
+    "groups": {
+      "prologue": {
+        "Warp Stall Sampling (All Samples)": 8347.0,
+        "Warp Stall Sampling (Not-issued Samples)": 6028.0,
+        "# Samples": 8347.0,
+        "stall_barrier": 0.0,
+        "stall_branch_resolving": 0.0,
+        "stall_dispatch": 78.0,
+        "stall_drain": 0.0,
+        "stall_imc": 291.0,
+        "stall_lg": 455.0,
+        "stall_long_sb": 4061.0,
+        "stall_math": 1033.0,
+        "stall_membar": 0.0,
+        "stall_mio": 27.0,
+        "stall_misc": 0.0,
+        "stall_no_inst": 118.0,
+        "stall_not_selected": 862.0,
+        "stall_selected": 711.0,
+        "stall_short_sb": 169.0,
+        "stall_sleep": 0.0,
+        "stall_tex": 0.0,
+        "stall_wait": 542.0,
+        "stall_barrier (Not Issued)": 0.0,
+        "stall_branch_resolving (Not Issued)": 0.0,
+        "stall_dispatch (Not Issued)": 67.0,
+        "stall_drain (Not Issued)": 0.0,
+        "stall_imc (Not Issued)": 285.0,
+        "stall_lg (Not Issued)": 426.0,
+        "stall_long_sb (Not Issued)": 3938.0,
+        "stall_math (Not Issued)": 748.0,
+        "stall_membar (Not Issued)": 0.0,
+        "stall_mio (Not Issued)": 27.0,
+        "stall_misc (Not Issued)": 0.0,
+        "stall_no_inst (Not Issued)": 95.0,
+        "stall_not_selected (Not Issued)": 0.0,
+        "stall_selected (Not Issued)": 0.0,
+        "stall_short_sb (Not Issued)": 131.0,
+        "stall_sleeping (Not Issued)": 0.0,
+        "stall_tex (Not Issued)": 0.0,
+        "stall_wait (Not Issued)": 311.0
+      },
+      "stage_address_setup": {
+        "Warp Stall Sampling (All Samples)": 26110.0,
+        "Warp Stall Sampling (Not-issued Samples)": 7089.0,
+        "# Samples": 26110.0,
+        "stall_barrier": 653.0,
+        "stall_branch_resolving": 775.0,
+        "stall_dispatch": 1225.0,
+        "stall_drain": 0.0,
+        "stall_imc": 0.0,
+        "stall_lg": 0.0,
+        "stall_long_sb": 0.0,
+        "stall_math": 3283.0,
+        "stall_membar": 0.0,
+        "stall_mio": 0.0,
+        "stall_misc": 0.0,
+        "stall_no_inst": 2539.0,
+        "stall_not_selected": 3498.0,
+        "stall_selected": 8456.0,
+        "stall_short_sb": 0.0,
+        "stall_sleep": 0.0,
+        "stall_tex": 0.0,
+        "stall_wait": 5681.0,
+        "stall_barrier (Not Issued)": 594.0,
+        "stall_branch_resolving (Not Issued)": 673.0,
+        "stall_dispatch (Not Issued)": 454.0,
+        "stall_drain (Not Issued)": 0.0,
+        "stall_imc (Not Issued)": 0.0,
+        "stall_lg (Not Issued)": 0.0,
+        "stall_long_sb (Not Issued)": 0.0,
+        "stall_math (Not Issued)": 1072.0,
+        "stall_membar (Not Issued)": 0.0,
+        "stall_mio (Not Issued)": 0.0,
+        "stall_misc (Not Issued)": 0.0,
+        "stall_no_inst (Not Issued)": 1410.0,
+        "stall_not_selected (Not Issued)": 0.0,
+        "stall_selected (Not Issued)": 0.0,
+        "stall_short_sb (Not Issued)": 0.0,
+        "stall_sleeping (Not Issued)": 0.0,
+        "stall_tex (Not Issued)": 0.0,
+        "stall_wait (Not Issued)": 2886.0
+      },
+      "copy_address_and_issue": {
+        "Warp Stall Sampling (All Samples)": 61857.0,
+        "Warp Stall Sampling (Not-issued Samples)": 33717.0,
+        "# Samples": 61857.0,
+        "stall_barrier": 0.0,
+        "stall_branch_resolving": 7.0,
+        "stall_dispatch": 1196.0,
+        "stall_drain": 0.0,
+        "stall_imc": 0.0,
+        "stall_lg": 8793.0,
+        "stall_long_sb": 17287.0,
+        "stall_math": 1860.0,
+        "stall_membar": 0.0,
+        "stall_mio": 5297.0,
+        "stall_misc": 0.0,
+        "stall_no_inst": 2.0,
+        "stall_not_selected": 3479.0,
+        "stall_selected": 11312.0,
+        "stall_short_sb": 3251.0,
+        "stall_sleep": 0.0,
+        "stall_tex": 0.0,
+        "stall_wait": 9373.0,
+        "stall_barrier (Not Issued)": 0.0,
+        "stall_branch_resolving (Not Issued)": 4.0,
+        "stall_dispatch (Not Issued)": 378.0,
+        "stall_drain (Not Issued)": 0.0,
+        "stall_imc (Not Issued)": 0.0,
+        "stall_lg (Not Issued)": 7925.0,
+        "stall_long_sb (Not Issued)": 12359.0,
+        "stall_math (Not Issued)": 803.0,
+        "stall_membar (Not Issued)": 0.0,
+        "stall_mio (Not Issued)": 4877.0,
+        "stall_misc (Not Issued)": 0.0,
+        "stall_no_inst (Not Issued)": 0.0,
+        "stall_not_selected (Not Issued)": 0.0,
+        "stall_selected (Not Issued)": 0.0,
+        "stall_short_sb (Not Issued)": 1910.0,
+        "stall_sleeping (Not Issued)": 0.0,
+        "stall_tex (Not Issued)": 0.0,
+        "stall_wait (Not Issued)": 5461.0
+      },
+      "first_loads_and_first_mma": {
+        "Warp Stall Sampling (All Samples)": 30695.0,
+        "Warp Stall Sampling (Not-issued Samples)": 23898.0,
+        "# Samples": 30695.0,
+        "stall_barrier": 0.0,
+        "stall_branch_resolving": 11.0,
+        "stall_dispatch": 85.0,
+        "stall_drain": 0.0,
+        "stall_imc": 0.0,
+        "stall_lg": 0.0,
+        "stall_long_sb": 1835.0,
+        "stall_math": 109.0,
+        "stall_membar": 0.0,
+        "stall_mio": 14300.0,
+        "stall_misc": 0.0,
+        "stall_no_inst": 9.0,
+        "stall_not_selected": 807.0,
+        "stall_selected": 2341.0,
+        "stall_short_sb": 8363.0,
+        "stall_sleep": 0.0,
+        "stall_tex": 0.0,
+        "stall_wait": 2835.0,
+        "stall_barrier (Not Issued)": 0.0,
+        "stall_branch_resolving (Not Issued)": 1.0,
+        "stall_dispatch (Not Issued)": 15.0,
+        "stall_drain (Not Issued)": 0.0,
+        "stall_imc (Not Issued)": 0.0,
+        "stall_lg (Not Issued)": 0.0,
+        "stall_long_sb (Not Issued)": 1625.0,
+        "stall_math (Not Issued)": 50.0,
+        "stall_membar (Not Issued)": 0.0,
+        "stall_mio (Not Issued)": 13037.0,
+        "stall_misc (Not Issued)": 0.0,
+        "stall_no_inst (Not Issued)": 4.0,
+        "stall_not_selected (Not Issued)": 0.0,
+        "stall_selected (Not Issued)": 0.0,
+        "stall_short_sb (Not Issued)": 6867.0,
+        "stall_sleeping (Not Issued)": 0.0,
+        "stall_tex (Not Issued)": 0.0,
+        "stall_wait (Not Issued)": 2299.0
+      },
+      "interior_ldsm_mma": {
+        "Warp Stall Sampling (All Samples)": 476551.0,
+        "Warp Stall Sampling (Not-issued Samples)": 382095.0,
+        "# Samples": 476551.0,
+        "stall_barrier": 0.0,
+        "stall_branch_resolving": 0.0,
+        "stall_dispatch": 1176.0,
+        "stall_drain": 0.0,
+        "stall_imc": 0.0,
+        "stall_lg": 0.0,
+        "stall_long_sb": 0.0,
+        "stall_math": 307573.0,
+        "stall_membar": 0.0,
+        "stall_mio": 2460.0,
+        "stall_misc": 0.0,
+        "stall_no_inst": 0.0,
+        "stall_not_selected": 19050.0,
+        "stall_selected": 23300.0,
+        "stall_short_sb": 38632.0,
+        "stall_sleep": 0.0,
+        "stall_tex": 0.0,
+        "stall_wait": 84360.0,
+        "stall_barrier (Not Issued)": 0.0,
+        "stall_branch_resolving (Not Issued)": 0.0,
+        "stall_dispatch (Not Issued)": 286.0,
+        "stall_drain (Not Issued)": 0.0,
+        "stall_imc (Not Issued)": 0.0,
+        "stall_lg (Not Issued)": 0.0,
+        "stall_long_sb (Not Issued)": 0.0,
+        "stall_math (Not Issued)": 277792.0,
+        "stall_membar (Not Issued)": 0.0,
+        "stall_mio (Not Issued)": 2346.0,
+        "stall_misc (Not Issued)": 0.0,
+        "stall_no_inst (Not Issued)": 0.0,
+        "stall_not_selected (Not Issued)": 0.0,
+        "stall_selected (Not Issued)": 0.0,
+        "stall_short_sb (Not Issued)": 31353.0,
+        "stall_sleeping (Not Issued)": 0.0,
+        "stall_tex (Not Issued)": 0.0,
+        "stall_wait (Not Issued)": 70318.0
+      },
+      "copy_wait_and_early_arrival": {
+        "Warp Stall Sampling (All Samples)": 10014.0,
+        "Warp Stall Sampling (Not-issued Samples)": 8380.0,
+        "# Samples": 10014.0,
+        "stall_barrier": 0.0,
+        "stall_branch_resolving": 0.0,
+        "stall_dispatch": 1.0,
+        "stall_drain": 0.0,
+        "stall_imc": 0.0,
+        "stall_lg": 118.0,
+        "stall_long_sb": 1.0,
+        "stall_math": 0.0,
+        "stall_membar": 0.0,
+        "stall_mio": 76.0,
+        "stall_misc": 0.0,
+        "stall_no_inst": 0.0,
+        "stall_not_selected": 21.0,
+        "stall_selected": 517.0,
+        "stall_short_sb": 7940.0,
+        "stall_sleep": 0.0,
+        "stall_tex": 0.0,
+        "stall_wait": 1340.0,
+        "stall_barrier (Not Issued)": 0.0,
+        "stall_branch_resolving (Not Issued)": 0.0,
+        "stall_dispatch (Not Issued)": 0.0,
+        "stall_drain (Not Issued)": 0.0,
+        "stall_imc (Not Issued)": 0.0,
+        "stall_lg (Not Issued)": 108.0,
+        "stall_long_sb (Not Issued)": 1.0,
+        "stall_math (Not Issued)": 0.0,
+        "stall_membar (Not Issued)": 0.0,
+        "stall_mio (Not Issued)": 76.0,
+        "stall_misc (Not Issued)": 0.0,
+        "stall_no_inst (Not Issued)": 0.0,
+        "stall_not_selected (Not Issued)": 0.0,
+        "stall_selected (Not Issued)": 0.0,
+        "stall_short_sb (Not Issued)": 6918.0,
+        "stall_sleeping (Not Issued)": 0.0,
+        "stall_tex (Not Issued)": 0.0,
+        "stall_wait (Not Issued)": 1277.0
+      },
+      "tail_mma_after_arrival": {
+        "Warp Stall Sampling (All Samples)": 96014.0,
+        "Warp Stall Sampling (Not-issued Samples)": 76390.0,
+        "# Samples": 96014.0,
+        "stall_barrier": 0.0,
+        "stall_branch_resolving": 0.0,
+        "stall_dispatch": 190.0,
+        "stall_drain": 0.0,
+        "stall_imc": 0.0,
+        "stall_lg": 0.0,
+        "stall_long_sb": 0.0,
+        "stall_math": 59135.0,
+        "stall_membar": 0.0,
+        "stall_mio": 0.0,
+        "stall_misc": 0.0,
+        "stall_no_inst": 0.0,
+        "stall_not_selected": 3016.0,
+        "stall_selected": 4083.0,
+        "stall_short_sb": 0.0,
+        "stall_sleep": 0.0,
+        "stall_tex": 0.0,
+        "stall_wait": 29590.0,
+        "stall_barrier (Not Issued)": 0.0,
+        "stall_branch_resolving (Not Issued)": 0.0,
+        "stall_dispatch (Not Issued)": 81.0,
+        "stall_drain (Not Issued)": 0.0,
+        "stall_imc (Not Issued)": 0.0,
+        "stall_lg (Not Issued)": 0.0,
+        "stall_long_sb (Not Issued)": 0.0,
+        "stall_math (Not Issued)": 51583.0,
+        "stall_membar (Not Issued)": 0.0,
+        "stall_mio (Not Issued)": 0.0,
+        "stall_misc (Not Issued)": 0.0,
+        "stall_no_inst (Not Issued)": 0.0,
+        "stall_not_selected (Not Issued)": 0.0,
+        "stall_selected (Not Issued)": 0.0,
+        "stall_short_sb (Not Issued)": 0.0,
+        "stall_sleeping (Not Issued)": 0.0,
+        "stall_tex (Not Issued)": 0.0,
+        "stall_wait (Not Issued)": 24726.0
+      },
+      "transcript_and_gate": {
+        "Warp Stall Sampling (All Samples)": 67665.0,
+        "Warp Stall Sampling (Not-issued Samples)": 26330.0,
+        "# Samples": 67665.0,
+        "stall_barrier": 0.0,
+        "stall_branch_resolving": 1014.0,
+        "stall_dispatch": 2958.0,
+        "stall_drain": 0.0,
+        "stall_imc": 0.0,
+        "stall_lg": 0.0,
+        "stall_long_sb": 0.0,
+        "stall_math": 3842.0,
+        "stall_membar": 0.0,
+        "stall_mio": 2203.0,
+        "stall_misc": 0.0,
+        "stall_no_inst": 828.0,
+        "stall_not_selected": 5285.0,
+        "stall_selected": 20010.0,
+        "stall_short_sb": 12695.0,
+        "stall_sleep": 0.0,
+        "stall_tex": 0.0,
+        "stall_wait": 18830.0,
+        "stall_barrier (Not Issued)": 0.0,
+        "stall_branch_resolving (Not Issued)": 717.0,
+        "stall_dispatch (Not Issued)": 821.0,
+        "stall_drain (Not Issued)": 0.0,
+        "stall_imc (Not Issued)": 0.0,
+        "stall_lg (Not Issued)": 0.0,
+        "stall_long_sb (Not Issued)": 0.0,
+        "stall_math (Not Issued)": 1676.0,
+        "stall_membar (Not Issued)": 0.0,
+        "stall_mio (Not Issued)": 1633.0,
+        "stall_misc (Not Issued)": 0.0,
+        "stall_no_inst (Not Issued)": 542.0,
+        "stall_not_selected (Not Issued)": 0.0,
+        "stall_selected (Not Issued)": 0.0,
+        "stall_short_sb (Not Issued)": 9374.0,
+        "stall_sleeping (Not Issued)": 0.0,
+        "stall_tex (Not Issued)": 0.0,
+        "stall_wait (Not Issued)": 11567.0
+      },
+      "stage_sync_and_backedge": {
+        "Warp Stall Sampling (All Samples)": 137728.0,
+        "Warp Stall Sampling (Not-issued Samples)": 114596.0,
+        "# Samples": 137728.0,
+        "stall_barrier": 129771.0,
+        "stall_branch_resolving": 1965.0,
+        "stall_dispatch": 34.0,
+        "stall_drain": 0.0,
+        "stall_imc": 0.0,
+        "stall_lg": 1.0,
+        "stall_long_sb": 2617.0,
+        "stall_math": 90.0,
+        "stall_membar": 0.0,
+        "stall_mio": 201.0,
+        "stall_misc": 0.0,
+        "stall_no_inst": 319.0,
+        "stall_not_selected": 327.0,
+        "stall_selected": 1347.0,
+        "stall_short_sb": 0.0,
+        "stall_sleep": 0.0,
+        "stall_tex": 0.0,
+        "stall_wait": 1056.0,
+        "stall_barrier (Not Issued)": 109598.0,
+        "stall_branch_resolving (Not Issued)": 1596.0,
+        "stall_dispatch (Not Issued)": 11.0,
+        "stall_drain (Not Issued)": 0.0,
+        "stall_imc (Not Issued)": 0.0,
+        "stall_lg (Not Issued)": 1.0,
+        "stall_long_sb (Not Issued)": 2032.0,
+        "stall_math (Not Issued)": 43.0,
+        "stall_membar (Not Issued)": 0.0,
+        "stall_mio (Not Issued)": 197.0,
+        "stall_misc (Not Issued)": 0.0,
+        "stall_no_inst (Not Issued)": 292.0,
+        "stall_not_selected (Not Issued)": 0.0,
+        "stall_selected (Not Issued)": 0.0,
+        "stall_short_sb (Not Issued)": 0.0,
+        "stall_sleeping (Not Issued)": 0.0,
+        "stall_tex (Not Issued)": 0.0,
+        "stall_wait (Not Issued)": 826.0
+      },
+      "output_epilogue": {
+        "Warp Stall Sampling (All Samples)": 8414.0,
+        "Warp Stall Sampling (Not-issued Samples)": 3258.0,
+        "# Samples": 8414.0,
+        "stall_barrier": 1176.0,
+        "stall_branch_resolving": 449.0,
+        "stall_dispatch": 537.0,
+        "stall_drain": 23.0,
+        "stall_imc": 11.0,
+        "stall_lg": 0.0,
+        "stall_long_sb": 0.0,
+        "stall_math": 824.0,
+        "stall_membar": 0.0,
+        "stall_mio": 0.0,
+        "stall_misc": 0.0,
+        "stall_no_inst": 117.0,
+        "stall_not_selected": 990.0,
+        "stall_selected": 1440.0,
+        "stall_short_sb": 0.0,
+        "stall_sleep": 0.0,
+        "stall_tex": 0.0,
+        "stall_wait": 2847.0,
+        "stall_barrier (Not Issued)": 738.0,
+        "stall_branch_resolving (Not Issued)": 245.0,
+        "stall_dispatch (Not Issued)": 200.0,
+        "stall_drain (Not Issued)": 23.0,
+        "stall_imc (Not Issued)": 6.0,
+        "stall_lg (Not Issued)": 0.0,
+        "stall_long_sb (Not Issued)": 0.0,
+        "stall_math (Not Issued)": 399.0,
+        "stall_membar (Not Issued)": 0.0,
+        "stall_mio (Not Issued)": 0.0,
+        "stall_misc (Not Issued)": 0.0,
+        "stall_no_inst (Not Issued)": 97.0,
+        "stall_not_selected (Not Issued)": 0.0,
+        "stall_selected (Not Issued)": 0.0,
+        "stall_short_sb (Not Issued)": 0.0,
+        "stall_sleeping (Not Issued)": 0.0,
+        "stall_tex (Not Issued)": 0.0,
+        "stall_wait (Not Issued)": 1550.0
+      }
+    },
+    "columns": {
+      "Warp Stall Sampling (All Samples)": {
+        "total": 923395.0,
+        "regions_percent": {
+          "interior_ldsm_mma": 51.608574878573094,
+          "stage_sync_and_backedge": 14.915393737241375,
+          "tail_mma_after_arrival": 10.397933712008404,
+          "transcript_and_gate": 7.327849945039771,
+          "copy_address_and_issue": 6.698866682189096,
+          "first_loads_and_first_mma": 3.32414622128125,
+          "stage_address_setup": 2.827608986403435,
+          "copy_wait_and_early_arrival": 1.0844763075390271,
+          "output_epilogue": 0.9112026814093643,
+          "prologue": 0.9039468483151847
+        },
+        "top_pcs": [
+          {
+            "pc": "0x2a30",
+            "samples": 130271.0,
+            "percent": 14.107830343460815,
+            "instruction": "@!P2  CALL.REL.NOINC 0x74844f25d750"
+          },
+          {
+            "pc": "0x1400",
+            "samples": 49329.0,
+            "percent": 5.3421341895938355,
+            "instruction": "IMMA.16832.S8.S8 R132, R96.ROW, R148.COL, R132"
+          },
+          {
+            "pc": "0x1530",
+            "samples": 47010.0,
+            "percent": 5.090995727722156,
+            "instruction": "IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32"
+          },
+          {
+            "pc": "0x1250",
+            "samples": 30132.0,
+            "percent": 3.263175564086875,
+            "instruction": "IMMA.16832.S8.S8 R72, R140.ROW, R150.COL, R72"
+          },
+          {
+            "pc": "0x1120",
+            "samples": 26840.0,
+            "percent": 2.906665078325094,
+            "instruction": "IMMA.16832.S8.S8 R116, R144.ROW, R148.COL, R116"
+          },
+          {
+            "pc": "0x11e0",
+            "samples": 15335.0,
+            "percent": 1.660719410436487,
+            "instruction": "IMMA.16832.S8.S8 R108, R144.ROW, R148.COL, R108"
+          },
+          {
+            "pc": "0x1350",
+            "samples": 15193.0,
+            "percent": 1.6453413761174795,
+            "instruction": "IMMA.16832.S8.S8 R44, R136.ROW, R148.COL, R44"
+          },
+          {
+            "pc": "0x1290",
+            "samples": 14972.0,
+            "percent": 1.62140795650832,
+            "instruction": "IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32"
+          },
+          {
+            "pc": "0xf60",
+            "samples": 10128.0,
+            "percent": 1.0968220534007656,
+            "instruction": "IMAD R96, R157, 0x1000, R142"
+          },
+          {
+            "pc": "0x16d0",
+            "samples": 9757.0,
+            "percent": 1.0566442313419502,
+            "instruction": "BAR.ARV R164, 0x180"
+          }
+        ]
+      },
+      "Warp Stall Sampling (Not-issued Samples)": {
+        "total": 681781.0,
+        "regions_percent": {
+          "interior_ldsm_mma": 56.04365624738736,
+          "stage_sync_and_backedge": 16.80832994759314,
+          "tail_mma_after_arrival": 11.204477684183043,
+          "copy_address_and_issue": 4.9454296907658035,
+          "transcript_and_gate": 3.8619439380094196,
+          "first_loads_and_first_mma": 3.505231151938819,
+          "copy_wait_and_early_arrival": 1.2291336954241905,
+          "stage_address_setup": 1.039776702489509,
+          "prologue": 0.8841548825795966,
+          "output_epilogue": 0.47786605962911843
+        },
+        "top_pcs": [
+          {
+            "pc": "0x2a30",
+            "samples": 109599.0,
+            "percent": 16.075396644963707,
+            "instruction": "@!P2  CALL.REL.NOINC 0x74844f25d750"
+          },
+          {
+            "pc": "0x1400",
+            "samples": 43296.0,
+            "percent": 6.350426309914767,
+            "instruction": "IMMA.16832.S8.S8 R132, R96.ROW, R148.COL, R132"
+          },
+          {
+            "pc": "0x1530",
+            "samples": 36678.0,
+            "percent": 5.379733374793372,
+            "instruction": "IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32"
+          },
+          {
+            "pc": "0x1250",
+            "samples": 26019.0,
+            "percent": 3.816328117093319,
+            "instruction": "IMMA.16832.S8.S8 R72, R140.ROW, R150.COL, R72"
+          },
+          {
+            "pc": "0x1120",
+            "samples": 23055.0,
+            "percent": 3.3815844090697746,
+            "instruction": "IMMA.16832.S8.S8 R116, R144.ROW, R148.COL, R116"
+          },
+          {
+            "pc": "0x1290",
+            "samples": 13103.0,
+            "percent": 1.9218781397545546,
+            "instruction": "IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32"
+          },
+          {
+            "pc": "0x1350",
+            "samples": 12828.0,
+            "percent": 1.881542606790157,
+            "instruction": "IMMA.16832.S8.S8 R44, R136.ROW, R148.COL, R44"
+          },
+          {
+            "pc": "0x11e0",
+            "samples": 11993.0,
+            "percent": 1.759069261243713,
+            "instruction": "IMMA.16832.S8.S8 R108, R144.ROW, R148.COL, R108"
+          },
+          {
+            "pc": "0x16d0",
+            "samples": 8380.0,
+            "percent": 1.2291336954241905,
+            "instruction": "BAR.ARV R164, 0x180"
+          },
+          {
+            "pc": "0x16e0",
+            "samples": 7601.0,
+            "percent": 1.1148741311359514,
+            "instruction": "IMMA.16832.S8.S8 R128, R100.ROW, R148.COL, R128"
+          }
+        ]
+      },
+      "# Samples": {
+        "total": 923395.0,
+        "regions_percent": {
+          "interior_ldsm_mma": 51.608574878573094,
+          "stage_sync_and_backedge": 14.915393737241375,
+          "tail_mma_after_arrival": 10.397933712008404,
+          "transcript_and_gate": 7.327849945039771,
+          "copy_address_and_issue": 6.698866682189096,
+          "first_loads_and_first_mma": 3.32414622128125,
+          "stage_address_setup": 2.827608986403435,
+          "copy_wait_and_early_arrival": 1.0844763075390271,
+          "output_epilogue": 0.9112026814093643,
+          "prologue": 0.9039468483151847
+        },
+        "top_pcs": [
+          {
+            "pc": "0x2a30",
+            "samples": 130271.0,
+            "percent": 14.107830343460815,
+            "instruction": "@!P2  CALL.REL.NOINC 0x74844f25d750"
+          },
+          {
+            "pc": "0x1400",
+            "samples": 49329.0,
+            "percent": 5.3421341895938355,
+            "instruction": "IMMA.16832.S8.S8 R132, R96.ROW, R148.COL, R132"
+          },
+          {
+            "pc": "0x1530",
+            "samples": 47010.0,
+            "percent": 5.090995727722156,
+            "instruction": "IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32"
+          },
+          {
+            "pc": "0x1250",
+            "samples": 30132.0,
+            "percent": 3.263175564086875,
+            "instruction": "IMMA.16832.S8.S8 R72, R140.ROW, R150.COL, R72"
+          },
+          {
+            "pc": "0x1120",
+            "samples": 26840.0,
+            "percent": 2.906665078325094,
+            "instruction": "IMMA.16832.S8.S8 R116, R144.ROW, R148.COL, R116"
+          },
+          {
+            "pc": "0x11e0",
+            "samples": 15335.0,
+            "percent": 1.660719410436487,
+            "instruction": "IMMA.16832.S8.S8 R108, R144.ROW, R148.COL, R108"
+          },
+          {
+            "pc": "0x1350",
+            "samples": 15193.0,
+            "percent": 1.6453413761174795,
+            "instruction": "IMMA.16832.S8.S8 R44, R136.ROW, R148.COL, R44"
+          },
+          {
+            "pc": "0x1290",
+            "samples": 14972.0,
+            "percent": 1.62140795650832,
+            "instruction": "IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32"
+          },
+          {
+            "pc": "0xf60",
+            "samples": 10128.0,
+            "percent": 1.0968220534007656,
+            "instruction": "IMAD R96, R157, 0x1000, R142"
+          },
+          {
+            "pc": "0x16d0",
+            "samples": 9757.0,
+            "percent": 1.0566442313419502,
+            "instruction": "BAR.ARV R164, 0x180"
+          }
+        ]
+      },
+      "stall_barrier": {
+        "total": 131600.0,
+        "regions_percent": {
+          "stage_sync_and_backedge": 98.61018237082067,
+          "output_epilogue": 0.8936170212765957,
+          "stage_address_setup": 0.49620060790273557,
+          "prologue": 0.0,
+          "copy_address_and_issue": 0.0,
+          "first_loads_and_first_mma": 0.0,
+          "interior_ldsm_mma": 0.0,
+          "copy_wait_and_early_arrival": 0.0,
+          "tail_mma_after_arrival": 0.0,
+          "transcript_and_gate": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0x2a30",
+            "samples": 129771.0,
+            "percent": 98.61018237082067,
+            "instruction": "@!P2  CALL.REL.NOINC 0x74844f25d750"
+          },
+          {
+            "pc": "0x2a70",
+            "samples": 1176.0,
+            "percent": 0.8936170212765957,
+            "instruction": "@P0   EXIT"
+          },
+          {
+            "pc": "0xc60",
+            "samples": 653.0,
+            "percent": 0.49620060790273557,
+            "instruction": "UMOV UR5, 0x3000"
+          }
+        ]
+      },
+      "stall_branch_resolving": {
+        "total": 4221.0,
+        "regions_percent": {
+          "stage_sync_and_backedge": 46.552949538024166,
+          "transcript_and_gate": 24.0227434257285,
+          "stage_address_setup": 18.360578062070598,
+          "output_epilogue": 10.637289741767354,
+          "first_loads_and_first_mma": 0.2606017531390666,
+          "copy_address_and_issue": 0.16583747927031509,
+          "prologue": 0.0,
+          "interior_ldsm_mma": 0.0,
+          "copy_wait_and_early_arrival": 0.0,
+          "tail_mma_after_arrival": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0x2a00",
+            "samples": 1965.0,
+            "percent": 46.552949538024166,
+            "instruction": "BAR.SYNC.DEFER_BLOCKING R161, 0x180"
+          },
+          {
+            "pc": "0xbb0",
+            "samples": 775.0,
+            "percent": 18.360578062070598,
+            "instruction": "SHF.R.U32.HI R96, RZ, 0x7, R162"
+          },
+          {
+            "pc": "0x29f0",
+            "samples": 367.0,
+            "percent": 8.694622127457949,
+            "instruction": "BSYNC B0"
+          },
+          {
+            "pc": "0x2320",
+            "samples": 218.0,
+            "percent": 5.164652925846956,
+            "instruction": "LOP3.LUT R97, R118, R117, R116, 0x96, !PT"
+          },
+          {
+            "pc": "0x22d0",
+            "samples": 204.0,
+            "percent": 4.832977967306325,
+            "instruction": "LDS R97, [R96+0xe9c0]"
+          },
+          {
+            "pc": "0x1930",
+            "samples": 194.0,
+            "percent": 4.596067282634447,
+            "instruction": "LOP3.LUT R97, R118, R117, R116, 0x96, !PT"
+          },
+          {
+            "pc": "0x3570",
+            "samples": 97.0,
+            "percent": 2.2980336413172235,
+            "instruction": "BSSY B0, 0x74844f25e390"
+          },
+          {
+            "pc": "0x3450",
+            "samples": 81.0,
+            "percent": 1.9189765458422174,
+            "instruction": "BSSY B0, 0x74844f25e270"
+          },
+          {
+            "pc": "0x3690",
+            "samples": 77.0,
+            "percent": 1.824212271973466,
+            "instruction": "ISETP.GE.AND P0, PT, R19, 0x600, PT"
+          },
+          {
+            "pc": "0x3330",
+            "samples": 69.0,
+            "percent": 1.634683724235963,
+            "instruction": "BSSY B0, 0x74844f25e150"
+          }
+        ]
+      },
+      "stall_dispatch": {
+        "total": 7480.0,
+        "regions_percent": {
+          "transcript_and_gate": 39.54545454545455,
+          "stage_address_setup": 16.377005347593585,
+          "copy_address_and_issue": 15.989304812834225,
+          "interior_ldsm_mma": 15.72192513368984,
+          "output_epilogue": 7.179144385026738,
+          "tail_mma_after_arrival": 2.5401069518716577,
+          "first_loads_and_first_mma": 1.1363636363636365,
+          "prologue": 1.0427807486631016,
+          "stage_sync_and_backedge": 0.45454545454545453,
+          "copy_wait_and_early_arrival": 0.013368983957219251
+        },
+        "top_pcs": [
+          {
+            "pc": "0x1510",
+            "samples": 180.0,
+            "percent": 2.406417112299465,
+            "instruction": "LDSM.16.M88.4 R100, [R100]"
+          },
+          {
+            "pc": "0xcc0",
+            "samples": 119.0,
+            "percent": 1.5909090909090908,
+            "instruction": "LOP3.LUT R137, R155, 0x10, R162, 0xf8, !PT"
+          },
+          {
+            "pc": "0xd20",
+            "samples": 119.0,
+            "percent": 1.5909090909090908,
+            "instruction": "LOP3.LUT R148, R148, 0x30, R97, 0x78, !PT"
+          },
+          {
+            "pc": "0x14c0",
+            "samples": 111.0,
+            "percent": 1.4839572192513368,
+            "instruction": "IMAD R100, R153, 0x4000, R142"
+          },
+          {
+            "pc": "0xda0",
+            "samples": 102.0,
+            "percent": 1.3636363636363635,
+            "instruction": "IMAD R136, R153, 0x4000, R136"
+          },
+          {
+            "pc": "0xf30",
+            "samples": 99.0,
+            "percent": 1.3235294117647058,
+            "instruction": "@!PT  LDS RZ, [RZ]"
+          },
+          {
+            "pc": "0xdb0",
+            "samples": 92.0,
+            "percent": 1.2299465240641712,
+            "instruction": "IMAD R140, R153, 0x4000, R140"
+          },
+          {
+            "pc": "0xcf0",
+            "samples": 90.0,
+            "percent": 1.2032085561497325,
+            "instruction": "IADD3 R148, R164, 0x400, RZ"
+          },
+          {
+            "pc": "0x1b90",
+            "samples": 85.0,
+            "percent": 1.1363636363636365,
+            "instruction": "REDUX.XOR UR11, R136"
+          },
+          {
+            "pc": "0xc10",
+            "samples": 80.0,
+            "percent": 1.0695187165775402,
+            "instruction": "SHF.R.U32.HI R96, RZ, 0x1, R156"
+          }
+        ]
+      },
+      "stall_drain": {
+        "total": 23.0,
+        "regions_percent": {
+          "output_epilogue": 100.0,
+          "prologue": 0.0,
+          "stage_address_setup": 0.0,
+          "copy_address_and_issue": 0.0,
+          "first_loads_and_first_mma": 0.0,
+          "interior_ldsm_mma": 0.0,
+          "copy_wait_and_early_arrival": 0.0,
+          "tail_mma_after_arrival": 0.0,
+          "transcript_and_gate": 0.0,
+          "stage_sync_and_backedge": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0x36f0",
+            "samples": 23.0,
+            "percent": 100.0,
+            "instruction": "BRA 0x74844f25e3f0"
+          }
+        ]
+      },
+      "stall_imc": {
+        "total": 302.0,
+        "regions_percent": {
+          "prologue": 96.35761589403974,
+          "output_epilogue": 3.642384105960265,
+          "stage_address_setup": 0.0,
+          "copy_address_and_issue": 0.0,
+          "first_loads_and_first_mma": 0.0,
+          "interior_ldsm_mma": 0.0,
+          "copy_wait_and_early_arrival": 0.0,
+          "tail_mma_after_arrival": 0.0,
+          "transcript_and_gate": 0.0,
+          "stage_sync_and_backedge": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0x5e0",
+            "samples": 188.0,
+            "percent": 62.25165562913907,
+            "instruction": "ULDC.64 UR4, c[0x0][0x118]"
+          },
+          {
+            "pc": "0x0",
+            "samples": 87.0,
+            "percent": 28.807947019867548,
+            "instruction": "IMAD.MOV.U32 R1, RZ, RZ, c[0x0][0x28]"
+          },
+          {
+            "pc": "0x8c0",
+            "samples": 16.0,
+            "percent": 5.298013245033113,
+            "instruction": "@!P0  IADD3 R2, P1, R8, c[0x0][0x160], RZ"
+          },
+          {
+            "pc": "0x32f0",
+            "samples": 11.0,
+            "percent": 3.642384105960265,
+            "instruction": "LEA R2, P3, R13, c[0x0][0x180], 0x2"
+          }
+        ]
+      },
+      "stall_lg": {
+        "total": 9367.0,
+        "regions_percent": {
+          "copy_address_and_issue": 93.87210419558023,
+          "prologue": 4.857478381552258,
+          "copy_wait_and_early_arrival": 1.2597416462047615,
+          "stage_sync_and_backedge": 0.010675776662752216,
+          "stage_address_setup": 0.0,
+          "first_loads_and_first_mma": 0.0,
+          "interior_ldsm_mma": 0.0,
+          "tail_mma_after_arrival": 0.0,
+          "transcript_and_gate": 0.0,
+          "output_epilogue": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0x1070",
+            "samples": 2726.0,
+            "percent": 29.102167182662537,
+            "instruction": "LDGSTS.E.BYPASS.128 !P0, [R137+0x9800][R98.64]"
+          },
+          {
+            "pc": "0x1080",
+            "samples": 2590.0,
+            "percent": 27.65026155652824,
+            "instruction": "LDGDEPBAR"
+          },
+          {
+            "pc": "0x1060",
+            "samples": 1888.0,
+            "percent": 20.155866339276184,
+            "instruction": "LDGSTS.E.BYPASS.128 !P1, [R137+0x8000][R96.64]"
+          },
+          {
+            "pc": "0x1020",
+            "samples": 1508.0,
+            "percent": 16.09907120743034,
+            "instruction": "@!P3  LDGSTS.E.BYPASS.128 [R141][R138.64]"
+          },
+          {
+            "pc": "0xa90",
+            "samples": 155.0,
+            "percent": 1.6547453827265934,
+            "instruction": "@!P3  LDGSTS.E.BYPASS.128 [R15][R8.64]"
+          },
+          {
+            "pc": "0xae0",
+            "samples": 149.0,
+            "percent": 1.5906907227500802,
+            "instruction": "LDGDEPBAR"
+          },
+          {
+            "pc": "0x16d0",
+            "samples": 118.0,
+            "percent": 1.2597416462047615,
+            "instruction": "BAR.ARV R164, 0x180"
+          },
+          {
+            "pc": "0xac0",
+            "samples": 82.0,
+            "percent": 0.8754136863456816,
+            "instruction": "LDGSTS.E.BYPASS.128 !P0, [R13+0x9800][R10.64]"
+          },
+          {
+            "pc": "0xfb0",
+            "samples": 81.0,
+            "percent": 0.8647379096829294,
+            "instruction": "@!P2  LDGSTS.E.BYPASS.128 [R141][R98.64]"
+          },
+          {
+            "pc": "0xab0",
+            "samples": 69.0,
+            "percent": 0.7366285897299029,
+            "instruction": "LDGSTS.E.BYPASS.128 !P1, [R13+0x8000][R2.64]"
+          }
+        ]
+      },
+      "stall_long_sb": {
+        "total": 25801.0,
+        "regions_percent": {
+          "copy_address_and_issue": 67.00127902019301,
+          "prologue": 15.739700011627455,
+          "stage_sync_and_backedge": 10.143017712491764,
+          "first_loads_and_first_mma": 7.11212743692105,
+          "copy_wait_and_early_arrival": 0.0038758187667144684,
+          "stage_address_setup": 0.0,
+          "interior_ldsm_mma": 0.0,
+          "tail_mma_after_arrival": 0.0,
+          "transcript_and_gate": 0.0,
+          "output_epilogue": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0xf60",
+            "samples": 9477.0,
+            "percent": 36.731134452153015,
+            "instruction": "IMAD R96, R157, 0x1000, R142"
+          },
+          {
+            "pc": "0x1000",
+            "samples": 7810.0,
+            "percent": 30.27014456804,
+            "instruction": "@!P2  IADD3 R141, R141, 0x1800, RZ"
+          },
+          {
+            "pc": "0xba0",
+            "samples": 3554.0,
+            "percent": 13.774659896903222,
+            "instruction": "BAR.SYNC.DEFER_BLOCKING 0x0"
+          },
+          {
+            "pc": "0x2a20",
+            "samples": 2617.0,
+            "percent": 10.143017712491764,
+            "instruction": "LOP3.LUT R161, R161, 0x2, RZ, 0x3c, !PT"
+          },
+          {
+            "pc": "0x10e0",
+            "samples": 1835.0,
+            "percent": 7.11212743692105,
+            "instruction": "LDSM.16.M88.4 R140, [R140]"
+          },
+          {
+            "pc": "0xb30",
+            "samples": 160.0,
+            "percent": 0.620131002674315,
+            "instruction": "CS2R R10, SRZ"
+          },
+          {
+            "pc": "0xb10",
+            "samples": 153.0,
+            "percent": 0.5930002713073137,
+            "instruction": "IMAD.SHL.U32 R3, R0, 0x40, RZ"
+          },
+          {
+            "pc": "0xa40",
+            "samples": 91.0,
+            "percent": 0.3526995077710166,
+            "instruction": "@!P2  IADD3 R15, R15, 0x1800, RZ"
+          },
+          {
+            "pc": "0xaf0",
+            "samples": 87.0,
+            "percent": 0.33719623270415877,
+            "instruction": "CS2R R8, SRZ"
+          },
+          {
+            "pc": "0xa00",
+            "samples": 16.0,
+            "percent": 0.062013100267431495,
+            "instruction": "IADD3 R2, P4, R6, c[0x0][0x168], RZ"
+          }
+        ]
+      },
+      "stall_math": {
+        "total": 377749.0,
+        "regions_percent": {
+          "interior_ldsm_mma": 81.42258483808031,
+          "tail_mma_after_arrival": 15.654574863202814,
+          "transcript_and_gate": 1.017077477372541,
+          "stage_address_setup": 0.869095616401367,
+          "copy_address_and_issue": 0.4923904497430834,
+          "prologue": 0.2734620078411856,
+          "output_epilogue": 0.21813426375715092,
+          "first_loads_and_first_mma": 0.028855139259137682,
+          "stage_sync_and_backedge": 0.02382534434240726,
+          "copy_wait_and_early_arrival": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0x1400",
+            "samples": 45570.0,
+            "percent": 12.063566018705542,
+            "instruction": "IMMA.16832.S8.S8 R132, R96.ROW, R148.COL, R132"
+          },
+          {
+            "pc": "0x1530",
+            "samples": 38054.0,
+            "percent": 10.073885040066287,
+            "instruction": "IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32"
+          },
+          {
+            "pc": "0x1250",
+            "samples": 27069.0,
+            "percent": 7.165869400051357,
+            "instruction": "IMMA.16832.S8.S8 R72, R140.ROW, R150.COL, R72"
+          },
+          {
+            "pc": "0x1120",
+            "samples": 21933.0,
+            "percent": 5.80623641624465,
+            "instruction": "IMMA.16832.S8.S8 R116, R144.ROW, R148.COL, R116"
+          },
+          {
+            "pc": "0x13d0",
+            "samples": 7690.0,
+            "percent": 2.035743311034576,
+            "instruction": "IMMA.16832.S8.S8 R56, R140.ROW, R148.COL, R56"
+          },
+          {
+            "pc": "0x16e0",
+            "samples": 6931.0,
+            "percent": 1.834816240413608,
+            "instruction": "IMMA.16832.S8.S8 R128, R100.ROW, R148.COL, R128"
+          },
+          {
+            "pc": "0x11e0",
+            "samples": 5809.0,
+            "percent": 1.5377936142782642,
+            "instruction": "IMMA.16832.S8.S8 R108, R144.ROW, R148.COL, R108"
+          },
+          {
+            "pc": "0x1140",
+            "samples": 5675.0,
+            "percent": 1.5023203238129021,
+            "instruction": "IMMA.16832.S8.S8 R68, R136.ROW, R148.COL, R68"
+          },
+          {
+            "pc": "0x1630",
+            "samples": 5642.0,
+            "percent": 1.4935843642206863,
+            "instruction": "IMMA.16832.S8.S8 R12, R140.ROW, R150.COL, R12"
+          },
+          {
+            "pc": "0x1130",
+            "samples": 5575.0,
+            "percent": 1.4758477189880053,
+            "instruction": "IMMA.16832.S8.S8 R92, R140.ROW, R148.COL, R92"
+          }
+        ]
+      },
+      "stall_mio": {
+        "total": 24564.0,
+        "regions_percent": {
+          "first_loads_and_first_mma": 58.21527438527927,
+          "copy_address_and_issue": 21.564077511805895,
+          "interior_ldsm_mma": 10.014655593551538,
+          "transcript_and_gate": 8.968409053900016,
+          "stage_sync_and_backedge": 0.8182706399609184,
+          "copy_wait_and_early_arrival": 0.3093958638658199,
+          "prologue": 0.10991695163654128,
+          "stage_address_setup": 0.0,
+          "tail_mma_after_arrival": 0.0,
+          "output_epilogue": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0x10c0",
+            "samples": 3620.0,
+            "percent": 14.737013515714054,
+            "instruction": "LDSM.16.M88.4 R148, [R148+UR5]"
+          },
+          {
+            "pc": "0x1100",
+            "samples": 3270.0,
+            "percent": 13.312164142647777,
+            "instruction": "LDSM.16.M88.4 R96, [R152]"
+          },
+          {
+            "pc": "0x10e0",
+            "samples": 2928.0,
+            "percent": 11.919882755251587,
+            "instruction": "LDSM.16.M88.4 R140, [R140]"
+          },
+          {
+            "pc": "0x10f0",
+            "samples": 2624.0,
+            "percent": 10.682299299788308,
+            "instruction": "LDSM.16.M88.4 R136, [R136]"
+          },
+          {
+            "pc": "0x1090",
+            "samples": 1858.0,
+            "percent": 7.563914671877544,
+            "instruction": "LDSM.16.M88.4 R144, [R144]"
+          },
+          {
+            "pc": "0x1080",
+            "samples": 1279.0,
+            "percent": 5.206806709005048,
+            "instruction": "LDGDEPBAR"
+          },
+          {
+            "pc": "0x1070",
+            "samples": 1237.0,
+            "percent": 5.035824784237095,
+            "instruction": "LDGSTS.E.BYPASS.128 !P0, [R137+0x9800][R98.64]"
+          },
+          {
+            "pc": "0x1060",
+            "samples": 1146.0,
+            "percent": 4.665363947239864,
+            "instruction": "LDGSTS.E.BYPASS.128 !P1, [R137+0x8000][R96.64]"
+          },
+          {
+            "pc": "0x1020",
+            "samples": 541.0,
+            "percent": 2.2024100309395864,
+            "instruction": "@!P3  LDGSTS.E.BYPASS.128 [R141][R138.64]"
+          },
+          {
+            "pc": "0xf40",
+            "samples": 412.0,
+            "percent": 1.6772512620094446,
+            "instruction": "@!P4  LDGSTS.E.BYPASS.128 [R141][R96.64]"
+          }
+        ]
+      },
+      "stall_no_inst": {
+        "total": 3932.0,
+        "regions_percent": {
+          "stage_address_setup": 64.57273652085453,
+          "transcript_and_gate": 21.05798575788403,
+          "stage_sync_and_backedge": 8.11291963377416,
+          "prologue": 3.0010172939979656,
+          "output_epilogue": 2.9755849440488302,
+          "first_loads_and_first_mma": 0.2288911495422177,
+          "copy_address_and_issue": 0.0508646998982706,
+          "interior_ldsm_mma": 0.0,
+          "copy_wait_and_early_arrival": 0.0,
+          "tail_mma_after_arrival": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0xbb0",
+            "samples": 1954.0,
+            "percent": 49.694811800610374,
+            "instruction": "SHF.R.U32.HI R96, RZ, 0x7, R162"
+          },
+          {
+            "pc": "0xc00",
+            "samples": 459.0,
+            "percent": 11.673448626653103,
+            "instruction": "IMAD.SHL.U32 R136, R96, 0x40, RZ"
+          },
+          {
+            "pc": "0x2320",
+            "samples": 409.0,
+            "percent": 10.401831129196339,
+            "instruction": "LOP3.LUT R97, R118, R117, R116, 0x96, !PT"
+          },
+          {
+            "pc": "0x29f0",
+            "samples": 406.0,
+            "percent": 10.325534079348932,
+            "instruction": "BSYNC B0"
+          },
+          {
+            "pc": "0x2a00",
+            "samples": 319.0,
+            "percent": 8.11291963377416,
+            "instruction": "BAR.SYNC.DEFER_BLOCKING R161, 0x180"
+          },
+          {
+            "pc": "0x0",
+            "samples": 109.0,
+            "percent": 2.772126144455748,
+            "instruction": "IMAD.MOV.U32 R1, RZ, RZ, c[0x0][0x28]"
+          },
+          {
+            "pc": "0xc80",
+            "samples": 100.0,
+            "percent": 2.5432349949135302,
+            "instruction": "UIMAD UR5, UR6, UR5, 0x8000"
+          },
+          {
+            "pc": "0x2e00",
+            "samples": 78.0,
+            "percent": 1.9837232960325535,
+            "instruction": "BSYNC B0"
+          },
+          {
+            "pc": "0x2a50",
+            "samples": 22.0,
+            "percent": 0.5595116988809766,
+            "instruction": "BAR.SYNC.DEFER_BLOCKING 0x0"
+          },
+          {
+            "pc": "0x2e60",
+            "samples": 13.0,
+            "percent": 0.3306205493387589,
+            "instruction": "IADD3 R19, R0, 0x600, RZ"
+          }
+        ]
+      },
+      "stall_not_selected": {
+        "total": 37335.0,
+        "regions_percent": {
+          "interior_ldsm_mma": 51.02450783447168,
+          "transcript_and_gate": 14.155618052765501,
+          "stage_address_setup": 9.369224588188027,
+          "copy_address_and_issue": 9.318334002946298,
+          "tail_mma_after_arrival": 8.078210794160976,
+          "output_epilogue": 2.6516673362796306,
+          "prologue": 2.308825498861658,
+          "first_loads_and_first_mma": 2.161510646846123,
+          "stage_sync_and_backedge": 0.8758537565287264,
+          "copy_wait_and_early_arrival": 0.0562474889513861
+        },
+        "top_pcs": [
+          {
+            "pc": "0x1400",
+            "samples": 2905.0,
+            "percent": 7.780902638275077,
+            "instruction": "IMMA.16832.S8.S8 R132, R96.ROW, R148.COL, R132"
+          },
+          {
+            "pc": "0x1530",
+            "samples": 2806.0,
+            "percent": 7.515735904647114,
+            "instruction": "IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32"
+          },
+          {
+            "pc": "0x1250",
+            "samples": 1755.0,
+            "percent": 4.700683005222981,
+            "instruction": "IMMA.16832.S8.S8 R72, R140.ROW, R150.COL, R72"
+          },
+          {
+            "pc": "0x1120",
+            "samples": 1499.0,
+            "percent": 4.014999330387036,
+            "instruction": "IMMA.16832.S8.S8 R116, R144.ROW, R148.COL, R116"
+          },
+          {
+            "pc": "0xcc0",
+            "samples": 1106.0,
+            "percent": 2.962367751439668,
+            "instruction": "LOP3.LUT R137, R155, 0x10, R162, 0xf8, !PT"
+          },
+          {
+            "pc": "0xbb0",
+            "samples": 448.0,
+            "percent": 1.1999464309629035,
+            "instruction": "SHF.R.U32.HI R96, RZ, 0x7, R162"
+          },
+          {
+            "pc": "0xd20",
+            "samples": 430.0,
+            "percent": 1.151734297576001,
+            "instruction": "LOP3.LUT R148, R148, 0x30, R97, 0x78, !PT"
+          },
+          {
+            "pc": "0xeb0",
+            "samples": 417.0,
+            "percent": 1.1169144234632382,
+            "instruction": "@!P4  IADD3 R96, P3, R138, c[0x0][0x160], RZ"
+          },
+          {
+            "pc": "0x13d0",
+            "samples": 391.0,
+            "percent": 1.0472746752377127,
+            "instruction": "IMMA.16832.S8.S8 R56, R140.ROW, R148.COL, R56"
+          },
+          {
+            "pc": "0x1140",
+            "samples": 385.0,
+            "percent": 1.0312039641087452,
+            "instruction": "IMMA.16832.S8.S8 R68, R136.ROW, R148.COL, R68"
+          }
+        ]
+      },
+      "stall_selected": {
+        "total": 73517.0,
+        "regions_percent": {
+          "interior_ldsm_mma": 31.693349837452562,
+          "transcript_and_gate": 27.218194431219988,
+          "copy_address_and_issue": 15.386917311642206,
+          "stage_address_setup": 11.50210155474244,
+          "tail_mma_after_arrival": 5.553817484391366,
+          "first_loads_and_first_mma": 3.18429750941959,
+          "output_epilogue": 1.9587306337309738,
+          "stage_sync_and_backedge": 1.832229280302515,
+          "prologue": 0.9671232504046683,
+          "copy_wait_and_early_arrival": 0.7032387066936899
+        },
+        "top_pcs": [
+          {
+            "pc": "0x2a30",
+            "samples": 308.0,
+            "percent": 0.41895071888134716,
+            "instruction": "@!P2  CALL.REL.NOINC 0x74844f25d750"
+          },
+          {
+            "pc": "0xc10",
+            "samples": 298.0,
+            "percent": 0.405348422813771,
+            "instruction": "SHF.R.U32.HI R96, RZ, 0x1, R156"
+          },
+          {
+            "pc": "0x1240",
+            "samples": 297.0,
+            "percent": 0.40398819320701335,
+            "instruction": "LOP3.LUT R149, R164, 0x30, R149, 0x78, !PT"
+          },
+          {
+            "pc": "0xc50",
+            "samples": 296.0,
+            "percent": 0.4026279636002557,
+            "instruction": "LOP3.LUT R97, R136, 0xffffffc0, R97, 0xe2, !PT"
+          },
+          {
+            "pc": "0xef0",
+            "samples": 295.0,
+            "percent": 0.4012677339934981,
+            "instruction": "@!P2  IADD3 R98, P5, R138, c[0x0][0x160], RZ"
+          },
+          {
+            "pc": "0x13c0",
+            "samples": 294.0,
+            "percent": 0.3999075043867405,
+            "instruction": "LOP3.LUT R155, R155, 0x20, R138, 0xfe, !PT"
+          },
+          {
+            "pc": "0x2a20",
+            "samples": 292.0,
+            "percent": 0.39718704517322523,
+            "instruction": "LOP3.LUT R161, R161, 0x2, RZ, 0x3c, !PT"
+          },
+          {
+            "pc": "0x1070",
+            "samples": 290.0,
+            "percent": 0.39446658595971,
+            "instruction": "LDGSTS.E.BYPASS.128 !P0, [R137+0x9800][R98.64]"
+          },
+          {
+            "pc": "0x1460",
+            "samples": 289.0,
+            "percent": 0.3931063563529524,
+            "instruction": "IMAD R140, R153, 0x4000, R136"
+          },
+          {
+            "pc": "0x1230",
+            "samples": 286.0,
+            "percent": 0.38902566753267953,
+            "instruction": "IMMA.16832.S8.S8 R104, R144.ROW, R150.COL, R104"
+          }
+        ]
+      },
+      "stall_short_sb": {
+        "total": 71050.0,
+        "regions_percent": {
+          "interior_ldsm_mma": 54.37297677691766,
+          "transcript_and_gate": 17.867698803659394,
+          "first_loads_and_first_mma": 11.770584095707248,
+          "copy_wait_and_early_arrival": 11.175228712174524,
+          "copy_address_and_issue": 4.575650950035186,
+          "prologue": 0.2378606615059817,
+          "stage_address_setup": 0.0,
+          "tail_mma_after_arrival": 0.0,
+          "stage_sync_and_backedge": 0.0,
+          "output_epilogue": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0x1290",
+            "samples": 10504.0,
+            "percent": 14.783954961294862,
+            "instruction": "IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32"
+          },
+          {
+            "pc": "0x1350",
+            "samples": 9500.0,
+            "percent": 13.370865587614356,
+            "instruction": "IMMA.16832.S8.S8 R44, R136.ROW, R148.COL, R44"
+          },
+          {
+            "pc": "0x1110",
+            "samples": 8363.0,
+            "percent": 11.770584095707248,
+            "instruction": "IADD3 R152, R164, 0x420, RZ"
+          },
+          {
+            "pc": "0x16d0",
+            "samples": 7940.0,
+            "percent": 11.175228712174524,
+            "instruction": "BAR.ARV R164, 0x180"
+          },
+          {
+            "pc": "0x11e0",
+            "samples": 7278.0,
+            "percent": 10.243490499648136,
+            "instruction": "IMMA.16832.S8.S8 R108, R144.ROW, R148.COL, R108"
+          },
+          {
+            "pc": "0x1530",
+            "samples": 5804.0,
+            "percent": 8.168895144264603,
+            "instruction": "IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32"
+          },
+          {
+            "pc": "0xe40",
+            "samples": 3251.0,
+            "percent": 4.575650950035186,
+            "instruction": "ISETP.GT.U32.AND P4, PT, R98, 0x3ff, PT"
+          },
+          {
+            "pc": "0x1120",
+            "samples": 3141.0,
+            "percent": 4.420830401125968,
+            "instruction": "IMMA.16832.S8.S8 R116, R144.ROW, R148.COL, R116"
+          },
+          {
+            "pc": "0x22e0",
+            "samples": 1850.0,
+            "percent": 2.6038001407459537,
+            "instruction": "SHF.L.W.U32.HI R97, R97, 0xd, R97"
+          },
+          {
+            "pc": "0x1550",
+            "samples": 1347.0,
+            "percent": 1.8958479943701618,
+            "instruction": "IMMA.16832.S8.S8 R24, R136.ROW, R148.COL, R24"
+          }
+        ]
+      },
+      "stall_wait": {
+        "total": 156454.0,
+        "regions_percent": {
+          "interior_ldsm_mma": 53.92000204532962,
+          "tail_mma_after_arrival": 18.91290730821839,
+          "transcript_and_gate": 12.035486468866248,
+          "copy_address_and_issue": 5.990898283201452,
+          "stage_address_setup": 3.6310992368363864,
+          "output_epilogue": 1.8197041942040473,
+          "first_loads_and_first_mma": 1.8120342081378553,
+          "copy_wait_and_early_arrival": 0.8564817773914377,
+          "stage_sync_and_backedge": 0.6749587738248942,
+          "prologue": 0.3464277039896711
+        },
+        "top_pcs": [
+          {
+            "pc": "0x1540",
+            "samples": 2095.0,
+            "percent": 1.3390517340560164,
+            "instruction": "IMMA.16832.S8.S8 R28, R140.ROW, R148.COL, R28"
+          },
+          {
+            "pc": "0x1550",
+            "samples": 2019.0,
+            "percent": 1.2904751556368006,
+            "instruction": "IMMA.16832.S8.S8 R24, R136.ROW, R148.COL, R24"
+          },
+          {
+            "pc": "0x1770",
+            "samples": 1998.0,
+            "percent": 1.2770526800209647,
+            "instruction": "IMMA.16832.S8.S8 R76, R144.ROW, R154.COL, R76"
+          },
+          {
+            "pc": "0x11c0",
+            "samples": 1989.0,
+            "percent": 1.2713001904713206,
+            "instruction": "IMMA.16832.S8.S8 R124, R96.ROW, R150.COL, R124"
+          },
+          {
+            "pc": "0x11b0",
+            "samples": 1976.0,
+            "percent": 1.2629910388996126,
+            "instruction": "IMMA.16832.S8.S8 R64, R136.ROW, R150.COL, R64"
+          },
+          {
+            "pc": "0x1140",
+            "samples": 1963.0,
+            "percent": 1.2546818873279046,
+            "instruction": "IMMA.16832.S8.S8 R68, R136.ROW, R148.COL, R68"
+          },
+          {
+            "pc": "0x1710",
+            "samples": 1954.0,
+            "percent": 1.2489293977782607,
+            "instruction": "IMMA.16832.S8.S8 R84, R140.ROW, R148.COL, R84"
+          },
+          {
+            "pc": "0x17a0",
+            "samples": 1954.0,
+            "percent": 1.2489293977782607,
+            "instruction": "IMMA.16832.S8.S8 R52, R140.ROW, R154.COL, R52"
+          },
+          {
+            "pc": "0x1760",
+            "samples": 1953.0,
+            "percent": 1.2482902322727447,
+            "instruction": "IMMA.16832.S8.S8 R80, R144.ROW, R152.COL, R80"
+          },
+          {
+            "pc": "0x17d0",
+            "samples": 1950.0,
+            "percent": 1.2463727357561967,
+            "instruction": "IMMA.16832.S8.S8 R40, R136.ROW, R154.COL, R40"
+          }
+        ]
+      },
+      "stall_barrier (Not Issued)": {
+        "total": 110930.0,
+        "regions_percent": {
+          "stage_sync_and_backedge": 98.7992427657081,
+          "output_epilogue": 0.6652844135941585,
+          "stage_address_setup": 0.5354728206977373,
+          "prologue": 0.0,
+          "copy_address_and_issue": 0.0,
+          "first_loads_and_first_mma": 0.0,
+          "interior_ldsm_mma": 0.0,
+          "copy_wait_and_early_arrival": 0.0,
+          "tail_mma_after_arrival": 0.0,
+          "transcript_and_gate": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0x2a30",
+            "samples": 109598.0,
+            "percent": 98.7992427657081,
+            "instruction": "@!P2  CALL.REL.NOINC 0x74844f25d750"
+          },
+          {
+            "pc": "0x2a70",
+            "samples": 738.0,
+            "percent": 0.6652844135941585,
+            "instruction": "@P0   EXIT"
+          },
+          {
+            "pc": "0xc60",
+            "samples": 594.0,
+            "percent": 0.5354728206977373,
+            "instruction": "UMOV UR5, 0x3000"
+          }
+        ]
+      },
+      "stall_branch_resolving (Not Issued)": {
+        "total": 3236.0,
+        "regions_percent": {
+          "stage_sync_and_backedge": 49.320148331273174,
+          "transcript_and_gate": 22.15698393077874,
+          "stage_address_setup": 20.79728059332509,
+          "output_epilogue": 7.571075401730532,
+          "copy_address_and_issue": 0.12360939431396786,
+          "first_loads_and_first_mma": 0.030902348578491966,
+          "prologue": 0.0,
+          "interior_ldsm_mma": 0.0,
+          "copy_wait_and_early_arrival": 0.0,
+          "tail_mma_after_arrival": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0x2a00",
+            "samples": 1596.0,
+            "percent": 49.320148331273174,
+            "instruction": "BAR.SYNC.DEFER_BLOCKING R161, 0x180"
+          },
+          {
+            "pc": "0xbb0",
+            "samples": 673.0,
+            "percent": 20.79728059332509,
+            "instruction": "SHF.R.U32.HI R96, RZ, 0x7, R162"
+          },
+          {
+            "pc": "0x29f0",
+            "samples": 299.0,
+            "percent": 9.239802224969099,
+            "instruction": "BSYNC B0"
+          },
+          {
+            "pc": "0x1930",
+            "samples": 156.0,
+            "percent": 4.8207663782447465,
+            "instruction": "LOP3.LUT R97, R118, R117, R116, 0x96, !PT"
+          },
+          {
+            "pc": "0x22d0",
+            "samples": 148.0,
+            "percent": 4.573547589616811,
+            "instruction": "LDS R97, [R96+0xe9c0]"
+          },
+          {
+            "pc": "0x2320",
+            "samples": 89.0,
+            "percent": 2.750309023485785,
+            "instruction": "LOP3.LUT R97, R118, R117, R116, 0x96, !PT"
+          },
+          {
+            "pc": "0x36f0",
+            "samples": 51.0,
+            "percent": 1.5760197775030902,
+            "instruction": "BRA 0x74844f25e3f0"
+          },
+          {
+            "pc": "0x3570",
+            "samples": 48.0,
+            "percent": 1.4833127317676142,
+            "instruction": "BSSY B0, 0x74844f25e390"
+          },
+          {
+            "pc": "0x3690",
+            "samples": 45.0,
+            "percent": 1.3906056860321385,
+            "instruction": "ISETP.GE.AND P0, PT, R19, 0x600, PT"
+          },
+          {
+            "pc": "0x18f0",
+            "samples": 25.0,
+            "percent": 0.7725587144622992,
+            "instruction": "BRA 0x74844f25c630"
+          }
+        ]
+      },
+      "stall_dispatch (Not Issued)": {
+        "total": 2313.0,
+        "regions_percent": {
+          "transcript_and_gate": 35.495028102031995,
+          "stage_address_setup": 19.628188499783832,
+          "copy_address_and_issue": 16.342412451361866,
+          "interior_ldsm_mma": 12.364894076956334,
+          "output_epilogue": 8.646779074794638,
+          "tail_mma_after_arrival": 3.501945525291829,
+          "prologue": 2.896670990056204,
+          "first_loads_and_first_mma": 0.648508430609598,
+          "stage_sync_and_backedge": 0.4755728491137051,
+          "copy_wait_and_early_arrival": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0xd20",
+            "samples": 100.0,
+            "percent": 4.323389537397319,
+            "instruction": "LOP3.LUT R148, R148, 0x30, R97, 0x78, !PT"
+          },
+          {
+            "pc": "0xcf0",
+            "samples": 87.0,
+            "percent": 3.761348897535668,
+            "instruction": "IADD3 R148, R164, 0x400, RZ"
+          },
+          {
+            "pc": "0xda0",
+            "samples": 69.0,
+            "percent": 2.9831387808041505,
+            "instruction": "IMAD R136, R153, 0x4000, R136"
+          },
+          {
+            "pc": "0xe90",
+            "samples": 55.0,
+            "percent": 2.3778642455685257,
+            "instruction": "IADD3 R141, R137, UR4, RZ"
+          },
+          {
+            "pc": "0xce0",
+            "samples": 51.0,
+            "percent": 2.204928664072633,
+            "instruction": "LOP3.LUT R152, R2, R137, RZ, 0x3c, !PT"
+          },
+          {
+            "pc": "0x2080",
+            "samples": 51.0,
+            "percent": 2.204928664072633,
+            "instruction": "@!P2  STS [R96+0xe300], R143"
+          },
+          {
+            "pc": "0xed0",
+            "samples": 41.0,
+            "percent": 1.772589710332901,
+            "instruction": "@!P4  IMAD.X R97, RZ, RZ, c[0x0][0x164], P3"
+          },
+          {
+            "pc": "0xeb0",
+            "samples": 35.0,
+            "percent": 1.5131863380890618,
+            "instruction": "@!P4  IADD3 R96, P3, R138, c[0x0][0x160], RZ"
+          },
+          {
+            "pc": "0xdb0",
+            "samples": 34.0,
+            "percent": 1.4699524427150887,
+            "instruction": "IMAD R140, R153, 0x4000, R140"
+          },
+          {
+            "pc": "0x2430",
+            "samples": 32.0,
+            "percent": 1.3834846519671422,
+            "instruction": "LOP3.LUT R140, R14, R13, R97, 0x96, !PT"
+          }
+        ]
+      },
+      "stall_drain (Not Issued)": {
+        "total": 23.0,
+        "regions_percent": {
+          "output_epilogue": 100.0,
+          "prologue": 0.0,
+          "stage_address_setup": 0.0,
+          "copy_address_and_issue": 0.0,
+          "first_loads_and_first_mma": 0.0,
+          "interior_ldsm_mma": 0.0,
+          "copy_wait_and_early_arrival": 0.0,
+          "tail_mma_after_arrival": 0.0,
+          "transcript_and_gate": 0.0,
+          "stage_sync_and_backedge": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0x36f0",
+            "samples": 23.0,
+            "percent": 100.0,
+            "instruction": "BRA 0x74844f25e3f0"
+          }
+        ]
+      },
+      "stall_imc (Not Issued)": {
+        "total": 291.0,
+        "regions_percent": {
+          "prologue": 97.9381443298969,
+          "output_epilogue": 2.0618556701030926,
+          "stage_address_setup": 0.0,
+          "copy_address_and_issue": 0.0,
+          "first_loads_and_first_mma": 0.0,
+          "interior_ldsm_mma": 0.0,
+          "copy_wait_and_early_arrival": 0.0,
+          "tail_mma_after_arrival": 0.0,
+          "transcript_and_gate": 0.0,
+          "stage_sync_and_backedge": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0x5e0",
+            "samples": 184.0,
+            "percent": 63.23024054982818,
+            "instruction": "ULDC.64 UR4, c[0x0][0x118]"
+          },
+          {
+            "pc": "0x0",
+            "samples": 85.0,
+            "percent": 29.209621993127147,
+            "instruction": "IMAD.MOV.U32 R1, RZ, RZ, c[0x0][0x28]"
+          },
+          {
+            "pc": "0x8c0",
+            "samples": 16.0,
+            "percent": 5.498281786941581,
+            "instruction": "@!P0  IADD3 R2, P1, R8, c[0x0][0x160], RZ"
+          },
+          {
+            "pc": "0x32f0",
+            "samples": 6.0,
+            "percent": 2.0618556701030926,
+            "instruction": "LEA R2, P3, R13, c[0x0][0x180], 0x2"
+          }
+        ]
+      },
+      "stall_lg (Not Issued)": {
+        "total": 8460.0,
+        "regions_percent": {
+          "copy_address_and_issue": 93.67612293144208,
+          "prologue": 5.035460992907802,
+          "copy_wait_and_early_arrival": 1.2765957446808511,
+          "stage_sync_and_backedge": 0.01182033096926714,
+          "stage_address_setup": 0.0,
+          "first_loads_and_first_mma": 0.0,
+          "interior_ldsm_mma": 0.0,
+          "tail_mma_after_arrival": 0.0,
+          "transcript_and_gate": 0.0,
+          "output_epilogue": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0x1070",
+            "samples": 2466.0,
+            "percent": 29.148936170212767,
+            "instruction": "LDGSTS.E.BYPASS.128 !P0, [R137+0x9800][R98.64]"
+          },
+          {
+            "pc": "0x1080",
+            "samples": 2365.0,
+            "percent": 27.955082742316783,
+            "instruction": "LDGDEPBAR"
+          },
+          {
+            "pc": "0x1060",
+            "samples": 1656.0,
+            "percent": 19.574468085106382,
+            "instruction": "LDGSTS.E.BYPASS.128 !P1, [R137+0x8000][R96.64]"
+          },
+          {
+            "pc": "0x1020",
+            "samples": 1371.0,
+            "percent": 16.20567375886525,
+            "instruction": "@!P3  LDGSTS.E.BYPASS.128 [R141][R138.64]"
+          },
+          {
+            "pc": "0xae0",
+            "samples": 145.0,
+            "percent": 1.7139479905437351,
+            "instruction": "LDGDEPBAR"
+          },
+          {
+            "pc": "0xa90",
+            "samples": 144.0,
+            "percent": 1.702127659574468,
+            "instruction": "@!P3  LDGSTS.E.BYPASS.128 [R15][R8.64]"
+          },
+          {
+            "pc": "0x16d0",
+            "samples": 108.0,
+            "percent": 1.2765957446808511,
+            "instruction": "BAR.ARV R164, 0x180"
+          },
+          {
+            "pc": "0xac0",
+            "samples": 77.0,
+            "percent": 0.9101654846335697,
+            "instruction": "LDGSTS.E.BYPASS.128 !P0, [R13+0x9800][R10.64]"
+          },
+          {
+            "pc": "0xfb0",
+            "samples": 67.0,
+            "percent": 0.7919621749408984,
+            "instruction": "@!P2  LDGSTS.E.BYPASS.128 [R141][R98.64]"
+          },
+          {
+            "pc": "0xab0",
+            "samples": 60.0,
+            "percent": 0.7092198581560284,
+            "instruction": "LDGSTS.E.BYPASS.128 !P1, [R13+0x8000][R2.64]"
+          }
+        ]
+      },
+      "stall_long_sb (Not Issued)": {
+        "total": 19955.0,
+        "regions_percent": {
+          "copy_address_and_issue": 61.93435229265848,
+          "prologue": 19.734402405412176,
+          "stage_sync_and_backedge": 10.182911550989727,
+          "first_loads_and_first_mma": 8.143322475570033,
+          "copy_wait_and_early_arrival": 0.005011275369581559,
+          "stage_address_setup": 0.0,
+          "interior_ldsm_mma": 0.0,
+          "tail_mma_after_arrival": 0.0,
+          "transcript_and_gate": 0.0,
+          "output_epilogue": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0xf60",
+            "samples": 6701.0,
+            "percent": 33.58055625156602,
+            "instruction": "IMAD R96, R157, 0x1000, R142"
+          },
+          {
+            "pc": "0x1000",
+            "samples": 5658.0,
+            "percent": 28.35379604109246,
+            "instruction": "@!P2  IADD3 R141, R141, 0x1800, RZ"
+          },
+          {
+            "pc": "0xba0",
+            "samples": 3468.0,
+            "percent": 17.379102981708844,
+            "instruction": "BAR.SYNC.DEFER_BLOCKING 0x0"
+          },
+          {
+            "pc": "0x2a20",
+            "samples": 2032.0,
+            "percent": 10.182911550989727,
+            "instruction": "LOP3.LUT R161, R161, 0x2, RZ, 0x3c, !PT"
+          },
+          {
+            "pc": "0x10e0",
+            "samples": 1625.0,
+            "percent": 8.143322475570033,
+            "instruction": "LDSM.16.M88.4 R140, [R140]"
+          },
+          {
+            "pc": "0xb30",
+            "samples": 159.0,
+            "percent": 0.7967927837634678,
+            "instruction": "CS2R R10, SRZ"
+          },
+          {
+            "pc": "0xb10",
+            "samples": 146.0,
+            "percent": 0.7316462039589076,
+            "instruction": "IMAD.SHL.U32 R3, R0, 0x40, RZ"
+          },
+          {
+            "pc": "0xa40",
+            "samples": 80.0,
+            "percent": 0.40090202956652465,
+            "instruction": "@!P2  IADD3 R15, R15, 0x1800, RZ"
+          },
+          {
+            "pc": "0xaf0",
+            "samples": 78.0,
+            "percent": 0.39087947882736157,
+            "instruction": "CS2R R8, SRZ"
+          },
+          {
+            "pc": "0xa00",
+            "samples": 7.0,
+            "percent": 0.03507892758707091,
+            "instruction": "IADD3 R2, P4, R6, c[0x0][0x168], RZ"
+          }
+        ]
+      },
+      "stall_math (Not Issued)": {
+        "total": 334166.0,
+        "regions_percent": {
+          "interior_ldsm_mma": 83.1299414063669,
+          "tail_mma_after_arrival": 15.436340022623487,
+          "transcript_and_gate": 0.5015471352561301,
+          "stage_address_setup": 0.3207986449848279,
+          "copy_address_and_issue": 0.24029973127128434,
+          "prologue": 0.2238408455677717,
+          "output_epilogue": 0.11940173446730068,
+          "first_loads_and_first_mma": 0.01496262336682966,
+          "stage_sync_and_backedge": 0.012867856095473508,
+          "copy_wait_and_early_arrival": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0x1400",
+            "samples": 42802.0,
+            "percent": 12.808604106940862,
+            "instruction": "IMMA.16832.S8.S8 R132, R96.ROW, R148.COL, R132"
+          },
+          {
+            "pc": "0x1530",
+            "samples": 32198.0,
+            "percent": 9.635330943303627,
+            "instruction": "IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32"
+          },
+          {
+            "pc": "0x1250",
+            "samples": 25141.0,
+            "percent": 7.523506281309289,
+            "instruction": "IMMA.16832.S8.S8 R72, R140.ROW, R150.COL, R72"
+          },
+          {
+            "pc": "0x1120",
+            "samples": 20492.0,
+            "percent": 6.132281560661467,
+            "instruction": "IMMA.16832.S8.S8 R116, R144.ROW, R148.COL, R116"
+          },
+          {
+            "pc": "0x13d0",
+            "samples": 7216.0,
+            "percent": 2.1594058043008566,
+            "instruction": "IMMA.16832.S8.S8 R56, R140.ROW, R148.COL, R56"
+          },
+          {
+            "pc": "0x16e0",
+            "samples": 6419.0,
+            "percent": 1.9209015878335918,
+            "instruction": "IMMA.16832.S8.S8 R128, R100.ROW, R148.COL, R128"
+          },
+          {
+            "pc": "0x11e0",
+            "samples": 5495.0,
+            "percent": 1.6443923080145795,
+            "instruction": "IMMA.16832.S8.S8 R108, R144.ROW, R148.COL, R108"
+          },
+          {
+            "pc": "0x1140",
+            "samples": 5123.0,
+            "percent": 1.5330703901653668,
+            "instruction": "IMMA.16832.S8.S8 R68, R136.ROW, R148.COL, R68"
+          },
+          {
+            "pc": "0x1130",
+            "samples": 5046.0,
+            "percent": 1.5100279501804492,
+            "instruction": "IMMA.16832.S8.S8 R92, R140.ROW, R148.COL, R92"
+          },
+          {
+            "pc": "0x1630",
+            "samples": 4996.0,
+            "percent": 1.4950653268136196,
+            "instruction": "IMMA.16832.S8.S8 R12, R140.ROW, R150.COL, R12"
+          }
+        ]
+      },
+      "stall_mio (Not Issued)": {
+        "total": 22193.0,
+        "regions_percent": {
+          "first_loads_and_first_mma": 58.743748028657684,
+          "copy_address_and_issue": 21.975397647907,
+          "interior_ldsm_mma": 10.570900734465823,
+          "transcript_and_gate": 7.358176001441896,
+          "stage_sync_and_backedge": 0.8876672824764565,
+          "copy_wait_and_early_arrival": 0.34245032217365834,
+          "prologue": 0.12165998287748389,
+          "stage_address_setup": 0.0,
+          "tail_mma_after_arrival": 0.0,
+          "output_epilogue": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0x10c0",
+            "samples": 3311.0,
+            "percent": 14.919118641012933,
+            "instruction": "LDSM.16.M88.4 R148, [R148+UR5]"
+          },
+          {
+            "pc": "0x1100",
+            "samples": 2962.0,
+            "percent": 13.346550714189158,
+            "instruction": "LDSM.16.M88.4 R96, [R152]"
+          },
+          {
+            "pc": "0x10e0",
+            "samples": 2699.0,
+            "percent": 12.161492362456631,
+            "instruction": "LDSM.16.M88.4 R140, [R140]"
+          },
+          {
+            "pc": "0x10f0",
+            "samples": 2393.0,
+            "percent": 10.78267922317848,
+            "instruction": "LDSM.16.M88.4 R136, [R136]"
+          },
+          {
+            "pc": "0x1090",
+            "samples": 1672.0,
+            "percent": 7.533907087820484,
+            "instruction": "LDSM.16.M88.4 R144, [R144]"
+          },
+          {
+            "pc": "0x1080",
+            "samples": 1162.0,
+            "percent": 5.235885189023566,
+            "instruction": "LDGDEPBAR"
+          },
+          {
+            "pc": "0x1070",
+            "samples": 1151.0,
+            "percent": 5.186320010814221,
+            "instruction": "LDGSTS.E.BYPASS.128 !P0, [R137+0x9800][R98.64]"
+          },
+          {
+            "pc": "0x1060",
+            "samples": 1061.0,
+            "percent": 4.780786734555941,
+            "instruction": "LDGSTS.E.BYPASS.128 !P1, [R137+0x8000][R96.64]"
+          },
+          {
+            "pc": "0x1020",
+            "samples": 519.0,
+            "percent": 2.338575226422746,
+            "instruction": "@!P3  LDGSTS.E.BYPASS.128 [R141][R138.64]"
+          },
+          {
+            "pc": "0xf40",
+            "samples": 360.0,
+            "percent": 1.6221331050331185,
+            "instruction": "@!P4  LDGSTS.E.BYPASS.128 [R141][R96.64]"
+          }
+        ]
+      },
+      "stall_no_inst (Not Issued)": {
+        "total": 2440.0,
+        "regions_percent": {
+          "stage_address_setup": 57.78688524590164,
+          "transcript_and_gate": 22.21311475409836,
+          "stage_sync_and_backedge": 11.967213114754099,
+          "output_epilogue": 3.9754098360655736,
+          "prologue": 3.8934426229508197,
+          "first_loads_and_first_mma": 0.16393442622950818,
+          "copy_address_and_issue": 0.0,
+          "interior_ldsm_mma": 0.0,
+          "copy_wait_and_early_arrival": 0.0,
+          "tail_mma_after_arrival": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0xbb0",
+            "samples": 1214.0,
+            "percent": 49.75409836065574,
+            "instruction": "SHF.R.U32.HI R96, RZ, 0x7, R162"
+          },
+          {
+            "pc": "0x2320",
+            "samples": 294.0,
+            "percent": 12.049180327868852,
+            "instruction": "LOP3.LUT R97, R118, R117, R116, 0x96, !PT"
+          },
+          {
+            "pc": "0x2a00",
+            "samples": 292.0,
+            "percent": 11.967213114754099,
+            "instruction": "BAR.SYNC.DEFER_BLOCKING R161, 0x180"
+          },
+          {
+            "pc": "0x29f0",
+            "samples": 236.0,
+            "percent": 9.672131147540984,
+            "instruction": "BSYNC B0"
+          },
+          {
+            "pc": "0xc00",
+            "samples": 169.0,
+            "percent": 6.926229508196721,
+            "instruction": "IMAD.SHL.U32 R136, R96, 0x40, RZ"
+          },
+          {
+            "pc": "0x0",
+            "samples": 93.0,
+            "percent": 3.8114754098360657,
+            "instruction": "IMAD.MOV.U32 R1, RZ, RZ, c[0x0][0x28]"
+          },
+          {
+            "pc": "0x2e00",
+            "samples": 75.0,
+            "percent": 3.0737704918032787,
+            "instruction": "BSYNC B0"
+          },
+          {
+            "pc": "0xc80",
+            "samples": 12.0,
+            "percent": 0.4918032786885246,
+            "instruction": "UIMAD UR5, UR6, UR5, 0x8000"
+          },
+          {
+            "pc": "0x2a50",
+            "samples": 12.0,
+            "percent": 0.4918032786885246,
+            "instruction": "BAR.SYNC.DEFER_BLOCKING 0x0"
+          },
+          {
+            "pc": "0x2e60",
+            "samples": 7.0,
+            "percent": 0.28688524590163933,
+            "instruction": "IADD3 R19, R0, 0x600, RZ"
+          }
+        ]
+      },
+      "stall_short_sb (Not Issued)": {
+        "total": 56553.0,
+        "regions_percent": {
+          "interior_ldsm_mma": 55.44002970664686,
+          "transcript_and_gate": 16.5756016480116,
+          "copy_wait_and_early_arrival": 12.232772797199088,
+          "first_loads_and_first_mma": 12.14259190493873,
+          "copy_address_and_issue": 3.377362827789861,
+          "prologue": 0.23164111541385957,
+          "stage_address_setup": 0.0,
+          "tail_mma_after_arrival": 0.0,
+          "stage_sync_and_backedge": 0.0,
+          "output_epilogue": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0x1290",
+            "samples": 9171.0,
+            "percent": 16.216646331759588,
+            "instruction": "IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32"
+          },
+          {
+            "pc": "0x1350",
+            "samples": 7989.0,
+            "percent": 14.126571534666596,
+            "instruction": "IMMA.16832.S8.S8 R44, R136.ROW, R148.COL, R44"
+          },
+          {
+            "pc": "0x16d0",
+            "samples": 6918.0,
+            "percent": 12.232772797199088,
+            "instruction": "BAR.ARV R164, 0x180"
+          },
+          {
+            "pc": "0x1110",
+            "samples": 6867.0,
+            "percent": 12.14259190493873,
+            "instruction": "IADD3 R152, R164, 0x420, RZ"
+          },
+          {
+            "pc": "0x11e0",
+            "samples": 5279.0,
+            "percent": 9.334606475341715,
+            "instruction": "IMMA.16832.S8.S8 R108, R144.ROW, R148.COL, R108"
+          },
+          {
+            "pc": "0x1530",
+            "samples": 4455.0,
+            "percent": 7.877566176860644,
+            "instruction": "IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32"
+          },
+          {
+            "pc": "0x1120",
+            "samples": 2559.0,
+            "percent": 4.524958888122646,
+            "instruction": "IMMA.16832.S8.S8 R116, R144.ROW, R148.COL, R116"
+          },
+          {
+            "pc": "0xe40",
+            "samples": 1910.0,
+            "percent": 3.377362827789861,
+            "instruction": "ISETP.GT.U32.AND P4, PT, R98, 0x3ff, PT"
+          },
+          {
+            "pc": "0x22e0",
+            "samples": 1387.0,
+            "percent": 2.4525666189238415,
+            "instruction": "SHF.L.W.U32.HI R97, R97, 0xd, R97"
+          },
+          {
+            "pc": "0x1550",
+            "samples": 1014.0,
+            "percent": 1.7930083284706382,
+            "instruction": "IMMA.16832.S8.S8 R24, R136.ROW, R148.COL, R24"
+          }
+        ]
+      },
+      "stall_wait (Not Issued)": {
+        "total": 121221.0,
+        "regions_percent": {
+          "interior_ldsm_mma": 58.00810090660859,
+          "tail_mma_after_arrival": 20.397455886356326,
+          "transcript_and_gate": 9.542076042929855,
+          "copy_address_and_issue": 4.504995009115582,
+          "stage_address_setup": 2.3807756081867004,
+          "first_loads_and_first_mma": 1.896536078732233,
+          "output_epilogue": 1.2786563384232106,
+          "copy_wait_and_early_arrival": 1.0534478349460903,
+          "stage_sync_and_backedge": 0.6814000874435947,
+          "prologue": 0.25655620725781836
+        },
+        "top_pcs": [
+          {
+            "pc": "0x12f0",
+            "samples": 1831.0,
+            "percent": 1.510464358485741,
+            "instruction": "IMMA.16832.S8.S8 R12, R140.ROW, R150.COL, R12"
+          },
+          {
+            "pc": "0x1680",
+            "samples": 1731.0,
+            "percent": 1.4279704011681145,
+            "instruction": "IMMA.16832.S8.S8 R88, R140.ROW, R154.COL, R88"
+          },
+          {
+            "pc": "0x1640",
+            "samples": 1724.0,
+            "percent": 1.4221958241558805,
+            "instruction": "IMMA.16832.S8.S8 R8, R136.ROW, R150.COL, R8"
+          },
+          {
+            "pc": "0x12a0",
+            "samples": 1718.0,
+            "percent": 1.417246186716823,
+            "instruction": "IMMA.16832.S8.S8 R28, R140.ROW, R148.COL, R28"
+          },
+          {
+            "pc": "0x1310",
+            "samples": 1718.0,
+            "percent": 1.417246186716823,
+            "instruction": "IMMA.16832.S8.S8 R4, R96.ROW, R150.COL, R4"
+          },
+          {
+            "pc": "0x1710",
+            "samples": 1717.0,
+            "percent": 1.4164212471436468,
+            "instruction": "IMMA.16832.S8.S8 R84, R140.ROW, R148.COL, R84"
+          },
+          {
+            "pc": "0x1300",
+            "samples": 1680.0,
+            "percent": 1.385898482936125,
+            "instruction": "IMMA.16832.S8.S8 R8, R136.ROW, R150.COL, R8"
+          },
+          {
+            "pc": "0x12b0",
+            "samples": 1677.0,
+            "percent": 1.3834236642165962,
+            "instruction": "IMMA.16832.S8.S8 R24, R136.ROW, R148.COL, R24"
+          },
+          {
+            "pc": "0x16f0",
+            "samples": 1671.0,
+            "percent": 1.3784740267775386,
+            "instruction": "IMMA.16832.S8.S8 R36, R100.ROW, R150.COL, R36"
+          },
+          {
+            "pc": "0x12c0",
+            "samples": 1669.0,
+            "percent": 1.376824147631186,
+            "instruction": "IMMA.16832.S8.S8 R20, R96.ROW, R148.COL, R20"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "capture": 1,
+    "groups": {
+      "prologue": {
+        "Warp Stall Sampling (All Samples)": 8389.0,
+        "Warp Stall Sampling (Not-issued Samples)": 5973.0,
+        "# Samples": 8389.0,
+        "stall_barrier": 0.0,
+        "stall_branch_resolving": 0.0,
+        "stall_dispatch": 80.0,
+        "stall_drain": 0.0,
+        "stall_imc": 240.0,
+        "stall_lg": 427.0,
+        "stall_long_sb": 4060.0,
+        "stall_math": 1080.0,
+        "stall_membar": 0.0,
+        "stall_mio": 13.0,
+        "stall_misc": 0.0,
+        "stall_no_inst": 117.0,
+        "stall_not_selected": 862.0,
+        "stall_selected": 776.0,
+        "stall_short_sb": 165.0,
+        "stall_sleep": 0.0,
+        "stall_tex": 0.0,
+        "stall_wait": 569.0,
+        "stall_barrier (Not Issued)": 0.0,
+        "stall_branch_resolving (Not Issued)": 0.0,
+        "stall_dispatch (Not Issued)": 67.0,
+        "stall_drain (Not Issued)": 0.0,
+        "stall_imc (Not Issued)": 236.0,
+        "stall_lg (Not Issued)": 403.0,
+        "stall_long_sb (Not Issued)": 3935.0,
+        "stall_math (Not Issued)": 777.0,
+        "stall_membar (Not Issued)": 0.0,
+        "stall_mio (Not Issued)": 13.0,
+        "stall_misc (Not Issued)": 0.0,
+        "stall_no_inst (Not Issued)": 98.0,
+        "stall_not_selected (Not Issued)": 0.0,
+        "stall_selected (Not Issued)": 0.0,
+        "stall_short_sb (Not Issued)": 126.0,
+        "stall_sleeping (Not Issued)": 0.0,
+        "stall_tex (Not Issued)": 0.0,
+        "stall_wait (Not Issued)": 318.0
+      },
+      "stage_address_setup": {
+        "Warp Stall Sampling (All Samples)": 26271.0,
+        "Warp Stall Sampling (Not-issued Samples)": 6967.0,
+        "# Samples": 26271.0,
+        "stall_barrier": 595.0,
+        "stall_branch_resolving": 755.0,
+        "stall_dispatch": 1248.0,
+        "stall_drain": 0.0,
+        "stall_imc": 0.0,
+        "stall_lg": 0.0,
+        "stall_long_sb": 0.0,
+        "stall_math": 3197.0,
+        "stall_membar": 0.0,
+        "stall_mio": 0.0,
+        "stall_misc": 0.0,
+        "stall_no_inst": 2375.0,
+        "stall_not_selected": 3575.0,
+        "stall_selected": 8670.0,
+        "stall_short_sb": 0.0,
+        "stall_sleep": 0.0,
+        "stall_tex": 0.0,
+        "stall_wait": 5856.0,
+        "stall_barrier (Not Issued)": 541.0,
+        "stall_branch_resolving (Not Issued)": 664.0,
+        "stall_dispatch (Not Issued)": 478.0,
+        "stall_drain (Not Issued)": 0.0,
+        "stall_imc (Not Issued)": 0.0,
+        "stall_lg (Not Issued)": 0.0,
+        "stall_long_sb (Not Issued)": 0.0,
+        "stall_math (Not Issued)": 1040.0,
+        "stall_membar (Not Issued)": 0.0,
+        "stall_mio (Not Issued)": 0.0,
+        "stall_misc (Not Issued)": 0.0,
+        "stall_no_inst (Not Issued)": 1283.0,
+        "stall_not_selected (Not Issued)": 0.0,
+        "stall_selected (Not Issued)": 0.0,
+        "stall_short_sb (Not Issued)": 0.0,
+        "stall_sleeping (Not Issued)": 0.0,
+        "stall_tex (Not Issued)": 0.0,
+        "stall_wait (Not Issued)": 2961.0
+      },
+      "copy_address_and_issue": {
+        "Warp Stall Sampling (All Samples)": 61831.0,
+        "Warp Stall Sampling (Not-issued Samples)": 33916.0,
+        "# Samples": 61831.0,
+        "stall_barrier": 0.0,
+        "stall_branch_resolving": 2.0,
+        "stall_dispatch": 1104.0,
+        "stall_drain": 0.0,
+        "stall_imc": 0.0,
+        "stall_lg": 8846.0,
+        "stall_long_sb": 17268.0,
+        "stall_math": 1862.0,
+        "stall_membar": 0.0,
+        "stall_mio": 5242.0,
+        "stall_misc": 0.0,
+        "stall_no_inst": 1.0,
+        "stall_not_selected": 3423.0,
+        "stall_selected": 11166.0,
+        "stall_short_sb": 3353.0,
+        "stall_sleep": 0.0,
+        "stall_tex": 0.0,
+        "stall_wait": 9564.0,
+        "stall_barrier (Not Issued)": 0.0,
+        "stall_branch_resolving (Not Issued)": 2.0,
+        "stall_dispatch (Not Issued)": 320.0,
+        "stall_drain (Not Issued)": 0.0,
+        "stall_imc (Not Issued)": 0.0,
+        "stall_lg (Not Issued)": 8022.0,
+        "stall_long_sb (Not Issued)": 12282.0,
+        "stall_math (Not Issued)": 847.0,
+        "stall_membar (Not Issued)": 0.0,
+        "stall_mio (Not Issued)": 4815.0,
+        "stall_misc (Not Issued)": 0.0,
+        "stall_no_inst (Not Issued)": 0.0,
+        "stall_not_selected (Not Issued)": 0.0,
+        "stall_selected (Not Issued)": 0.0,
+        "stall_short_sb (Not Issued)": 1921.0,
+        "stall_sleeping (Not Issued)": 0.0,
+        "stall_tex (Not Issued)": 0.0,
+        "stall_wait (Not Issued)": 5707.0
+      },
+      "first_loads_and_first_mma": {
+        "Warp Stall Sampling (All Samples)": 30388.0,
+        "Warp Stall Sampling (Not-issued Samples)": 23715.0,
+        "# Samples": 30388.0,
+        "stall_barrier": 0.0,
+        "stall_branch_resolving": 12.0,
+        "stall_dispatch": 72.0,
+        "stall_drain": 0.0,
+        "stall_imc": 0.0,
+        "stall_lg": 0.0,
+        "stall_long_sb": 1845.0,
+        "stall_math": 115.0,
+        "stall_membar": 0.0,
+        "stall_mio": 14132.0,
+        "stall_misc": 0.0,
+        "stall_no_inst": 5.0,
+        "stall_not_selected": 781.0,
+        "stall_selected": 2384.0,
+        "stall_short_sb": 8259.0,
+        "stall_sleep": 0.0,
+        "stall_tex": 0.0,
+        "stall_wait": 2783.0,
+        "stall_barrier (Not Issued)": 0.0,
+        "stall_branch_resolving (Not Issued)": 4.0,
+        "stall_dispatch (Not Issued)": 15.0,
+        "stall_drain (Not Issued)": 0.0,
+        "stall_imc (Not Issued)": 0.0,
+        "stall_lg (Not Issued)": 0.0,
+        "stall_long_sb (Not Issued)": 1601.0,
+        "stall_math (Not Issued)": 53.0,
+        "stall_membar (Not Issued)": 0.0,
+        "stall_mio (Not Issued)": 12938.0,
+        "stall_misc (Not Issued)": 0.0,
+        "stall_no_inst (Not Issued)": 4.0,
+        "stall_not_selected (Not Issued)": 0.0,
+        "stall_selected (Not Issued)": 0.0,
+        "stall_short_sb (Not Issued)": 6845.0,
+        "stall_sleeping (Not Issued)": 0.0,
+        "stall_tex (Not Issued)": 0.0,
+        "stall_wait (Not Issued)": 2255.0
+      },
+      "interior_ldsm_mma": {
+        "Warp Stall Sampling (All Samples)": 476162.0,
+        "Warp Stall Sampling (Not-issued Samples)": 381428.0,
+        "# Samples": 476162.0,
+        "stall_barrier": 0.0,
+        "stall_branch_resolving": 0.0,
+        "stall_dispatch": 1148.0,
+        "stall_drain": 0.0,
+        "stall_imc": 0.0,
+        "stall_lg": 0.0,
+        "stall_long_sb": 0.0,
+        "stall_math": 307615.0,
+        "stall_membar": 0.0,
+        "stall_mio": 2478.0,
+        "stall_misc": 0.0,
+        "stall_no_inst": 0.0,
+        "stall_not_selected": 18933.0,
+        "stall_selected": 23361.0,
+        "stall_short_sb": 38446.0,
+        "stall_sleep": 0.0,
+        "stall_tex": 0.0,
+        "stall_wait": 84181.0,
+        "stall_barrier (Not Issued)": 0.0,
+        "stall_branch_resolving (Not Issued)": 0.0,
+        "stall_dispatch (Not Issued)": 282.0,
+        "stall_drain (Not Issued)": 0.0,
+        "stall_imc (Not Issued)": 0.0,
+        "stall_lg (Not Issued)": 0.0,
+        "stall_long_sb (Not Issued)": 0.0,
+        "stall_math (Not Issued)": 277728.0,
+        "stall_membar (Not Issued)": 0.0,
+        "stall_mio (Not Issued)": 2345.0,
+        "stall_misc (Not Issued)": 0.0,
+        "stall_no_inst (Not Issued)": 0.0,
+        "stall_not_selected (Not Issued)": 0.0,
+        "stall_selected (Not Issued)": 0.0,
+        "stall_short_sb (Not Issued)": 31140.0,
+        "stall_sleeping (Not Issued)": 0.0,
+        "stall_tex (Not Issued)": 0.0,
+        "stall_wait (Not Issued)": 69933.0
+      },
+      "copy_wait_and_early_arrival": {
+        "Warp Stall Sampling (All Samples)": 10041.0,
+        "Warp Stall Sampling (Not-issued Samples)": 8447.0,
+        "# Samples": 10041.0,
+        "stall_barrier": 0.0,
+        "stall_branch_resolving": 0.0,
+        "stall_dispatch": 1.0,
+        "stall_drain": 0.0,
+        "stall_imc": 0.0,
+        "stall_lg": 104.0,
+        "stall_long_sb": 0.0,
+        "stall_math": 0.0,
+        "stall_membar": 0.0,
+        "stall_mio": 92.0,
+        "stall_misc": 0.0,
+        "stall_no_inst": 0.0,
+        "stall_not_selected": 28.0,
+        "stall_selected": 522.0,
+        "stall_short_sb": 8022.0,
+        "stall_sleep": 0.0,
+        "stall_tex": 0.0,
+        "stall_wait": 1272.0,
+        "stall_barrier (Not Issued)": 0.0,
+        "stall_branch_resolving (Not Issued)": 0.0,
+        "stall_dispatch (Not Issued)": 0.0,
+        "stall_drain (Not Issued)": 0.0,
+        "stall_imc (Not Issued)": 0.0,
+        "stall_lg (Not Issued)": 96.0,
+        "stall_long_sb (Not Issued)": 0.0,
+        "stall_math (Not Issued)": 0.0,
+        "stall_membar (Not Issued)": 0.0,
+        "stall_mio (Not Issued)": 90.0,
+        "stall_misc (Not Issued)": 0.0,
+        "stall_no_inst (Not Issued)": 0.0,
+        "stall_not_selected (Not Issued)": 0.0,
+        "stall_selected (Not Issued)": 0.0,
+        "stall_short_sb (Not Issued)": 7039.0,
+        "stall_sleeping (Not Issued)": 0.0,
+        "stall_tex (Not Issued)": 0.0,
+        "stall_wait (Not Issued)": 1222.0
+      },
+      "tail_mma_after_arrival": {
+        "Warp Stall Sampling (All Samples)": 96453.0,
+        "Warp Stall Sampling (Not-issued Samples)": 76734.0,
+        "# Samples": 96453.0,
+        "stall_barrier": 0.0,
+        "stall_branch_resolving": 0.0,
+        "stall_dispatch": 183.0,
+        "stall_drain": 0.0,
+        "stall_imc": 0.0,
+        "stall_lg": 0.0,
+        "stall_long_sb": 0.0,
+        "stall_math": 59504.0,
+        "stall_membar": 0.0,
+        "stall_mio": 0.0,
+        "stall_misc": 0.0,
+        "stall_no_inst": 0.0,
+        "stall_not_selected": 3051.0,
+        "stall_selected": 4100.0,
+        "stall_short_sb": 0.0,
+        "stall_sleep": 0.0,
+        "stall_tex": 0.0,
+        "stall_wait": 29615.0,
+        "stall_barrier (Not Issued)": 0.0,
+        "stall_branch_resolving (Not Issued)": 0.0,
+        "stall_dispatch (Not Issued)": 90.0,
+        "stall_drain (Not Issued)": 0.0,
+        "stall_imc (Not Issued)": 0.0,
+        "stall_lg (Not Issued)": 0.0,
+        "stall_long_sb (Not Issued)": 0.0,
+        "stall_math (Not Issued)": 52002.0,
+        "stall_membar (Not Issued)": 0.0,
+        "stall_mio (Not Issued)": 0.0,
+        "stall_misc (Not Issued)": 0.0,
+        "stall_no_inst (Not Issued)": 0.0,
+        "stall_not_selected (Not Issued)": 0.0,
+        "stall_selected (Not Issued)": 0.0,
+        "stall_short_sb (Not Issued)": 0.0,
+        "stall_sleeping (Not Issued)": 0.0,
+        "stall_tex (Not Issued)": 0.0,
+        "stall_wait (Not Issued)": 24642.0
+      },
+      "transcript_and_gate": {
+        "Warp Stall Sampling (All Samples)": 67324.0,
+        "Warp Stall Sampling (Not-issued Samples)": 26100.0,
+        "# Samples": 67324.0,
+        "stall_barrier": 0.0,
+        "stall_branch_resolving": 1050.0,
+        "stall_dispatch": 2928.0,
+        "stall_drain": 0.0,
+        "stall_imc": 0.0,
+        "stall_lg": 0.0,
+        "stall_long_sb": 0.0,
+        "stall_math": 3844.0,
+        "stall_membar": 0.0,
+        "stall_mio": 2219.0,
+        "stall_misc": 0.0,
+        "stall_no_inst": 872.0,
+        "stall_not_selected": 5356.0,
+        "stall_selected": 19868.0,
+        "stall_short_sb": 12369.0,
+        "stall_sleep": 0.0,
+        "stall_tex": 0.0,
+        "stall_wait": 18818.0,
+        "stall_barrier (Not Issued)": 0.0,
+        "stall_branch_resolving (Not Issued)": 735.0,
+        "stall_dispatch (Not Issued)": 736.0,
+        "stall_drain (Not Issued)": 0.0,
+        "stall_imc (Not Issued)": 0.0,
+        "stall_lg (Not Issued)": 0.0,
+        "stall_long_sb (Not Issued)": 0.0,
+        "stall_math (Not Issued)": 1779.0,
+        "stall_membar (Not Issued)": 0.0,
+        "stall_mio (Not Issued)": 1657.0,
+        "stall_misc (Not Issued)": 0.0,
+        "stall_no_inst (Not Issued)": 579.0,
+        "stall_not_selected (Not Issued)": 0.0,
+        "stall_selected (Not Issued)": 0.0,
+        "stall_short_sb (Not Issued)": 9157.0,
+        "stall_sleeping (Not Issued)": 0.0,
+        "stall_tex (Not Issued)": 0.0,
+        "stall_wait (Not Issued)": 11457.0
+      },
+      "stage_sync_and_backedge": {
+        "Warp Stall Sampling (All Samples)": 137957.0,
+        "Warp Stall Sampling (Not-issued Samples)": 114978.0,
+        "# Samples": 137957.0,
+        "stall_barrier": 130209.0,
+        "stall_branch_resolving": 1943.0,
+        "stall_dispatch": 38.0,
+        "stall_drain": 0.0,
+        "stall_imc": 0.0,
+        "stall_lg": 0.0,
+        "stall_long_sb": 2545.0,
+        "stall_math": 88.0,
+        "stall_membar": 0.0,
+        "stall_mio": 196.0,
+        "stall_misc": 0.0,
+        "stall_no_inst": 329.0,
+        "stall_not_selected": 373.0,
+        "stall_selected": 1233.0,
+        "stall_short_sb": 0.0,
+        "stall_sleep": 0.0,
+        "stall_tex": 0.0,
+        "stall_wait": 1003.0,
+        "stall_barrier (Not Issued)": 110162.0,
+        "stall_branch_resolving (Not Issued)": 1542.0,
+        "stall_dispatch (Not Issued)": 8.0,
+        "stall_drain (Not Issued)": 0.0,
+        "stall_imc (Not Issued)": 0.0,
+        "stall_lg (Not Issued)": 0.0,
+        "stall_long_sb (Not Issued)": 1962.0,
+        "stall_math (Not Issued)": 45.0,
+        "stall_membar (Not Issued)": 0.0,
+        "stall_mio (Not Issued)": 193.0,
+        "stall_misc (Not Issued)": 0.0,
+        "stall_no_inst (Not Issued)": 295.0,
+        "stall_not_selected (Not Issued)": 0.0,
+        "stall_selected (Not Issued)": 0.0,
+        "stall_short_sb (Not Issued)": 0.0,
+        "stall_sleeping (Not Issued)": 0.0,
+        "stall_tex (Not Issued)": 0.0,
+        "stall_wait (Not Issued)": 771.0
+      },
+      "output_epilogue": {
+        "Warp Stall Sampling (All Samples)": 8517.0,
+        "Warp Stall Sampling (Not-issued Samples)": 3390.0,
+        "# Samples": 8517.0,
+        "stall_barrier": 1294.0,
+        "stall_branch_resolving": 473.0,
+        "stall_dispatch": 540.0,
+        "stall_drain": 23.0,
+        "stall_imc": 14.0,
+        "stall_lg": 0.0,
+        "stall_long_sb": 0.0,
+        "stall_math": 792.0,
+        "stall_membar": 0.0,
+        "stall_mio": 0.0,
+        "stall_misc": 0.0,
+        "stall_no_inst": 111.0,
+        "stall_not_selected": 980.0,
+        "stall_selected": 1442.0,
+        "stall_short_sb": 0.0,
+        "stall_sleep": 0.0,
+        "stall_tex": 0.0,
+        "stall_wait": 2848.0,
+        "stall_barrier (Not Issued)": 813.0,
+        "stall_branch_resolving (Not Issued)": 276.0,
+        "stall_dispatch (Not Issued)": 216.0,
+        "stall_drain (Not Issued)": 21.0,
+        "stall_imc (Not Issued)": 7.0,
+        "stall_lg (Not Issued)": 0.0,
+        "stall_long_sb (Not Issued)": 0.0,
+        "stall_math (Not Issued)": 391.0,
+        "stall_membar (Not Issued)": 0.0,
+        "stall_mio (Not Issued)": 0.0,
+        "stall_misc (Not Issued)": 0.0,
+        "stall_no_inst (Not Issued)": 97.0,
+        "stall_not_selected (Not Issued)": 0.0,
+        "stall_selected (Not Issued)": 0.0,
+        "stall_short_sb (Not Issued)": 0.0,
+        "stall_sleeping (Not Issued)": 0.0,
+        "stall_tex (Not Issued)": 0.0,
+        "stall_wait (Not Issued)": 1569.0
+      }
+    },
+    "columns": {
+      "Warp Stall Sampling (All Samples)": {
+        "total": 923333.0,
+        "regions_percent": {
+          "interior_ldsm_mma": 51.56991031404704,
+          "stage_sync_and_backedge": 14.94119672967391,
+          "tail_mma_after_arrival": 10.44617705638161,
+          "transcript_and_gate": 7.291410574516453,
+          "copy_address_and_issue": 6.696500612455095,
+          "first_loads_and_first_mma": 3.291120321704087,
+          "stage_address_setup": 2.845235684200608,
+          "copy_wait_and_early_arrival": 1.0874733167773707,
+          "output_epilogue": 0.9224191055664641,
+          "prologue": 0.908556284677359
+        },
+        "top_pcs": [
+          {
+            "pc": "0x2a30",
+            "samples": 130678.0,
+            "percent": 14.152857094894259,
+            "instruction": "@!P2  CALL.REL.NOINC 0x72e9cf25d750"
+          },
+          {
+            "pc": "0x1400",
+            "samples": 49382.0,
+            "percent": 5.348232977701436,
+            "instruction": "IMMA.16832.S8.S8 R132, R96.ROW, R148.COL, R132"
+          },
+          {
+            "pc": "0x1530",
+            "samples": 47213.0,
+            "percent": 5.113323145604023,
+            "instruction": "IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32"
+          },
+          {
+            "pc": "0x1250",
+            "samples": 30228.0,
+            "percent": 3.273791795592706,
+            "instruction": "IMMA.16832.S8.S8 R72, R140.ROW, R150.COL, R72"
+          },
+          {
+            "pc": "0x1120",
+            "samples": 26962.0,
+            "percent": 2.920073256344136,
+            "instruction": "IMMA.16832.S8.S8 R116, R144.ROW, R148.COL, R116"
+          },
+          {
+            "pc": "0x11e0",
+            "samples": 15405.0,
+            "percent": 1.6684121546614277,
+            "instruction": "IMMA.16832.S8.S8 R108, R144.ROW, R148.COL, R108"
+          },
+          {
+            "pc": "0x1350",
+            "samples": 15185.0,
+            "percent": 1.6445854312582784,
+            "instruction": "IMMA.16832.S8.S8 R44, R136.ROW, R148.COL, R44"
+          },
+          {
+            "pc": "0x1290",
+            "samples": 14863.0,
+            "percent": 1.6097117724591237,
+            "instruction": "IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32"
+          },
+          {
+            "pc": "0xf60",
+            "samples": 10190.0,
+            "percent": 1.1036105067185944,
+            "instruction": "IMAD R96, R157, 0x1000, R142"
+          },
+          {
+            "pc": "0x16d0",
+            "samples": 9794.0,
+            "percent": 1.0607224045929258,
+            "instruction": "BAR.ARV R164, 0x180"
+          }
+        ]
+      },
+      "Warp Stall Sampling (Not-issued Samples)": {
+        "total": 681648.0,
+        "regions_percent": {
+          "interior_ldsm_mma": 55.9567401356712,
+          "stage_sync_and_backedge": 16.867650165481304,
+          "tail_mma_after_arrival": 11.257129779592987,
+          "copy_address_and_issue": 4.975588573574631,
+          "transcript_and_gate": 3.8289557073445533,
+          "first_loads_and_first_mma": 3.4790683754665164,
+          "copy_wait_and_early_arrival": 1.239202638311856,
+          "stage_address_setup": 1.022081778278525,
+          "prologue": 0.8762587141750581,
+          "output_epilogue": 0.497324132103373
+        },
+        "top_pcs": [
+          {
+            "pc": "0x2a30",
+            "samples": 110162.0,
+            "percent": 16.16112715067014,
+            "instruction": "@!P2  CALL.REL.NOINC 0x72e9cf25d750"
+          },
+          {
+            "pc": "0x1400",
+            "samples": 43238.0,
+            "percent": 6.343156585217003,
+            "instruction": "IMMA.16832.S8.S8 R132, R96.ROW, R148.COL, R132"
+          },
+          {
+            "pc": "0x1530",
+            "samples": 36853.0,
+            "percent": 5.406456118113748,
+            "instruction": "IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32"
+          },
+          {
+            "pc": "0x1250",
+            "samples": 26055.0,
+            "percent": 3.8223540595732697,
+            "instruction": "IMMA.16832.S8.S8 R72, R140.ROW, R150.COL, R72"
+          },
+          {
+            "pc": "0x1120",
+            "samples": 23191.0,
+            "percent": 3.4021958547520126,
+            "instruction": "IMMA.16832.S8.S8 R116, R144.ROW, R148.COL, R116"
+          },
+          {
+            "pc": "0x1290",
+            "samples": 13021.0,
+            "percent": 1.9102234584418938,
+            "instruction": "IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32"
+          },
+          {
+            "pc": "0x1350",
+            "samples": 12802.0,
+            "percent": 1.8780954392883131,
+            "instruction": "IMMA.16832.S8.S8 R44, R136.ROW, R148.COL, R44"
+          },
+          {
+            "pc": "0x11e0",
+            "samples": 12099.0,
+            "percent": 1.7749630307724809,
+            "instruction": "IMMA.16832.S8.S8 R108, R144.ROW, R148.COL, R108"
+          },
+          {
+            "pc": "0x16d0",
+            "samples": 8447.0,
+            "percent": 1.239202638311856,
+            "instruction": "BAR.ARV R164, 0x180"
+          },
+          {
+            "pc": "0x16e0",
+            "samples": 7567.0,
+            "percent": 1.1101037485623078,
+            "instruction": "IMMA.16832.S8.S8 R128, R100.ROW, R148.COL, R128"
+          }
+        ]
+      },
+      "# Samples": {
+        "total": 923333.0,
+        "regions_percent": {
+          "interior_ldsm_mma": 51.56991031404704,
+          "stage_sync_and_backedge": 14.94119672967391,
+          "tail_mma_after_arrival": 10.44617705638161,
+          "transcript_and_gate": 7.291410574516453,
+          "copy_address_and_issue": 6.696500612455095,
+          "first_loads_and_first_mma": 3.291120321704087,
+          "stage_address_setup": 2.845235684200608,
+          "copy_wait_and_early_arrival": 1.0874733167773707,
+          "output_epilogue": 0.9224191055664641,
+          "prologue": 0.908556284677359
+        },
+        "top_pcs": [
+          {
+            "pc": "0x2a30",
+            "samples": 130678.0,
+            "percent": 14.152857094894259,
+            "instruction": "@!P2  CALL.REL.NOINC 0x72e9cf25d750"
+          },
+          {
+            "pc": "0x1400",
+            "samples": 49382.0,
+            "percent": 5.348232977701436,
+            "instruction": "IMMA.16832.S8.S8 R132, R96.ROW, R148.COL, R132"
+          },
+          {
+            "pc": "0x1530",
+            "samples": 47213.0,
+            "percent": 5.113323145604023,
+            "instruction": "IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32"
+          },
+          {
+            "pc": "0x1250",
+            "samples": 30228.0,
+            "percent": 3.273791795592706,
+            "instruction": "IMMA.16832.S8.S8 R72, R140.ROW, R150.COL, R72"
+          },
+          {
+            "pc": "0x1120",
+            "samples": 26962.0,
+            "percent": 2.920073256344136,
+            "instruction": "IMMA.16832.S8.S8 R116, R144.ROW, R148.COL, R116"
+          },
+          {
+            "pc": "0x11e0",
+            "samples": 15405.0,
+            "percent": 1.6684121546614277,
+            "instruction": "IMMA.16832.S8.S8 R108, R144.ROW, R148.COL, R108"
+          },
+          {
+            "pc": "0x1350",
+            "samples": 15185.0,
+            "percent": 1.6445854312582784,
+            "instruction": "IMMA.16832.S8.S8 R44, R136.ROW, R148.COL, R44"
+          },
+          {
+            "pc": "0x1290",
+            "samples": 14863.0,
+            "percent": 1.6097117724591237,
+            "instruction": "IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32"
+          },
+          {
+            "pc": "0xf60",
+            "samples": 10190.0,
+            "percent": 1.1036105067185944,
+            "instruction": "IMAD R96, R157, 0x1000, R142"
+          },
+          {
+            "pc": "0x16d0",
+            "samples": 9794.0,
+            "percent": 1.0607224045929258,
+            "instruction": "BAR.ARV R164, 0x180"
+          }
+        ]
+      },
+      "stall_barrier": {
+        "total": 132098.0,
+        "regions_percent": {
+          "stage_sync_and_backedge": 98.57000105981922,
+          "output_epilogue": 0.9795757695044588,
+          "stage_address_setup": 0.45042317067631604,
+          "prologue": 0.0,
+          "copy_address_and_issue": 0.0,
+          "first_loads_and_first_mma": 0.0,
+          "interior_ldsm_mma": 0.0,
+          "copy_wait_and_early_arrival": 0.0,
+          "tail_mma_after_arrival": 0.0,
+          "transcript_and_gate": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0x2a30",
+            "samples": 130209.0,
+            "percent": 98.57000105981922,
+            "instruction": "@!P2  CALL.REL.NOINC 0x72e9cf25d750"
+          },
+          {
+            "pc": "0x2a70",
+            "samples": 1294.0,
+            "percent": 0.9795757695044588,
+            "instruction": "@P0   EXIT"
+          },
+          {
+            "pc": "0xc60",
+            "samples": 595.0,
+            "percent": 0.45042317067631604,
+            "instruction": "UMOV UR5, 0x3000"
+          }
+        ]
+      },
+      "stall_branch_resolving": {
+        "total": 4235.0,
+        "regions_percent": {
+          "stage_sync_and_backedge": 45.879574970484065,
+          "transcript_and_gate": 24.793388429752067,
+          "stage_address_setup": 17.82762691853601,
+          "output_epilogue": 11.168831168831169,
+          "first_loads_and_first_mma": 0.2833530106257379,
+          "copy_address_and_issue": 0.047225501770956316,
+          "prologue": 0.0,
+          "interior_ldsm_mma": 0.0,
+          "copy_wait_and_early_arrival": 0.0,
+          "tail_mma_after_arrival": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0x2a00",
+            "samples": 1943.0,
+            "percent": 45.879574970484065,
+            "instruction": "BAR.SYNC.DEFER_BLOCKING R161, 0x180"
+          },
+          {
+            "pc": "0xbb0",
+            "samples": 755.0,
+            "percent": 17.82762691853601,
+            "instruction": "SHF.R.U32.HI R96, RZ, 0x7, R162"
+          },
+          {
+            "pc": "0x29f0",
+            "samples": 428.0,
+            "percent": 10.106257378984651,
+            "instruction": "BSYNC B0"
+          },
+          {
+            "pc": "0x22d0",
+            "samples": 198.0,
+            "percent": 4.675324675324675,
+            "instruction": "LDS R97, [R96+0xe9c0]"
+          },
+          {
+            "pc": "0x1930",
+            "samples": 187.0,
+            "percent": 4.415584415584416,
+            "instruction": "LOP3.LUT R97, R118, R117, R116, 0x96, !PT"
+          },
+          {
+            "pc": "0x2320",
+            "samples": 180.0,
+            "percent": 4.250295159386068,
+            "instruction": "LOP3.LUT R97, R118, R117, R116, 0x96, !PT"
+          },
+          {
+            "pc": "0x3690",
+            "samples": 100.0,
+            "percent": 2.3612750885478158,
+            "instruction": "ISETP.GE.AND P0, PT, R19, 0x600, PT"
+          },
+          {
+            "pc": "0x3330",
+            "samples": 75.0,
+            "percent": 1.770956316410862,
+            "instruction": "BSSY B0, 0x72e9cf25e150"
+          },
+          {
+            "pc": "0x3570",
+            "samples": 75.0,
+            "percent": 1.770956316410862,
+            "instruction": "BSSY B0, 0x72e9cf25e390"
+          },
+          {
+            "pc": "0x3450",
+            "samples": 70.0,
+            "percent": 1.6528925619834711,
+            "instruction": "BSSY B0, 0x72e9cf25e270"
+          }
+        ]
+      },
+      "stall_dispatch": {
+        "total": 7342.0,
+        "regions_percent": {
+          "transcript_and_gate": 39.88014165077635,
+          "stage_address_setup": 16.998093162625988,
+          "interior_ldsm_mma": 15.63606646690275,
+          "copy_address_and_issue": 15.036774720784527,
+          "output_epilogue": 7.354944156905475,
+          "tail_mma_after_arrival": 2.492508853173522,
+          "prologue": 1.089621356578589,
+          "first_loads_and_first_mma": 0.9806592209207301,
+          "stage_sync_and_backedge": 0.5175701443748297,
+          "copy_wait_and_early_arrival": 0.013620266957232362
+        },
+        "top_pcs": [
+          {
+            "pc": "0x1510",
+            "samples": 215.0,
+            "percent": 2.928357395804958,
+            "instruction": "LDSM.16.M88.4 R100, [R100]"
+          },
+          {
+            "pc": "0xd20",
+            "samples": 131.0,
+            "percent": 1.7842549713974394,
+            "instruction": "LOP3.LUT R148, R148, 0x30, R97, 0x78, !PT"
+          },
+          {
+            "pc": "0xcc0",
+            "samples": 130.0,
+            "percent": 1.770634704440207,
+            "instruction": "LOP3.LUT R137, R155, 0x10, R162, 0xf8, !PT"
+          },
+          {
+            "pc": "0xcf0",
+            "samples": 104.0,
+            "percent": 1.4165077635521657,
+            "instruction": "IADD3 R148, R164, 0x400, RZ"
+          },
+          {
+            "pc": "0x14c0",
+            "samples": 102.0,
+            "percent": 1.3892672296377009,
+            "instruction": "IMAD R100, R153, 0x4000, R142"
+          },
+          {
+            "pc": "0xda0",
+            "samples": 100.0,
+            "percent": 1.362026695723236,
+            "instruction": "IMAD R136, R153, 0x4000, R136"
+          },
+          {
+            "pc": "0xc10",
+            "samples": 93.0,
+            "percent": 1.2666848270226096,
+            "instruction": "SHF.R.U32.HI R96, RZ, 0x1, R156"
+          },
+          {
+            "pc": "0xf30",
+            "samples": 88.0,
+            "percent": 1.1985834922364478,
+            "instruction": "@!PT  LDS RZ, [RZ]"
+          },
+          {
+            "pc": "0x1b90",
+            "samples": 86.0,
+            "percent": 1.1713429583219832,
+            "instruction": "REDUX.XOR UR11, R136"
+          },
+          {
+            "pc": "0xdb0",
+            "samples": 77.0,
+            "percent": 1.0487605557068918,
+            "instruction": "IMAD R140, R153, 0x4000, R140"
+          }
+        ]
+      },
+      "stall_drain": {
+        "total": 23.0,
+        "regions_percent": {
+          "output_epilogue": 100.0,
+          "prologue": 0.0,
+          "stage_address_setup": 0.0,
+          "copy_address_and_issue": 0.0,
+          "first_loads_and_first_mma": 0.0,
+          "interior_ldsm_mma": 0.0,
+          "copy_wait_and_early_arrival": 0.0,
+          "tail_mma_after_arrival": 0.0,
+          "transcript_and_gate": 0.0,
+          "stage_sync_and_backedge": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0x36f0",
+            "samples": 23.0,
+            "percent": 100.0,
+            "instruction": "BRA 0x72e9cf25e3f0"
+          }
+        ]
+      },
+      "stall_imc": {
+        "total": 254.0,
+        "regions_percent": {
+          "prologue": 94.48818897637796,
+          "output_epilogue": 5.511811023622047,
+          "stage_address_setup": 0.0,
+          "copy_address_and_issue": 0.0,
+          "first_loads_and_first_mma": 0.0,
+          "interior_ldsm_mma": 0.0,
+          "copy_wait_and_early_arrival": 0.0,
+          "tail_mma_after_arrival": 0.0,
+          "transcript_and_gate": 0.0,
+          "stage_sync_and_backedge": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0x5e0",
+            "samples": 157.0,
+            "percent": 61.811023622047244,
+            "instruction": "ULDC.64 UR4, c[0x0][0x118]"
+          },
+          {
+            "pc": "0x0",
+            "samples": 52.0,
+            "percent": 20.47244094488189,
+            "instruction": "IMAD.MOV.U32 R1, RZ, RZ, c[0x0][0x28]"
+          },
+          {
+            "pc": "0x8c0",
+            "samples": 31.0,
+            "percent": 12.204724409448819,
+            "instruction": "@!P0  IADD3 R2, P1, R8, c[0x0][0x160], RZ"
+          },
+          {
+            "pc": "0x32f0",
+            "samples": 14.0,
+            "percent": 5.511811023622047,
+            "instruction": "LEA R2, P3, R13, c[0x0][0x180], 0x2"
+          }
+        ]
+      },
+      "stall_lg": {
+        "total": 9377.0,
+        "regions_percent": {
+          "copy_address_and_issue": 94.33720806228004,
+          "prologue": 4.553695211688173,
+          "copy_wait_and_early_arrival": 1.10909672603178,
+          "stage_address_setup": 0.0,
+          "first_loads_and_first_mma": 0.0,
+          "interior_ldsm_mma": 0.0,
+          "tail_mma_after_arrival": 0.0,
+          "transcript_and_gate": 0.0,
+          "stage_sync_and_backedge": 0.0,
+          "output_epilogue": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0x1070",
+            "samples": 2719.0,
+            "percent": 28.99648075077317,
+            "instruction": "LDGSTS.E.BYPASS.128 !P0, [R137+0x9800][R98.64]"
+          },
+          {
+            "pc": "0x1080",
+            "samples": 2605.0,
+            "percent": 27.780740108776794,
+            "instruction": "LDGDEPBAR"
+          },
+          {
+            "pc": "0x1060",
+            "samples": 1929.0,
+            "percent": 20.571611389570226,
+            "instruction": "LDGSTS.E.BYPASS.128 !P1, [R137+0x8000][R96.64]"
+          },
+          {
+            "pc": "0x1020",
+            "samples": 1498.0,
+            "percent": 15.975258611496214,
+            "instruction": "@!P3  LDGSTS.E.BYPASS.128 [R141][R138.64]"
+          },
+          {
+            "pc": "0xa90",
+            "samples": 141.0,
+            "percent": 1.5036792151007785,
+            "instruction": "@!P3  LDGSTS.E.BYPASS.128 [R15][R8.64]"
+          },
+          {
+            "pc": "0xae0",
+            "samples": 137.0,
+            "percent": 1.4610216487149408,
+            "instruction": "LDGDEPBAR"
+          },
+          {
+            "pc": "0x16d0",
+            "samples": 104.0,
+            "percent": 1.10909672603178,
+            "instruction": "BAR.ARV R164, 0x180"
+          },
+          {
+            "pc": "0xfb0",
+            "samples": 95.0,
+            "percent": 1.0131172016636452,
+            "instruction": "@!P2  LDGSTS.E.BYPASS.128 [R141][R98.64]"
+          },
+          {
+            "pc": "0xab0",
+            "samples": 78.0,
+            "percent": 0.8318225445238349,
+            "instruction": "LDGSTS.E.BYPASS.128 !P1, [R13+0x8000][R2.64]"
+          },
+          {
+            "pc": "0xac0",
+            "samples": 71.0,
+            "percent": 0.757171803348619,
+            "instruction": "LDGSTS.E.BYPASS.128 !P0, [R13+0x9800][R10.64]"
+          }
+        ]
+      },
+      "stall_long_sb": {
+        "total": 25718.0,
+        "regions_percent": {
+          "copy_address_and_issue": 67.14363480830546,
+          "prologue": 15.786608600979859,
+          "stage_sync_and_backedge": 9.895792829924567,
+          "first_loads_and_first_mma": 7.173963760790108,
+          "stage_address_setup": 0.0,
+          "interior_ldsm_mma": 0.0,
+          "copy_wait_and_early_arrival": 0.0,
+          "tail_mma_after_arrival": 0.0,
+          "transcript_and_gate": 0.0,
+          "output_epilogue": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0xf60",
+            "samples": 9513.0,
+            "percent": 36.989657049537286,
+            "instruction": "IMAD R96, R157, 0x1000, R142"
+          },
+          {
+            "pc": "0x1000",
+            "samples": 7755.0,
+            "percent": 30.15397775876818,
+            "instruction": "@!P2  IADD3 R141, R141, 0x1800, RZ"
+          },
+          {
+            "pc": "0xba0",
+            "samples": 3554.0,
+            "percent": 13.819115016719808,
+            "instruction": "BAR.SYNC.DEFER_BLOCKING 0x0"
+          },
+          {
+            "pc": "0x2a20",
+            "samples": 2545.0,
+            "percent": 9.895792829924567,
+            "instruction": "LOP3.LUT R161, R161, 0x2, RZ, 0x3c, !PT"
+          },
+          {
+            "pc": "0x10e0",
+            "samples": 1845.0,
+            "percent": 7.173963760790108,
+            "instruction": "LDSM.16.M88.4 R140, [R140]"
+          },
+          {
+            "pc": "0xb30",
+            "samples": 150.0,
+            "percent": 0.5832490862430982,
+            "instruction": "CS2R R10, SRZ"
+          },
+          {
+            "pc": "0xb10",
+            "samples": 137.0,
+            "percent": 0.5327008321020297,
+            "instruction": "IMAD.SHL.U32 R3, R0, 0x40, RZ"
+          },
+          {
+            "pc": "0xa40",
+            "samples": 108.0,
+            "percent": 0.4199393420950307,
+            "instruction": "@!P2  IADD3 R15, R15, 0x1800, RZ"
+          },
+          {
+            "pc": "0xaf0",
+            "samples": 97.0,
+            "percent": 0.3771677424372035,
+            "instruction": "CS2R R8, SRZ"
+          },
+          {
+            "pc": "0xa00",
+            "samples": 14.0,
+            "percent": 0.05443658138268917,
+            "instruction": "IADD3 R2, P4, R6, c[0x0][0x168], RZ"
+          }
+        ]
+      },
+      "stall_math": {
+        "total": 378097.0,
+        "regions_percent": {
+          "interior_ldsm_mma": 81.3587518546828,
+          "tail_mma_after_arrival": 15.73776041597791,
+          "transcript_and_gate": 1.0166703253397937,
+          "stage_address_setup": 0.8455502159498753,
+          "copy_address_and_issue": 0.4924662189861332,
+          "prologue": 0.2856409863077464,
+          "output_epilogue": 0.20947005662568072,
+          "first_loads_and_first_mma": 0.030415475393880405,
+          "stage_sync_and_backedge": 0.023274450736186746,
+          "copy_wait_and_early_arrival": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0x1400",
+            "samples": 45695.0,
+            "percent": 12.085523027159697,
+            "instruction": "IMMA.16832.S8.S8 R132, R96.ROW, R148.COL, R132"
+          },
+          {
+            "pc": "0x1530",
+            "samples": 38399.0,
+            "percent": 10.155859475214033,
+            "instruction": "IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32"
+          },
+          {
+            "pc": "0x1250",
+            "samples": 27150.0,
+            "percent": 7.1806970169030695,
+            "instruction": "IMMA.16832.S8.S8 R72, R140.ROW, R150.COL, R72"
+          },
+          {
+            "pc": "0x1120",
+            "samples": 22032.0,
+            "percent": 5.8270761206780275,
+            "instruction": "IMMA.16832.S8.S8 R116, R144.ROW, R148.COL, R116"
+          },
+          {
+            "pc": "0x13d0",
+            "samples": 7691.0,
+            "percent": 2.0341340978637756,
+            "instruction": "IMMA.16832.S8.S8 R56, R140.ROW, R148.COL, R56"
+          },
+          {
+            "pc": "0x16e0",
+            "samples": 6960.0,
+            "percent": 1.840797467316588,
+            "instruction": "IMMA.16832.S8.S8 R128, R100.ROW, R148.COL, R128"
+          },
+          {
+            "pc": "0x11e0",
+            "samples": 5884.0,
+            "percent": 1.5562144105877593,
+            "instruction": "IMMA.16832.S8.S8 R108, R144.ROW, R148.COL, R108"
+          },
+          {
+            "pc": "0x1630",
+            "samples": 5827.0,
+            "percent": 1.5411389140881837,
+            "instruction": "IMMA.16832.S8.S8 R12, R140.ROW, R150.COL, R12"
+          },
+          {
+            "pc": "0x1130",
+            "samples": 5557.0,
+            "percent": 1.469728667511247,
+            "instruction": "IMMA.16832.S8.S8 R92, R140.ROW, R148.COL, R92"
+          },
+          {
+            "pc": "0x1140",
+            "samples": 5495.0,
+            "percent": 1.4533307590380247,
+            "instruction": "IMMA.16832.S8.S8 R68, R136.ROW, R148.COL, R68"
+          }
+        ]
+      },
+      "stall_mio": {
+        "total": 24372.0,
+        "regions_percent": {
+          "first_loads_and_first_mma": 57.984572460200226,
+          "copy_address_and_issue": 21.50828819957328,
+          "interior_ldsm_mma": 10.16740521910389,
+          "transcript_and_gate": 9.104710323321845,
+          "stage_sync_and_backedge": 0.8042015427539799,
+          "copy_wait_and_early_arrival": 0.37748235680288855,
+          "prologue": 0.05333989824388643,
+          "stage_address_setup": 0.0,
+          "tail_mma_after_arrival": 0.0,
+          "output_epilogue": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0x10c0",
+            "samples": 3559.0,
+            "percent": 14.60282291153783,
+            "instruction": "LDSM.16.M88.4 R148, [R148+UR5]"
+          },
+          {
+            "pc": "0x1100",
+            "samples": 3289.0,
+            "percent": 13.494994255703267,
+            "instruction": "LDSM.16.M88.4 R96, [R152]"
+          },
+          {
+            "pc": "0x10e0",
+            "samples": 2813.0,
+            "percent": 11.541933366157886,
+            "instruction": "LDSM.16.M88.4 R140, [R140]"
+          },
+          {
+            "pc": "0x10f0",
+            "samples": 2514.0,
+            "percent": 10.315115706548498,
+            "instruction": "LDSM.16.M88.4 R136, [R136]"
+          },
+          {
+            "pc": "0x1090",
+            "samples": 1957.0,
+            "percent": 8.029706220252748,
+            "instruction": "LDSM.16.M88.4 R144, [R144]"
+          },
+          {
+            "pc": "0x1070",
+            "samples": 1297.0,
+            "percent": 5.321680617101592,
+            "instruction": "LDGSTS.E.BYPASS.128 !P0, [R137+0x9800][R98.64]"
+          },
+          {
+            "pc": "0x1080",
+            "samples": 1282.0,
+            "percent": 5.260134580666338,
+            "instruction": "LDGDEPBAR"
+          },
+          {
+            "pc": "0x1060",
+            "samples": 1043.0,
+            "percent": 4.279501066797965,
+            "instruction": "LDGSTS.E.BYPASS.128 !P1, [R137+0x8000][R96.64]"
+          },
+          {
+            "pc": "0x1020",
+            "samples": 491.0,
+            "percent": 2.0146069259806336,
+            "instruction": "@!P3  LDGSTS.E.BYPASS.128 [R141][R138.64]"
+          },
+          {
+            "pc": "0xf40",
+            "samples": 424.0,
+            "percent": 1.7397012965698342,
+            "instruction": "@!P4  LDGSTS.E.BYPASS.128 [R141][R96.64]"
+          }
+        ]
+      },
+      "stall_no_inst": {
+        "total": 3810.0,
+        "regions_percent": {
+          "stage_address_setup": 62.335958005249346,
+          "transcript_and_gate": 22.88713910761155,
+          "stage_sync_and_backedge": 8.63517060367454,
+          "prologue": 3.0708661417322833,
+          "output_epilogue": 2.9133858267716537,
+          "first_loads_and_first_mma": 0.13123359580052493,
+          "copy_address_and_issue": 0.026246719160104987,
+          "interior_ldsm_mma": 0.0,
+          "copy_wait_and_early_arrival": 0.0,
+          "tail_mma_after_arrival": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0xbb0",
+            "samples": 1811.0,
+            "percent": 47.53280839895013,
+            "instruction": "SHF.R.U32.HI R96, RZ, 0x7, R162"
+          },
+          {
+            "pc": "0x2320",
+            "samples": 453.0,
+            "percent": 11.88976377952756,
+            "instruction": "LOP3.LUT R97, R118, R117, R116, 0x96, !PT"
+          },
+          {
+            "pc": "0xc00",
+            "samples": 423.0,
+            "percent": 11.10236220472441,
+            "instruction": "IMAD.SHL.U32 R136, R96, 0x40, RZ"
+          },
+          {
+            "pc": "0x29f0",
+            "samples": 404.0,
+            "percent": 10.603674540682414,
+            "instruction": "BSYNC B0"
+          },
+          {
+            "pc": "0x2a00",
+            "samples": 329.0,
+            "percent": 8.63517060367454,
+            "instruction": "BAR.SYNC.DEFER_BLOCKING R161, 0x180"
+          },
+          {
+            "pc": "0xc80",
+            "samples": 120.0,
+            "percent": 3.1496062992125986,
+            "instruction": "UIMAD UR5, UR6, UR5, 0x8000"
+          },
+          {
+            "pc": "0x0",
+            "samples": 112.0,
+            "percent": 2.9396325459317585,
+            "instruction": "IMAD.MOV.U32 R1, RZ, RZ, c[0x0][0x28]"
+          },
+          {
+            "pc": "0x2e00",
+            "samples": 82.0,
+            "percent": 2.152230971128609,
+            "instruction": "BSYNC B0"
+          },
+          {
+            "pc": "0x2e60",
+            "samples": 12.0,
+            "percent": 0.31496062992125984,
+            "instruction": "IADD3 R19, R0, 0x600, RZ"
+          },
+          {
+            "pc": "0x2a50",
+            "samples": 10.0,
+            "percent": 0.26246719160104987,
+            "instruction": "BAR.SYNC.DEFER_BLOCKING 0x0"
+          }
+        ]
+      },
+      "stall_not_selected": {
+        "total": 37362.0,
+        "regions_percent": {
+          "interior_ldsm_mma": 50.67448209410631,
+          "transcript_and_gate": 14.335421016005567,
+          "stage_address_setup": 9.568545581071676,
+          "copy_address_and_issue": 9.161715111610727,
+          "tail_mma_after_arrival": 8.166051067929983,
+          "output_epilogue": 2.6229859215245437,
+          "prologue": 2.307157004443017,
+          "first_loads_and_first_mma": 2.090359188480274,
+          "stage_sync_and_backedge": 0.9983405599271987,
+          "copy_wait_and_early_arrival": 0.07494245490070124
+        },
+        "top_pcs": [
+          {
+            "pc": "0x1400",
+            "samples": 2925.0,
+            "percent": 7.828810020876826,
+            "instruction": "IMMA.16832.S8.S8 R132, R96.ROW, R148.COL, R132"
+          },
+          {
+            "pc": "0x1530",
+            "samples": 2668.0,
+            "percent": 7.140945345538247,
+            "instruction": "IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32"
+          },
+          {
+            "pc": "0x1250",
+            "samples": 1799.0,
+            "percent": 4.815052727370055,
+            "instruction": "IMMA.16832.S8.S8 R72, R140.ROW, R150.COL, R72"
+          },
+          {
+            "pc": "0x1120",
+            "samples": 1595.0,
+            "percent": 4.2690434130935175,
+            "instruction": "IMMA.16832.S8.S8 R116, R144.ROW, R148.COL, R116"
+          },
+          {
+            "pc": "0xcc0",
+            "samples": 1134.0,
+            "percent": 3.0351694234784006,
+            "instruction": "LOP3.LUT R137, R155, 0x10, R162, 0xf8, !PT"
+          },
+          {
+            "pc": "0xbb0",
+            "samples": 461.0,
+            "percent": 1.233873989615117,
+            "instruction": "SHF.R.U32.HI R96, RZ, 0x7, R162"
+          },
+          {
+            "pc": "0xeb0",
+            "samples": 420.0,
+            "percent": 1.1241368235105187,
+            "instruction": "@!P4  IADD3 R96, P3, R138, c[0x0][0x160], RZ"
+          },
+          {
+            "pc": "0x1140",
+            "samples": 413.0,
+            "percent": 1.1054012097853434,
+            "instruction": "IMMA.16832.S8.S8 R68, R136.ROW, R148.COL, R68"
+          },
+          {
+            "pc": "0xd20",
+            "samples": 406.0,
+            "percent": 1.086665596060168,
+            "instruction": "LOP3.LUT R148, R148, 0x30, R97, 0x78, !PT"
+          },
+          {
+            "pc": "0x1130",
+            "samples": 391.0,
+            "percent": 1.0465178523633638,
+            "instruction": "IMMA.16832.S8.S8 R92, R140.ROW, R148.COL, R92"
+          }
+        ]
+      },
+      "stall_selected": {
+        "total": 73522.0,
+        "regions_percent": {
+          "interior_ldsm_mma": 31.77416283561383,
+          "transcript_and_gate": 27.023203938957046,
+          "copy_address_and_issue": 15.187290878920596,
+          "stage_address_setup": 11.792388672778216,
+          "tail_mma_after_arrival": 5.57656211746144,
+          "first_loads_and_first_mma": 3.2425668507385543,
+          "output_epilogue": 1.961317700824243,
+          "stage_sync_and_backedge": 1.6770490465438916,
+          "prologue": 1.055466391012214,
+          "copy_wait_and_early_arrival": 0.7099915671499687
+        },
+        "top_pcs": [
+          {
+            "pc": "0xc70",
+            "samples": 302.0,
+            "percent": 0.41076140474959877,
+            "instruction": "IADD3 R155, R3, 0xc00, RZ"
+          },
+          {
+            "pc": "0x10c0",
+            "samples": 299.0,
+            "percent": 0.40668099344413916,
+            "instruction": "LDSM.16.M88.4 R148, [R148+UR5]"
+          },
+          {
+            "pc": "0x1160",
+            "samples": 297.0,
+            "percent": 0.4039607192404994,
+            "instruction": "IADD3 R148, R164, 0x800, RZ"
+          },
+          {
+            "pc": "0x1220",
+            "samples": 293.0,
+            "percent": 0.39852017083322,
+            "instruction": "SHF.R.U32.HI R149, RZ, 0x3, R164"
+          },
+          {
+            "pc": "0x1040",
+            "samples": 289.0,
+            "percent": 0.3930796224259405,
+            "instruction": "IMAD.X R97, RZ, RZ, c[0x0][0x16c], P2"
+          },
+          {
+            "pc": "0x1420",
+            "samples": 289.0,
+            "percent": 0.3930796224259405,
+            "instruction": "IMMA.16832.S8.S8 R52, R140.ROW, R150.COL, R52"
+          },
+          {
+            "pc": "0xcd0",
+            "samples": 288.0,
+            "percent": 0.39171948532412065,
+            "instruction": "IMAD R164, R96, 0x40, R99"
+          },
+          {
+            "pc": "0x17c0",
+            "samples": 288.0,
+            "percent": 0.39171948532412065,
+            "instruction": "IMMA.16832.S8.S8 R44, R136.ROW, R152.COL, R44"
+          },
+          {
+            "pc": "0xbc0",
+            "samples": 287.0,
+            "percent": 0.3903593482223008,
+            "instruction": "IMAD.SHL.U32 R98, R162, 0x2, RZ"
+          },
+          {
+            "pc": "0x2a20",
+            "samples": 287.0,
+            "percent": 0.3903593482223008,
+            "instruction": "LOP3.LUT R161, R161, 0x2, RZ, 0x3c, !PT"
+          }
+        ]
+      },
+      "stall_short_sb": {
+        "total": 70614.0,
+        "regions_percent": {
+          "interior_ldsm_mma": 54.445294134307645,
+          "transcript_and_gate": 17.5163565298666,
+          "first_loads_and_first_mma": 11.695980966947065,
+          "copy_wait_and_early_arrival": 11.36035347098309,
+          "copy_address_and_issue": 4.74835018551562,
+          "prologue": 0.2336647123799813,
+          "stage_address_setup": 0.0,
+          "tail_mma_after_arrival": 0.0,
+          "stage_sync_and_backedge": 0.0,
+          "output_epilogue": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0x1290",
+            "samples": 10438.0,
+            "percent": 14.781771320134817,
+            "instruction": "IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32"
+          },
+          {
+            "pc": "0x1350",
+            "samples": 9526.0,
+            "percent": 13.490242728070921,
+            "instruction": "IMMA.16832.S8.S8 R44, R136.ROW, R148.COL, R44"
+          },
+          {
+            "pc": "0x1110",
+            "samples": 8259.0,
+            "percent": 11.695980966947065,
+            "instruction": "IADD3 R152, R164, 0x420, RZ"
+          },
+          {
+            "pc": "0x16d0",
+            "samples": 8022.0,
+            "percent": 11.36035347098309,
+            "instruction": "BAR.ARV R164, 0x180"
+          },
+          {
+            "pc": "0x11e0",
+            "samples": 7270.0,
+            "percent": 10.295408842439176,
+            "instruction": "IMMA.16832.S8.S8 R108, R144.ROW, R148.COL, R108"
+          },
+          {
+            "pc": "0x1530",
+            "samples": 5833.0,
+            "percent": 8.260401620075339,
+            "instruction": "IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32"
+          },
+          {
+            "pc": "0xe40",
+            "samples": 3353.0,
+            "percent": 4.74835018551562,
+            "instruction": "ISETP.GT.U32.AND P4, PT, R98, 0x3ff, PT"
+          },
+          {
+            "pc": "0x1120",
+            "samples": 3073.0,
+            "percent": 4.351828249355652,
+            "instruction": "IMMA.16832.S8.S8 R116, R144.ROW, R148.COL, R116"
+          },
+          {
+            "pc": "0x22e0",
+            "samples": 1769.0,
+            "percent": 2.5051689466677995,
+            "instruction": "SHF.L.W.U32.HI R97, R97, 0xd, R97"
+          },
+          {
+            "pc": "0x1550",
+            "samples": 1301.0,
+            "percent": 1.8424108533718526,
+            "instruction": "IMMA.16832.S8.S8 R24, R136.ROW, R148.COL, R24"
+          }
+        ]
+      },
+      "stall_wait": {
+        "total": 156509.0,
+        "regions_percent": {
+          "interior_ldsm_mma": 53.786683193937726,
+          "tail_mma_after_arrival": 18.922234504086028,
+          "transcript_and_gate": 12.023589697717064,
+          "copy_address_and_issue": 6.110830687053141,
+          "stage_address_setup": 3.7416378610814713,
+          "output_epilogue": 1.819703659214486,
+          "first_loads_and_first_mma": 1.7781725012619083,
+          "copy_wait_and_early_arrival": 0.8127328140873687,
+          "stage_sync_and_backedge": 0.6408577142528544,
+          "prologue": 0.36355736730795035
+        },
+        "top_pcs": [
+          {
+            "pc": "0x1540",
+            "samples": 2044.0,
+            "percent": 1.3059951823856775,
+            "instruction": "IMMA.16832.S8.S8 R28, R140.ROW, R148.COL, R28"
+          },
+          {
+            "pc": "0x1550",
+            "samples": 2009.0,
+            "percent": 1.2836322511804432,
+            "instruction": "IMMA.16832.S8.S8 R24, R136.ROW, R148.COL, R24"
+          },
+          {
+            "pc": "0x1150",
+            "samples": 1989.0,
+            "percent": 1.2708534333488808,
+            "instruction": "IMMA.16832.S8.S8 R120, R96.ROW, R148.COL, R120"
+          },
+          {
+            "pc": "0x1750",
+            "samples": 1977.0,
+            "percent": 1.2631861426499436,
+            "instruction": "IMMA.16832.S8.S8 R104, R144.ROW, R150.COL, R104"
+          },
+          {
+            "pc": "0x17c0",
+            "samples": 1975.0,
+            "percent": 1.2619082608667873,
+            "instruction": "IMMA.16832.S8.S8 R44, R136.ROW, R152.COL, R44"
+          },
+          {
+            "pc": "0x17b0",
+            "samples": 1965.0,
+            "percent": 1.255518851951006,
+            "instruction": "IMMA.16832.S8.S8 R48, R136.ROW, R150.COL, R48"
+          },
+          {
+            "pc": "0x1260",
+            "samples": 1959.0,
+            "percent": 1.2516852066015374,
+            "instruction": "IMMA.16832.S8.S8 R48, R136.ROW, R150.COL, R48"
+          },
+          {
+            "pc": "0x1780",
+            "samples": 1958.0,
+            "percent": 1.2510462657099592,
+            "instruction": "IMMA.16832.S8.S8 R72, R140.ROW, R150.COL, R72"
+          },
+          {
+            "pc": "0x11b0",
+            "samples": 1936.0,
+            "percent": 1.2369895660952406,
+            "instruction": "IMMA.16832.S8.S8 R64, R136.ROW, R150.COL, R64"
+          },
+          {
+            "pc": "0x1760",
+            "samples": 1936.0,
+            "percent": 1.2369895660952406,
+            "instruction": "IMMA.16832.S8.S8 R80, R144.ROW, R152.COL, R80"
+          }
+        ]
+      },
+      "stall_barrier (Not Issued)": {
+        "total": 111516.0,
+        "regions_percent": {
+          "stage_sync_and_backedge": 98.7858244556835,
+          "output_epilogue": 0.7290433659743893,
+          "stage_address_setup": 0.4851321783421213,
+          "prologue": 0.0,
+          "copy_address_and_issue": 0.0,
+          "first_loads_and_first_mma": 0.0,
+          "interior_ldsm_mma": 0.0,
+          "copy_wait_and_early_arrival": 0.0,
+          "tail_mma_after_arrival": 0.0,
+          "transcript_and_gate": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0x2a30",
+            "samples": 110162.0,
+            "percent": 98.7858244556835,
+            "instruction": "@!P2  CALL.REL.NOINC 0x72e9cf25d750"
+          },
+          {
+            "pc": "0x2a70",
+            "samples": 813.0,
+            "percent": 0.7290433659743893,
+            "instruction": "@P0   EXIT"
+          },
+          {
+            "pc": "0xc60",
+            "samples": 541.0,
+            "percent": 0.4851321783421213,
+            "instruction": "UMOV UR5, 0x3000"
+          }
+        ]
+      },
+      "stall_branch_resolving (Not Issued)": {
+        "total": 3223.0,
+        "regions_percent": {
+          "stage_sync_and_backedge": 47.84362395283897,
+          "transcript_and_gate": 22.804840210983556,
+          "stage_address_setup": 20.60192367359603,
+          "output_epilogue": 8.563450201675458,
+          "first_loads_and_first_mma": 0.12410797393732548,
+          "copy_address_and_issue": 0.06205398696866274,
+          "prologue": 0.0,
+          "interior_ldsm_mma": 0.0,
+          "copy_wait_and_early_arrival": 0.0,
+          "tail_mma_after_arrival": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0x2a00",
+            "samples": 1542.0,
+            "percent": 47.84362395283897,
+            "instruction": "BAR.SYNC.DEFER_BLOCKING R161, 0x180"
+          },
+          {
+            "pc": "0xbb0",
+            "samples": 664.0,
+            "percent": 20.60192367359603,
+            "instruction": "SHF.R.U32.HI R96, RZ, 0x7, R162"
+          },
+          {
+            "pc": "0x29f0",
+            "samples": 338.0,
+            "percent": 10.487123797704003,
+            "instruction": "BSYNC B0"
+          },
+          {
+            "pc": "0x22d0",
+            "samples": 139.0,
+            "percent": 4.31275209432206,
+            "instruction": "LDS R97, [R96+0xe9c0]"
+          },
+          {
+            "pc": "0x1930",
+            "samples": 133.0,
+            "percent": 4.126590133416072,
+            "instruction": "LOP3.LUT R97, R118, R117, R116, 0x96, !PT"
+          },
+          {
+            "pc": "0x2320",
+            "samples": 79.0,
+            "percent": 2.4511324852621783,
+            "instruction": "LOP3.LUT R97, R118, R117, R116, 0x96, !PT"
+          },
+          {
+            "pc": "0x3690",
+            "samples": 63.0,
+            "percent": 1.9547005895128762,
+            "instruction": "ISETP.GE.AND P0, PT, R19, 0x600, PT"
+          },
+          {
+            "pc": "0x36f0",
+            "samples": 62.0,
+            "percent": 1.923673596028545,
+            "instruction": "BRA 0x72e9cf25e3f0"
+          },
+          {
+            "pc": "0x18f0",
+            "samples": 46.0,
+            "percent": 1.427241700279243,
+            "instruction": "BRA 0x72e9cf25c630"
+          },
+          {
+            "pc": "0x2e10",
+            "samples": 37.0,
+            "percent": 1.1479987589202607,
+            "instruction": "ISETP.GE.U32.AND P0, PT, R8, 0x480, PT"
+          }
+        ]
+      },
+      "stall_dispatch (Not Issued)": {
+        "total": 2212.0,
+        "regions_percent": {
+          "transcript_and_gate": 33.273056057866185,
+          "stage_address_setup": 21.609403254972875,
+          "copy_address_and_issue": 14.466546112115733,
+          "interior_ldsm_mma": 12.74864376130199,
+          "output_epilogue": 9.764918625678119,
+          "tail_mma_after_arrival": 4.06871609403255,
+          "prologue": 3.0289330922242317,
+          "first_loads_and_first_mma": 0.6781193490054249,
+          "stage_sync_and_backedge": 0.3616636528028933,
+          "copy_wait_and_early_arrival": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0xd20",
+            "samples": 106.0,
+            "percent": 4.792043399638336,
+            "instruction": "LOP3.LUT R148, R148, 0x30, R97, 0x78, !PT"
+          },
+          {
+            "pc": "0xcf0",
+            "samples": 100.0,
+            "percent": 4.520795660036167,
+            "instruction": "IADD3 R148, R164, 0x400, RZ"
+          },
+          {
+            "pc": "0xda0",
+            "samples": 67.0,
+            "percent": 3.0289330922242317,
+            "instruction": "IMAD R136, R153, 0x4000, R136"
+          },
+          {
+            "pc": "0x2080",
+            "samples": 53.0,
+            "percent": 2.396021699819168,
+            "instruction": "@!P2  STS [R96+0xe300], R143"
+          },
+          {
+            "pc": "0xce0",
+            "samples": 50.0,
+            "percent": 2.2603978300180834,
+            "instruction": "LOP3.LUT R152, R2, R137, RZ, 0x3c, !PT"
+          },
+          {
+            "pc": "0xe90",
+            "samples": 47.0,
+            "percent": 2.124773960216998,
+            "instruction": "IADD3 R141, R137, UR4, RZ"
+          },
+          {
+            "pc": "0x3030",
+            "samples": 42.0,
+            "percent": 1.8987341772151898,
+            "instruction": "SHF.R.S32.HI R14, RZ, 0x4, R24"
+          },
+          {
+            "pc": "0x1020",
+            "samples": 41.0,
+            "percent": 1.8535262206148282,
+            "instruction": "@!P3  LDGSTS.E.BYPASS.128 [R141][R138.64]"
+          },
+          {
+            "pc": "0xfa0",
+            "samples": 38.0,
+            "percent": 1.7179023508137432,
+            "instruction": "IADD3 R97, R96, 0x60000, RZ"
+          },
+          {
+            "pc": "0x2f50",
+            "samples": 38.0,
+            "percent": 1.7179023508137432,
+            "instruction": "SHF.R.S32.HI R4, RZ, 0x4, R20"
+          }
+        ]
+      },
+      "stall_drain (Not Issued)": {
+        "total": 21.0,
+        "regions_percent": {
+          "output_epilogue": 100.0,
+          "prologue": 0.0,
+          "stage_address_setup": 0.0,
+          "copy_address_and_issue": 0.0,
+          "first_loads_and_first_mma": 0.0,
+          "interior_ldsm_mma": 0.0,
+          "copy_wait_and_early_arrival": 0.0,
+          "tail_mma_after_arrival": 0.0,
+          "transcript_and_gate": 0.0,
+          "stage_sync_and_backedge": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0x36f0",
+            "samples": 21.0,
+            "percent": 100.0,
+            "instruction": "BRA 0x72e9cf25e3f0"
+          }
+        ]
+      },
+      "stall_imc (Not Issued)": {
+        "total": 243.0,
+        "regions_percent": {
+          "prologue": 97.11934156378601,
+          "output_epilogue": 2.880658436213992,
+          "stage_address_setup": 0.0,
+          "copy_address_and_issue": 0.0,
+          "first_loads_and_first_mma": 0.0,
+          "interior_ldsm_mma": 0.0,
+          "copy_wait_and_early_arrival": 0.0,
+          "tail_mma_after_arrival": 0.0,
+          "transcript_and_gate": 0.0,
+          "stage_sync_and_backedge": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0x5e0",
+            "samples": 157.0,
+            "percent": 64.60905349794238,
+            "instruction": "ULDC.64 UR4, c[0x0][0x118]"
+          },
+          {
+            "pc": "0x0",
+            "samples": 50.0,
+            "percent": 20.5761316872428,
+            "instruction": "IMAD.MOV.U32 R1, RZ, RZ, c[0x0][0x28]"
+          },
+          {
+            "pc": "0x8c0",
+            "samples": 29.0,
+            "percent": 11.934156378600823,
+            "instruction": "@!P0  IADD3 R2, P1, R8, c[0x0][0x160], RZ"
+          },
+          {
+            "pc": "0x32f0",
+            "samples": 7.0,
+            "percent": 2.880658436213992,
+            "instruction": "LEA R2, P3, R13, c[0x0][0x180], 0x2"
+          }
+        ]
+      },
+      "stall_lg (Not Issued)": {
+        "total": 8521.0,
+        "regions_percent": {
+          "copy_address_and_issue": 94.14387982631146,
+          "prologue": 4.729491843680319,
+          "copy_wait_and_early_arrival": 1.126628330008215,
+          "stage_address_setup": 0.0,
+          "first_loads_and_first_mma": 0.0,
+          "interior_ldsm_mma": 0.0,
+          "tail_mma_after_arrival": 0.0,
+          "transcript_and_gate": 0.0,
+          "stage_sync_and_backedge": 0.0,
+          "output_epilogue": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0x1070",
+            "samples": 2452.0,
+            "percent": 28.77596526229316,
+            "instruction": "LDGSTS.E.BYPASS.128 !P0, [R137+0x9800][R98.64]"
+          },
+          {
+            "pc": "0x1080",
+            "samples": 2398.0,
+            "percent": 28.142236826663538,
+            "instruction": "LDGDEPBAR"
+          },
+          {
+            "pc": "0x1060",
+            "samples": 1724.0,
+            "percent": 20.232367093064195,
+            "instruction": "LDGSTS.E.BYPASS.128 !P1, [R137+0x8000][R96.64]"
+          },
+          {
+            "pc": "0x1020",
+            "samples": 1364.0,
+            "percent": 16.00751085553339,
+            "instruction": "@!P3  LDGSTS.E.BYPASS.128 [R141][R138.64]"
+          },
+          {
+            "pc": "0xa90",
+            "samples": 133.0,
+            "percent": 1.5608496655322146,
+            "instruction": "@!P3  LDGSTS.E.BYPASS.128 [R15][R8.64]"
+          },
+          {
+            "pc": "0xae0",
+            "samples": 130.0,
+            "percent": 1.5256425302194578,
+            "instruction": "LDGDEPBAR"
+          },
+          {
+            "pc": "0x16d0",
+            "samples": 96.0,
+            "percent": 1.126628330008215,
+            "instruction": "BAR.ARV R164, 0x180"
+          },
+          {
+            "pc": "0xfb0",
+            "samples": 84.0,
+            "percent": 0.9857997887571881,
+            "instruction": "@!P2  LDGSTS.E.BYPASS.128 [R141][R98.64]"
+          },
+          {
+            "pc": "0xab0",
+            "samples": 71.0,
+            "percent": 0.8332355357352423,
+            "instruction": "LDGSTS.E.BYPASS.128 !P1, [R13+0x8000][R2.64]"
+          },
+          {
+            "pc": "0xac0",
+            "samples": 69.0,
+            "percent": 0.8097641121934045,
+            "instruction": "LDGSTS.E.BYPASS.128 !P0, [R13+0x9800][R10.64]"
+          }
+        ]
+      },
+      "stall_long_sb (Not Issued)": {
+        "total": 19780.0,
+        "regions_percent": {
+          "copy_address_and_issue": 62.093023255813954,
+          "prologue": 19.893832153690596,
+          "stage_sync_and_backedge": 9.919110212335692,
+          "first_loads_and_first_mma": 8.094034378159757,
+          "stage_address_setup": 0.0,
+          "interior_ldsm_mma": 0.0,
+          "copy_wait_and_early_arrival": 0.0,
+          "tail_mma_after_arrival": 0.0,
+          "transcript_and_gate": 0.0,
+          "output_epilogue": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0xf60",
+            "samples": 6637.0,
+            "percent": 33.5540950455005,
+            "instruction": "IMAD R96, R157, 0x1000, R142"
+          },
+          {
+            "pc": "0x1000",
+            "samples": 5645.0,
+            "percent": 28.538928210313447,
+            "instruction": "@!P2  IADD3 R141, R141, 0x1800, RZ"
+          },
+          {
+            "pc": "0xba0",
+            "samples": 3468.0,
+            "percent": 17.532861476238626,
+            "instruction": "BAR.SYNC.DEFER_BLOCKING 0x0"
+          },
+          {
+            "pc": "0x2a20",
+            "samples": 1962.0,
+            "percent": 9.919110212335692,
+            "instruction": "LOP3.LUT R161, R161, 0x2, RZ, 0x3c, !PT"
+          },
+          {
+            "pc": "0x10e0",
+            "samples": 1601.0,
+            "percent": 8.094034378159757,
+            "instruction": "LDSM.16.M88.4 R140, [R140]"
+          },
+          {
+            "pc": "0xb30",
+            "samples": 149.0,
+            "percent": 0.7532861476238625,
+            "instruction": "CS2R R10, SRZ"
+          },
+          {
+            "pc": "0xb10",
+            "samples": 127.0,
+            "percent": 0.6420626895854399,
+            "instruction": "IMAD.SHL.U32 R3, R0, 0x40, RZ"
+          },
+          {
+            "pc": "0xa40",
+            "samples": 100.0,
+            "percent": 0.5055611729019212,
+            "instruction": "@!P2  IADD3 R15, R15, 0x1800, RZ"
+          },
+          {
+            "pc": "0xaf0",
+            "samples": 85.0,
+            "percent": 0.42972699696663297,
+            "instruction": "CS2R R8, SRZ"
+          },
+          {
+            "pc": "0xa00",
+            "samples": 6.0,
+            "percent": 0.030333670374115267,
+            "instruction": "IADD3 R2, P4, R6, c[0x0][0x168], RZ"
+          }
+        ]
+      },
+      "stall_math (Not Issued)": {
+        "total": 334662.0,
+        "regions_percent": {
+          "interior_ldsm_mma": 82.9876113810352,
+          "tail_mma_after_arrival": 15.53866288972157,
+          "transcript_and_gate": 0.5315811176649874,
+          "stage_address_setup": 0.31076130543652997,
+          "copy_address_and_issue": 0.2530911785622509,
+          "prologue": 0.2321745522347921,
+          "output_epilogue": 0.11683429848623388,
+          "first_loads_and_first_mma": 0.015836874219361623,
+          "stage_sync_and_backedge": 0.013446402639080625,
+          "copy_wait_and_early_arrival": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0x1400",
+            "samples": 42802.0,
+            "percent": 12.78962057239842,
+            "instruction": "IMMA.16832.S8.S8 R132, R96.ROW, R148.COL, R132"
+          },
+          {
+            "pc": "0x1530",
+            "samples": 32372.0,
+            "percent": 9.673043249607066,
+            "instruction": "IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32"
+          },
+          {
+            "pc": "0x1250",
+            "samples": 25202.0,
+            "percent": 7.53058309578022,
+            "instruction": "IMMA.16832.S8.S8 R72, R140.ROW, R150.COL, R72"
+          },
+          {
+            "pc": "0x1120",
+            "samples": 20672.0,
+            "percent": 6.176978563446104,
+            "instruction": "IMMA.16832.S8.S8 R116, R144.ROW, R148.COL, R116"
+          },
+          {
+            "pc": "0x13d0",
+            "samples": 7208.0,
+            "percent": 2.153814893833181,
+            "instruction": "IMMA.16832.S8.S8 R56, R140.ROW, R148.COL, R56"
+          },
+          {
+            "pc": "0x16e0",
+            "samples": 6423.0,
+            "percent": 1.9192498700181078,
+            "instruction": "IMMA.16832.S8.S8 R128, R100.ROW, R148.COL, R128"
+          },
+          {
+            "pc": "0x11e0",
+            "samples": 5569.0,
+            "percent": 1.664067028823111,
+            "instruction": "IMMA.16832.S8.S8 R108, R144.ROW, R148.COL, R108"
+          },
+          {
+            "pc": "0x1630",
+            "samples": 5212.0,
+            "percent": 1.5573922345530715,
+            "instruction": "IMMA.16832.S8.S8 R12, R140.ROW, R150.COL, R12"
+          },
+          {
+            "pc": "0x1130",
+            "samples": 4981.0,
+            "percent": 1.4883673676724576,
+            "instruction": "IMMA.16832.S8.S8 R92, R140.ROW, R148.COL, R92"
+          },
+          {
+            "pc": "0x1140",
+            "samples": 4946.0,
+            "percent": 1.4779090545087281,
+            "instruction": "IMMA.16832.S8.S8 R68, R136.ROW, R148.COL, R68"
+          }
+        ]
+      },
+      "stall_mio (Not Issued)": {
+        "total": 22051.0,
+        "regions_percent": {
+          "first_loads_and_first_mma": 58.673076050972746,
+          "copy_address_and_issue": 21.835744410684324,
+          "interior_ldsm_mma": 10.634438347467235,
+          "transcript_and_gate": 7.514398439980046,
+          "stage_sync_and_backedge": 0.8752437531177725,
+          "copy_wait_and_early_arrival": 0.40814475533989386,
+          "prologue": 0.05895424243798467,
+          "stage_address_setup": 0.0,
+          "tail_mma_after_arrival": 0.0,
+          "output_epilogue": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0x10c0",
+            "samples": 3252.0,
+            "percent": 14.747630492948165,
+            "instruction": "LDSM.16.M88.4 R148, [R148+UR5]"
+          },
+          {
+            "pc": "0x1100",
+            "samples": 3006.0,
+            "percent": 13.632034828352456,
+            "instruction": "LDSM.16.M88.4 R96, [R152]"
+          },
+          {
+            "pc": "0x10e0",
+            "samples": 2590.0,
+            "percent": 11.745499070336946,
+            "instruction": "LDSM.16.M88.4 R140, [R140]"
+          },
+          {
+            "pc": "0x10f0",
+            "samples": 2307.0,
+            "percent": 10.46211056187928,
+            "instruction": "LDSM.16.M88.4 R136, [R136]"
+          },
+          {
+            "pc": "0x1090",
+            "samples": 1783.0,
+            "percent": 8.085801097455898,
+            "instruction": "LDSM.16.M88.4 R144, [R144]"
+          },
+          {
+            "pc": "0x1070",
+            "samples": 1185.0,
+            "percent": 5.373905945308603,
+            "instruction": "LDGSTS.E.BYPASS.128 !P0, [R137+0x9800][R98.64]"
+          },
+          {
+            "pc": "0x1080",
+            "samples": 1159.0,
+            "percent": 5.255997460432633,
+            "instruction": "LDGDEPBAR"
+          },
+          {
+            "pc": "0x1060",
+            "samples": 976.0,
+            "percent": 4.4261031245748494,
+            "instruction": "LDGSTS.E.BYPASS.128 !P1, [R137+0x8000][R96.64]"
+          },
+          {
+            "pc": "0x1020",
+            "samples": 475.0,
+            "percent": 2.15409731984944,
+            "instruction": "@!P3  LDGSTS.E.BYPASS.128 [R141][R138.64]"
+          },
+          {
+            "pc": "0xf40",
+            "samples": 365.0,
+            "percent": 1.6552537299895695,
+            "instruction": "@!P4  LDGSTS.E.BYPASS.128 [R141][R96.64]"
+          }
+        ]
+      },
+      "stall_no_inst (Not Issued)": {
+        "total": 2356.0,
+        "regions_percent": {
+          "stage_address_setup": 54.45670628183362,
+          "transcript_and_gate": 24.575551782682513,
+          "stage_sync_and_backedge": 12.521222410865875,
+          "prologue": 4.159592529711375,
+          "output_epilogue": 4.117147707979626,
+          "first_loads_and_first_mma": 0.1697792869269949,
+          "copy_address_and_issue": 0.0,
+          "interior_ldsm_mma": 0.0,
+          "copy_wait_and_early_arrival": 0.0,
+          "tail_mma_after_arrival": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0xbb0",
+            "samples": 1111.0,
+            "percent": 47.15619694397284,
+            "instruction": "SHF.R.U32.HI R96, RZ, 0x7, R162"
+          },
+          {
+            "pc": "0x2320",
+            "samples": 314.0,
+            "percent": 13.3276740237691,
+            "instruction": "LOP3.LUT R97, R118, R117, R116, 0x96, !PT"
+          },
+          {
+            "pc": "0x2a00",
+            "samples": 295.0,
+            "percent": 12.521222410865875,
+            "instruction": "BAR.SYNC.DEFER_BLOCKING R161, 0x180"
+          },
+          {
+            "pc": "0x29f0",
+            "samples": 253.0,
+            "percent": 10.738539898132428,
+            "instruction": "BSYNC B0"
+          },
+          {
+            "pc": "0xc00",
+            "samples": 140.0,
+            "percent": 5.942275042444821,
+            "instruction": "IMAD.SHL.U32 R136, R96, 0x40, RZ"
+          },
+          {
+            "pc": "0x0",
+            "samples": 93.0,
+            "percent": 3.9473684210526314,
+            "instruction": "IMAD.MOV.U32 R1, RZ, RZ, c[0x0][0x28]"
+          },
+          {
+            "pc": "0x2e00",
+            "samples": 78.0,
+            "percent": 3.3106960950764006,
+            "instruction": "BSYNC B0"
+          },
+          {
+            "pc": "0xc80",
+            "samples": 17.0,
+            "percent": 0.7215619694397284,
+            "instruction": "UIMAD UR5, UR6, UR5, 0x8000"
+          },
+          {
+            "pc": "0x2a50",
+            "samples": 7.0,
+            "percent": 0.29711375212224106,
+            "instruction": "BAR.SYNC.DEFER_BLOCKING 0x0"
+          },
+          {
+            "pc": "0x2e60",
+            "samples": 6.0,
+            "percent": 0.2546689303904924,
+            "instruction": "IADD3 R19, R0, 0x600, RZ"
+          }
+        ]
+      },
+      "stall_short_sb (Not Issued)": {
+        "total": 56228.0,
+        "regions_percent": {
+          "interior_ldsm_mma": 55.38166038272747,
+          "transcript_and_gate": 16.285480543501457,
+          "copy_wait_and_early_arrival": 12.518673970263926,
+          "first_loads_and_first_mma": 12.173650138720921,
+          "copy_address_and_issue": 3.4164473216191222,
+          "prologue": 0.22408764316710536,
+          "stage_address_setup": 0.0,
+          "tail_mma_after_arrival": 0.0,
+          "stage_sync_and_backedge": 0.0,
+          "output_epilogue": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0x1290",
+            "samples": 9094.0,
+            "percent": 16.173436721917906,
+            "instruction": "IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32"
+          },
+          {
+            "pc": "0x1350",
+            "samples": 7984.0,
+            "percent": 14.199331294017215,
+            "instruction": "IMMA.16832.S8.S8 R44, R136.ROW, R148.COL, R44"
+          },
+          {
+            "pc": "0x16d0",
+            "samples": 7039.0,
+            "percent": 12.518673970263926,
+            "instruction": "BAR.ARV R164, 0x180"
+          },
+          {
+            "pc": "0x1110",
+            "samples": 6845.0,
+            "percent": 12.173650138720921,
+            "instruction": "IADD3 R152, R164, 0x420, RZ"
+          },
+          {
+            "pc": "0x11e0",
+            "samples": 5254.0,
+            "percent": 9.3440990253966,
+            "instruction": "IMMA.16832.S8.S8 R108, R144.ROW, R148.COL, R108"
+          },
+          {
+            "pc": "0x1530",
+            "samples": 4463.0,
+            "percent": 7.937326598847549,
+            "instruction": "IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32"
+          },
+          {
+            "pc": "0x1120",
+            "samples": 2515.0,
+            "percent": 4.472860496549762,
+            "instruction": "IMMA.16832.S8.S8 R116, R144.ROW, R148.COL, R116"
+          },
+          {
+            "pc": "0xe40",
+            "samples": 1921.0,
+            "percent": 3.4164473216191222,
+            "instruction": "ISETP.GT.U32.AND P4, PT, R98, 0x3ff, PT"
+          },
+          {
+            "pc": "0x22e0",
+            "samples": 1295.0,
+            "percent": 2.3031229992174715,
+            "instruction": "SHF.L.W.U32.HI R97, R97, 0xd, R97"
+          },
+          {
+            "pc": "0x1550",
+            "samples": 999.0,
+            "percent": 1.776694885110621,
+            "instruction": "IMMA.16832.S8.S8 R24, R136.ROW, R148.COL, R24"
+          }
+        ]
+      },
+      "stall_wait (Not Issued)": {
+        "total": 120835.0,
+        "regions_percent": {
+          "interior_ldsm_mma": 57.87478793395953,
+          "tail_mma_after_arrival": 20.39309802623412,
+          "transcript_and_gate": 9.481524392766996,
+          "copy_address_and_issue": 4.722969338353954,
+          "stage_address_setup": 2.450448959324699,
+          "first_loads_and_first_mma": 1.8661811561219845,
+          "output_epilogue": 1.2984648487607067,
+          "copy_wait_and_early_arrival": 1.0112963959117804,
+          "stage_sync_and_backedge": 0.6380601646873836,
+          "prologue": 0.26316878387884307
+        },
+        "top_pcs": [
+          {
+            "pc": "0x16a0",
+            "samples": 1807.0,
+            "percent": 1.4954276492738032,
+            "instruction": "IMMA.16832.S8.S8 R124, R100.ROW, R154.COL, R124"
+          },
+          {
+            "pc": "0x12a0",
+            "samples": 1776.0,
+            "percent": 1.4697728307195763,
+            "instruction": "IMMA.16832.S8.S8 R28, R140.ROW, R148.COL, R28"
+          },
+          {
+            "pc": "0x1690",
+            "samples": 1750.0,
+            "percent": 1.4482558861257087,
+            "instruction": "IMMA.16832.S8.S8 R64, R136.ROW, R154.COL, R64"
+          },
+          {
+            "pc": "0x12b0",
+            "samples": 1714.0,
+            "percent": 1.4184631936111225,
+            "instruction": "IMMA.16832.S8.S8 R24, R136.ROW, R148.COL, R24"
+          },
+          {
+            "pc": "0x1680",
+            "samples": 1702.0,
+            "percent": 1.4085322961062605,
+            "instruction": "IMMA.16832.S8.S8 R88, R140.ROW, R154.COL, R88"
+          },
+          {
+            "pc": "0x1300",
+            "samples": 1692.0,
+            "percent": 1.4002565481855422,
+            "instruction": "IMMA.16832.S8.S8 R8, R136.ROW, R150.COL, R8"
+          },
+          {
+            "pc": "0x1640",
+            "samples": 1688.0,
+            "percent": 1.3969462490172548,
+            "instruction": "IMMA.16832.S8.S8 R8, R136.ROW, R150.COL, R8"
+          },
+          {
+            "pc": "0x1650",
+            "samples": 1681.0,
+            "percent": 1.391153225472752,
+            "instruction": "IMMA.16832.S8.S8 R4, R100.ROW, R150.COL, R4"
+          },
+          {
+            "pc": "0x1310",
+            "samples": 1679.0,
+            "percent": 1.3894980758886084,
+            "instruction": "IMMA.16832.S8.S8 R4, R96.ROW, R150.COL, R4"
+          },
+          {
+            "pc": "0x1720",
+            "samples": 1678.0,
+            "percent": 1.3886705010965366,
+            "instruction": "IMMA.16832.S8.S8 R132, R100.ROW, R152.COL, R132"
+          }
+        ]
+      }
+    }
+  }
+]

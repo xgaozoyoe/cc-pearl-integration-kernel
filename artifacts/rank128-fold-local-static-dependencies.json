@@ -1,0 +1,297 @@
+{
+  "caveat": "Static prior MMA use only; no CFG/dynamic scoreboard model. Distances are instruction slots, not cycles. PC samples can be attributed downstream; percentages are shares of a sampling column, never wall-clock fractions.",
+  "static": [
+    {
+      "function": "_ZN29rank128_fold_local_late1_fast6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "variant": 1,
+      "early_local_xor": [
+        {
+          "pc": "0x16d0",
+          "source": "@P2 LOP3.LUT R136, R44, R45, R46, 0x96, !PT ;",
+          "mma_count": 59,
+          "prior_mma_writers": [
+            {
+              "register": "R44",
+              "mma_pc": "0x1640",
+              "instruction_distance": 9
+            },
+            {
+              "register": "R45",
+              "mma_pc": "0x1640",
+              "instruction_distance": 9
+            },
+            {
+              "register": "R46",
+              "mma_pc": "0x1640",
+              "instruction_distance": 9
+            }
+          ],
+          "prior_mma_reader_of_destination": {
+            "register": "R136",
+            "mma_pc": "0x16c0",
+            "instruction_distance": 1
+          }
+        },
+        {
+          "pc": "0x16f0",
+          "source": "@P2 LOP3.LUT R137, R47, R40, R41, 0x96, !PT ;",
+          "mma_count": 60,
+          "prior_mma_writers": [
+            {
+              "register": "R47",
+              "mma_pc": "0x1640",
+              "instruction_distance": 11
+            },
+            {
+              "register": "R40",
+              "mma_pc": "0x1670",
+              "instruction_distance": 8
+            },
+            {
+              "register": "R41",
+              "mma_pc": "0x1670",
+              "instruction_distance": 8
+            }
+          ],
+          "prior_mma_reader_of_destination": {
+            "register": "R137",
+            "mma_pc": "0x16c0",
+            "instruction_distance": 3
+          }
+        },
+        {
+          "pc": "0x1700",
+          "source": "@P2 LOP3.LUT R136, R136, R42, R43, 0x96, !PT ;",
+          "mma_count": 60,
+          "prior_mma_writers": [
+            {
+              "register": "R42",
+              "mma_pc": "0x1670",
+              "instruction_distance": 9
+            },
+            {
+              "register": "R43",
+              "mma_pc": "0x1670",
+              "instruction_distance": 9
+            }
+          ],
+          "prior_mma_reader_of_destination": {
+            "register": "R136",
+            "mma_pc": "0x16c0",
+            "instruction_distance": 4
+          }
+        },
+        {
+          "pc": "0x1710",
+          "source": "@P2 LOP3.LUT R98, R68, R69, R70, 0x96, !PT ;",
+          "mma_count": 60,
+          "prior_mma_writers": [
+            {
+              "register": "R68",
+              "mma_pc": "0x1630",
+              "instruction_distance": 14
+            },
+            {
+              "register": "R69",
+              "mma_pc": "0x1630",
+              "instruction_distance": 14
+            },
+            {
+              "register": "R70",
+              "mma_pc": "0x1630",
+              "instruction_distance": 14
+            }
+          ],
+          "prior_mma_reader_of_destination": {
+            "register": "R98",
+            "mma_pc": "0x16e0",
+            "instruction_distance": 3
+          }
+        },
+        {
+          "pc": "0x1730",
+          "source": "@P2 LOP3.LUT R96, R112, R113, R114, 0x96, !PT ;",
+          "mma_count": 61,
+          "prior_mma_writers": [
+            {
+              "register": "R112",
+              "mma_pc": "0x1620",
+              "instruction_distance": 17
+            },
+            {
+              "register": "R113",
+              "mma_pc": "0x1620",
+              "instruction_distance": 17
+            },
+            {
+              "register": "R114",
+              "mma_pc": "0x1620",
+              "instruction_distance": 17
+            }
+          ],
+          "prior_mma_reader_of_destination": {
+            "register": "R96",
+            "mma_pc": "0x16e0",
+            "instruction_distance": 5
+          }
+        },
+        {
+          "pc": "0x1740",
+          "source": "@P2 LOP3.LUT R99, R71, R64, R65, 0x96, !PT ;",
+          "mma_count": 61,
+          "prior_mma_writers": [
+            {
+              "register": "R71",
+              "mma_pc": "0x1630",
+              "instruction_distance": 17
+            },
+            {
+              "register": "R64",
+              "mma_pc": "0x1660",
+              "instruction_distance": 14
+            },
+            {
+              "register": "R65",
+              "mma_pc": "0x1660",
+              "instruction_distance": 14
+            }
+          ],
+          "prior_mma_reader_of_destination": {
+            "register": "R99",
+            "mma_pc": "0x16e0",
+            "instruction_distance": 6
+          }
+        },
+        {
+          "pc": "0x1750",
+          "source": "@P2 LOP3.LUT R97, R115, R108, R109, 0x96, !PT ;",
+          "mma_count": 61,
+          "prior_mma_writers": [
+            {
+              "register": "R115",
+              "mma_pc": "0x1620",
+              "instruction_distance": 19
+            },
+            {
+              "register": "R108",
+              "mma_pc": "0x1650",
+              "instruction_distance": 16
+            },
+            {
+              "register": "R109",
+              "mma_pc": "0x1650",
+              "instruction_distance": 16
+            }
+          ],
+          "prior_mma_reader_of_destination": {
+            "register": "R97",
+            "mma_pc": "0x16e0",
+            "instruction_distance": 7
+          }
+        },
+        {
+          "pc": "0x1760",
+          "source": "@P2 LOP3.LUT R98, R98, R66, R67, 0x96, !PT ;",
+          "mma_count": 61,
+          "prior_mma_writers": [
+            {
+              "register": "R98",
+              "mma_pc": "0x13f0",
+              "instruction_distance": 55
+            },
+            {
+              "register": "R66",
+              "mma_pc": "0x1660",
+              "instruction_distance": 16
+            },
+            {
+              "register": "R67",
+              "mma_pc": "0x1660",
+              "instruction_distance": 16
+            }
+          ],
+          "prior_mma_reader_of_destination": {
+            "register": "R98",
+            "mma_pc": "0x16e0",
+            "instruction_distance": 8
+          }
+        },
+        {
+          "pc": "0x1780",
+          "source": "@P2 LOP3.LUT R96, R96, R110, R111, 0x96, !PT ;",
+          "mma_count": 62,
+          "prior_mma_writers": [
+            {
+              "register": "R96",
+              "mma_pc": "0x13f0",
+              "instruction_distance": 57
+            },
+            {
+              "register": "R110",
+              "mma_pc": "0x1650",
+              "instruction_distance": 19
+            },
+            {
+              "register": "R111",
+              "mma_pc": "0x1650",
+              "instruction_distance": 19
+            }
+          ],
+          "prior_mma_reader_of_destination": {
+            "register": "R96",
+            "mma_pc": "0x16e0",
+            "instruction_distance": 10
+          }
+        },
+        {
+          "pc": "0x1790",
+          "source": "@P2 LOP3.LUT R159, R98, R99, RZ, 0x3c, !PT ;",
+          "mma_count": 62,
+          "prior_mma_writers": [
+            {
+              "register": "R98",
+              "mma_pc": "0x13f0",
+              "instruction_distance": 58
+            },
+            {
+              "register": "R99",
+              "mma_pc": "0x13f0",
+              "instruction_distance": 58
+            }
+          ],
+          "prior_mma_reader_of_destination": null
+        },
+        {
+          "pc": "0x17a0",
+          "source": "@P2 LOP3.LUT R158, R136, R137, RZ, 0x3c, !PT ;",
+          "mma_count": 62,
+          "prior_mma_writers": [],
+          "prior_mma_reader_of_destination": null
+        },
+        {
+          "pc": "0x17b0",
+          "source": "@P2 LOP3.LUT R160, R96, R97, RZ, 0x3c, !PT ;",
+          "mma_count": 62,
+          "prior_mma_writers": [
+            {
+              "register": "R96",
+              "mma_pc": "0x13f0",
+              "instruction_distance": 60
+            },
+            {
+              "register": "R97",
+              "mma_pc": "0x13f0",
+              "instruction_distance": 60
+            }
+          ],
+          "prior_mma_reader_of_destination": null
+        }
+      ]
+    },
+    {
+      "function": "_ZN33rank128_fold_local_late1_baseline6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "variant": 0,
+      "early_local_xor": []
+    }
+  ]
+}

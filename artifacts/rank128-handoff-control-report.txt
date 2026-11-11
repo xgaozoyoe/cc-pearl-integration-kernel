@@ -1,0 +1,79 @@
+Copy / wait / compute handoff controls, GPU0, 2026-10-09
+
+Fixed for all variants: CTA256x192,warp64x64,K64,two shared stages,
+384threads,12warps,168registers/thread,69632Bshared,1CTA/SM,zero spills.
+Same A/B inputs,full R128 transcript and PoW code. Baseline SASS exactly
+matches the current A-stream baseline. No production/library deployment.
+
+Intended source timelines:
+Baseline: wait(current) -> CTA barrier -> copy(next)+commit -> compute -> fold
+Latecopy: wait(current) -> CTA barrier -> compute -> fold -> copy(next)+commit
+Earlywait: initial wait; CTA barrier -> copy(next)+commit -> compute -> wait -> fold
+
+Latecopy deliberately removes per-warp lookahead across its current MMA.
+It does NOT eliminate all possible inter-warp overlap or hardware overlap.
+Earlywait retains initial prologue wait plus one wait each of64iterations;
+baseline has64waits total, so earlywait has one extra empty final wait.
+The CTA barrier remains before every stage consumption in all variants.
+No unsafe shared-stage reuse or producer/consumer barrier removal attempted.
+
+Generated SASS confirms:
+-64IMMA and16LDSM per K64 body in all variants;10static LDGSTS sites total
+ including5prologue and5steady-state sites, some predicated.
+- Baseline next-copy commit PC0x1050,then IMMA0x10e0..0x1770.
+- Latecopy IMMA0x0d80..0x13f0,next-copy commit0x2930 after fold.
+- Earlywait has prologue DEPBAR0x0b60 and steady-state DEPBAR0x1680.
+  Despite its source placement after compute, ptxas moves it after48of64
+  IMMA sites,before the last16IMMA. Do not interpret it as a machine-code
+  wait strictly after all MMA. Its copy commit remains0x1050.
+- Static PC order is not a cycle timeline; actual overlap needs counters.
+
+Correctness:24/24 full transcript AND digest comparisons PASS against
+accepted R128,2seeds,4shapes including8192x8192 and partial B tiles.
+Event harness also validates full8192transcripts for all three variants.
+Compute Sanitizer racecheck on all18small-shape comparisons:0hazards,
+0errors,0warnings (rank128-handoff-control-racecheck.log).
+
+CUDA events,240samples/variant,6rotated blocks,100warmups/block,
+16launches/sample;8192-region main kernel:
+Variant       mean ms    median ms   p95 ms
+Baseline      1.082548   1.086968    1.093752
+Latecopy      1.185111   1.184446    1.199875
+Earlywait     1.094180   1.093792    1.109058
+Latecopy time+9.474%;earlywait+1.075%.
+
+Full-grid wall time,60grids/variant,6rotated blocks,2warmup+10measured:
+M=N131072,K4096,R128,region8192,real setup/noise/Merkle/V3/GEMM/fold/PoW,
+identical setup seed sequence,zero target,no proof submissions.
+Variant       mean ms   median ms  p95 ms   grids/sec  offline equiv TH/s
+Baseline      308.145   307.900    312.900  3.24523    228.362
+Latecopy      332.893   332.250    336.710  3.00397    211.385
+Earlywait     309.183   309.100    313.000  3.23433    227.596
+Latecopy throughput-7.434%;earlywait-0.336%,no demonstrated gain.
+Clocks automatic,not locked;power settings unchanged,end-of-block telemetry
+retained. Code-generation/DVFS effects are included in comparisons.
+
+Conclusion: moving copies late regresses materially; current lookahead
+is useful. Moving wait earlier does not improve end-to-end time. Neither
+control is a candidate for production. Do not infer that all remaining
+loss is wait latency,or that extending lookahead would recover another9%.
+Prior PC evidence highlights copy-address register reuse and operand-ready
+stalls; those causal hypotheses still need matched hardware-counter data.
+
+Prepared tools/profile_handoff_control.sh to compare these exact binaries:
+GPU0-only busy guard;NCU SourceCounters/SchedulerStats/WarpStateStats;
+three steady launches per variant;direct SM/SMSP elapsed-cycle and IMMA
+counts;L2/DRAM/shared metrics;PC-sampled stalls and automatic analysis.
+Shell syntax and analyzer CLI validated. Counter capture NOT run because
+sudo -n true returned 'sudo: a password is required'. User command:
+ sudo bash tools/profile_handoff_control.sh
+Output pointer:/tmp/pearl-handoff-control-last.txt
+
+Build:tools/build_rank128_handoff_control.py
+Validation/grid:tests/bench_rank128_handoff_control.py
+Events:tests/bench_rank128_handoff_control_events.py
+Summary:tools/summarize_rank128_handoff_control.py
+Library:artifacts/libpearl-rank128-handoff-control.so
+Diffs:artifacts/rank128-handoff-control-{latecopy,earlywait}.diff
+Measurements/resources:rank128-handoff-control-{events,results,summary}.json
+No live mining,all four GPUs were never launched,no commits.

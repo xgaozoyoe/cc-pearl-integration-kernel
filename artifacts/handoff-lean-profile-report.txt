@@ -1,0 +1,61 @@
+Capture:/tmp/pearl-handoff-lean.k3TZsE
+All input hashes match;3 launches per variant,67,633,152 IMMA executed each.
+
+variant kernel_ms Tensor% IMMA/SMcycle barrier% shortSB% longSB% math% dynamic_instructions
+baseline  1.032235 78.747 0.191697054 12.793 7.337 2.890 45.390 298571136
+named     1.041493 78.623 0.191327992 8.957 7.280 2.950 49.060 318550656
+toggle    1.021728 80.170 0.195156514 10.123 6.200 2.820 49.090 301824000
+
+Toggle IMMA/cycle vs baseline:+1.8046%; vs previous named:+2.0010%.
+Toggle kernel time vs baseline:-1.0179%.
+Effective SM GHz baseline/named/toggle:2.670286/2.651715/2.649961.
+Toggle dynamic instructions vs baseline:+1.0895%; vs named:-5.2509%.
+
+Dynamic opcode deltas: toggle minus previous named (warp instruction executions/kernel).
+LOP3.LUT                  -5201280
+IMAD.SHL.U32              -3120768
+ULOP3.LUT                 -2113536
+IADD3                     -2097024
+ISETP.NE.AND              -1056768
+SHF.R.U32.HI              -1056768
+USHF.L.U32                -1056768
+BRA                       -1056768
+SEL                       +16512
+IMAD.MOV.U32              +16512
+ISETP.GT.U32.AND          +16512
+IMAD.WIDE.U32             -16512
+
+Region counts baseline/named/toggle (boundaries:first/lastIMMA and loop backedge; motion across boundaries is possible):
+prologue: 3005184/2873088/3087744
+header/copy: 92269056/101812992/91212288
+MMA/operand: 112017408/117301248/113074176
+fold/tail: 86374272/91658112/89544576
+output: 4905216/4905216/4905216
+
+PC samples:
+baseline L2B/usefulMMA=37.758598, math samples onIMMA=98.370%
+stall_barrier: [{'pc': '0xd90', 'instruction': '@P2   BRA 0x78709b267f60', 'samples': 126423.0}, {'pc': '0x29f0', 'instruction': '@P0   EXIT', 'samples': 2183.0}]
+stall_short_sb: [{'pc': '0x1500', 'instruction': 'IMMA.16832.S8.S8 R120, R144.ROW, R148.COL, R120', 'samples': 14907.0}, {'pc': '0x11a0', 'instruction': 'IMMA.16832.S8.S8 R112, R144.ROW, R148.COL, R112', 'samples': 11952.0}]
+stall_long_sb: [{'pc': '0xfd0', 'instruction': '@!P2  IADD3 R137, R137, 0x1800, RZ', 'samples': 13231.0}, {'pc': '0xf50', 'instruction': 'IMAD R98, R157, 0x1000, R143', 'samples': 9930.0}]
+stall_math: [{'pc': '0x1210', 'instruction': 'IMMA.16832.S8.S8 R64, R140.ROW, R150.COL, R64', 'samples': 82227.0}, {'pc': '0x1500', 'instruction': 'IMMA.16832.S8.S8 R120, R144.ROW, R148.COL, R120', 'samples': 76321.0}]
+named L2B/usefulMMA=37.758321, math samples onIMMA=97.428%
+stall_barrier: [{'pc': '0x2a80', 'instruction': '@!P2  CALL.REL.NOINC 0x75689d2658a0', 'samples': 89066.0}, {'pc': '0xd80', 'instruction': '@P3   BRA 0x75689d263e50', 'samples': 657.0}]
+stall_short_sb: [{'pc': '0x1550', 'instruction': 'IMMA.16832.S8.S8 R4, R148.ROW, R116.COL, R4', 'samples': 15084.0}, {'pc': '0x11d0', 'instruction': 'IMMA.16832.S8.S8 R64, R144.ROW, R148.COL, R64', 'samples': 10575.0}]
+stall_long_sb: [{'pc': '0xfc0', 'instruction': '@!P2  IADD3 R145, R145, 0x1800, RZ', 'samples': 9664.0}, {'pc': '0xf40', 'instruction': 'IMAD R104, R3, 0x1000, R116', 'samples': 9321.0}]
+stall_math: [{'pc': '0x16a0', 'instruction': 'IMMA.16832.S8.S8 R32, R108.ROW, R118.COL, R32', 'samples': 81755.0}, {'pc': '0x1240', 'instruction': 'IMMA.16832.S8.S8 R36, R116.ROW, R150.COL, R36', 'samples': 66082.0}]
+toggle L2B/usefulMMA=37.758842, math samples onIMMA=97.597%
+stall_barrier: [{'pc': '0x2a30', 'instruction': '@!P2  CALL.REL.NOINC 0x721ceb25d750', 'samples': 98887.0}, {'pc': '0x2a70', 'instruction': '@P0   EXIT', 'samples': 706.0}]
+stall_short_sb: [{'pc': '0x11e0', 'instruction': 'IMMA.16832.S8.S8 R108, R144.ROW, R148.COL, R108', 'samples': 9469.0}, {'pc': '0x1350', 'instruction': 'IMMA.16832.S8.S8 R44, R136.ROW, R148.COL, R44', 'samples': 8785.0}]
+stall_long_sb: [{'pc': '0x1000', 'instruction': '@!P2  IADD3 R141, R141, 0x1800, RZ', 'samples': 9851.0}, {'pc': '0xf60', 'instruction': 'IMAD R96, R157, 0x1000, R142', 'samples': 9630.0}]
+stall_math: [{'pc': '0x1620', 'instruction': 'IMMA.16832.S8.S8 R12, R140.ROW, R150.COL, R12', 'samples': 60513.0}, {'pc': '0x16c0', 'instruction': 'IMMA.16832.S8.S8 R128, R100.ROW, R148.COL, R128', 'samples': 58018.0}]
+
+Interpretation:
+1. Unlike the previous named overlap, toggle beats the production baseline in measured IMMA/elapsedSMcycle and same-metric Tensor utilization.
+2. Same executed MMA count;L2 bytes/usefulMMA stays37.758..;shared69632B;0spill;1CTA/SM;baseline/toggle168registers. No occupancy or work-count shortcut.
+3. Barrier stall rises compared to previous named, yet performance improves. Short scoreboard falls and instruction count changes; no single stall percentage explains total time.
+4. Warp stall samples are not wall-time shares. Changes in compiler scheduling and register allocation accompany the control simplification, so causality cannot be assigned solely to barrier-ID arithmetic.
+5. Gain is not merely higher clock: cycle-normalized useful IMMA throughput improves. Kernel-only Nsight time differs from unprofiled event and full-grid timings.
+6. Previous two event runs improved kernel time1.371%/1.278%;full offline grid60samples/variant improved307.555->304.140ms,228.801->231.370TH/s(+1.123%).
+7. This is a small supported gain, not evidence that the remaining gap to PeakMiner is solved.
+Next bounded work: inspect remaining recurring operand-address/control instructions against baseline while preserving the validated handoff; retain this binary as the experimental checkpoint.
+No production replacement/live mining in this analysis;previous correctness and2025.2.1 memcheck/racecheck/synccheck passed.

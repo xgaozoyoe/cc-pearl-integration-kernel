@@ -1,0 +1,37 @@
+{
+  "warning": "Deliberately wrong/racy offline diagnostic. Remove main-loop cp.async wait at16c0 and/or named barriers16d0/2a00. All copies/commits and initial/final CTA barriers retained. Not safe for mining; not an isolated instruction-latency measurement.",
+  "variants": {
+    "native": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "104c0c1b265260dea5c9ab0bb174ebbbe7ee9cceb0cf0acebf2a9d1dfa4d50aa",
+      "smem": 69632,
+      "correct": true,
+      "drop_copy_completion_wait": false,
+      "drop_named_barriers": false
+    },
+    "no_copy_wait": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "e39555aeb3463cd59a9756cd90944ef66f07457e7b8a35dd9cd74b9c58051515",
+      "smem": 69632,
+      "correct": false,
+      "drop_copy_completion_wait": true,
+      "drop_named_barriers": false
+    },
+    "no_barrier": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "f5be59b9d8767e50c489514c1d166573a933efe467c4102db3fff9013b197eb1",
+      "smem": 69632,
+      "correct": false,
+      "drop_copy_completion_wait": false,
+      "drop_named_barriers": true
+    },
+    "both": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "ad4eddb7df114324855105c3b5e0ee31b4c18f1eda787d900d9e8ffa9d796719",
+      "smem": 69632,
+      "correct": false,
+      "drop_copy_completion_wait": true,
+      "drop_named_barriers": true
+    }
+  }
+}

@@ -1,0 +1,35 @@
+Current8+4 fixed-SASS transcript cost experiment. GPU0 only, offline, no Nsight.
+
+full: exact native8 cubin, SHA preserved.
+fold_sink: all original fold/XOR/reduction/shared writes retained. Replace only
+post-loop output epilogue with one final accumulatorR120 per thread global store.
+gemm_sink: identical to fold_sink except original conditional branch0x17e0
+becomes unconditional to0x2a00; bypass entire fold block. Final sink is identical.
+
+All64staticIMMA,16LDSM,global copies,cp.async commit/waits,earlyBAR.ARV,8+4 cohorts,
+final namedBAR.SYNC,loop counter and cumulative accumulator dependencies unchanged
+byte-for-byte. No compiler ran on the main kernel; DCE/reallocation impossible.
+Same168registers,69632B dynamic shared,384threads,1CTA/SM,0local memory.
+Same K4096,64 K64 iterations and8192x8192 benchmark input A/B.
+
+Minimal observable sink is independently compiled for identical argument ABI,
+then CLOCK instruction replaced by R120 XOR0 intoR4. Remaining snippet computes
+linear CTA/thread offset and stores once per thread. No branch before EXIT.
+Output snippet has no shared memory or transcript accesses. Same snippet both
+sink modes. Main kernel's original metadata/resource allocation kept unchanged.
+Control encoding verified with cuobjdump. Test sentinel checks output extent.
+
+Validation: full mode compares official accepted rank128 transcript. Sink modes
+compare finalR120 for every launched thread against each other, across4edge shapes
+and3seeds plus8192x8192. This is an accumulator SAMPLE, not all accumulator elements.
+Different input seeds produce different sink checksums. It is not a valid proof
+or transcript, and must never run as a mining library.
+
+full-fold_sink measures output-epilogue differential, not absolutely all output
+cost: the common sink itself has small arithmetic/store overhead.
+fold_sink-gemm_sink measures removable fold work under unchanged MMA schedule.
+full-gemm_sink measures combined net main-kernel differential against minimal sink.
+The comparison preserves arithmetic but alters scheduling pressure and power;
+unlocked clocks mean it is not a fixed-clock architectural cycle attribution.
+Neither variant tells us how fast PeakMiner's own transcript is.
+No PoW BLAKE3 included in any mode. No pool/effective mining TH/s claims.

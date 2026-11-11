@@ -1,0 +1,686 @@
+[
+  {
+    "pc": "1060",
+    "instruction": "LDSM.16.M88.4 R144, [R144]",
+    "stall": 1,
+    "waitmask": 0
+  },
+  {
+    "pc": "1070",
+    "instruction": "ISETP.NE.AND P2, PT, RZ, UR6, PT",
+    "stall": 1,
+    "waitmask": 0
+  },
+  {
+    "pc": "1080",
+    "instruction": "UISETP.NE.AND UP1, UPT, UR7, 0x40, UPT",
+    "stall": 2,
+    "waitmask": 0
+  },
+  {
+    "pc": "1090",
+    "instruction": "LDSM.16.M88.4 R148, [R148+UR5]",
+    "stall": 1,
+    "waitmask": 0
+  },
+  {
+    "pc": "10a0",
+    "instruction": "UMOV UR4, UR7",
+    "stall": 3,
+    "waitmask": 0
+  },
+  {
+    "pc": "10b0",
+    "instruction": "LDSM.16.M88.4 R140, [R142]",
+    "stall": 4,
+    "waitmask": 2
+  },
+  {
+    "pc": "10c0",
+    "instruction": "LDSM.16.M88.4 R136, [R136]",
+    "stall": 4,
+    "waitmask": 0
+  },
+  {
+    "pc": "10d0",
+    "instruction": "LDSM.16.M88.4 R96, [R96]",
+    "stall": 1,
+    "waitmask": 0
+  },
+  {
+    "pc": "10e0",
+    "instruction": "IMMA.16832.S8.S8 R120, R144.ROW, R148.reuse.COL, R120",
+    "stall": 8,
+    "waitmask": 4
+  },
+  {
+    "pc": "10f0",
+    "instruction": "IMMA.16832.S8.S8 R88, R140.ROW, R148.reuse.COL, R88",
+    "stall": 8,
+    "waitmask": 2
+  },
+  {
+    "pc": "1100",
+    "instruction": "IMMA.16832.S8.S8 R72, R136.ROW, R148.reuse.COL, R72",
+    "stall": 8,
+    "waitmask": 8
+  },
+  {
+    "pc": "1110",
+    "instruction": "IMMA.16832.S8.S8 R124, R96.ROW, R148.COL, R124",
+    "stall": 7,
+    "waitmask": 16
+  },
+  {
+    "pc": "1120",
+    "instruction": "IADD3 R149, R163, 0x800, RZ",
+    "stall": 1,
+    "waitmask": 0
+  },
+  {
+    "pc": "1130",
+    "instruction": "IMMA.16832.S8.S8 R116, R144.ROW, R150.COL, R116",
+    "stall": 3,
+    "waitmask": 0
+  },
+  {
+    "pc": "1140",
+    "instruction": "SHF.R.U32.HI R148, RZ, 0x3, R149",
+    "stall": 4,
+    "waitmask": 0
+  },
+  {
+    "pc": "1150",
+    "instruction": "LOP3.LUT R152, R149, 0x30, R148, 0x78, !PT",
+    "stall": 1,
+    "waitmask": 0
+  },
+  {
+    "pc": "1160",
+    "instruction": "IMMA.16832.S8.S8 R84, R140.ROW, R150.reuse.COL, R84",
+    "stall": 8,
+    "waitmask": 0
+  },
+  {
+    "pc": "1170",
+    "instruction": "IMMA.16832.S8.S8 R68, R136.ROW, R150.reuse.COL, R68",
+    "stall": 8,
+    "waitmask": 0
+  },
+  {
+    "pc": "1180",
+    "instruction": "IMMA.16832.S8.S8 R128, R96.ROW, R150.COL, R128",
+    "stall": 1,
+    "waitmask": 0
+  },
+  {
+    "pc": "1190",
+    "instruction": "LDSM.16.M88.4 R148, [R152+UR5]",
+    "stall": 7,
+    "waitmask": 0
+  },
+  {
+    "pc": "11a0",
+    "instruction": "IMMA.16832.S8.S8 R112, R144.ROW, R148.reuse.COL, R112",
+    "stall": 8,
+    "waitmask": 2
+  },
+  {
+    "pc": "11b0",
+    "instruction": "IMMA.16832.S8.S8 R76, R140.ROW, R148.reuse.COL, R76",
+    "stall": 8,
+    "waitmask": 0
+  },
+  {
+    "pc": "11c0",
+    "instruction": "IMMA.16832.S8.S8 R52, R136.ROW, R148.reuse.COL, R52",
+    "stall": 8,
+    "waitmask": 0
+  },
+  {
+    "pc": "11d0",
+    "instruction": "IMMA.16832.S8.S8 R36, R96.ROW, R148.COL, R36",
+    "stall": 7,
+    "waitmask": 0
+  },
+  {
+    "pc": "11e0",
+    "instruction": "SHF.R.U32.HI R148, RZ, 0x3, R163",
+    "stall": 1,
+    "waitmask": 0
+  },
+  {
+    "pc": "11f0",
+    "instruction": "IMMA.16832.S8.S8 R108, R144.ROW, R150.COL, R108",
+    "stall": 3,
+    "waitmask": 0
+  },
+  {
+    "pc": "1200",
+    "instruction": "LOP3.LUT R149, R163, 0x30, R148, 0x78, !PT",
+    "stall": 5,
+    "waitmask": 0
+  },
+  {
+    "pc": "1210",
+    "instruction": "IMMA.16832.S8.S8 R64, R140.ROW, R150.reuse.COL, R64",
+    "stall": 8,
+    "waitmask": 0
+  },
+  {
+    "pc": "1220",
+    "instruction": "IMMA.16832.S8.S8 R48, R136.ROW, R150.reuse.COL, R48",
+    "stall": 8,
+    "waitmask": 0
+  },
+  {
+    "pc": "1230",
+    "instruction": "IMMA.16832.S8.S8 R92, R96.ROW, R150.COL, R92",
+    "stall": 1,
+    "waitmask": 0
+  },
+  {
+    "pc": "1240",
+    "instruction": "LDSM.16.M88.4 R148, [R149+UR5]",
+    "stall": 7,
+    "waitmask": 0
+  },
+  {
+    "pc": "1250",
+    "instruction": "IMMA.16832.S8.S8 R32, R144.ROW, R148.reuse.COL, R32",
+    "stall": 8,
+    "waitmask": 2
+  },
+  {
+    "pc": "1260",
+    "instruction": "IMMA.16832.S8.S8 R28, R140.ROW, R148.reuse.COL, R28",
+    "stall": 8,
+    "waitmask": 0
+  },
+  {
+    "pc": "1270",
+    "instruction": "IMMA.16832.S8.S8 R24, R136.ROW, R148.reuse.COL, R24",
+    "stall": 8,
+    "waitmask": 0
+  },
+  {
+    "pc": "1280",
+    "instruction": "IMMA.16832.S8.S8 R20, R96.ROW, R148.COL, R20",
+    "stall": 7,
+    "waitmask": 0
+  },
+  {
+    "pc": "1290",
+    "instruction": "IADD3 R148, R163, 0xc00, RZ",
+    "stall": 1,
+    "waitmask": 0
+  },
+  {
+    "pc": "12a0",
+    "instruction": "IMMA.16832.S8.S8 R16, R144.ROW, R150.COL, R16",
+    "stall": 3,
+    "waitmask": 0
+  },
+  {
+    "pc": "12b0",
+    "instruction": "SHF.R.U32.HI R152, RZ, 0x3, R148",
+    "stall": 4,
+    "waitmask": 0
+  },
+  {
+    "pc": "12c0",
+    "instruction": "LOP3.LUT R148, R148, 0x30, R152, 0x78, !PT",
+    "stall": 1,
+    "waitmask": 0
+  },
+  {
+    "pc": "12d0",
+    "instruction": "IMMA.16832.S8.S8 R12, R140.ROW, R150.reuse.COL, R12",
+    "stall": 8,
+    "waitmask": 0
+  },
+  {
+    "pc": "12e0",
+    "instruction": "IMMA.16832.S8.S8 R8, R136.ROW, R150.reuse.COL, R8",
+    "stall": 8,
+    "waitmask": 0
+  },
+  {
+    "pc": "12f0",
+    "instruction": "IMMA.16832.S8.S8 R4, R96.ROW, R150.COL, R4",
+    "stall": 1,
+    "waitmask": 0
+  },
+  {
+    "pc": "1300",
+    "instruction": "LDSM.16.M88.4 R148, [R148+UR5]",
+    "stall": 7,
+    "waitmask": 0
+  },
+  {
+    "pc": "1310",
+    "instruction": "IMMA.16832.S8.S8 R44, R136.reuse.ROW, R148.COL, R44",
+    "stall": 8,
+    "waitmask": 2
+  },
+  {
+    "pc": "1320",
+    "instruction": "IMMA.16832.S8.S8 R40, R136.ROW, R150.COL, R40",
+    "stall": 7,
+    "waitmask": 0
+  },
+  {
+    "pc": "1330",
+    "instruction": "IADD3 R136, R163, 0x20, RZ",
+    "stall": 1,
+    "waitmask": 0
+  },
+  {
+    "pc": "1340",
+    "instruction": "IMMA.16832.S8.S8 R104, R144.ROW, R148.COL, R104",
+    "stall": 1,
+    "waitmask": 0
+  },
+  {
+    "pc": "1350",
+    "instruction": "LOP3.LUT R138, R162, 0x10, RZ, 0xc0, !PT",
+    "stall": 2,
+    "waitmask": 0
+  },
+  {
+    "pc": "1360",
+    "instruction": "SHF.R.U32.HI R137, RZ, 0x3, R136",
+    "stall": 2,
+    "waitmask": 0
+  },
+  {
+    "pc": "1370",
+    "instruction": "LOP3.LUT R139, R3, 0x20, R138.reuse, 0xfe, !PT",
+    "stall": 2,
+    "waitmask": 0
+  },
+  {
+    "pc": "1380",
+    "instruction": "LOP3.LUT R165, R165, 0x20, R138.reuse, 0xfe, !PT",
+    "stall": 1,
+    "waitmask": 0
+  },
+  {
+    "pc": "1390",
+    "instruction": "IMMA.16832.S8.S8 R60, R140.ROW, R148.COL, R60",
+    "stall": 1,
+    "waitmask": 0
+  },
+  {
+    "pc": "13a0",
+    "instruction": "LOP3.LUT R155, R155, 0x20, R138, 0xfe, !PT",
+    "stall": 2,
+    "waitmask": 0
+  },
+  {
+    "pc": "13b0",
+    "instruction": "LOP3.LUT R152, R136, 0x30, R137, 0x78, !PT",
+    "stall": 2,
+    "waitmask": 0
+  },
+  {
+    "pc": "13c0",
+    "instruction": "LOP3.LUT R138, R2, R139, RZ, 0x3c, !PT",
+    "stall": 2,
+    "waitmask": 0
+  },
+  {
+    "pc": "13d0",
+    "instruction": "LOP3.LUT R136, R2.reuse, R165, RZ, 0x3c, !PT",
+    "stall": 1,
+    "waitmask": 0
+  },
+  {
+    "pc": "13e0",
+    "instruction": "IMMA.16832.S8.S8 R132, R96.ROW, R148.COL, R132",
+    "stall": 1,
+    "waitmask": 0
+  },
+  {
+    "pc": "13f0",
+    "instruction": "LOP3.LUT R164, R2, R155, RZ, 0x3c, !PT",
+    "stall": 3,
+    "waitmask": 0
+  },
+  {
+    "pc": "1400",
+    "instruction": "IMAD R136, R153.reuse, 0x4000, R136",
+    "stall": 2,
+    "waitmask": 0
+  },
+  {
+    "pc": "1410",
+    "instruction": "IMAD R164, R153, 0x4000, R164",
+    "stall": 1,
+    "waitmask": 0
+  },
+  {
+    "pc": "1420",
+    "instruction": "IADD3 R148, R163, 0x420, RZ",
+    "stall": 1,
+    "waitmask": 0
+  },
+  {
+    "pc": "1430",
+    "instruction": "IMMA.16832.S8.S8 R80, R144.ROW, R150.COL, R80",
+    "stall": 3,
+    "waitmask": 0
+  },
+  {
+    "pc": "1440",
+    "instruction": "SHF.R.U32.HI R149, RZ, 0x3, R148",
+    "stall": 4,
+    "waitmask": 0
+  },
+  {
+    "pc": "1450",
+    "instruction": "IMAD R144, R153.reuse, 0x4000, R138",
+    "stall": 1,
+    "waitmask": 0
+  },
+  {
+    "pc": "1460",
+    "instruction": "IMMA.16832.S8.S8 R56, R140.ROW, R150.reuse.COL, R56",
+    "stall": 1,
+    "waitmask": 0
+  },
+  {
+    "pc": "1470",
+    "instruction": "LOP3.LUT R149, R148, 0x30, R149, 0x78, !PT",
+    "stall": 1,
+    "waitmask": 0
+  },
+  {
+    "pc": "1480",
+    "instruction": "LDSM.16.M88.4 R136, [R136]",
+    "stall": 4,
+    "waitmask": 0
+  },
+  {
+    "pc": "1490",
+    "instruction": "LDSM.16.M88.4 R144, [R144]",
+    "stall": 1,
+    "waitmask": 0
+  },
+  {
+    "pc": "14a0",
+    "instruction": "IMAD R140, R153, 0x4000, R0",
+    "stall": 1,
+    "waitmask": 0
+  },
+  {
+    "pc": "14b0",
+    "instruction": "IMMA.16832.S8.S8 R96, R96.ROW, R150.COL, R100",
+    "stall": 2,
+    "waitmask": 0
+  },
+  {
+    "pc": "14c0",
+    "instruction": "LDSM.16.M88.4 R100, [R164]",
+    "stall": 4,
+    "waitmask": 0
+  },
+  {
+    "pc": "14d0",
+    "instruction": "LDSM.16.M88.4 R140, [R140]",
+    "stall": 4,
+    "waitmask": 0
+  },
+  {
+    "pc": "14e0",
+    "instruction": "LDSM.16.M88.4 R148, [R149+UR5]",
+    "stall": 4,
+    "waitmask": 0
+  },
+  {
+    "pc": "14f0",
+    "instruction": "LDSM.16.M88.4 R152, [R152+UR5]",
+    "stall": 1,
+    "waitmask": 0
+  },
+  {
+    "pc": "1500",
+    "instruction": "IMMA.16832.S8.S8 R120, R144.ROW, R148.reuse.COL, R120",
+    "stall": 8,
+    "waitmask": 2
+  },
+  {
+    "pc": "1510",
+    "instruction": "IMMA.16832.S8.S8 R88, R140.ROW, R148.reuse.COL, R88",
+    "stall": 8,
+    "waitmask": 0
+  },
+  {
+    "pc": "1520",
+    "instruction": "IMMA.16832.S8.S8 R72, R136.ROW, R148.reuse.COL, R72",
+    "stall": 8,
+    "waitmask": 0
+  },
+  {
+    "pc": "1530",
+    "instruction": "IMMA.16832.S8.S8 R124, R100.ROW, R148.COL, R124",
+    "stall": 7,
+    "waitmask": 0
+  },
+  {
+    "pc": "1540",
+    "instruction": "IADD3 R148, R163.reuse, 0x820, RZ",
+    "stall": 1,
+    "waitmask": 0
+  },
+  {
+    "pc": "1550",
+    "instruction": "IMMA.16832.S8.S8 R32, R144.ROW, R152.COL, R32",
+    "stall": 1,
+    "waitmask": 4
+  },
+  {
+    "pc": "1560",
+    "instruction": "IADD3 R163, R163, 0xc20, RZ",
+    "stall": 2,
+    "waitmask": 0
+  },
+  {
+    "pc": "1570",
+    "instruction": "SHF.R.U32.HI R149, RZ, 0x3, R148",
+    "stall": 5,
+    "waitmask": 0
+  },
+  {
+    "pc": "1580",
+    "instruction": "IMMA.16832.S8.S8 R28, R140.ROW, R152.reuse.COL, R28",
+    "stall": 8,
+    "waitmask": 0
+  },
+  {
+    "pc": "1590",
+    "instruction": "IMMA.16832.S8.S8 R24, R136.ROW, R152.reuse.COL, R24",
+    "stall": 8,
+    "waitmask": 0
+  },
+  {
+    "pc": "15a0",
+    "instruction": "IMMA.16832.S8.S8 R20, R100.ROW, R152.COL, R20",
+    "stall": 7,
+    "waitmask": 0
+  },
+  {
+    "pc": "15b0",
+    "instruction": "LOP3.LUT R152, R148, 0x30, R149, 0x78, !PT",
+    "stall": 1,
+    "waitmask": 0
+  },
+  {
+    "pc": "15c0",
+    "instruction": "IMMA.16832.S8.S8 R16, R144.ROW, R154.COL, R16",
+    "stall": 1,
+    "waitmask": 0
+  },
+  {
+    "pc": "15d0",
+    "instruction": "SHF.R.U32.HI R148, RZ, 0x3, R163",
+    "stall": 4,
+    "waitmask": 0
+  },
+  {
+    "pc": "15e0",
+    "instruction": "LOP3.LUT R148, R163, 0x30, R148, 0x78, !PT",
+    "stall": 3,
+    "waitmask": 0
+  },
+  {
+    "pc": "15f0",
+    "instruction": "IMMA.16832.S8.S8 R12, R140.ROW, R154.reuse.COL, R12",
+    "stall": 8,
+    "waitmask": 0
+  },
+  {
+    "pc": "1600",
+    "instruction": "IMMA.16832.S8.S8 R8, R136.ROW, R154.reuse.COL, R8",
+    "stall": 8,
+    "waitmask": 0
+  },
+  {
+    "pc": "1610",
+    "instruction": "IMMA.16832.S8.S8 R4, R100.ROW, R154.COL, R4",
+    "stall": 1,
+    "waitmask": 0
+  },
+  {
+    "pc": "1620",
+    "instruction": "LDSM.16.M88.4 R152, [R152+UR5]",
+    "stall": 7,
+    "waitmask": 0
+  },
+  {
+    "pc": "1630",
+    "instruction": "IMMA.16832.S8.S8 R116, R144.ROW, R150.reuse.COL, R116",
+    "stall": 8,
+    "waitmask": 0
+  },
+  {
+    "pc": "1640",
+    "instruction": "IMMA.16832.S8.S8 R84, R140.ROW, R150.reuse.COL, R84",
+    "stall": 8,
+    "waitmask": 0
+  },
+  {
+    "pc": "1650",
+    "instruction": "IMMA.16832.S8.S8 R68, R136.ROW, R150.reuse.COL, R68",
+    "stall": 8,
+    "waitmask": 0
+  },
+  {
+    "pc": "1660",
+    "instruction": "IMMA.16832.S8.S8 R128, R100.reuse.ROW, R150.COL, R128",
+    "stall": 1,
+    "waitmask": 0
+  },
+  {
+    "pc": "1670",
+    "instruction": "LDSM.16.M88.4 R148, [R148+UR5]",
+    "stall": 7,
+    "waitmask": 0
+  },
+  {
+    "pc": "1680",
+    "instruction": "IMMA.16832.S8.S8 R36, R100.reuse.ROW, R152.COL, R36",
+    "stall": 8,
+    "waitmask": 2
+  },
+  {
+    "pc": "1690",
+    "instruction": "IMMA.16832.S8.S8 R92, R100.ROW, R154.COL, R92",
+    "stall": 8,
+    "waitmask": 0
+  },
+  {
+    "pc": "16a0",
+    "instruction": "IMMA.16832.S8.S8 R112, R144.reuse.ROW, R152.COL, R112",
+    "stall": 8,
+    "waitmask": 0
+  },
+  {
+    "pc": "16b0",
+    "instruction": "IMMA.16832.S8.S8 R108, R144.ROW, R154.COL, R108",
+    "stall": 8,
+    "waitmask": 0
+  },
+  {
+    "pc": "16c0",
+    "instruction": "IMMA.16832.S8.S8 R132, R100.ROW, R148.reuse.COL, R132",
+    "stall": 8,
+    "waitmask": 4
+  },
+  {
+    "pc": "16d0",
+    "instruction": "IMMA.16832.S8.S8 R104, R144.reuse.ROW, R148.COL, R104",
+    "stall": 8,
+    "waitmask": 0
+  },
+  {
+    "pc": "16e0",
+    "instruction": "IMMA.16832.S8.S8 R80, R144.ROW, R150.COL, R80",
+    "stall": 8,
+    "waitmask": 0
+  },
+  {
+    "pc": "16f0",
+    "instruction": "IMMA.16832.S8.S8 R76, R140.reuse.ROW, R152.COL, R76",
+    "stall": 8,
+    "waitmask": 0
+  },
+  {
+    "pc": "1700",
+    "instruction": "IMMA.16832.S8.S8 R64, R140.reuse.ROW, R154.COL, R64",
+    "stall": 8,
+    "waitmask": 0
+  },
+  {
+    "pc": "1710",
+    "instruction": "IMMA.16832.S8.S8 R60, R140.reuse.ROW, R148.COL, R60",
+    "stall": 8,
+    "waitmask": 0
+  },
+  {
+    "pc": "1720",
+    "instruction": "IMMA.16832.S8.S8 R56, R140.ROW, R150.COL, R56",
+    "stall": 8,
+    "waitmask": 0
+  },
+  {
+    "pc": "1730",
+    "instruction": "IMMA.16832.S8.S8 R52, R136.reuse.ROW, R152.COL, R52",
+    "stall": 8,
+    "waitmask": 0
+  },
+  {
+    "pc": "1740",
+    "instruction": "IMMA.16832.S8.S8 R48, R136.reuse.ROW, R154.COL, R48",
+    "stall": 8,
+    "waitmask": 0
+  },
+  {
+    "pc": "1750",
+    "instruction": "IMMA.16832.S8.S8 R44, R136.reuse.ROW, R148.COL, R44",
+    "stall": 8,
+    "waitmask": 0
+  },
+  {
+    "pc": "1760",
+    "instruction": "IMMA.16832.S8.S8 R40, R136.ROW, R150.reuse.COL, R40",
+    "stall": 8,
+    "waitmask": 0
+  },
+  {
+    "pc": "1770",
+    "instruction": "IMMA.16832.S8.S8 R100, R100.ROW, R150.COL, R96",
+    "stall": 1,
+    "waitmask": 0
+  }
+]

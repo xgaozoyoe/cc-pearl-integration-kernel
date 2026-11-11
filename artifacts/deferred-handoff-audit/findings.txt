@@ -1,0 +1,33 @@
+Frozen baseline audit; no new kernel or GPU run.
+Baseline: artifacts/fold-preamble/both_compact.cubin
+
+Current late wait:
+2a00 BAR.SYNC.DEFER_BLOCKING R161,384
+2a10 termination predicate
+2a20 toggle own-barrier ID
+2a30 conditional exit CALL (observed deferred barrier stall location)
+2a40 loop-back BRA
+bb0..db0:33 arithmetic/address/state instructions, no shared/global access
+ dc0:branch skips future copy on last K iteration
+ dd0..f30:copy address/predicate preparation, including predicated-off LDS placeholders
+ f40:first actual cp.async/LDGSTS shared write
+1090:first LDSM on copy-skipping path
+
+Opportunity: execute common33instruction prefix while waiting for peer publications.
+It neither consumes next shared stage nor overwrites old shared stage.
+Do NOT move f40 or1090 across required completion.
+Prefix is not independent of previous register lifetimes: it overwrites transcript temporaries.
+Native bb0 wait mask6 (SB1/SB2) already protects early-arrival operand consumption and final transcript STS operand reads.
+29a0/29c0/29e0 STS use read scoreboard2; bb0 must retain this guard.
+This finding does NOT establish the cause of prior CUDA700/timeouts; previous trampoline failures remain unexplained.
+
+Other invariants for any future implementation:
+- R161 must be consumed by the old iteration barrier before its ^=2 update, or save the correct old ID.
+- The termination predicate and old K state must be used for final exit before next prefix overwrites state/predicates.
+- Prologue executes prefix once; every continuing iteration executes it exactly once; no duplicate updates.
+- Deferred BAR completion is required before the first actual shared access on BOTH branch paths.
+- Keep original cp.wait and LDSM completion guards and transcript behavior.
+- Validate native control with identical relocation overhead; inspect SASS and run numerical/race checks before timing.
+
+Rejected predecessor tools/build_b_handoff_factorial.py remains disabled. No old cubin executed.
+Current audit does not claim a speedup or a validated delayed-wait implementation.

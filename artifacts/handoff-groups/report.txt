@@ -1,0 +1,41 @@
+GPU0 offline named-barrier cohort sweep; no Nsight used.
+CTA256x192 K64 stages2;384threads;168regs;69632B shared;1CTA/SM;0local.
+All IMMA/copy/shared addresses and hot-loop instructions unchanged from parent.
+Only prologue warp-cohort threshold differs from id16. Known-good production unchanged.
+Unfixed clocks; balanced rotation across6batches. Event samples120/variant,16launches/sample.
+Full offline grids60/variant,12/batch discardfirst2; setup/noise/Merkle/transcript/PoW included.
+Equivalent TH/s=2**46 / grid_seconds /1e12; excludes networking/proof delivery.
+variant event_mean_ms grid_mean_ms grid_median_ms grid_p95_ms grids/sec equivTH/s
+group8 1.024955 293.923 293.800 299.405 3.40225 239.412
+id16 1.031576 296.247 295.950 301.420 3.37557 237.534
+tail9 1.045911 297.602 297.600 302.500 3.36020 236.453
+Compared to tail9:
+group8: time -1.236%, throughput +1.251%, paired time changes% -1.482, -1.276, -1.235, -1.150, -1.196, -1.076
+id16: time -0.455%, throughput +0.457%, paired time changes% -0.437, -0.285, -0.564, -0.521, -0.608, -0.316
+Compared to id16:
+group8: time -0.784%, throughput +0.790%, paired time changes% -1.050, -0.993, -0.675, -0.632, -0.591, -0.763
+tail9: time +0.457%, throughput -0.455%, paired time changes% +0.439, +0.286, +0.567, +0.524, +0.612, +0.317
+
+Independent full-grid confirmation (60 measurements/variant/run):
+run variant mean_ms median_ms p95_ms equivalent_THs
+1 tail9 297.072 296.450 301.620 236.875
+1 id16 296.275 295.850 301.805 237.512
+1 group8 293.772 294.100 298.605 239.536
+run1: group8 throughput vs id16 +0.852%; vs tail9 +1.123%
+2 tail9 297.602 297.600 302.500 236.453
+2 id16 296.247 295.950 301.420 237.534
+2 group8 293.923 293.800 299.405 239.412
+run2: group8 throughput vs id16 +0.790%; vs tail9 +1.251%
+Combined120 full grids/variant:
+tail9: mean=297.337ms median=297.100ms p95=302.500ms grids/sec=3.36319 equivTH/s=236.664
+id16: mean=296.261ms median=295.850ms p95=301.800ms grids/sec=3.37540 equivTH/s=237.523
+group8: mean=293.848ms median=293.950ms p95=299.305ms grids/sec=3.40313 equivTH/s=239.474
+Interpretation:8+4 cohorts improve full-grid throughput over id16 in both runs.
+Every paired batch faster (12/12). Clocks unlocked, no claim of fixed-clock tensor/cycle improvement.
+Not a large breakthrough: incremental throughput gain about0.8%, about1.2% vs tail9.
+No new hot-loop instruction, register, shared memory, spill, or loss of operand reuse.
+Do not extrapolate this to pool income; no live submission/deployment.
+Other splits were slower; see report-run1.txt for all rejected candidates.
+Correctness:72 transcript edge comparisons across all6variants,36 transcript+PoW comparisons including8192x8192.
+Racecheck all6variants; memcheck/synccheck winner group8. Consult logs for results.
+No production/mining library overwritten. No Nsight run or script requested.

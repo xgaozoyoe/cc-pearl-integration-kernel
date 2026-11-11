@@ -1,0 +1,13 @@
+Capture validation: REJECT for PeakMiner analysis.
+30.102 seconds between first and last samples;30,103 metric samples.
+Original script selected Nsight metric device1, which maps to physical NVIDIA
+GPU3, PCI0000:43:00.0, UUID0d240d77-bc84-3f07-56f4-83f1538710e8.
+PeakMiner runs physical GPU1,PCI0000:22:00.0,UUIDe2bcf3ea-ca6c-49ce-c8ff-220481820348,
+which maps to Nsight device3 in TARGET_INFO_GPU. These enumerations are different.
+Observed zero SM/Tensor activity is therefore NOT evidence about PeakMiner.
+
+Script corrected to resolve runtime Nsight enumeration by PCI address, refusing
+ambiguous or unsupported matches. Added --kill=none --wait=primary so the sleep
+process exits normally after collection rather than causing set-e to skip export.
+Manually exported original trace to workspace for audit. No miner was stopped.
+Need one corrected root capture; counter access remains administrator-only.

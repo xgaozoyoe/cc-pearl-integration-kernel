@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "native": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "104c0c1b265260dea5c9ab0bb174ebbbe7ee9cceb0cf0acebf2a9d1dfa4d50aa",
+      "smem": 69632,
+      "correct": true
+    },
+    "source_control": {
+      "entry": "_ZN22operand_source_control6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "766340ed5af34c57eed63554c0a5a87a0dc397299948870a932b408e74d18646",
+      "smem": 69632,
+      "correct": true
+    },
+    "remap_named": {
+      "entry": "_ZN19operand_remap_named6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "afdfbf56ec427c79926ddae40d15d7e8ce11e8670373f89ef47b130ac1306d22",
+      "smem": 69632,
+      "correct": true
+    },
+    "cohort_ab": {
+      "entry": "_ZN17operand_cohort_ab6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "fd4d74b21da3bcf42139f7bf6f42d91f007e50d76d0ae7a1161b60ca1d34338b",
+      "smem": 69632,
+      "correct": true
+    },
+    "cohort_ba": {
+      "entry": "_ZN17operand_cohort_ba6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "61641ac3a17bec19ab5c892e4a2e3e2f7de045387bb3583061c092fc1aa0a794",
+      "smem": 69632,
+      "correct": true
+    }
+  }
+}

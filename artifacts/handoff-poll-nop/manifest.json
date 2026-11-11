@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "baseline": {
+      "entry": "_ZN24handoff_backoff_baseline6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "smem": 69632,
+      "sha256": "3cea4ea7d9211c0b27b98cb3f23e71e1e453381408c3831551b330e256c18ed8"
+    },
+    "spin": {
+      "entry": "_ZN20handoff_backoff_spin6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "smem": 69640,
+      "sha256": "3cea4ea7d9211c0b27b98cb3f23e71e1e453381408c3831551b330e256c18ed8"
+    },
+    "poll_nop": {
+      "entry": "_ZN23handoff_backoff_sleep326kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "smem": 69640,
+      "sha256": "f013e5c68122c14c8e00b35b627c4cc7b6ca14ff52ddfc3f291bcc854afb1073"
+    }
+  },
+  "caveat": "Correct arithmetic experiment. Only a non-synchronizing sleep is replaced by NOP; shorter polling schedule preserved."
+}

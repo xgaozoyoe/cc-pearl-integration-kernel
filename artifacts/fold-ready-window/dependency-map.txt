@@ -1,0 +1,24 @@
+Static provenance only: last MMA issue PC is NOT its result-ready cycle.
+Block labels are REDUX traversal order,not source row/column indices.
+block last_MMA first_XOR REDUX remaining_MMA accumulator_registers
+ 0 0x1600 0x1870 0x1940 23 [16, 17, 18, 19, 32, 33, 34, 35]
+ 1 0x1670 0x1930 0x19c0 19 [112, 113, 114, 115, 116, 117, 118, 119]
+ 2 0x1750 0x1950 0x1a30  8 [104, 105, 106, 107, 108, 109, 110, 111]
+ 3 0x1770 0x1990 0x1a80  6 [76, 77, 78, 79, 80, 81, 82, 83]
+ 4 0x1630 0x19f0 0x1ae0 22 [12, 13, 14, 15, 28, 29, 30, 31]
+ 5 0x1680 0x1a60 0x1b40 18 [88, 89, 90, 91, 92, 93, 94, 95]
+ 6 0x1780 0x1ad0 0x1b90  5 [72, 73, 74, 75, 84, 85, 86, 87]
+ 7 0x17a0 0x1b50 0x1bf0  3 [52, 53, 54, 55, 56, 57, 58, 59]
+ 8 0x1640 0x1bc0 0x1c40 21 [8, 9, 10, 11, 24, 25, 26, 27]
+ 9 0x1690 0x1c10 0x1ca0 17 [64, 65, 66, 67, 68, 69, 70, 71]
+10 0x17b0 0x1c60 0x1d00  2 [48, 49, 50, 51, 60, 61, 62, 63]
+11 0x17d0 0x1cd0 0x1d80  0 [40, 41, 42, 43, 44, 45, 46, 47]
+12 0x1650 0x1d40 0x1e30 20 [4, 5, 6, 7, 20, 21, 22, 23]
+13 0x16a0 0x1b20 0x1e80 16 [120, 121, 122, 123, 124, 125, 126, 127]
+14 0x16f0 0x1e20 0x1ed0 14 [36, 37, 38, 39, 128, 129, 130, 131]
+15 0x1730 0x1e90 0x1f50 10 [100, 101, 102, 103, 132, 133, 134, 135]
+All local XOR/REDUX starts after the final MMA in this frozen baseline.
+For block0:producer1600;3localXOR1870,1890,18a0;finalXOR18c0;REDUX1940 (other transcript path2320).
+Current experiment moves only the3localXOR across copy wait16c0;remaining REDUX and stores unchanged.
+This is a narrow ready-work diagnostic,not a full transcript-warp or16-block interleave implementation.
+Previously build_rank128_fold_local*.py and fold_interleave.py explored related source-level changes on older baselines;this frozen-SASS matched wait-boundary comparison is narrower.

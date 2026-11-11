@@ -1,0 +1,69 @@
+Stage rotation and smaller tiles, GPU0, 2026-10-09
+
+Production libraries unchanged; isolated experiments, no live submissions.
+1. Read-only shared stage rotation (8192-region CUDA event time)
+Layer        mean ms     median ms   p95 ms      registers
+fixed        0.885846    0.885619    0.887440    168
+pingpong     0.891889    0.891649    0.893556    167
+global       0.984189    0.981888    0.992132    168
+full         1.092097    1.100256    1.109834    168
+
+Pingpong vs fixed time change: 0.682%.
+Real global stream minus pingpong: 0.092300ms.
+All variants reserve69632B shared,384threads,1CTA/SM,12warps,zero spill.
+Fixed repeats first64K input; pingpong loads first128K once and alternates
+two read-only stages for64iterations. Both retain a barrier each iteration.
+Global uses all4096K and real cp.async streaming. Full includes transcript.
+Synthetic inputs, initialization volume, code generation and automatic
+clocks differ: deltas are diagnostic, not isolated additive causal costs.
+200samples/layer in8rotated blocks;100warmups/block;16launches/sample.
+16 CPU-sink/accepted-transcript comparisons passed,2seeds and2shapes.
+
+2. Full-transcript smaller tile test on current A-stream
+CTA         warp tile  regs  sharedB  CTAs/SM warps/SM  kernel mean ms
+256x192     64x64     168   69632    1       12        1.079811
+128x128     32x64     119   36864    2       16        1.174567
+64x128     32x32     74    26624    3       24        1.496497
+
+End-to-end offline grid (M=N131072,K4096,R128,region8192):
+Variant     mean ms    median ms  p95 ms     grids/sec  equiv TH/s
+baseline    307.820    307.450    312.700    3.24865    228.604
+tile128     330.422    329.400    336.370    3.02644    212.966
+tile64      414.228    413.650    419.135    2.41413    169.879
+tile128 throughput change: -6.840%.
+tile64 throughput change: -25.688%.
+
+Kernel:240samples/variant,6rotated blocks,100warmups/block,16launches/sample.
+Grid:60measurements/variant,6rotated blocks,2warmup+10measured grids/block.
+Grid uses same seed sequence and actual setup/noise/Merkle/V3/GEMM/transcript/
+PoW work. Zero target prevents proof submissions. TH/s is offline equivalent.
+24 full transcript AND digest comparisons PASS against accepted R128,
+2seeds x4shapes x3variants,including8192 and partial B boundary shapes.
+Event harness also checks full8192transcripts. All candidates zero spill.
+Current baseline SASS exactly matches prior measured baseline.
+
+Reuse tradeoff (computed request volume, NOT measured L2/DRAM counters):
+Global->shared operand bytes/useful warp MMA:37.625 ->64 ->96.
+LDSM bytes/executed warp MMA:128 ->192 ->256.
+Baseline padding executes67633152MMA/region; smaller tiles67108864.
+Smaller candidates thus have slightly less padding work yet remain slower.
+
+Clocks/power settings unchanged; clocks automatic, not locked. Per-block
+end telemetry recorded. Smaller kernels have different observed SM clocks;
+practical timings include this response. These tests do not isolate a
+fixed-clock architectural effect or prove a particular hardware stall cause.
+No new Tensor-utilization,eligible-warp or L2 counters collected.
+
+Conclusion: these two smaller mappings achieve16/24resident warps but lose
+end-to-end throughput. Residency alone is not a sufficient optimization.
+This does not rule out every smaller tile. Retain the256x192baseline.
+Stage pointer rotation alone has little cost in the synthetic control;
+future work should preserve reuse and examine real copy/wait/compute
+handoff, rather than shrink tiles or rewrite swizzle addresses blindly.
+
+Sources/diffs:tools/build_rank128_stage_rotation.py,
+ tools/build_rank128_small_current.py,artifacts/rank128-stage-rotation-*.diff,
+ artifacts/rank128-small-current-*.diff.
+Reproduce validation/bench with corresponding tests/bench_rank128_*.py.
+Analyze:tools/analyze_rank128_stage_small.py; this report:
+ tools/report_rank128_stage_small.py. No commit or deployment.

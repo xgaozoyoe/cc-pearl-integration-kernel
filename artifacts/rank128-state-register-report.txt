@@ -1,0 +1,146 @@
+Partial register transcript state experiment, GPU0,2026-10-08.
+
+Historical audit: tests/fold_ops.cuh Mode4/5/11 distributes one boundary result
+per lane using lane==rb; it is the older CuTe path. The current hand-written
+Ada rank128 generator tools/build_ada_rank.py explicitly implements rb%16,
+rotate13 and shared-state updates. This establishes different code paths,not a
+historical measured reason why the old register experiment was not retained.
+Do not treat old R256/CuTe lane-state results as current R128 A-stream results.
+
+Implementation: keep last1 or last2 of16 tiles/warp in one lane register.
+For two tiles:lane0..15 owns all16words of tile14;lane16..31 owns tile15.
+Owner=(tile-selected_start)*16+rb%16. First boundary pass assigns;second rotates
+and XORs. Publish state into existing shared transcript once after K loop,before
+existing CTA barrier and coalesced output. One-tile mode uses only lanes0..15.
+All GEMM accumulator values stay in registers. No new shared layout or CTA change.
+
+Second build replaces owner-conditional assignment with pure nonvolatile PTX
+selp,computes rotl13(state)^x on every update (first state is zero),and selects
+old/new state by owner. This is bit-equivalent but does not remove the compiled
+mixed-path reconvergence. No volatile used for pure register operations.
+
+Both builds:baseline168regs,tail1=167,tail2=168;384threads,69632Bshared,1CTA/SM,
+zero stack/spills. All have64IMMA/16LDSM static main-loop sites. Fold LDS sites
+16->15/14 confirms selected old shared loads are eliminated. Static BSSY sites
+1->4/3 in both builds; total instructions880->896/888. Count includes final
+publication where applicable; these are static counts,not dynamic cycle costs.
+
+Each build passed24 complete transcript/digest comparisons against acceptedR128:
+2seeds x4shapes x3variants,including8192x8192 and partialN. Select build racecheck
+small shapes recorded separately. No live mining or production update.
+Bench:6rotated batches,2warmups+10measured grids each,60samples/variant.
+M=N131072,K4096,R128,region8192,actual setup/noise/Merkle/V3/fold/PoW,zero target.
+No clock/power setting changes;not locked. Offline TH/s is not pool throughput.
+
+{
+  "state-register": [
+    {
+      "variant": 0,
+      "samples": 60,
+      "mean_ms": 308.67333333333335,
+      "median_ms": 308.25,
+      "p95_ms": 312.71999999999997,
+      "ths": 227.9715692241982,
+      "resources": [
+        168,
+        384,
+        69632,
+        1,
+        0
+      ],
+      "throughput_change_pct": 0.0
+    },
+    {
+      "variant": 1,
+      "samples": 60,
+      "mean_ms": 321.48833333333334,
+      "median_ms": 320.85,
+      "p95_ms": 326.505,
+      "ths": 218.88428562259077,
+      "resources": [
+        167,
+        384,
+        69632,
+        1,
+        0
+      ],
+      "throughput_change_pct": -3.986147760675607
+    },
+    {
+      "variant": 2,
+      "samples": 60,
+      "mean_ms": 323.39500000000004,
+      "median_ms": 322.95000000000005,
+      "p95_ms": 327.715,
+      "ths": 217.5937914243077,
+      "resources": [
+        168,
+        384,
+        69632,
+        1,
+        0
+      ],
+      "throughput_change_pct": -4.552224575725261
+    }
+  ],
+  "state-register-select": [
+    {
+      "variant": 0,
+      "samples": 60,
+      "mean_ms": 308.7666666666667,
+      "median_ms": 308.5,
+      "p95_ms": 313.135,
+      "ths": 227.90265846161282,
+      "resources": [
+        168,
+        384,
+        69632,
+        1,
+        0
+      ],
+      "throughput_change_pct": 0.0
+    },
+    {
+      "variant": 1,
+      "samples": 60,
+      "mean_ms": 321.68000000000006,
+      "median_ms": 320.8,
+      "p95_ms": 326.02,
+      "ths": 218.75386774951502,
+      "resources": [
+        167,
+        384,
+        69632,
+        1,
+        0
+      ],
+      "throughput_change_pct": -4.014341374450803
+    },
+    {
+      "variant": 2,
+      "samples": 60,
+      "mean_ms": 324.5833333333333,
+      "median_ms": 323.6,
+      "p95_ms": 328.22999999999996,
+      "ths": 216.79715792861825,
+      "resources": [
+        168,
+        384,
+        69632,
+        1,
+        0
+      ],
+      "throughput_change_pct": -4.8729139922978
+    }
+  ]
+}
+
+
+Conclusion: these four partial-register implementations do not improve performance.
+Throughput loss~4-5% despite zero spilling and actual elimination of shared state
+loads. Mixed ownership changes control flow and instruction scheduling; SASS
+confirms extra reconvergence, but no new counter capture isolates its exact cost.
+No claim that register storage intrinsically loses,or that an entirely different
+full-register mapping cannot win. Do not expand this particular approach based
+on these results. Existing A-stream and live-mining libraries retained unchanged.
+Generated source diffs:rank128-state-register[-select]-tail{1,2}.diff.

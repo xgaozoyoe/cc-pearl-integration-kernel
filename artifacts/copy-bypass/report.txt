@@ -1,0 +1,36 @@
+Copy / wait / CTA-stage-barrier diagnostic (GPU0 only)
+
+Deliberately incorrect arithmetic; no production kernel or library modified.
+Two independent runs; 200 samples/variant/run, each sample averages 16 kernel launches.
+8192 x 8192 x 4096 region; 256x192 CTA; 384 threads,168 registers,69632 dynamic shared bytes,1 CTA/SM.
+
+variant       run1_mean  run2_mean  median_ms   p95_ms    mean_ms
+baseline      1.074562   1.075504   1.068800   1.103325   1.075033
+no_ab         0.983065   0.983423   0.983040   0.984898   0.983244
+no_copy       0.938961   0.939119   0.939756   0.941934   0.939040
+no_copy_bar   0.842262   0.842846   0.841984   0.845830   0.842554
+
+Copy+commit+wait removal, stage barrier retained: time decreases 4.496%.
+Additional removal of stage barrier: time decreases 10.275%.
+Combined vs no_ab: time decreases 14.309%; work-rate increases 16.698%.
+
+Baseline: original correct kernel.
+no_ab: IMMA A/B=RZ, all16 LDSM removed (previous diagnostic).
+no_copy: additionally remove all10 static LDGSTS (5 prologue,5 mainloop),2 LDGDEPBAR,1 DEPBAR; preserve stage BAR.
+no_copy_bar: additionally remove BAR at0xc60 (64 dynamic times/CTA).
+Final BAR at0x29d0 preserved byte-exact in all variants (transcript publication before output).
+All copy-related source-read scoreboard waits removed except loop header0xb60, shared with transcript predecessor.
+Address calculations, fixed scheduling stalls, instruction slots (NOP replacements), branches and IMMA count remain.
+Local transcript states are warp-owned; final output reads cross-warp states and therefore still needs final BAR.
+
+48 expected-output checks PASS under memcheck; memcheck0 errors. Large8192-region expected outputs checked in both event runs.
+Racecheck: 0 hazards, 0 errors, 0 warnings. Zero transcripts in diagnostic variants are not valid Pearl proofs.
+Production and opt-in candidate SHA256 checks PASS. GPU2 miner left running; only its verified idle supervisor GPU0 context allowed.
+
+Interpretation: measurable stage-barrier effect in the copy-free/LDSM-free diagnostic, not a production speedup or pure barrier latency.
+Removing a barrier can alter inter-warp phase alignment and scheduling, not just waiting time.
+DVFS not locked; cycle-normalized Nsight results are required to separate clock changes from issue efficiency.
+Does not authorize removing barriers from real mining: consumers there need operand readiness and safe buffer reuse.
+Profile command: sudo bash tools/profile_copy_bypass.sh 2270585
+Compare IMMA/SM elapsed cycle, tensor active percentage, barrier samples, eligible warps and unchanged IMMA count.
+Check LDSM=0 in diagnostics and removal of copy-related memory traffic.

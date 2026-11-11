@@ -5,6 +5,7 @@ miner and the standalone (torch-free) miner.
 from __future__ import annotations
 
 import json
+from collections import deque
 import select
 import socket
 import threading
@@ -40,6 +41,8 @@ class LuckyPool:
         # Serializes socket access between the mining loop (check_newer_job) and the
         # background proof-submitter thread.
         self.io_lock = threading.Lock()
+        self.pending_jobs = deque(maxlen=1)
+        self.submit_id = 99
 
     def connect(self):
         self.s = socket.create_connection((self.host, self.port), timeout=30)
@@ -57,12 +60,16 @@ class LuckyPool:
             except socket.timeout:
                 return None
             if not d:
-                return None
+                raise ConnectionError("pool closed the connection")
             self.buf += d
         line, self.buf = self.buf.split(b"\n", 1)
         return json.loads(line) if line.strip() else None
 
     def next_job(self, timeout=70):
+        try:
+            return self.pending_jobs.popleft()
+        except IndexError:
+            pass
         end = time.time() + timeout
         while time.time() < end:
             msg = self._readline(timeout=end - time.time())
@@ -77,23 +84,27 @@ class LuckyPool:
         return None
 
     def check_newer_job(self, current_job_id):
+        # The submitter can publish a notify while it waits for the matching
+        # response. Atomic deque handoff lets mining switch jobs immediately.
+        try:
+            newer = self.pending_jobs.popleft()
+        except IndexError:
+            newer = None
+        if newer is not None and newer[2] == current_job_id:
+            newer = None
         # Non-blocking on the socket lock: if the submitter thread is mid-submit,
         # just skip this poll (the GPU keeps running; we catch the new job next time).
         if not self.io_lock.acquire(blocking=False):
-            return None
+            return newer
         try:
             while True:
                 r, _, _ = select.select([self.s], [], [], 0)
                 if not r:
                     break
-                try:
-                    d = self.s.recv(65536)
-                except OSError:
-                    break
+                d = self.s.recv(65536)
                 if not d:
-                    break
+                    raise ConnectionError("pool closed the connection")
                 self.buf += d
-            newer = None
             while b"\n" in self.buf:
                 line, self.buf = self.buf.split(b"\n", 1)
                 if not line.strip():
@@ -114,18 +125,24 @@ class LuckyPool:
 
     def submit(self, job_id, plain_proof_b64):
         with self.io_lock:
+            self.submit_id += 1
+            mid = self.submit_id
             self._send("mining.submit",
                        {"wallet": self.wallet, "worker": self.worker,
-                        "job_id": job_id, "plain_proof": plain_proof_b64}, mid=99)
-            for _ in range(40):
-                msg = self._readline(timeout=10)
+                        "job_id": job_id, "plain_proof": plain_proof_b64}, mid=mid)
+            deadline = time.monotonic() + 10
+            while time.monotonic() < deadline:
+                msg = self._readline(timeout=max(0.001, deadline - time.monotonic()))
                 if msg is None:
                     return None
-                if msg.get("id") == 99:
+                if msg.get("id") == mid:
                     return msg
                 if msg.get("method") == "mining.notify":
-                    self.buf = (json.dumps(msg) + "\n").encode() + self.buf
-                    return {"pending_job": True}
+                    p = msg["params"]
+                    self.pending_jobs.append((bytes.fromhex(p["header"]), int(p["target"], 16), p["job_id"]))
+                elif msg.get("method") == "mining.set_difficulty":
+                    self.difficulty = msg["params"]
+            return None
 
 
 class DevFeeScheduler:

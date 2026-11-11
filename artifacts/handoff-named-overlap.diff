@@ -1,0 +1,42 @@
+--- validated-transcript_handoff_baseline
++++ overlap
+@@ -132,12 +132,15 @@
+     for(int p=0;p<Stages-1;++p)
+         stage_copy<TileK,Planar,UnrollCopy,FixedCopy,Layout>(a,b,sa+p*BM*TileK,sb+p*BN*TileK,cm,cn,p,m,n,k);
+     for(int kt=0;kt<(k+TileK-1)/TileK;++kt) {
+-        if constexpr(Stages==2) asm volatile("cp.async.wait_group 0;");
+-        else {
+-            if(kt+Stages-1<(k+TileK-1)/TileK) asm volatile("cp.async.wait_group 1;");
+-            else asm volatile("cp.async.wait_group 0;");
+-        }
+-        __syncthreads();
++        if(kt==0) {
++            asm volatile("cp.async.wait_group 0;" ::: "memory");
++            __syncthreads();
++        }
++        // Two groups of six warps, no dedicated producers. IDs1/2 for
++        // even iterations,3/4 for odd; barrier0 remains initialization/output.
++        const unsigned group=threadIdx.x/192;
++        const unsigned own_bar=1+2*(kt&1)+group;
++        const unsigned peer_bar=1+2*(kt&1)+(group^1);
+         int current=kt%Stages,next=(kt+Stages-1)%Stages;
+         if(kt+Stages-1<(k+TileK-1)/TileK)
+             stage_copy<TileK,Planar,UnrollCopy,FixedCopy,Layout>(a,b,sa+next*BM*TileK,sb+next*BN*TileK,cm,cn,kt+Stages-1,m,n,k);
+@@ -210,6 +213,9 @@
+             }
+         }
+         }
++        // Publish this group's completed future copies and old-stage reads.
++        asm volatile("cp.async.wait_group 0;" ::: "memory");
++        asm volatile("bar.arrive %0, 384;" :: "r"(peer_bar) : "memory");
+         if constexpr(TileK==64) {
+         if((kt+1)%2==0) {
+             int rb=(kt+1)/2-1;
+@@ -233,6 +239,7 @@
+             }
+         }
+         }
++        asm volatile("bar.sync %0, 384;" :: "r"(own_bar) : "memory");
+     }
+     __syncthreads();
+     for(int i=threadIdx.x;i<WORDS;i+=Threads) {

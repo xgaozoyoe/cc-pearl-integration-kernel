@@ -1,0 +1,18 @@
+GPU0 current8+4 fold preamble simplification; no Nsight.
+Kernel8192x8192 region:160event samples/variant,16launches/sample,8rotating blocks.
+Full offline grids:80samples/variant,8rotating blocks,12grids/block discardfirst2.
+Clocks unlocked. Full grids include setup/noise/Merkle/transcript/PoW; no network/proof delivery.
+variant kernel_mean_ms grid_mean_ms grid_median_ms grid_p95_ms grids/sec equivalent_THs
+baseline 1.027489 293.192 293.200 297.615 3.41073 240.009
+mod_nop 1.021470 292.341 292.400 297.030 3.42066 240.708
+mod_compact 1.023066 292.655 292.750 297.530 3.41699 240.449
+both_compact 1.020100 291.855 291.850 296.810 3.42636 241.109
+mod_nop: time -0.290%; throughput +0.291%; paired time% -0.314, -0.136, -0.348, -0.389, -0.348, -0.321, -0.061, -0.405
+mod_compact: time -0.183%; throughput +0.184%; paired time% -0.222, -0.184, -0.109, -0.246, -0.215, -0.211, -0.099, -0.181
+both_compact: time -0.456%; throughput +0.458%; paired time% -0.536, -0.474, -0.402, -0.403, -0.491, -0.522, -0.321, -0.501
+Same168registers,69632Bshared,384threads,1CTA/SM,0spill.
+All main-loop MMA,LDSM,copy and earlyhandoff instruction words unchanged.
+mod_nop removes3uniformALU operations but retains3NOP issue slots.
+mod_compact/both_compact bypass vacated slots; extra branch executed on second-half folds.
+Address bases and per-tile immediate offsets were already shared; no large repeated-address opportunity found.
+No new source recompilation, no production library changes.

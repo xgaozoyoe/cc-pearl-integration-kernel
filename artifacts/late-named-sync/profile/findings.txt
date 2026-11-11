@@ -1,0 +1,17 @@
+Capture:/tmp/pearl-late-named-sync.nuLtqA
+Hashes verified.3profiled launches/variant;67,633,152dynamicIMMA each.
+native {"imma_per_SM_elapsed_cycle": 0.20877620383321807, "imma_per_SMSP_elapsed_cycle": 0.05219405095830452, "tensor_Ginst_sec": 59.4233047233518, "kernel_ms": 1.1381653333333333} vs_native_IMMA_per_cycle_pct=+0.000000 vs_control_IMMA_per_cycle_pct=-0.248588
+barrier_hotspots=[["0x2a30", 130133.0, "@!P2  CALL.REL.NOINC 0x7e867525d750"], ["0x2a70", 1228.0, "@P0   EXIT"], ["0xc60", 628.0, "UMOV UR5, 0x3000"]]
+metrics={"tensor_pct": 85.80333333333333, "l2_bytes": 2533977610.6666665, "barrier_pct": 14.266666666666666, "math_throttle_pct": 40.92666666666667}
+matched_control {"imma_per_SM_elapsed_cycle": 0.2092964902364817, "imma_per_SMSP_elapsed_cycle": 0.052324122559120424, "tensor_Ginst_sec": 59.28631049369568, "kernel_ms": 1.1408319999999998} vs_native_IMMA_per_cycle_pct=+0.249208 vs_control_IMMA_per_cycle_pct=+0.000000
+barrier_hotspots=[["0x3890", 120249.0, "UMOV UR5, 0x3000"], ["0x2a70", 1249.0, "@P0   EXIT"], ["0x2a30", 1006.0, "@!P2  CALL.REL.NOINC 0x762e3126d950"], ["0xc60", 614.0, "UMOV UR5, 0x3000"], ["0x2a10", 13.0, "PLOP3.LUT P2, PT, PT, PT, UP1, 0x80, 0x0"]]
+metrics={"tensor_pct": 86.05333333333333, "l2_bytes": 2533951669.3333335, "barrier_pct": 13.403333333333334, "math_throttle_pct": 40.75}
+late_sync {"imma_per_SM_elapsed_cycle": 0.20970527510616557, "imma_per_SMSP_elapsed_cycle": 0.05242631877654139, "tensor_Ginst_sec": 59.64039094293527, "kernel_ms": 1.1340586666666668} vs_native_IMMA_per_cycle_pct=+0.445008 vs_control_IMMA_per_cycle_pct=+0.195314
+barrier_hotspots=[["0x39f0", 127426.0, "BRA 0x73819727c2c0"], ["0x2a70", 1271.0, "@P0   EXIT"], ["0x2a30", 883.0, "@!P2  CALL.REL.NOINC 0x73819727df50"], ["0xc60", 628.0, "UMOV UR5, 0x3000"], ["0x2a10", 10.0, "PLOP3.LUT P2, PT, PT, PT, UP1, 0x80, 0x0"]]
+metrics={"tensor_pct": 86.14666666666666, "l2_bytes": 2533937898.6666665, "barrier_pct": 14.163333333333334, "math_throttle_pct": 40.03}
+Observed blocking moved:control3890 UMOV (prefix index11) ->candidate39f0 BRA (after all33prefix instructions and sync packet).
+Thus matched control already gets11prefix instructions before the hot wait; candidate places all33before sync, exposing22additional prefix instructions before blocking.
+Cycle throughput gain vs control~0.195%,vs native~0.445%. Only3launches and opposite unlocked candidate/control ranking: not a robust production-speedup claim.
+Barrier stall did NOT decrease vs matched control:13.4033%->14.1633%; main wait samples120249->127426.
+The data support successful wait relocation but not meaningful wait elimination. Later own-group arrivals may shift delay onto peers; that causal explanation is not proven by aggregate samples.
+All arithmetic/synchronization checks remain passed. No production promotion. No full-grid or live-pool speedup established.

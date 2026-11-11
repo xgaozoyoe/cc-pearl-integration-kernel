@@ -1,0 +1,60 @@
+{
+  "resources": {
+    "0": [
+      168,
+      384,
+      69632,
+      1,
+      0
+    ],
+    "1": [
+      168,
+      384,
+      98304,
+      1,
+      0
+    ]
+  },
+  "measurements": [
+    {
+      "variant": 0,
+      "repeat": 0,
+      "samples": 40,
+      "median_ms": 331.1,
+      "mean_ms": 330.95,
+      "p95_ms": 333.02,
+      "grids_sec": 3.0216044719746185,
+      "consensus_equivalent_ths": 212.62651209446747
+    },
+    {
+      "variant": 1,
+      "repeat": 0,
+      "samples": 40,
+      "median_ms": 334.75,
+      "mean_ms": 334.785,
+      "p95_ms": 336.515,
+      "grids_sec": 2.986991651358334,
+      "consensus_equivalent_ths": 210.19085137525278
+    },
+    {
+      "variant": 1,
+      "repeat": 1,
+      "samples": 40,
+      "median_ms": 335.0,
+      "mean_ms": 335.035,
+      "p95_ms": 336.42499999999995,
+      "grids_sec": 2.9847627859775843,
+      "consensus_equivalent_ths": 210.03400891746833
+    },
+    {
+      "variant": 0,
+      "repeat": 1,
+      "samples": 40,
+      "median_ms": 331.6,
+      "mean_ms": 331.6325,
+      "p95_ms": 332.815,
+      "grids_sec": 3.015386007101234,
+      "consensus_equivalent_ths": 212.18892653061448
+    }
+  ]
+}

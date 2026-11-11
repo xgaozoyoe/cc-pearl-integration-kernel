@@ -1,0 +1,33 @@
+Operand-cohort experiment. GPU0 only; offline CUDA events,8192x8192,K4096,R128.
+200 samples/variant,16 launches/sample,10 rotating blocks. Clocks unlocked.
+Each region uses the same inputs,CTA256x192,warp64x64,K64,two stages,64 static IMMA and16 LDSM.
+Copy ownership changed without duplicating vectors:28672 logical bytes/K64/CTA. L2 traffic not measured.
+Production unchanged. No new Nsight run or end-to-end grid timing in this experiment.
+
+variant mean_ms median_ms p95_ms delta_vs_native regs local_bytes active_CTAs
+native 1.023639 1.013625 1.048768 +0.000% 168 0 1
+source_control 1.071929 1.068288 1.107011 +4.717% 168 0 1
+remap_named 1.140784 1.136611 1.167296 +11.444% 168 0 1
+cohort_ab 1.181365 1.177472 1.206851 +15.408% 167 0 1
+cohort_ba 1.181475 1.175168 1.209135 +15.419% 167 0 1
+
+remap_named/source_control time change: +6.424%
+cohort_ab/remap_named time change: +3.557%
+All have69632 dynamic shared bytes,384threads,1CTA/SM; candidates167regs,others168; no spills.
+Source_control is recompiled ancestor,NOT instruction-identical to frozen native. Source_control publishes after all64IMMA; frozen native has16IMMA after publication.
+Therefore deltas to native include lost binary scheduling improvements; they do not isolate barrier cost.
+
+Correctness: initial60 small/edge transcript cases PASS; all5 variants8192x8192 preflight PASS.
+Racecheck:24 small/edge cases for cohort_ab/cohort_ba,0hazards,0errors,0warnings.
+Full transcript+PoW digest:30 cases (5variants,3shapes,2seeds),PASS.
+
+Synchronization proof and limitation:
+A-group=all3warps with same wm; B-group=all4warps with same wn.
+Only A-group members write/read its A rows; only B-group members write/read its B rows.
+Each warp cp.wait0 + all old-stage LDSM finishes before its first barrier.
+A barrier96threads and B barrier128threads publish copies and protect old-stage reuse.
+IDs1..4(A),5..7(B),0(prologue/epilogue); fixed memberships; all group members arrive once/iteration.
+However A-then-B creates all-CTA transitive dependence: each B member arrived through a different A group.
+B-then-A similarly spans all12warps. With no useful work between these two waits, global completion remains necessary.
+This is not a successful elimination of global waiting. Do not promote or tune only group order.
+Further work would need independently placed ready/reuse handoffs and useful A or B work between them; correctness and overhead are unproven.

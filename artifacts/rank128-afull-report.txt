@@ -1,0 +1,34 @@
+R128 single-launch full-A boundary specialization — 2026-10-08
+
+Isolated GPU0 experiment. Production/accepted libraries and GPU2 live miner unchanged.
+For M divisible by256, A rows in every CTA are valid: remove only A row predicates
+and source-row clamping. For partial M use frozen baseline. B bounds untouched.
+Same single kernel launch, CTA ordering, launch geometry and padded/useful work.
+Same CTA256x192,12warps,warp64x64,K64,2stages,Lead2,Layout6,R128,K4096.
+V3 seeds,rank-penalized target,proof algorithms unchanged.
+
+Both168regs/thread,69632Bshared/CTA,1CTA/SM,12warps/SM,zero local/spill memory.
+SASS920vs928static instructions:2fewerISETP,2fewerSEL;64IMMA,16LDSM,4LDGSTS
+sites unchanged. Remaining difference reflects generated code/scheduling.
+Accumulator stays in registers. Unlike split-interior test no tail launch added.
+
+All16 transcript/digest comparisons PASS:two variants,two seeds,four shapes
+32x48,256x384,256x400,8192x8192. Small-case memcheck0errors.
+No live mining or additional proof-construction test with this candidate.
+
+Full offline grid M=N131072,K4096,region8192,matched setup seeds.
+IncludesV3/setup/noise/GEMM/transcript/PoW, target0 excludesproofs/network.
+Each4warmup+40measured,twice with reversed order;80samples pervariant.
+Clocks/power settings unchanged but clocks not locked/continuously logged;
+0.1ms wall-log resolution. These results do not isolate kernel-only timing.
+
+{"variant": 0, "samples": 80, "mean_ms": 330.14125, "median_ms": 330.5, "p95_ms": 332.3, "grids_sec": 3.0290065237228005, "ths": 213.1473851803251}
+{"variant": 1, "samples": 80, "mean_ms": 328.76375, "median_ms": 328.7, "p95_ms": 330.515, "grids_sec": 3.0416978757542457, "ths": 214.04045968469455}
+Run0:baseline329.8250ms,candidate328.6900ms.
+Run1:baseline330.4575ms,candidate328.8375ms.
+
+Aggregate wall time changes -0.417%; throughput +0.419%.
+Candidate wins in both orders, but sub1% magnitude is small and unlocked clocks
+limit certainty. Retain isolated candidate for later controlled confirmation;
+do not claim a robust production improvement or infer a route to300TH/s.
+No production promotion, no commits. Existing accepted-share version remains baseline.

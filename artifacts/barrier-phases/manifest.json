@@ -1,0 +1,29 @@
+{
+  "warning": "Racy offline diagnostic, never mine. Remove both arrival and sync for a selected K parity; remaining barrier phases retain all384participants.",
+  "variants": {
+    "native": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "104c0c1b265260dea5c9ab0bb174ebbbe7ee9cceb0cf0acebf2a9d1dfa4d50aa",
+      "smem": 69632,
+      "correct": true
+    },
+    "predicate_control": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "ccceeb9b7796fe006e2f83eb0aeec4b372f9d216db7e85ccd5677f4c0c3f8d5d",
+      "smem": 69632,
+      "correct": true
+    },
+    "no_plain_handoff": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "504456b90b9445815a2798840b6684fdb160b5cc89cc83c6e76f93115120516c",
+      "smem": 69632,
+      "correct": false
+    },
+    "no_fold_handoff": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "c5f2ac6ea4c621ec9eba7edd6ce02c8798bfc94059cc0992183b75c7b38dd3e2",
+      "smem": 69632,
+      "correct": false
+    }
+  }
+}

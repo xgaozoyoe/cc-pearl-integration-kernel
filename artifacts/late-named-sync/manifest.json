@@ -1,0 +1,23 @@
+{
+  "variants": {
+    "native": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "104c0c1b265260dea5c9ab0bb174ebbbe7ee9cceb0cf0acebf2a9d1dfa4d50aa",
+      "smem": 69632,
+      "correct": true
+    },
+    "matched_control": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "46f16ba9d62d0a330fb343bcc4d5f9c36e544e68b893a5a174b0f565cd02b425",
+      "smem": 69632,
+      "correct": true
+    },
+    "late_sync": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "0aad644229557a45cc38962b2088adb35458a6bbd2c23053a4c82475daa758a3",
+      "smem": 69632,
+      "correct": true
+    }
+  },
+  "description": "Same33prefix instructions and barrier packet, reordered only. All rendezvous retained; old ID consumed before toggle. P6 dummy prevents copy-path P2 clobber."
+}

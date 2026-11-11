@@ -173,10 +173,10 @@ void tensor_hash(const uint8_t* data, uint32_t data_size, uint8_t* out,
 void commitment_hash_from_merkle_roots(
     const uint8_t* A_merkle_root, const uint8_t* B_merkle_root,
     const uint8_t* key, uint8_t* A_commitment_hash, uint8_t* B_commitment_hash,
-    cudaDeviceProp& /*deviceProp*/, cudaStream_t stream) {
+    cudaDeviceProp& /*deviceProp*/, cudaStream_t stream, uint32_t m, uint32_t n) {
   using K = pearl::CommitmentHashFromMerkleRootsKernel;
   typename K::Arguments args{A_merkle_root, B_merkle_root, key,
-                             A_commitment_hash, B_commitment_hash};
+                             A_commitment_hash, B_commitment_hash, m, n};
   typename K::Params p = K::to_underlying_arguments(args);
   auto k = cutlass::device_kernel<K>;
   constexpr static int smem = K::SharedStorageSize;

@@ -1,0 +1,340 @@
+[
+  {
+    "file": "/tmp/pearl-rank128-ablation-profile/v0.sass.csv",
+    "stalls": [
+      {
+        "metric": "stall_barrier (Not Issued)",
+        "total_samples": 132851.0,
+        "category_pct": {
+          "other": 100.0,
+          "cp_async": 0.0,
+          "cp_async_commit": 0.0,
+          "cp_async_wait": 0.0,
+          "cta_barrier": 0.0,
+          "shared_load": 0.0,
+          "mma": 0.0,
+          "transcript_reduce": 0.0,
+          "shared_store": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0xe10",
+            "percent": 98.76177070552724,
+            "instruction": "@P0   BRA 0x7f2c9925e760"
+          },
+          {
+            "pc": "0x2cc0",
+            "percent": 1.238229294472755,
+            "instruction": "@P0   EXIT"
+          },
+          {
+            "pc": "0x0",
+            "percent": 0.0,
+            "instruction": "IMAD.MOV.U32 R1, RZ, RZ, c[0x0][0x28]"
+          },
+          {
+            "pc": "0x10",
+            "percent": 0.0,
+            "instruction": "IMAD.MOV.U32 R0, RZ, RZ, c[0x0][0xc]"
+          },
+          {
+            "pc": "0x20",
+            "percent": 0.0,
+            "instruction": "S2UR UR4, SR_CTAID.X"
+          }
+        ]
+      },
+      {
+        "metric": "stall_math (Not Issued)",
+        "total_samples": 410981.0,
+        "category_pct": {
+          "other": 1.7450928388416982,
+          "cp_async": 0.0,
+          "cp_async_commit": 0.0,
+          "cp_async_wait": 0.0,
+          "cta_barrier": 0.0,
+          "shared_load": 0.0,
+          "mma": 98.2549071611583,
+          "transcript_reduce": 0.0,
+          "shared_store": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0x1750",
+            "percent": 27.15162014789005,
+            "instruction": "IMMA.16832.S8.S8 R44, R148.ROW, R146.COL, R44"
+          },
+          {
+            "pc": "0x1800",
+            "percent": 15.668850871451479,
+            "instruction": "IMMA.16832.S8.S8 R116, R148.ROW, R152.COL, R116"
+          },
+          {
+            "pc": "0x1490",
+            "percent": 10.653533861662705,
+            "instruction": "IMMA.16832.S8.S8 R116, R148.ROW, R144.COL, R116"
+          },
+          {
+            "pc": "0x16c0",
+            "percent": 3.39334421785922,
+            "instruction": "IMMA.16832.S8.S8 R16, R148.ROW, R104.COL, R16"
+          },
+          {
+            "pc": "0x15f0",
+            "percent": 2.10253028728822,
+            "instruction": "IMMA.16832.S8.S8 R60, R148.ROW, R144.COL, R60"
+          }
+        ]
+      },
+      {
+        "metric": "stall_short_sb (Not Issued)",
+        "total_samples": 60260.0,
+        "category_pct": {
+          "other": 37.06770660471291,
+          "cp_async": 0.0,
+          "cp_async_commit": 0.0,
+          "cp_async_wait": 0.0,
+          "cta_barrier": 0.0,
+          "shared_load": 0.0,
+          "mma": 62.93229339528709,
+          "transcript_reduce": 0.0,
+          "shared_store": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0x1540",
+            "percent": 13.624294722867575,
+            "instruction": "IMMA.16832.S8.S8 R64, R148.ROW, R144.COL, R64"
+          },
+          {
+            "pc": "0x16c0",
+            "percent": 12.93063391968138,
+            "instruction": "IMMA.16832.S8.S8 R16, R148.ROW, R104.COL, R16"
+          },
+          {
+            "pc": "0x1800",
+            "percent": 12.603717225356787,
+            "instruction": "IMMA.16832.S8.S8 R116, R148.ROW, R152.COL, R116"
+          },
+          {
+            "pc": "0x15f0",
+            "percent": 12.538997676734152,
+            "instruction": "IMMA.16832.S8.S8 R60, R148.ROW, R144.COL, R60"
+          },
+          {
+            "pc": "0x1490",
+            "percent": 11.189844009293063,
+            "instruction": "IMMA.16832.S8.S8 R116, R148.ROW, R144.COL, R116"
+          }
+        ]
+      },
+      {
+        "metric": "stall_long_sb (Not Issued)",
+        "total_samples": 14286.0,
+        "category_pct": {
+          "other": 100.0,
+          "cp_async": 0.0,
+          "cp_async_commit": 0.0,
+          "cp_async_wait": 0.0,
+          "cta_barrier": 0.0,
+          "shared_load": 0.0,
+          "mma": 0.0,
+          "transcript_reduce": 0.0,
+          "shared_store": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0x1040",
+            "percent": 51.32297354052919,
+            "instruction": "@!P1  BRA 0x7f2c9925e3f0"
+          },
+          {
+            "pc": "0x1230",
+            "percent": 34.67730645387092,
+            "instruction": "@!P0  BRA 0x7f2c9925e5e0"
+          },
+          {
+            "pc": "0xde0",
+            "percent": 12.760744785104299,
+            "instruction": "UISETP.GT.U32.AND UP0, UPT, UR5, 0x3f, UPT"
+          },
+          {
+            "pc": "0x7c0",
+            "percent": 0.881982360352793,
+            "instruction": "@!P1  BRA 0x7f2c9925db70"
+          },
+          {
+            "pc": "0x970",
+            "percent": 0.35699286014279713,
+            "instruction": "@!P0  BRA 0x7f2c9925dd20"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "file": "/tmp/pearl-rank128-ablation-profile/v1.sass.csv",
+    "stalls": [
+      {
+        "metric": "stall_barrier (Not Issued)",
+        "total_samples": 132878.0,
+        "category_pct": {
+          "other": 100.0,
+          "cp_async": 0.0,
+          "cp_async_commit": 0.0,
+          "cp_async_wait": 0.0,
+          "cta_barrier": 0.0,
+          "shared_load": 0.0,
+          "mma": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0xea0",
+            "percent": 100.0,
+            "instruction": "@P0   BRA 0x71215b25bfd0"
+          },
+          {
+            "pc": "0x0",
+            "percent": 0.0,
+            "instruction": "IMAD.MOV.U32 R1, RZ, RZ, c[0x0][0x28]"
+          },
+          {
+            "pc": "0x10",
+            "percent": 0.0,
+            "instruction": "IMAD.MOV.U32 R0, RZ, RZ, c[0x0][0xc]"
+          },
+          {
+            "pc": "0x20",
+            "percent": 0.0,
+            "instruction": "S2UR UR4, SR_CTAID.X"
+          },
+          {
+            "pc": "0x30",
+            "percent": 0.0,
+            "instruction": "ULDC UR6, c[0x0][0xc]"
+          }
+        ]
+      },
+      {
+        "metric": "stall_math (Not Issued)",
+        "total_samples": 456470.0,
+        "category_pct": {
+          "other": 1.4804915985716476,
+          "cp_async": 0.0,
+          "cp_async_commit": 0.0,
+          "cp_async_wait": 0.0,
+          "cta_barrier": 0.0,
+          "shared_load": 0.0,
+          "mma": 98.51950840142835
+        },
+        "top_pcs": [
+          {
+            "pc": "0x1810",
+            "percent": 15.410651302385698,
+            "instruction": "IMMA.16832.S8.S8 R16, R148.ROW, R108.COL, R16"
+          },
+          {
+            "pc": "0x16e0",
+            "percent": 11.713146537559972,
+            "instruction": "IMMA.16832.S8.S8 R56, R144.ROW, R150.COL, R56"
+          },
+          {
+            "pc": "0x1640",
+            "percent": 10.218415229916534,
+            "instruction": "IMMA.16832.S8.S8 R136, R104.ROW, R150.COL, R136"
+          },
+          {
+            "pc": "0x15c0",
+            "percent": 7.677393914167415,
+            "instruction": "IMMA.16832.S8.S8 R60, R112.ROW, R150.COL, R60"
+          },
+          {
+            "pc": "0x14b0",
+            "percent": 4.533266151116174,
+            "instruction": "IMMA.16832.S8.S8 R20, R144.ROW, R148.COL, R20"
+          }
+        ]
+      },
+      {
+        "metric": "stall_short_sb (Not Issued)",
+        "total_samples": 40671.0,
+        "category_pct": {
+          "other": 31.081114307491823,
+          "cp_async": 0.0,
+          "cp_async_commit": 0.0,
+          "cp_async_wait": 0.0,
+          "cta_barrier": 0.0,
+          "shared_load": 0.0,
+          "mma": 68.91888569250817
+        },
+        "top_pcs": [
+          {
+            "pc": "0x1540",
+            "percent": 17.51616631014728,
+            "instruction": "IMMA.16832.S8.S8 R84, R144.ROW, R148.COL, R84"
+          },
+          {
+            "pc": "0xed0",
+            "percent": 15.952398514912346,
+            "instruction": "ISETP.GT.AND P1, PT, R108, 0x3ff, PT"
+          },
+          {
+            "pc": "0x19a0",
+            "percent": 15.273782301885864,
+            "instruction": "IMMA.16832.S8.S8 R24, R116.ROW, R152.COL, R24"
+          },
+          {
+            "pc": "0x1670",
+            "percent": 15.246736003540606,
+            "instruction": "IMMA.16832.S8.S8 R92, R144.ROW, R148.COL, R92"
+          },
+          {
+            "pc": "0x1360",
+            "percent": 14.587789825674314,
+            "instruction": "SHF.R.U32.HI R104, RZ, 0x5, R152"
+          }
+        ]
+      },
+      {
+        "metric": "stall_long_sb (Not Issued)",
+        "total_samples": 14482.0,
+        "category_pct": {
+          "other": 100.0,
+          "cp_async": 0.0,
+          "cp_async_commit": 0.0,
+          "cp_async_wait": 0.0,
+          "cta_barrier": 0.0,
+          "shared_load": 0.0,
+          "mma": 0.0
+        },
+        "top_pcs": [
+          {
+            "pc": "0x10b0",
+            "percent": 50.3314459328822,
+            "instruction": "@!P1  BRA 0x71215b25bc60"
+          },
+          {
+            "pc": "0x12a0",
+            "percent": 36.590249965474385,
+            "instruction": "@!P0  BRA 0x71215b25be50"
+          },
+          {
+            "pc": "0xe70",
+            "percent": 11.869907471343737,
+            "instruction": "UISETP.GT.U32.AND UP0, UPT, UR6, 0x3f, UPT"
+          },
+          {
+            "pc": "0x840",
+            "percent": 0.6490816185609722,
+            "instruction": "@!P1  BRA 0x71215b25b3f0"
+          },
+          {
+            "pc": "0x9f0",
+            "percent": 0.5593150117387101,
+            "instruction": "@!P0  BRA 0x71215b25b5a0"
+          }
+        ]
+      }
+    ]
+  }
+]

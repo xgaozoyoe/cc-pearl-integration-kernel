@@ -1,0 +1,84 @@
+{
+  "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+  "variants": {
+    "tail9": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "12bb54ea61e2a4b92c56d358e9970c2ec413e7e8525e0fc6180df0f2a2c41828",
+      "smem": 69632,
+      "correct": true,
+      "arrival_pc": "0x1740",
+      "mma_after_arrival": 9,
+      "groups": [
+        6,
+        6
+      ],
+      "parent": "tail9"
+    },
+    "id16": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "be6773d253260bf7fa596a74c5c419dea2b1af9a10d0d1922146fde408bbfe6c",
+      "smem": 69632,
+      "correct": true,
+      "arrival_pc": "0x16d0",
+      "mma_after_arrival": 16,
+      "groups": [
+        6,
+        6
+      ],
+      "parent": "id16"
+    },
+    "group4": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "26e0b531cea5a2b5265c86ace30a4fb02d86fc24c202c6b76cc6c3631459c8fc",
+      "smem": 69632,
+      "correct": true,
+      "arrival_pc": "0x16d0",
+      "mma_after_arrival": 16,
+      "groups": [
+        4,
+        8
+      ],
+      "parent": "id16"
+    },
+    "group8": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "5108fe0168279247a99b83c47dc7d0524ac0b35df098b7533a55f9d5c725ddf6",
+      "smem": 69632,
+      "correct": true,
+      "arrival_pc": "0x16d0",
+      "mma_after_arrival": 16,
+      "groups": [
+        8,
+        4
+      ],
+      "parent": "id16"
+    },
+    "group3": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "2c6f29cded5330f2847264b12b46197e06628448c21d63df2c40e0a79c718d08",
+      "smem": 69632,
+      "correct": true,
+      "arrival_pc": "0x16d0",
+      "mma_after_arrival": 16,
+      "groups": [
+        3,
+        9
+      ],
+      "parent": "id16"
+    },
+    "group9": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "76652af5f680cffacd5ac766b66c48195665325e716ad8092d155a047d93b7d7",
+      "smem": 69632,
+      "correct": true,
+      "arrival_pc": "0x16d0",
+      "mma_after_arrival": 16,
+      "groups": [
+        9,
+        3
+      ],
+      "parent": "id16"
+    }
+  },
+  "warning": "Offline only. Barrier cohorts change; MMA/data ownership unchanged."
+}

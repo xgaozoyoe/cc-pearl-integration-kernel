@@ -1,0 +1,97 @@
+--- copywalk-fulla-candidate-source.cu
++++ astream-candidate-source.cu
+@@ -1,6 +1,6 @@
+ #include <cuda_runtime.h>
+ #include <cstdint>
+-namespace rank128_copyfollow_fulla_baseline {
++namespace rank128_astream_candidate_baseline {
+ constexpr int BM=256, BN=192, THREADS=384;
+ constexpr int WORDS=(BM/16)*(BN/16)*16;
+ struct Fragment { unsigned v[4]; };
+@@ -95,8 +95,8 @@
+     unsigned offB=unsigned(grB)*unsigned(k)+unsigned(kt*64+col);
+     #pragma unroll
+     for(int j=0;j<3;++j) if(threadIdx.x+j*THREADS<BM*64/16) {
+-        bool valid=grA<m;
+-        const signed char* src=a+(valid?offA:0u);
++        bool valid=true;
++        const signed char* src=a+offA;
+         asm volatile("cp.async.cg.shared.global [%0],[%1],16,%2;" :: "r"(dstA),"l"(src),"r"(valid?16:0));
+         grA+=THREADS/4;offA+=unsigned(THREADS/4)*unsigned(k);dstA+=THREADS*16;
+     }
+@@ -266,9 +266,9 @@
+     kernel<Lead,TileK,Planar,PackedB,UnrollCopy,FixedCopy,Stages,Wide,Layout><<<dim3((m+BM-1)/BM,(n+BN-1)/BN),Threads,smem,stream>>>(a,b,m,n,k,r,t);
+     return cudaGetLastError();
+ }
+-} // namespace rank128_copyfollow_fulla_baseline#include <cuda_runtime.h>
++} // namespace rank128_astream_candidate_baseline#include <cuda_runtime.h>
+ #include <cstdint>
+-namespace rank128_copyfollow_fulla_fast {
++namespace rank128_astream_candidate_fast {
+ constexpr int BM=256, BN=192, THREADS=384;
+ constexpr int WORDS=(BM/16)*(BN/16)*16;
+ struct Fragment { unsigned v[4]; };
+@@ -443,14 +443,16 @@
+             int slice=g/Groups,group=g%Groups,slot=g%slots;
+             if constexpr(TileK!=64) { if(kt*TileK+slice*32>=k) continue; }
+             #pragma unroll
+-            for(int half=0;half<2;++half) {
+-                #pragma unroll
+-                for(int row=0;row<4;++row) {
+-                    if(half==0 && row==2 && g+Lead<Groups*(TileK/32) && (TileK==64 || kt*TileK+((g+Lead)/Groups)*32<k))
++            for(int row=0;row<4;++row) {
++                Fragment nextA;
++                #pragma unroll
++                for(int half=0;half<2;++half) {
++                    if(half==0 && row==1 && g+Lead<Groups*(TileK/32) && (TileK==64 || kt*TileK+((g+Lead)/Groups)*32<k))
+                         br[(g+Lead)%slots]=loadB16x32<TileK,Planar,PackedB,Layout>(bb,wn*WarpN+((g+Lead)%Groups)*16,((g+Lead)/Groups)*32,lane,BN);
++                    if(half==0 && slice+1<TileK/32 && (TileK==64 || kt*TileK+(slice+1)*32<k) && group==Groups-1) nextA=load16x32<TileK,Planar,Layout>(aa,wm*64+row*16,(slice+1)*32,lane,BM);
+                     mma<PackedB>(c[row][group][half],ar[row],br[slot],half);
+                     if(slice+1<TileK/32 && (TileK==64 || kt*TileK+(slice+1)*32<k) && group==Groups-1 && half==1)
+-                        ar[row]=load16x32<TileK,Planar,Layout>(aa,wm*64+row*16,(slice+1)*32,lane,BM);
++                        ar[row]=nextA;
+                 }
+             }
+             if constexpr(TileK!=64) {
+@@ -534,28 +536,28 @@
+     kernel<Lead,TileK,Planar,PackedB,UnrollCopy,FixedCopy,Stages,Wide,Layout><<<dim3((m+BM-1)/BM,(n+BN-1)/BN),Threads,smem,stream>>>(a,b,m,n,k,r,t);
+     return cudaGetLastError();
+ }
+-} // namespace rank128_copyfollow_fulla_fast
++} // namespace rank128_astream_candidate_fast
+ void launch_pearl_blake3(const uint32_t*,int,int,const uint32_t*,const uint32_t*,uint8_t*,int*,int*,cudaStream_t);
+-extern "C" int copyfollow_fulla_fold(int v,const int8_t* a,const int8_t* b,int m,int n,uint32_t* t,int* info) {
+-    if(v==0)return rank128_copyfollow_fulla_baseline::launch<2,64,false,true,false,false,2,false,6>(a,b,m,n,4096,128,t,info,nullptr);
+-    if(v==1 && (m%256 || m>1048576 || n>1048576))return rank128_copyfollow_fulla_baseline::launch<2,64,false,true,false,false,2,false,6>(a,b,m,n,4096,128,t,info,nullptr);
+-    if(v==1)return rank128_copyfollow_fulla_fast::launch<2,64,false,true,false,false,2,false,6>(a,b,m,n,4096,128,t,info,nullptr);
++extern "C" int astream_candidate_fold(int v,const int8_t* a,const int8_t* b,int m,int n,uint32_t* t,int* info) {
++    if(m%256 || m>1048576 || n>1048576)return cudaErrorInvalidValue;
++    if(v==0)return rank128_astream_candidate_baseline::launch<2,64,false,true,false,false,2,false,6>(a,b,m,n,4096,128,t,info,nullptr);
++    if(v==1 && (m>1048576 || n>1048576))return rank128_astream_candidate_baseline::launch<2,64,false,true,false,false,2,false,6>(a,b,m,n,4096,128,t,info,nullptr);
++    if(v==1)return rank128_astream_candidate_fast::launch<1,64,false,true,false,false,2,false,6>(a,b,m,n,4096,128,t,info,nullptr);
+     return cudaErrorInvalidValue;
+ }
+-extern "C" int copyfollow_fulla_pow(int v,const int8_t* a,const int8_t* b,int m,int n,
++extern "C" int astream_candidate_pow(int v,const int8_t* a,const int8_t* b,int m,int n,
+  const uint32_t* key,const uint32_t* target,uint32_t* t,uint8_t* dig,int* found,int* coord) {
+-    auto e=copyfollow_fulla_fold(v,a,b,m,n,t,nullptr);if(e)return e;
++    auto e=astream_candidate_fold(v,a,b,m,n,t,nullptr);if(e)return e;
+     launch_pearl_blake3(t,(m/16)*(n/16),n,key,target,dig,found,coord,nullptr);
+     return cudaGetLastError();
+ }
+ 
+-// Explicit mining ABI. Only validated R128 is supported by this trial library.
+ extern "C" int rank_fold(int r,const int8_t* a,const int8_t* b,int m,int n,uint32_t* t,int* info) {
+- if(r!=128 || m>1048576 || n>1048576)return cudaErrorInvalidValue;
+- return copyfollow_fulla_fold(1,a,b,m,n,t,info);
++ if(r!=128 || m%256 || m>1048576 || n>1048576)return cudaErrorInvalidValue;
++ return astream_candidate_fold(1,a,b,m,n,t,info);
+ }
+ extern "C" int rank_pow(int r,const int8_t* a,const int8_t* b,int m,int n,
+  const uint32_t* key,const uint32_t* target,uint32_t* t,uint8_t* dig,int* found,int* coord) {
+- if(r!=128 || m>1048576 || n>1048576)return cudaErrorInvalidValue;
+- return copyfollow_fulla_pow(1,a,b,m,n,key,target,t,dig,found,coord);
+-}
++ if(r!=128 || m%256 || m>1048576 || n>1048576)return cudaErrorInvalidValue;
++ return astream_candidate_pow(1,a,b,m,n,key,target,t,dig,found,coord);
++}

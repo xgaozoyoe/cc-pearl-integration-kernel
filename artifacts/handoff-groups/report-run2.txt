@@ -1,0 +1,17 @@
+GPU0 offline named-barrier cohort sweep; no Nsight used.
+CTA256x192 K64 stages2;384threads;168regs;69632B shared;1CTA/SM;0local.
+All IMMA/copy/shared addresses and hot-loop instructions unchanged from parent.
+Only prologue warp-cohort threshold differs from id16. Known-good production unchanged.
+Unfixed clocks; balanced rotation across6batches. Event samples120/variant,16launches/sample.
+Full offline grids60/variant,12/batch discardfirst2; setup/noise/Merkle/transcript/PoW included.
+Equivalent TH/s=2**46 / grid_seconds /1e12; excludes networking/proof delivery.
+variant event_mean_ms grid_mean_ms grid_median_ms grid_p95_ms grids/sec equivTH/s
+group8 1.024955 293.923 293.800 299.405 3.40225 239.412
+id16 1.031576 296.247 295.950 301.420 3.37557 237.534
+tail9 1.045911 297.602 297.600 302.500 3.36020 236.453
+Compared to tail9:
+group8: time -1.236%, throughput +1.251%, paired time changes% -1.482, -1.276, -1.235, -1.150, -1.196, -1.076
+id16: time -0.455%, throughput +0.457%, paired time changes% -0.437, -0.285, -0.564, -0.521, -0.608, -0.316
+Compared to id16:
+group8: time -0.784%, throughput +0.790%, paired time changes% -1.050, -0.993, -0.675, -0.632, -0.591, -0.763
+tail9: time +0.457%, throughput -0.455%, paired time changes% +0.439, +0.286, +0.567, +0.524, +0.612, +0.317

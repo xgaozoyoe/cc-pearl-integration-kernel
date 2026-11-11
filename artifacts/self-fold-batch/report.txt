@@ -1,0 +1,19 @@
+Offline GPU0 self-fold batching,CTA256x192,12warps,warp64x64,K64/2stages,K4096/rank128.
+MMA and stage synchronization source unchanged. No independent consumers or queues.
+Native is frozen both_compact;control is unmodified recompiled source.
+Same8192x8192 region/data,40samples/variant,16launches/sample,2rotatingblocks.
+CUDA event kernel region times,not full-grid or pool rates. Clocks unlocked;native end telemetry2490MHz in one block.
+name mean_ms median_ms p95_ms registers localbytes CTA/SM
+native 1.039014 1.047840 1.056403 168 0 1
+control 1.064893 1.065123 1.074095 168 0 1
+batch2 1.073084 1.072894 1.084611 167 0 1
+batch4 1.088553 1.083456 1.109844 168 0 1
+control:staticIMMA=64,staticREDUX=32,BSSY=7;zeroLDL/STL.
+batch2:staticIMMA=64,staticREDUX=32,BSSY=10;zeroLDL/STL.
+batch4:staticIMMA=64,staticREDUX=32,BSSY=10;zeroLDL/STL.
+Static counts include mutually exclusive store/update paths,not dynamic execution counts.
+Batch2/4increaseBSSY/BSYNC sites7->10 rather than demonstrating less machine control flow.
+No source-batching performance gain against eithercontrol orfrozennative. Do not promote.
+48transcript comparisons PASS;512x800 seed9876 batch2/4racecheck0hazards/errors/warnings.
+No full-grid/PoW test because candidatesfailed performance screen. No new Nsight counters.
+Production library checksums bothOK;no live mining or replacement.

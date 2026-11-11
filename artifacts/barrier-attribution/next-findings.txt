@@ -1,0 +1,10 @@
+Static candidate, NOT measured cause:
+K64 stage A256x64=16384bytes; B192x64=12288bytes; total28672bytes.
+Warp0..7:3A+2B cp.async each lane;2560bytes/warp. Warp8..11:2A+2B;2048bytes/warp.
+Group0 carries20480bytes (71.43%);group1 8192bytes (28.57%). Each warp has same64IMMA perK64.
+Third A copy at1020 is predicated on threadIdx.x+768<1024, restricting it to warps0..7.
+This imbalance is aligned with the8+4 named-barrier grouping, making it a concrete lateness hypothesis.
+However async copy is issued before compute and can be hidden. Extra copy count does not prove later publication or explain the measured6.48%.
+Warp count cannot evenly distribute56warp-vector copies across12warps in one stage; merely moving extra copies could shift the late group, not reduce its duration.
+Timestamp prototype was rejected before GPU execution because recompiled scheduling differs from frozen baseline. No per-warp timing claim made.
+Next observation requires instrumentation of the frozen binary with verified synchronization completion and measured perturbation, not naive clock64 around a recompiled source barrier.

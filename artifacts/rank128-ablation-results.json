@@ -1,0 +1,96 @@
+{
+  "resources": {
+    "0": [
+      168,
+      384,
+      69632,
+      1,
+      0
+    ],
+    "1": [
+      168,
+      384,
+      69632,
+      1,
+      0
+    ]
+  },
+  "measurements": [
+    {
+      "type": "kernel_events",
+      "variant": 0,
+      "repeat": 0,
+      "median_ms": 1.1485439538955688,
+      "mean_ms": 1.1516692012548446,
+      "p95_ms": 1.1897119581699371,
+      "region": 8192
+    },
+    {
+      "type": "kernel_events",
+      "variant": 1,
+      "repeat": 0,
+      "median_ms": 1.0900999903678894,
+      "mean_ms": 1.086158087849617,
+      "p95_ms": 1.0960487961769103,
+      "region": 8192
+    },
+    {
+      "type": "kernel_events",
+      "variant": 1,
+      "repeat": 1,
+      "median_ms": 1.0879290103912354,
+      "mean_ms": 1.082027319073677,
+      "p95_ms": 1.095438575744629,
+      "region": 8192
+    },
+    {
+      "type": "kernel_events",
+      "variant": 0,
+      "repeat": 1,
+      "median_ms": 1.1816350221633911,
+      "mean_ms": 1.1793545544147492,
+      "p95_ms": 1.1955872535705567,
+      "region": 8192
+    },
+    {
+      "type": "grid_no_pow",
+      "variant": 0,
+      "repeat": 0,
+      "median_ms": 325.90000000000003,
+      "mean_ms": 325.8125,
+      "p95_ms": 327.11,
+      "grids_sec": 3.0692499520429695,
+      "equivalent_ths": 215.97926469261924
+    },
+    {
+      "type": "grid_no_pow",
+      "variant": 1,
+      "repeat": 0,
+      "median_ms": 302.09999999999997,
+      "mean_ms": 301.9325,
+      "p95_ms": 303.51,
+      "grids_sec": 3.3119985427206413,
+      "equivalent_ths": 233.06117816950479
+    },
+    {
+      "type": "grid_no_pow",
+      "variant": 1,
+      "repeat": 1,
+      "median_ms": 302.25,
+      "mean_ms": 302.33,
+      "p95_ms": 303.92999999999995,
+      "grids_sec": 3.3076439652035856,
+      "equivalent_ths": 232.7547520182053
+    },
+    {
+      "type": "grid_no_pow",
+      "variant": 0,
+      "repeat": 1,
+      "median_ms": 326.40000000000003,
+      "mean_ms": 326.38,
+      "p95_ms": 327.105,
+      "grids_sec": 3.0639132299773273,
+      "equivalent_ths": 215.60372626283475
+    }
+  ]
+}

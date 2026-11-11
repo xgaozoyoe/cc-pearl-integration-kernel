@@ -1,0 +1,44 @@
+R128 complete-tile fast-path experiment — 2026-10-08
+
+Independent /tmp/libpearl-rank128-interior.so. GPU0 only. Production libraries
+hash verified unchanged; GPU2 live mining untouched. No commit or promotion.
+
+Baseline: standard CTA256x192,warp64x64,K64,two stages,Lead2,Layout6,R128.
+Candidate: identical arithmetic/mapping per CTA, but full interior tiles omit
+A/B row-bound predicates and clamped source-row selection in cp.async.
+Separate original bounded tail handles N remainder; partial M or N<192 falls back
+to original kernel. All output/proof/target/V3 algorithms remain unchanged.
+Each8192x8192 region: baseline32*43=1376CTAs in one launch; candidate
+32*42=1344fullCTAs +32tailCTAs in a second launch. Total useful and padded MMA
+unchanged, but last scheduling group/order and launch count change.
+
+All kernels168regs/thread,69632Bshared,384threads,1CTA/SM,12warps/SM,zero spills.
+SASS interior920staticinstructions vs baseline928;4fewerISETP and4fewerSEL.
+64IMMA/16LDSM/4LDGSTS sites per kernel, same operand bytes and MMA count.
+Tail936instructions. These are static counts, not measured dynamic traffic.
+
+Correctness:16 full transcript/digest comparisons PASS against frozen accepted
+library:two seeds x shapes32x48,256x384,256x400,8192x8192 x two variants.
+Poisoned outputs test full tiles, partial tails and fallback. Compute-sanitizer
+memcheck on first three shapes:0errors. No changes to shared stage synchronization.
+
+Full-grid wall benchmark:131072^2x4096,region8192,matched setup seeds;
+V3/setup/noise/GEMM/transcript/PoW included. Target0 excludes proofs/submissions.
+4warmup+40samples per variant twice in reversed order;80samples each.
+Clock/power policy unchanged; clocks not locked.0.1ms log timing resolution.
+
+{"variant": 0, "samples": 80, "mean_ms": 330.17125, "median_ms": 330.5, "p95_ms": 331.805, "grids_sec": 3.028731302316601, "ths": 213.12801819560002}
+{"variant": 1, "samples": 80, "mean_ms": 350.1175, "median_ms": 350.15, "p95_ms": 351.2, "grids_sec": 2.856183995372982, "ths": 200.98608089473964}
+
+Candidate wall time +6.041%; throughput -5.697%.
+Reject candidate. Removed bounds work does not offset splitting the launches.
+Simple128SM/oneCTA-per-SM wave model:ceil(1376/128)=11 versus
+ceil(1344/128)+ceil(32/128)=12. This suggests underfilled tail scheduling as a
+cost, but is a model, not measured PC-level attribution. Extra launch/host overhead
+and altered cache order also contribute potentially. Do not assign exact lost
+milliseconds to any one cause without event/counter evidence.
+
+Keep baseline. Further interior specialization should preserve one launch and
+avoid isolating a tiny tail, but no such follow-up is implemented in this report.
+This experiment does not demonstrate that all bounds specialization is useless,
+or provide a route to300TH/s. No root Nsight run needed to reject this slower build.

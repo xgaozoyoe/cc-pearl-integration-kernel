@@ -1,0 +1,1731 @@
+{
+  "_ZN12pearl_ada_v26kernelILi3EEEvPKaS2_iiiiPj": {
+    "hash": "f06f8b704c3157c562c2c5610f59b61a8bb639a796c43eaca9625978cede7d71",
+    "instructions": 955,
+    "opcode_counts": {
+      "IMAD.MOV.U32": 166,
+      "ULDC": 4,
+      "S2UR": 2,
+      "USHF.L.U32": 2,
+      "S2R": 8,
+      "UMOV": 7,
+      "BSSY": 10,
+      "UIADD3": 7,
+      "IADD3": 32,
+      "UISETP.NE.U32.AND": 1,
+      "I2F.U32.RP": 1,
+      "MUFU.RCP": 2,
+      "ISETP.GT.AND": 5,
+      "UIMAD": 9,
+      "F2I.FTZ.U32.TRUNC.NTZ": 2,
+      "R2UR": 5,
+      "UIMAD.WIDE.U32": 4,
+      "UISETP.GE.U32.AND": 3,
+      "UISETP.LT.AND": 1,
+      "USEL": 1,
+      "IMAD.U32": 36,
+      "IABS": 3,
+      "I2F.RP": 1,
+      "IMAD.MOV": 1,
+      "UISETP.GT.U32.AND": 1,
+      "ULOP3.LUT": 5,
+      "ULDC.64": 2,
+      "UISETP.GE.AND": 4,
+      "UISETP.NE.AND": 1,
+      "ULEA": 1,
+      "BRA": 21,
+      "SHF.R.S32.HI": 48,
+      "LEA.HI": 16,
+      "LOP3.LUT": 122,
+      "IMAD": 45,
+      "IMAD.IADD": 15,
+      "ISETP.GE.AND": 14,
+      "IMAD.SHL.U32": 13,
+      "SEL": 4,
+      "IMAD.WIDE.U32": 10,
+      "SHF.R.U32.HI": 21,
+      "IADD3.X": 4,
+      "LDGSTS.E.BYPASS.128": 4,
+      "BSYNC": 10,
+      "LDGDEPBAR": 2,
+      "PLOP3.LUT": 4,
+      "USHF.R.S32.HI": 8,
+      "CS2R": 64,
+      "ULEA.HI": 3,
+      "STL": 4,
+      "DEPBAR.LE": 1,
+      "BAR.SYNC.DEFER_BLOCKING": 2,
+      "LEA": 14,
+      "LEA.HI.X.SX32": 2,
+      "LDSM.16.M88.4": 16,
+      "IMMA.16832.S8.S8": 64,
+      "NOP": 14,
+      "LDL": 4,
+      "REDUX.XOR": 16,
+      "STS": 16,
+      "CALL.REL.NOINC": 1,
+      "EXIT": 3,
+      "IMNMX": 1,
+      "IMAD.HI": 10,
+      "ISETP.NE.AND": 1,
+      "LEA.HI.SX32": 5,
+      "ISETP.GE.OR": 5,
+      "LDS": 5,
+      "LEA.HI.X": 10,
+      "STG.E": 5,
+      "ISETP.GE.U32.AND": 1
+    },
+    "mma_load_pcs": [
+      {
+        "pc": "0ce0",
+        "source": "STL [R1+0x8], R5"
+      },
+      {
+        "pc": "0d20",
+        "source": "STL [R1+0xc], R3"
+      },
+      {
+        "pc": "0d60",
+        "source": "STL [R1+0x4], R2"
+      },
+      {
+        "pc": "0da0",
+        "source": "STL [R1], R0"
+      },
+      {
+        "pc": "15f0",
+        "source": "LDSM.16.M88.4 R132, [R132+UR6]"
+      },
+      {
+        "pc": "1620",
+        "source": "LDSM.16.M88.4 R144, [R144+UR5]"
+      },
+      {
+        "pc": "1640",
+        "source": "LDSM.16.M88.4 R140, [R3+UR5]"
+      },
+      {
+        "pc": "16b0",
+        "source": "IMMA.16832.S8.S8 R104, R144.ROW, R136.COL, R104"
+      },
+      {
+        "pc": "16e0",
+        "source": "IMMA.16832.S8.S8 R124, R140.ROW, R148.COL, R124"
+      },
+      {
+        "pc": "1760",
+        "source": "IMMA.16832.S8.S8 R116, R144.ROW, R136.COL, R116"
+      },
+      {
+        "pc": "1770",
+        "source": "LDSM.16.M88.4 R136, [R138+UR6]"
+      },
+      {
+        "pc": "17c0",
+        "source": "IMMA.16832.S8.S8 R148, R140.ROW, R148.COL, R68"
+      },
+      {
+        "pc": "17d0",
+        "source": "LDSM.16.M88.4 R68, [R155+UR6]"
+      },
+      {
+        "pc": "1800",
+        "source": "IMMA.16832.S8.S8 R48, R144.ROW, R156.reuse.COL, R48"
+      },
+      {
+        "pc": "1810",
+        "source": "IMMA.16832.S8.S8 R44, R140.ROW, R156.COL, R44"
+      },
+      {
+        "pc": "1840",
+        "source": "IMMA.16832.S8.S8 R32, R144.ROW, R156.reuse.COL, R32"
+      },
+      {
+        "pc": "1850",
+        "source": "IMMA.16832.S8.S8 R28, R140.ROW, R156.COL, R28"
+      },
+      {
+        "pc": "1880",
+        "source": "IMMA.16832.S8.S8 R16, R140.ROW, R156.reuse.COL, R16"
+      },
+      {
+        "pc": "1890",
+        "source": "IMMA.16832.S8.S8 R20, R144.ROW, R156.COL, R20"
+      },
+      {
+        "pc": "1910",
+        "source": "IMMA.16832.S8.S8 R160, R144.ROW, R16.COL, R8"
+      },
+      {
+        "pc": "1980",
+        "source": "IMMA.16832.S8.S8 R160, R140.ROW, R8.COL, R4"
+      },
+      {
+        "pc": "1a40",
+        "source": "LDSM.16.M88.4 R4, [R4+UR6]"
+      },
+      {
+        "pc": "1a90",
+        "source": "IMMA.16832.S8.S8 R112, R144.ROW, R8.COL, R112"
+      },
+      {
+        "pc": "1ac0",
+        "source": "IMMA.16832.S8.S8 R160, R144.ROW, R8.COL, R88"
+      },
+      {
+        "pc": "1ae0",
+        "source": "LDL R10, [R1+0xc]"
+      },
+      {
+        "pc": "1b10",
+        "source": "LDSM.16.M88.4 R152, [R152+UR5]"
+      },
+      {
+        "pc": "1b40",
+        "source": "IMMA.16832.S8.S8 R100, R140.ROW, R8.COL, R100"
+      },
+      {
+        "pc": "1bb0",
+        "source": "IMMA.16832.S8.S8 R156, R140.ROW, R8.COL, R96"
+      },
+      {
+        "pc": "1bd0",
+        "source": "LDL R96, [R1+0x4]"
+      },
+      {
+        "pc": "1c00",
+        "source": "IMMA.16832.S8.S8 R64, R152.ROW, R8.COL, R64"
+      },
+      {
+        "pc": "1c30",
+        "source": "IMMA.16832.S8.S8 R60, R152.ROW, R8.COL, R60"
+      },
+      {
+        "pc": "1c90",
+        "source": "LDL R88, [R1+0x8]"
+      },
+      {
+        "pc": "1ca0",
+        "source": "LDSM.16.M88.4 R8, [R10+UR5]"
+      },
+      {
+        "pc": "1cb0",
+        "source": "IMMA.16832.S8.S8 R56, R8.ROW, R16.COL, R56"
+      },
+      {
+        "pc": "1ce0",
+        "source": "IMMA.16832.S8.S8 R40, R152.ROW, R16.COL, R40"
+      },
+      {
+        "pc": "1d10",
+        "source": "IMMA.16832.S8.S8 R24, R152.ROW, R16.COL, R24"
+      },
+      {
+        "pc": "1d40",
+        "source": "IMMA.16832.S8.S8 R12, R152.ROW, R16.COL, R12"
+      },
+      {
+        "pc": "1d70",
+        "source": "IMMA.16832.S8.S8 R108, R152.ROW, R16.COL, R108"
+      },
+      {
+        "pc": "1da0",
+        "source": "IMMA.16832.S8.S8 R84, R152.ROW, R16.COL, R84"
+      },
+      {
+        "pc": "1dd0",
+        "source": "IMMA.16832.S8.S8 R152, R152.ROW, R16.COL, R72"
+      },
+      {
+        "pc": "1de0",
+        "source": "LDL R75, [R1]"
+      },
+      {
+        "pc": "1e30",
+        "source": "IMMA.16832.S8.S8 R36, R8.ROW, R16.COL, R36"
+      },
+      {
+        "pc": "1e90",
+        "source": "IMMA.16832.S8.S8 R80, R8.reuse.ROW, R16.COL, R80"
+      },
+      {
+        "pc": "1ea0",
+        "source": "LDSM.16.M88.4 R16, [R19+UR6]"
+      },
+      {
+        "pc": "1ee0",
+        "source": "LDSM.16.M88.4 R88, [R88+UR5]"
+      },
+      {
+        "pc": "1f00",
+        "source": "IMMA.16832.S8.S8 R52, R8.ROW, R134.COL, R52"
+      },
+      {
+        "pc": "1f70",
+        "source": "LDSM.16.M88.4 R96, [R96+UR5]"
+      },
+      {
+        "pc": "2030",
+        "source": "IMMA.16832.S8.S8 R104, R88.ROW, R4.COL, R104"
+      },
+      {
+        "pc": "2060",
+        "source": "IMMA.16832.S8.S8 R120, R8.ROW, R70.COL, R120"
+      },
+      {
+        "pc": "2090",
+        "source": "IMMA.16832.S8.S8 R116, R88.ROW, R4.COL, R116"
+      },
+      {
+        "pc": "20c0",
+        "source": "IMMA.16832.S8.S8 R144, R8.reuse.ROW, R144.COL, R76"
+      },
+      {
+        "pc": "20d0",
+        "source": "IMMA.16832.S8.S8 R92, R8.reuse.ROW, R68.COL, R92"
+      },
+      {
+        "pc": "20e0",
+        "source": "IMMA.16832.S8.S8 R128, R8.ROW, R6.COL, R128"
+      },
+      {
+        "pc": "2100",
+        "source": "IMMA.16832.S8.S8 R124, R96.ROW, R4.COL, R124"
+      },
+      {
+        "pc": "2140",
+        "source": "LDSM.16.M88.4 R132, [R165+UR5]"
+      },
+      {
+        "pc": "2170",
+        "source": "IMMA.16832.S8.S8 R68, R96.ROW, R4.COL, R148"
+      },
+      {
+        "pc": "21c0",
+        "source": "LDSM.16.M88.4 R76, [R76+UR6]"
+      },
+      {
+        "pc": "2220",
+        "source": "LDSM.16.M88.4 R72, [R75+UR5]"
+      },
+      {
+        "pc": "2230",
+        "source": "IMMA.16832.S8.S8 R64, R72.ROW, R4.COL, R64"
+      },
+      {
+        "pc": "2260",
+        "source": "IMMA.16832.S8.S8 R60, R72.ROW, R4.COL, R60"
+      },
+      {
+        "pc": "22e0",
+        "source": "IMMA.16832.S8.S8 R52, R132.ROW, R18.COL, R52"
+      },
+      {
+        "pc": "2310",
+        "source": "LDSM.16.M88.4 R140, [R140+UR6]"
+      },
+      {
+        "pc": "2330",
+        "source": "IMMA.16832.S8.S8 R36, R132.ROW, R2.COL, R36"
+      },
+      {
+        "pc": "2360",
+        "source": "IMMA.16832.S8.S8 R32, R88.ROW, R2.reuse.COL, R32"
+      },
+      {
+        "pc": "2370",
+        "source": "IMMA.16832.S8.S8 R28, R96.ROW, R2.reuse.COL, R28"
+      },
+      {
+        "pc": "2380",
+        "source": "IMMA.16832.S8.S8 R24, R72.ROW, R2.COL, R24"
+      },
+      {
+        "pc": "23b0",
+        "source": "IMMA.16832.S8.S8 R20, R88.ROW, R2.COL, R20"
+      },
+      {
+        "pc": "23e0",
+        "source": "LDSM.16.M88.4 R136, [R136+UR6]"
+      },
+      {
+        "pc": "2400",
+        "source": "IMMA.16832.S8.S8 R56, R132.ROW, R4.COL, R56"
+      },
+      {
+        "pc": "2420",
+        "source": "IMMA.16832.S8.S8 R16, R96.ROW, R2.COL, R16"
+      },
+      {
+        "pc": "2440",
+        "source": "IMMA.16832.S8.S8 R12, R72.ROW, R2.COL, R12"
+      },
+      {
+        "pc": "2470",
+        "source": "IMMA.16832.S8.S8 R48, R88.ROW, R4.reuse.COL, R48"
+      },
+      {
+        "pc": "2480",
+        "source": "IMMA.16832.S8.S8 R44, R96.ROW, R4.reuse.COL, R44"
+      },
+      {
+        "pc": "2490",
+        "source": "IMMA.16832.S8.S8 R40, R72.ROW, R4.COL, R40"
+      },
+      {
+        "pc": "24a0",
+        "source": "IMMA.16832.S8.S8 R8, R88.ROW, R2.reuse.COL, R8"
+      },
+      {
+        "pc": "24b0",
+        "source": "IMMA.16832.S8.S8 R4, R96.ROW, R2.reuse.COL, R148"
+      },
+      {
+        "pc": "24c0",
+        "source": "IMMA.16832.S8.S8 R108, R72.ROW, R2.COL, R108"
+      },
+      {
+        "pc": "24f0",
+        "source": "IMMA.16832.S8.S8 R112, R88.ROW, R2.COL, R112"
+      },
+      {
+        "pc": "2520",
+        "source": "IMMA.16832.S8.S8 R88, R88.ROW, R2.COL, R160"
+      },
+      {
+        "pc": "2550",
+        "source": "IMMA.16832.S8.S8 R100, R96.ROW, R2.COL, R100"
+      },
+      {
+        "pc": "2580",
+        "source": "IMMA.16832.S8.S8 R96, R96.ROW, R2.COL, R156"
+      },
+      {
+        "pc": "25c0",
+        "source": "IMMA.16832.S8.S8 R84, R72.ROW, R2.COL, R84"
+      },
+      {
+        "pc": "2610",
+        "source": "IMMA.16832.S8.S8 R72, R72.ROW, R2.COL, R152"
+      },
+      {
+        "pc": "2660",
+        "source": "IMMA.16832.S8.S8 R80, R132.reuse.ROW, R2.COL, R80"
+      },
+      {
+        "pc": "26a0",
+        "source": "IMMA.16832.S8.S8 R76, R132.reuse.ROW, R78.COL, R144"
+      },
+      {
+        "pc": "26b0",
+        "source": "IMMA.16832.S8.S8 R120, R132.reuse.ROW, R142.COL, R120"
+      },
+      {
+        "pc": "26c0",
+        "source": "IMMA.16832.S8.S8 R92, R132.reuse.ROW, R2.COL, R92"
+      },
+      {
+        "pc": "26d0",
+        "source": "IMMA.16832.S8.S8 R128, R132.ROW, R138.COL, R128"
+      }
+    ]
+  },
+  "_ZN12pearl_ada_v26kernelILi0EEEvPKaS2_iiiiPj": {
+    "hash": "0e5499705f5fb8a8146942d5560b0849311e773ec8cb8f87ec2d984099784b5d",
+    "instructions": 956,
+    "opcode_counts": {
+      "IMAD.MOV.U32": 172,
+      "S2UR": 2,
+      "ULDC": 3,
+      "S2R": 8,
+      "IMAD.SHL.U32": 14,
+      "ULDC.64": 2,
+      "BSSY": 10,
+      "IADD3": 36,
+      "I2F.U32.RP": 1,
+      "IMAD.MOV": 7,
+      "ISETP.NE.U32.AND": 1,
+      "MUFU.RCP": 2,
+      "UIMAD": 2,
+      "F2I.FTZ.U32.TRUNC.NTZ": 2,
+      "IMAD": 53,
+      "IMAD.HI.U32": 4,
+      "ISETP.GE.U32.AND": 4,
+      "IMAD.IADD": 17,
+      "LOP3.LUT": 125,
+      "IMNMX": 2,
+      "IABS": 3,
+      "I2F.RP": 1,
+      "ISETP.GT.U32.AND": 1,
+      "ISETP.NE.AND": 2,
+      "ISETP.GE.AND": 15,
+      "ISETP.GT.AND": 5,
+      "BRA": 21,
+      "SHF.R.S32.HI": 48,
+      "LEA.HI": 16,
+      "SEL": 4,
+      "IMAD.WIDE.U32": 10,
+      "SHF.R.U32.HI": 21,
+      "IADD3.X": 4,
+      "LDGSTS.E.BYPASS.128": 4,
+      "BSYNC": 10,
+      "LDGDEPBAR": 2,
+      "UISETP.GE.AND": 3,
+      "PLOP3.LUT": 4,
+      "USHF.R.S32.HI": 8,
+      "CS2R": 64,
+      "ULEA.HI": 3,
+      "STL": 9,
+      "UMOV": 2,
+      "UIADD3": 2,
+      "DEPBAR.LE": 1,
+      "BAR.SYNC.DEFER_BLOCKING": 2,
+      "ULOP3.LUT": 4,
+      "IMAD.U32": 21,
+      "LEA": 14,
+      "LEA.HI.X.SX32": 2,
+      "STL.64": 2,
+      "USHF.L.U32": 1,
+      "LDSM.16.M88.4": 16,
+      "IMMA.16832.S8.S8": 64,
+      "LDL.LU.64": 2,
+      "LDL": 5,
+      "NOP": 13,
+      "LDL.LU": 4,
+      "REDUX.XOR": 16,
+      "STS": 16,
+      "CALL.REL.NOINC": 1,
+      "EXIT": 3,
+      "IMAD.HI": 10,
+      "LEA.HI.SX32": 5,
+      "ISETP.GE.OR": 5,
+      "LDS": 5,
+      "LEA.HI.X": 10,
+      "STG.E": 5
+    },
+    "mma_load_pcs": [
+      {
+        "pc": "0bd0",
+        "source": "STL [R1+0xc], R7"
+      },
+      {
+        "pc": "0c10",
+        "source": "STL [R1+0x10], R3"
+      },
+      {
+        "pc": "0c50",
+        "source": "STL [R1+0x8], R6"
+      },
+      {
+        "pc": "0c90",
+        "source": "STL [R1+0x4], R4"
+      },
+      {
+        "pc": "0d00",
+        "source": "STL [R1], R3"
+      },
+      {
+        "pc": "13a0",
+        "source": "STL.64 [R1+0x30], R114"
+      },
+      {
+        "pc": "13d0",
+        "source": "STL.64 [R1+0x28], R112"
+      },
+      {
+        "pc": "13f0",
+        "source": "STL [R1+0x18], R2"
+      },
+      {
+        "pc": "1400",
+        "source": "STL [R1+0x14], R0"
+      },
+      {
+        "pc": "1550",
+        "source": "LDSM.16.M88.4 R120, [R120+UR5]"
+      },
+      {
+        "pc": "1580",
+        "source": "LDSM.16.M88.4 R116, [R116+UR6]"
+      },
+      {
+        "pc": "15a0",
+        "source": "LDSM.16.M88.4 R140, [R140+UR5]"
+      },
+      {
+        "pc": "15f0",
+        "source": "IMMA.16832.S8.S8 R144, R120.reuse.ROW, R144.COL, R8"
+      },
+      {
+        "pc": "1600",
+        "source": "LDSM.16.M88.4 R8, [R156+UR5]"
+      },
+      {
+        "pc": "1610",
+        "source": "IMMA.16832.S8.S8 R148, R120.ROW, R148.COL, R12"
+      },
+      {
+        "pc": "1680",
+        "source": "IMMA.16832.S8.S8 R152, R140.ROW, R12.COL, R40"
+      },
+      {
+        "pc": "16c0",
+        "source": "LDSM.16.M88.4 R40, [R40+UR6]"
+      },
+      {
+        "pc": "16d0",
+        "source": "IMMA.16832.S8.S8 R44, R140.ROW, R12.COL, R44"
+      },
+      {
+        "pc": "1700",
+        "source": "IMMA.16832.S8.S8 R72, R8.ROW, R12.COL, R72"
+      },
+      {
+        "pc": "1780",
+        "source": "IMMA.16832.S8.S8 R76, R8.ROW, R12.COL, R76"
+      },
+      {
+        "pc": "17a0",
+        "source": "LDSM.16.M88.4 R12, [R14+UR6]"
+      },
+      {
+        "pc": "17d0",
+        "source": "STL [R1+0x20], R74"
+      },
+      {
+        "pc": "17e0",
+        "source": "IMMA.16832.S8.S8 R112, R120.ROW, R158.COL, R16"
+      },
+      {
+        "pc": "17f0",
+        "source": "STL [R1+0x1c], R75"
+      },
+      {
+        "pc": "1820",
+        "source": "IMMA.16832.S8.S8 R48, R140.ROW, R16.COL, R48"
+      },
+      {
+        "pc": "1880",
+        "source": "IMMA.16832.S8.S8 R20, R120.ROW, R16.COL, R20"
+      },
+      {
+        "pc": "18a0",
+        "source": "IMMA.16832.S8.S8 R52, R140.ROW, R16.COL, R52"
+      },
+      {
+        "pc": "18d0",
+        "source": "IMMA.16832.S8.S8 R112, R120.ROW, R16.reuse.COL, R24"
+      },
+      {
+        "pc": "1920",
+        "source": "IMMA.16832.S8.S8 R56, R140.ROW, R16.COL, R56"
+      },
+      {
+        "pc": "1970",
+        "source": "IMMA.16832.S8.S8 R28, R120.ROW, R16.reuse.COL, R28"
+      },
+      {
+        "pc": "19b0",
+        "source": "LDL.LU.64 R114, [R1+0x30]"
+      },
+      {
+        "pc": "19d0",
+        "source": "IMMA.16832.S8.S8 R60, R140.ROW, R16.COL, R60"
+      },
+      {
+        "pc": "19e0",
+        "source": "LDL.LU.64 R112, [R1+0x28]"
+      },
+      {
+        "pc": "19f0",
+        "source": "LDL R24, [R1+0x10]"
+      },
+      {
+        "pc": "1a60",
+        "source": "LDSM.16.M88.4 R16, [R16+UR6]"
+      },
+      {
+        "pc": "1a90",
+        "source": "IMMA.16832.S8.S8 R32, R120.ROW, R20.COL, R32"
+      },
+      {
+        "pc": "1ac0",
+        "source": "IMMA.16832.S8.S8 R36, R120.ROW, R20.COL, R36"
+      },
+      {
+        "pc": "1af0",
+        "source": "LDL R36, [R1+0xc]"
+      },
+      {
+        "pc": "1b20",
+        "source": "IMMA.16832.S8.S8 R64, R140.ROW, R20.COL, R64"
+      },
+      {
+        "pc": "1b80",
+        "source": "IMMA.16832.S8.S8 R160, R140.ROW, R20.COL, R68"
+      },
+      {
+        "pc": "1ba0",
+        "source": "LDL R68, [R1+0x8]"
+      },
+      {
+        "pc": "1bd0",
+        "source": "IMMA.16832.S8.S8 R80, R8.ROW, R20.COL, R80"
+      },
+      {
+        "pc": "1c30",
+        "source": "IMMA.16832.S8.S8 R84, R8.ROW, R20.COL, R84"
+      },
+      {
+        "pc": "1c60",
+        "source": "IMMA.16832.S8.S8 R88, R8.ROW, R20.COL, R88"
+      },
+      {
+        "pc": "1c90",
+        "source": "IMMA.16832.S8.S8 R92, R8.ROW, R20.COL, R92"
+      },
+      {
+        "pc": "1cc0",
+        "source": "IMMA.16832.S8.S8 R96, R8.ROW, R20.COL, R96"
+      },
+      {
+        "pc": "1d30",
+        "source": "IMMA.16832.S8.S8 R156, R8.ROW, R20.COL, R100"
+      },
+      {
+        "pc": "1d40",
+        "source": "LDL R103, [R1+0x4]"
+      },
+      {
+        "pc": "1d70",
+        "source": "LDL R116, [R1]"
+      },
+      {
+        "pc": "1d80",
+        "source": "LDSM.16.M88.4 R24, [R24+UR5]"
+      },
+      {
+        "pc": "1e10",
+        "source": "IMMA.16832.S8.S8 R104, R24.ROW, R8.COL, R104"
+      },
+      {
+        "pc": "1e40",
+        "source": "IMMA.16832.S8.S8 R4, R24.ROW, R8.COL, R4"
+      },
+      {
+        "pc": "1e70",
+        "source": "LDSM.16.M88.4 R20, [R20+UR6]"
+      },
+      {
+        "pc": "1ec0",
+        "source": "LDSM.16.M88.4 R36, [R36+UR5]"
+      },
+      {
+        "pc": "1ef0",
+        "source": "IMMA.16832.S8.S8 R132, R24.ROW, R14.COL, R132"
+      },
+      {
+        "pc": "1f00",
+        "source": "LDSM.16.M88.4 R68, [R68+UR5]"
+      },
+      {
+        "pc": "1f10",
+        "source": "IMMA.16832.S8.S8 R12, R36.ROW, R12.COL, R148"
+      },
+      {
+        "pc": "1f30",
+        "source": "LDL.LU R74, [R1+0x20]"
+      },
+      {
+        "pc": "1f50",
+        "source": "LDL.LU R75, [R1+0x1c]"
+      },
+      {
+        "pc": "1f60",
+        "source": "IMMA.16832.S8.S8 R128, R24.ROW, R8.COL, R128"
+      },
+      {
+        "pc": "1fc0",
+        "source": "IMMA.16832.S8.S8 R108, R24.reuse.ROW, R118.COL, R108"
+      },
+      {
+        "pc": "1fd0",
+        "source": "IMMA.16832.S8.S8 R124, R24.reuse.ROW, R42.COL, R124"
+      },
+      {
+        "pc": "1fe0",
+        "source": "IMMA.16832.S8.S8 R136, R24.reuse.ROW, R8.COL, R136"
+      },
+      {
+        "pc": "1ff0",
+        "source": "IMMA.16832.S8.S8 R112, R24.ROW, R18.COL, R112"
+      },
+      {
+        "pc": "2080",
+        "source": "IMMA.16832.S8.S8 R8, R36.ROW, R8.COL, R144"
+      },
+      {
+        "pc": "2090",
+        "source": "LDSM.16.M88.4 R100, [R103+UR5]"
+      },
+      {
+        "pc": "20d0",
+        "source": "LDSM.16.M88.4 R144, [R144+UR6]"
+      },
+      {
+        "pc": "20e0",
+        "source": "LDSM.16.M88.4 R116, [R116+UR5]"
+      },
+      {
+        "pc": "20f0",
+        "source": "IMMA.16832.S8.S8 R40, R68.ROW, R16.COL, R152"
+      },
+      {
+        "pc": "2120",
+        "source": "IMMA.16832.S8.S8 R44, R68.ROW, R16.COL, R44"
+      },
+      {
+        "pc": "21e0",
+        "source": "IMMA.16832.S8.S8 R52, R68.ROW, R24.COL, R52"
+      },
+      {
+        "pc": "2200",
+        "source": "IMMA.16832.S8.S8 R84, R100.reuse.ROW, R24.COL, R84"
+      },
+      {
+        "pc": "2230",
+        "source": "LDL.LU R2, [R1+0x18]"
+      },
+      {
+        "pc": "2240",
+        "source": "IMMA.16832.S8.S8 R72, R100.ROW, R16.COL, R72"
+      },
+      {
+        "pc": "2270",
+        "source": "IMMA.16832.S8.S8 R76, R100.ROW, R16.COL, R76"
+      },
+      {
+        "pc": "22a0",
+        "source": "IMMA.16832.S8.S8 R104, R116.ROW, R16.COL, R104"
+      },
+      {
+        "pc": "22d0",
+        "source": "IMMA.16832.S8.S8 R16, R36.ROW, R16.COL, R140"
+      },
+      {
+        "pc": "2300",
+        "source": "LDSM.16.M88.4 R140, [R140+UR6]"
+      },
+      {
+        "pc": "2330",
+        "source": "IMMA.16832.S8.S8 R24, R36.ROW, R24.COL, R120"
+      },
+      {
+        "pc": "2360",
+        "source": "LDL.LU R0, [R1+0x14]"
+      },
+      {
+        "pc": "2390",
+        "source": "IMMA.16832.S8.S8 R56, R68.ROW, R120.COL, R56"
+      },
+      {
+        "pc": "23a0",
+        "source": "LDSM.16.M88.4 R120, [R122+UR6]"
+      },
+      {
+        "pc": "23e0",
+        "source": "IMMA.16832.S8.S8 R48, R68.ROW, R20.reuse.COL, R48"
+      },
+      {
+        "pc": "23f0",
+        "source": "IMMA.16832.S8.S8 R80, R100.ROW, R20.COL, R80"
+      },
+      {
+        "pc": "2420",
+        "source": "IMMA.16832.S8.S8 R108, R116.ROW, R22.COL, R108"
+      },
+      {
+        "pc": "2430",
+        "source": "IMMA.16832.S8.S8 R20, R36.ROW, R20.COL, R148"
+      },
+      {
+        "pc": "2460",
+        "source": "IMMA.16832.S8.S8 R88, R100.ROW, R148.COL, R88"
+      },
+      {
+        "pc": "2490",
+        "source": "IMMA.16832.S8.S8 R28, R36.ROW, R148.reuse.COL, R28"
+      },
+      {
+        "pc": "24a0",
+        "source": "IMMA.16832.S8.S8 R60, R68.ROW, R148.reuse.COL, R60"
+      },
+      {
+        "pc": "24b0",
+        "source": "IMMA.16832.S8.S8 R92, R100.ROW, R148.COL, R92"
+      },
+      {
+        "pc": "24e0",
+        "source": "IMMA.16832.S8.S8 R32, R36.ROW, R148.COL, R32"
+      },
+      {
+        "pc": "2510",
+        "source": "IMMA.16832.S8.S8 R36, R36.ROW, R148.COL, R152"
+      },
+      {
+        "pc": "2540",
+        "source": "IMMA.16832.S8.S8 R64, R68.ROW, R148.COL, R64"
+      },
+      {
+        "pc": "2570",
+        "source": "IMMA.16832.S8.S8 R68, R68.ROW, R148.COL, R160"
+      },
+      {
+        "pc": "25c0",
+        "source": "IMMA.16832.S8.S8 R96, R100.ROW, R148.COL, R96"
+      },
+      {
+        "pc": "2600",
+        "source": "IMMA.16832.S8.S8 R100, R100.ROW, R148.COL, R156"
+      },
+      {
+        "pc": "26a0",
+        "source": "IMMA.16832.S8.S8 R4, R116.reuse.ROW, R148.COL, R4"
+      },
+      {
+        "pc": "26b0",
+        "source": "IMMA.16832.S8.S8 R124, R116.reuse.ROW, R146.COL, R124"
+      },
+      {
+        "pc": "26c0",
+        "source": "IMMA.16832.S8.S8 R128, R116.reuse.ROW, R144.COL, R128"
+      },
+      {
+        "pc": "26d0",
+        "source": "IMMA.16832.S8.S8 R132, R116.reuse.ROW, R142.COL, R132"
+      },
+      {
+        "pc": "26e0",
+        "source": "IMMA.16832.S8.S8 R136, R116.reuse.ROW, R140.COL, R136"
+      },
+      {
+        "pc": "26f0",
+        "source": "IMMA.16832.S8.S8 R112, R116.ROW, R122.COL, R112"
+      }
+    ]
+  },
+  "_ZN12pearl_ada_v26kernelILi2EEEvPKaS2_iiiiPj": {
+    "hash": "53eb00f486cf331bae96b52f280dc7c50446f2b03f3f3e7bd4b361ba504c4de9",
+    "instructions": 875,
+    "opcode_counts": {
+      "IMAD.MOV.U32": 109,
+      "ULDC": 4,
+      "S2UR": 2,
+      "USHF.L.U32": 2,
+      "BSSY": 10,
+      "UMOV": 7,
+      "UIADD3": 7,
+      "UISETP.NE.U32.AND": 1,
+      "I2F.U32.RP": 1,
+      "MUFU.RCP": 2,
+      "UIMAD": 9,
+      "IADD3": 35,
+      "F2I.FTZ.U32.TRUNC.NTZ": 2,
+      "R2UR": 5,
+      "UIMAD.WIDE.U32": 4,
+      "UISETP.GE.U32.AND": 3,
+      "UISETP.LT.AND": 1,
+      "USEL": 1,
+      "IMAD.U32": 36,
+      "IABS": 3,
+      "I2F.RP": 1,
+      "IMAD.MOV": 1,
+      "S2R": 3,
+      "ISETP.GT.AND": 5,
+      "UISETP.GT.U32.AND": 1,
+      "ULOP3.LUT": 5,
+      "ULDC.64": 2,
+      "UISETP.GE.AND": 4,
+      "UISETP.NE.AND": 1,
+      "ULEA": 1,
+      "BRA": 21,
+      "SHF.R.S32.HI": 48,
+      "LEA.HI": 16,
+      "LOP3.LUT": 109,
+      "IMAD": 46,
+      "IMAD.IADD": 15,
+      "ISETP.GE.AND": 14,
+      "IMAD.SHL.U32": 12,
+      "SEL": 4,
+      "IMAD.WIDE.U32": 10,
+      "SHF.R.U32.HI": 20,
+      "IADD3.X": 4,
+      "LDGSTS.E.BYPASS.128": 4,
+      "BSYNC": 10,
+      "LDGDEPBAR": 2,
+      "PLOP3.LUT": 4,
+      "USHF.R.S32.HI": 8,
+      "CS2R": 64,
+      "ULEA.HI": 3,
+      "DEPBAR.LE": 1,
+      "BAR.SYNC.DEFER_BLOCKING": 2,
+      "LEA": 14,
+      "LEA.HI.X.SX32": 2,
+      "LDSM.16.M88.4": 16,
+      "IMMA.16832.S8.S8": 64,
+      "REDUX.XOR": 16,
+      "STS": 16,
+      "CALL.REL.NOINC": 1,
+      "EXIT": 3,
+      "IMNMX": 1,
+      "IMAD.HI": 10,
+      "ISETP.NE.AND": 1,
+      "LEA.HI.SX32": 5,
+      "ISETP.GE.OR": 5,
+      "LDS": 5,
+      "LEA.HI.X": 10,
+      "STG.E": 5,
+      "ISETP.GE.U32.AND": 1,
+      "NOP": 15
+    },
+    "mma_load_pcs": [
+      {
+        "pc": "1570",
+        "source": "LDSM.16.M88.4 R132, [R132+UR6]"
+      },
+      {
+        "pc": "15b0",
+        "source": "LDSM.16.M88.4 R152, [R152+UR5]"
+      },
+      {
+        "pc": "15e0",
+        "source": "LDSM.16.M88.4 R144, [R144+UR5]"
+      },
+      {
+        "pc": "1630",
+        "source": "IMMA.16832.S8.S8 R112, R152.ROW, R136.COL, R112"
+      },
+      {
+        "pc": "1650",
+        "source": "IMMA.16832.S8.S8 R92, R144.ROW, R140.COL, R92"
+      },
+      {
+        "pc": "16c0",
+        "source": "IMMA.16832.S8.S8 R108, R152.ROW, R136.COL, R108"
+      },
+      {
+        "pc": "16d0",
+        "source": "LDSM.16.M88.4 R136, [R138+UR6]"
+      },
+      {
+        "pc": "1710",
+        "source": "IMMA.16832.S8.S8 R64, R144.ROW, R140.COL, R64"
+      },
+      {
+        "pc": "1720",
+        "source": "LDSM.16.M88.4 R140, [R142+UR6]"
+      },
+      {
+        "pc": "1750",
+        "source": "IMMA.16832.S8.S8 R104, R152.ROW, R148.reuse.COL, R104"
+      },
+      {
+        "pc": "1760",
+        "source": "IMMA.16832.S8.S8 R88, R144.ROW, R148.COL, R88"
+      },
+      {
+        "pc": "1790",
+        "source": "IMMA.16832.S8.S8 R100, R152.ROW, R148.reuse.COL, R100"
+      },
+      {
+        "pc": "17a0",
+        "source": "IMMA.16832.S8.S8 R84, R144.ROW, R148.COL, R84"
+      },
+      {
+        "pc": "17d0",
+        "source": "IMMA.16832.S8.S8 R96, R152.ROW, R148.reuse.COL, R96"
+      },
+      {
+        "pc": "17e0",
+        "source": "IMMA.16832.S8.S8 R80, R144.ROW, R148.COL, R80"
+      },
+      {
+        "pc": "1810",
+        "source": "IMMA.16832.S8.S8 R52, R152.ROW, R148.reuse.COL, R52"
+      },
+      {
+        "pc": "1820",
+        "source": "IMMA.16832.S8.S8 R76, R144.ROW, R148.COL, R76"
+      },
+      {
+        "pc": "1860",
+        "source": "LDSM.16.M88.4 R148, [R149+UR6]"
+      },
+      {
+        "pc": "1890",
+        "source": "IMMA.16832.S8.S8 R48, R152.ROW, R156.COL, R48"
+      },
+      {
+        "pc": "18c0",
+        "source": "IMMA.16832.S8.S8 R72, R152.ROW, R156.COL, R72"
+      },
+      {
+        "pc": "1910",
+        "source": "IMMA.16832.S8.S8 R68, R144.ROW, R152.COL, R68"
+      },
+      {
+        "pc": "1940",
+        "source": "IMMA.16832.S8.S8 R60, R144.ROW, R152.COL, R60"
+      },
+      {
+        "pc": "1950",
+        "source": "LDSM.16.M88.4 R144, [R158+UR5]"
+      },
+      {
+        "pc": "19a0",
+        "source": "IMMA.16832.S8.S8 R40, R144.ROW, R152.COL, R40"
+      },
+      {
+        "pc": "19e0",
+        "source": "IMMA.16832.S8.S8 R36, R144.ROW, R152.COL, R36"
+      },
+      {
+        "pc": "19f0",
+        "source": "LDSM.16.M88.4 R152, [R164+UR5]"
+      },
+      {
+        "pc": "1a00",
+        "source": "IMMA.16832.S8.S8 R32, R152.reuse.ROW, R156.COL, R32"
+      },
+      {
+        "pc": "1a20",
+        "source": "IMMA.16832.S8.S8 R28, R152.ROW, R134.COL, R28"
+      },
+      {
+        "pc": "1a60",
+        "source": "IMMA.16832.S8.S8 R24, R144.ROW, R156.COL, R24"
+      },
+      {
+        "pc": "1ab0",
+        "source": "IMMA.16832.S8.S8 R20, R152.ROW, R132.COL, R20"
+      },
+      {
+        "pc": "1ae0",
+        "source": "IMMA.16832.S8.S8 R16, R144.ROW, R156.COL, R16"
+      },
+      {
+        "pc": "1b10",
+        "source": "IMMA.16832.S8.S8 R116, R152.ROW, R132.COL, R116"
+      },
+      {
+        "pc": "1b50",
+        "source": "IMMA.16832.S8.S8 R8, R144.ROW, R156.COL, R8"
+      },
+      {
+        "pc": "1b80",
+        "source": "IMMA.16832.S8.S8 R120, R152.ROW, R142.COL, R120"
+      },
+      {
+        "pc": "1ba0",
+        "source": "LDSM.16.M88.4 R140, [R162+UR5]"
+      },
+      {
+        "pc": "1bb0",
+        "source": "IMMA.16832.S8.S8 R4, R144.ROW, R156.COL, R4"
+      },
+      {
+        "pc": "1bd0",
+        "source": "IMMA.16832.S8.S8 R124, R152.ROW, R132.COL, R124"
+      },
+      {
+        "pc": "1c00",
+        "source": "IMMA.16832.S8.S8 R56, R144.ROW, R156.COL, R56"
+      },
+      {
+        "pc": "1c20",
+        "source": "IMMA.16832.S8.S8 R12, R152.ROW, R138.COL, R12"
+      },
+      {
+        "pc": "1c40",
+        "source": "IMMA.16832.S8.S8 R44, R144.ROW, R156.COL, R44"
+      },
+      {
+        "pc": "1c50",
+        "source": "LDSM.16.M88.4 R156, [R135+UR6]"
+      },
+      {
+        "pc": "1c60",
+        "source": "LDSM.16.M88.4 R144, [R163+UR5]"
+      },
+      {
+        "pc": "1c70",
+        "source": "IMMA.16832.S8.S8 R128, R152.ROW, R150.COL, R128"
+      },
+      {
+        "pc": "1cc0",
+        "source": "LDSM.16.M88.4 R152, [R152+UR6]"
+      },
+      {
+        "pc": "1d40",
+        "source": "IMMA.16832.S8.S8 R112, R144.ROW, R132.COL, R112"
+      },
+      {
+        "pc": "1d50",
+        "source": "LDSM.16.M88.4 R132, [R161+UR5]"
+      },
+      {
+        "pc": "1d70",
+        "source": "IMMA.16832.S8.S8 R108, R144.ROW, R136.COL, R108"
+      },
+      {
+        "pc": "1da0",
+        "source": "IMMA.16832.S8.S8 R92, R140.ROW, R136.COL, R92"
+      },
+      {
+        "pc": "1dd0",
+        "source": "IMMA.16832.S8.S8 R64, R140.ROW, R136.COL, R64"
+      },
+      {
+        "pc": "1e10",
+        "source": "IMMA.16832.S8.S8 R40, R132.ROW, R136.COL, R40"
+      },
+      {
+        "pc": "1e40",
+        "source": "IMMA.16832.S8.S8 R104, R144.ROW, R136.reuse.COL, R104"
+      },
+      {
+        "pc": "1e50",
+        "source": "IMMA.16832.S8.S8 R88, R140.ROW, R136.COL, R88"
+      },
+      {
+        "pc": "1e80",
+        "source": "IMMA.16832.S8.S8 R36, R132.ROW, R136.COL, R36"
+      },
+      {
+        "pc": "1e90",
+        "source": "LDSM.16.M88.4 R136, [R160+UR5]"
+      },
+      {
+        "pc": "1ea0",
+        "source": "IMMA.16832.S8.S8 R32, R136.reuse.ROW, R148.COL, R32"
+      },
+      {
+        "pc": "1ec0",
+        "source": "IMMA.16832.S8.S8 R28, R136.ROW, R158.COL, R28"
+      },
+      {
+        "pc": "1ef0",
+        "source": "IMMA.16832.S8.S8 R24, R132.ROW, R148.reuse.COL, R24"
+      },
+      {
+        "pc": "1f00",
+        "source": "IMMA.16832.S8.S8 R20, R136.ROW, R148.COL, R20"
+      },
+      {
+        "pc": "1f10",
+        "source": "LDSM.16.M88.4 R148, [R151+UR6]"
+      },
+      {
+        "pc": "1f20",
+        "source": "IMMA.16832.S8.S8 R100, R144.ROW, R154.reuse.COL, R100"
+      },
+      {
+        "pc": "1f30",
+        "source": "IMMA.16832.S8.S8 R84, R140.ROW, R154.reuse.COL, R84"
+      },
+      {
+        "pc": "1f40",
+        "source": "IMMA.16832.S8.S8 R16, R132.ROW, R154.reuse.COL, R16"
+      },
+      {
+        "pc": "1f50",
+        "source": "IMMA.16832.S8.S8 R12, R136.ROW, R154.COL, R12"
+      },
+      {
+        "pc": "1fa0",
+        "source": "IMMA.16832.S8.S8 R96, R144.ROW, R152.COL, R96"
+      },
+      {
+        "pc": "1fc0",
+        "source": "IMMA.16832.S8.S8 R8, R132.ROW, R156.COL, R8"
+      },
+      {
+        "pc": "2010",
+        "source": "IMMA.16832.S8.S8 R80, R140.ROW, R152.COL, R80"
+      },
+      {
+        "pc": "2020",
+        "source": "LDSM.16.M88.4 R152, [R154+UR6]"
+      },
+      {
+        "pc": "2030",
+        "source": "IMMA.16832.S8.S8 R52, R144.ROW, R156.reuse.COL, R52"
+      },
+      {
+        "pc": "2040",
+        "source": "IMMA.16832.S8.S8 R76, R140.ROW, R156.reuse.COL, R76"
+      },
+      {
+        "pc": "2050",
+        "source": "IMMA.16832.S8.S8 R4, R132.ROW, R156.COL, R4"
+      },
+      {
+        "pc": "2080",
+        "source": "IMMA.16832.S8.S8 R48, R144.ROW, R156.COL, R48"
+      },
+      {
+        "pc": "20b0",
+        "source": "IMMA.16832.S8.S8 R72, R144.ROW, R156.COL, R72"
+      },
+      {
+        "pc": "20e0",
+        "source": "IMMA.16832.S8.S8 R68, R140.ROW, R144.COL, R68"
+      },
+      {
+        "pc": "2110",
+        "source": "IMMA.16832.S8.S8 R60, R140.ROW, R144.COL, R60"
+      },
+      {
+        "pc": "2140",
+        "source": "IMMA.16832.S8.S8 R56, R132.ROW, R140.COL, R56"
+      },
+      {
+        "pc": "2170",
+        "source": "IMMA.16832.S8.S8 R44, R132.ROW, R140.COL, R44"
+      },
+      {
+        "pc": "21b0",
+        "source": "IMMA.16832.S8.S8 R116, R136.reuse.ROW, R132.COL, R116"
+      },
+      {
+        "pc": "21d0",
+        "source": "IMMA.16832.S8.S8 R120, R136.ROW, R150.COL, R120"
+      },
+      {
+        "pc": "2200",
+        "source": "IMMA.16832.S8.S8 R124, R136.reuse.ROW, R132.COL, R124"
+      },
+      {
+        "pc": "2210",
+        "source": "IMMA.16832.S8.S8 R128, R136.ROW, R154.COL, R128"
+      }
+    ]
+  },
+  "_ZN12pearl_ada_v26kernelILi1EEEvPKaS2_iiiiPj": {
+    "hash": "d203d13f4ae47f2891f86dac13523c85ce34994f6dda58e6585c4e0a5ee12f6f",
+    "instructions": 924,
+    "opcode_counts": {
+      "IMAD.MOV.U32": 161,
+      "S2UR": 2,
+      "ULDC": 3,
+      "S2R": 8,
+      "IMAD.SHL.U32": 13,
+      "ULDC.64": 2,
+      "BSSY": 10,
+      "IADD3": 40,
+      "I2F.U32.RP": 1,
+      "IMAD.MOV": 7,
+      "ISETP.NE.U32.AND": 1,
+      "MUFU.RCP": 2,
+      "UIMAD": 2,
+      "F2I.FTZ.U32.TRUNC.NTZ": 2,
+      "IMAD": 54,
+      "IMAD.HI.U32": 4,
+      "ISETP.GE.U32.AND": 4,
+      "IMAD.IADD": 17,
+      "LOP3.LUT": 113,
+      "IMNMX": 2,
+      "IABS": 3,
+      "I2F.RP": 1,
+      "ISETP.GT.U32.AND": 1,
+      "ISETP.NE.AND": 2,
+      "ISETP.GE.AND": 15,
+      "ISETP.GT.AND": 5,
+      "BRA": 21,
+      "SHF.R.S32.HI": 48,
+      "LEA.HI": 16,
+      "SEL": 4,
+      "IMAD.WIDE.U32": 10,
+      "SHF.R.U32.HI": 21,
+      "IADD3.X": 4,
+      "LDGSTS.E.BYPASS.128": 4,
+      "BSYNC": 10,
+      "LDGDEPBAR": 2,
+      "UISETP.GE.AND": 3,
+      "PLOP3.LUT": 4,
+      "USHF.R.S32.HI": 8,
+      "CS2R": 64,
+      "ULEA.HI": 3,
+      "STL": 3,
+      "UMOV": 2,
+      "UIADD3": 2,
+      "DEPBAR.LE": 1,
+      "BAR.SYNC.DEFER_BLOCKING": 2,
+      "ULOP3.LUT": 4,
+      "IMAD.U32": 21,
+      "LEA": 14,
+      "LEA.HI.X.SX32": 2,
+      "USHF.L.U32": 1,
+      "LDSM.16.M88.4": 16,
+      "IMMA.16832.S8.S8": 64,
+      "NOP": 16,
+      "LDL": 3,
+      "REDUX.XOR": 16,
+      "STS": 16,
+      "CALL.REL.NOINC": 1,
+      "EXIT": 3,
+      "IMAD.HI": 10,
+      "LEA.HI.SX32": 5,
+      "ISETP.GE.OR": 5,
+      "LDS": 5,
+      "LEA.HI.X": 10,
+      "STG.E": 5
+    },
+    "mma_load_pcs": [
+      {
+        "pc": "0c30",
+        "source": "STL [R1+0x4], R6"
+      },
+      {
+        "pc": "0c70",
+        "source": "STL [R1+0x8], R5"
+      },
+      {
+        "pc": "0cb0",
+        "source": "STL [R1], R3"
+      },
+      {
+        "pc": "14f0",
+        "source": "LDSM.16.M88.4 R132, [R132+UR6]"
+      },
+      {
+        "pc": "1520",
+        "source": "LDSM.16.M88.4 R136, [R136+UR5]"
+      },
+      {
+        "pc": "15b0",
+        "source": "IMMA.16832.S8.S8 R116, R136.ROW, R140.COL, R116"
+      },
+      {
+        "pc": "15c0",
+        "source": "LDSM.16.M88.4 R140, [R142+UR5]"
+      },
+      {
+        "pc": "15e0",
+        "source": "IMMA.16832.S8.S8 R144, R136.ROW, R144.COL, R100"
+      },
+      {
+        "pc": "15f0",
+        "source": "LDSM.16.M88.4 R100, [R154+UR6]"
+      },
+      {
+        "pc": "1600",
+        "source": "IMMA.16832.S8.S8 R148, R140.ROW, R148.COL, R24"
+      },
+      {
+        "pc": "1670",
+        "source": "IMMA.16832.S8.S8 R160, R140.ROW, R154.COL, R4"
+      },
+      {
+        "pc": "16a0",
+        "source": "IMMA.16832.S8.S8 R76, R140.ROW, R24.COL, R76"
+      },
+      {
+        "pc": "16b0",
+        "source": "LDSM.16.M88.4 R24, [R26+UR6]"
+      },
+      {
+        "pc": "16d0",
+        "source": "IMMA.16832.S8.S8 R108, R136.ROW, R154.COL, R108"
+      },
+      {
+        "pc": "16e0",
+        "source": "IMMA.16832.S8.S8 R156, R140.ROW, R4.reuse.COL, R16"
+      },
+      {
+        "pc": "16f0",
+        "source": "IMMA.16832.S8.S8 R72, R136.ROW, R4.COL, R72"
+      },
+      {
+        "pc": "1770",
+        "source": "IMMA.16832.S8.S8 R68, R136.ROW, R4.reuse.COL, R68"
+      },
+      {
+        "pc": "1780",
+        "source": "IMMA.16832.S8.S8 R84, R140.ROW, R4.COL, R84"
+      },
+      {
+        "pc": "17b0",
+        "source": "IMMA.16832.S8.S8 R156, R136.ROW, R4.reuse.COL, R64"
+      },
+      {
+        "pc": "17c0",
+        "source": "IMMA.16832.S8.S8 R88, R140.ROW, R4.COL, R88"
+      },
+      {
+        "pc": "1830",
+        "source": "LDSM.16.M88.4 R4, [R5+UR6]"
+      },
+      {
+        "pc": "1870",
+        "source": "IMMA.16832.S8.S8 R96, R136.ROW, R16.COL, R96"
+      },
+      {
+        "pc": "18a0",
+        "source": "IMMA.16832.S8.S8 R12, R136.ROW, R16.COL, R12"
+      },
+      {
+        "pc": "18b0",
+        "source": "LDL R16, [R1+0x8]"
+      },
+      {
+        "pc": "1930",
+        "source": "IMMA.16832.S8.S8 R156, R140.ROW, R12.COL, R60"
+      },
+      {
+        "pc": "19a0",
+        "source": "IMMA.16832.S8.S8 R156, R140.ROW, R12.COL, R56"
+      },
+      {
+        "pc": "19b0",
+        "source": "LDL R57, [R1+0x4]"
+      },
+      {
+        "pc": "19c0",
+        "source": "LDL R56, [R1]"
+      },
+      {
+        "pc": "19f0",
+        "source": "LDSM.16.M88.4 R152, [R152+UR5]"
+      },
+      {
+        "pc": "1a40",
+        "source": "IMMA.16832.S8.S8 R32, R152.ROW, R12.COL, R32"
+      },
+      {
+        "pc": "1a70",
+        "source": "IMMA.16832.S8.S8 R52, R152.ROW, R12.COL, R52"
+      },
+      {
+        "pc": "1b10",
+        "source": "LDSM.16.M88.4 R16, [R16+UR5]"
+      },
+      {
+        "pc": "1b20",
+        "source": "IMMA.16832.S8.S8 R92, R16.ROW, R12.COL, R92"
+      },
+      {
+        "pc": "1b50",
+        "source": "IMMA.16832.S8.S8 R28, R152.ROW, R12.COL, R28"
+      },
+      {
+        "pc": "1b80",
+        "source": "IMMA.16832.S8.S8 R48, R152.ROW, R12.COL, R48"
+      },
+      {
+        "pc": "1bb0",
+        "source": "IMMA.16832.S8.S8 R44, R152.ROW, R12.COL, R44"
+      },
+      {
+        "pc": "1be0",
+        "source": "IMMA.16832.S8.S8 R40, R152.ROW, R12.COL, R40"
+      },
+      {
+        "pc": "1c10",
+        "source": "IMMA.16832.S8.S8 R8, R16.ROW, R134.COL, R8"
+      },
+      {
+        "pc": "1c20",
+        "source": "IMMA.16832.S8.S8 R36, R152.ROW, R12.COL, R36"
+      },
+      {
+        "pc": "1c90",
+        "source": "IMMA.16832.S8.S8 R152, R152.ROW, R12.COL, R120"
+      },
+      {
+        "pc": "1cb0",
+        "source": "LDSM.16.M88.4 R120, [R165+UR5]"
+      },
+      {
+        "pc": "1cd0",
+        "source": "LDSM.16.M88.4 R60, [R60+UR6]"
+      },
+      {
+        "pc": "1cf0",
+        "source": "IMMA.16832.S8.S8 R104, R16.ROW, R12.COL, R104"
+      },
+      {
+        "pc": "1d20",
+        "source": "IMMA.16832.S8.S8 R20, R16.ROW, R12.COL, R20"
+      },
+      {
+        "pc": "1d30",
+        "source": "LDSM.16.M88.4 R12, [R57+UR5]"
+      },
+      {
+        "pc": "1d40",
+        "source": "LDSM.16.M88.4 R56, [R56+UR5]"
+      },
+      {
+        "pc": "1dc0",
+        "source": "IMMA.16832.S8.S8 R80, R16.ROW, R102.COL, R80"
+      },
+      {
+        "pc": "1dd0",
+        "source": "IMMA.16832.S8.S8 R116, R12.ROW, R4.COL, R116"
+      },
+      {
+        "pc": "1e00",
+        "source": "IMMA.16832.S8.S8 R100, R12.ROW, R4.COL, R144"
+      },
+      {
+        "pc": "1e30",
+        "source": "IMMA.16832.S8.S8 R124, R16.reuse.ROW, R26.COL, R124"
+      },
+      {
+        "pc": "1e40",
+        "source": "IMMA.16832.S8.S8 R128, R16.ROW, R24.COL, R128"
+      },
+      {
+        "pc": "1e50",
+        "source": "IMMA.16832.S8.S8 R24, R56.ROW, R4.COL, R148"
+      },
+      {
+        "pc": "1e80",
+        "source": "IMMA.16832.S8.S8 R76, R56.ROW, R4.COL, R76"
+      },
+      {
+        "pc": "1eb0",
+        "source": "IMMA.16832.S8.S8 R32, R120.ROW, R4.COL, R32"
+      },
+      {
+        "pc": "1ee0",
+        "source": "IMMA.16832.S8.S8 R52, R120.ROW, R4.COL, R52"
+      },
+      {
+        "pc": "1f80",
+        "source": "LDSM.16.M88.4 R132, [R164+UR5]"
+      },
+      {
+        "pc": "1fb0",
+        "source": "LDSM.16.M88.4 R64, [R64+UR6]"
+      },
+      {
+        "pc": "1fc0",
+        "source": "IMMA.16832.S8.S8 R112, R16.ROW, R6.COL, R112"
+      },
+      {
+        "pc": "2060",
+        "source": "IMMA.16832.S8.S8 R92, R132.ROW, R4.COL, R92"
+      },
+      {
+        "pc": "2090",
+        "source": "IMMA.16832.S8.S8 R8, R132.ROW, R62.COL, R8"
+      },
+      {
+        "pc": "20c0",
+        "source": "LDSM.16.M88.4 R140, [R140+UR6]"
+      },
+      {
+        "pc": "20d0",
+        "source": "IMMA.16832.S8.S8 R108, R12.ROW, R4.reuse.COL, R108"
+      },
+      {
+        "pc": "20e0",
+        "source": "IMMA.16832.S8.S8 R4, R56.ROW, R4.COL, R160"
+      },
+      {
+        "pc": "21b0",
+        "source": "LDSM.16.M88.4 R136, [R136+UR6]"
+      },
+      {
+        "pc": "21c0",
+        "source": "IMMA.16832.S8.S8 R28, R120.ROW, R16.reuse.COL, R28"
+      },
+      {
+        "pc": "21d0",
+        "source": "IMMA.16832.S8.S8 R104, R132.ROW, R16.COL, R104"
+      },
+      {
+        "pc": "2200",
+        "source": "IMMA.16832.S8.S8 R72, R12.ROW, R16.reuse.COL, R72"
+      },
+      {
+        "pc": "2210",
+        "source": "IMMA.16832.S8.S8 R16, R56.ROW, R16.COL, R60"
+      },
+      {
+        "pc": "2240",
+        "source": "IMMA.16832.S8.S8 R48, R120.ROW, R60.COL, R48"
+      },
+      {
+        "pc": "2280",
+        "source": "IMMA.16832.S8.S8 R68, R12.ROW, R60.reuse.COL, R68"
+      },
+      {
+        "pc": "2290",
+        "source": "IMMA.16832.S8.S8 R84, R56.ROW, R60.reuse.COL, R84"
+      },
+      {
+        "pc": "22a0",
+        "source": "IMMA.16832.S8.S8 R44, R120.ROW, R60.reuse.COL, R44"
+      },
+      {
+        "pc": "22b0",
+        "source": "IMMA.16832.S8.S8 R20, R132.ROW, R60.COL, R20"
+      },
+      {
+        "pc": "22e0",
+        "source": "IMMA.16832.S8.S8 R80, R132.ROW, R66.COL, R80"
+      },
+      {
+        "pc": "22f0",
+        "source": "IMMA.16832.S8.S8 R64, R12.ROW, R60.reuse.COL, R160"
+      },
+      {
+        "pc": "2300",
+        "source": "IMMA.16832.S8.S8 R88, R56.ROW, R60.reuse.COL, R88"
+      },
+      {
+        "pc": "2310",
+        "source": "IMMA.16832.S8.S8 R40, R120.ROW, R60.COL, R40"
+      },
+      {
+        "pc": "2340",
+        "source": "IMMA.16832.S8.S8 R96, R12.ROW, R60.COL, R96"
+      },
+      {
+        "pc": "2370",
+        "source": "IMMA.16832.S8.S8 R12, R12.ROW, R60.COL, R148"
+      },
+      {
+        "pc": "23b0",
+        "source": "IMMA.16832.S8.S8 R60, R56.ROW, R60.COL, R144"
+      },
+      {
+        "pc": "2400",
+        "source": "IMMA.16832.S8.S8 R56, R56.ROW, R144.COL, R156"
+      },
+      {
+        "pc": "2470",
+        "source": "IMMA.16832.S8.S8 R36, R120.ROW, R144.COL, R36"
+      },
+      {
+        "pc": "24a0",
+        "source": "IMMA.16832.S8.S8 R124, R132.ROW, R142.COL, R124"
+      },
+      {
+        "pc": "24b0",
+        "source": "IMMA.16832.S8.S8 R120, R120.ROW, R144.COL, R152"
+      },
+      {
+        "pc": "24c0",
+        "source": "IMMA.16832.S8.S8 R128, R132.reuse.ROW, R140.COL, R128"
+      },
+      {
+        "pc": "24d0",
+        "source": "IMMA.16832.S8.S8 R112, R132.ROW, R138.COL, R112"
+      }
+    ]
+  }
+}

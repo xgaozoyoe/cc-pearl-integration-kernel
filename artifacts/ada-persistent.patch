@@ -1,0 +1,255 @@
+diff --git a/tools/build_ada_persistent.py b/tools/build_ada_persistent.py
+new file mode 100644
+index 0000000..301832f
+--- /dev/null
++++ b/tools/build_ada_persistent.py
+@@ -0,0 +1,72 @@
++"""Generate an isolated v121 derivative; leave the source and production intact."""
++from pathlib import Path
++import subprocess
++root=Path(__file__).resolve().parents[1]
++source=(root/"csrc/gemm/pearl-gemm-ada-v2.cu").read_text()
++source=source[:source.index("cudaError_t launch_pearl_gemm_ada_v2")]
++source=source.replace("pearl_ada_v2","pearl_persistent")
++source=source.replace("bool Wide=false,int Layout=0>\n","bool Wide=false,int Layout=0,int Schedule=0>\n")
++old="""    int linear=blockIdx.x+gridDim.x*blockIdx.y;
++    int first=linear/(8*gridDim.x)*8;
++    int cols=min(8,int(gridDim.y)-first), offset=linear%(8*gridDim.x);
++    int cm=offset/cols,cn=first+offset%cols;"""
++new="""    constexpr bool Persistent=Schedule==1||Schedule==2;
++    if constexpr(Schedule!=0) { m=8192; n=8192; }
++    const int tiles_m=(m+BM-1)/BM,tiles_n=(n+BN-1)/BN;
++    for(int work=(Persistent?int(blockIdx.x):0);
++        work<(Persistent?tiles_m*tiles_n:1);
++        work+=(Persistent?int(gridDim.x):1)) {
++    int cm,cn;
++    if constexpr(Schedule==0 || Schedule==3) {
++        int linear=blockIdx.x+gridDim.x*blockIdx.y;
++        int first=linear/(8*gridDim.x)*8;
++        int cols=min(8,int(gridDim.y)-first),offset=linear%(8*gridDim.x);
++        cm=offset/cols;cn=first+offset%cols;
++    } else if constexpr(Schedule==1) {
++        int first=work/(8*tiles_m)*8;
++        int cols=min(8,tiles_n-first),offset=work%(8*tiles_m);
++        cm=offset/cols;cn=first+offset%cols;
++    } else {
++        int mfirst=work/(16*tiles_n)*16;
++        int rows=min(16,tiles_m-mfirst),local=work%(16*tiles_n);
++        int first=local/(8*rows)*8;
++        int cols=min(8,tiles_n-first),offset=local%(8*rows);
++        cm=mfirst+offset/cols;cn=first+offset%cols;
++    }"""
++assert source.count(old)==1
++source=source.replace(old,new)
++needle="\n}\ntemplate<int Lead"
++assert source.count(needle)==1
++source=source.replace(needle,"\n    } // end persistent task loop\n}\ntemplate<int Lead")
++source=source.replace("    constexpr int Threads=Wide?256:THREADS;", "    constexpr bool Persistent=Schedule==1||Schedule==2;\n    constexpr int Threads=Wide?256:THREADS;")
++# Prevent epilogue index constants from being hoisted across every task/MMA loop.
++source=source.replace("    for(int i=threadIdx.x;i<WORDS;i+=Threads) {", """    int output_tid=threadIdx.x;
++    if constexpr(Schedule==1 || Schedule==2) asm volatile("mov.u32 %0, %%tid.x;" : "=r"(output_tid));
++    for(int i=output_tid;i<WORDS;i+=Threads) {""")
++source=source.replace("Stages,Wide,Layout>","Stages,Wide,Layout,Schedule>")
++source=source.replace("<<<dim3((m+BM-1)/BM,(n+BN-1)/BN),Threads,smem,stream>>>",
++"""<<<(Persistent?dim3(min(128,((m+BM-1)/BM)*((n+BN-1)/BN))):dim3((m+BM-1)/BM,(n+BN-1)/BN)),Threads,smem,stream>>>""")
++source+="""
++void launch_pearl_blake3(const uint32_t*,int,int,const uint32_t*,const uint32_t*,uint8_t*,int*,int*,cudaStream_t);
++extern "C" int persistent_fold(int v,const int8_t* a,const int8_t* b,int m,int n,uint32_t* t,int* info) {
++    using namespace pearl_persistent;
++    if(v!=0 && (m!=8192 || n!=8192))return cudaErrorInvalidValue;
++    if(v==0)return launch<2,64,false,true,false,false,2,false,6,0>(a,b,m,n,4096,256,t,info,nullptr);
++    if(v==1)return launch<2,64,false,true,false,false,2,false,6,1>(a,b,m,n,4096,256,t,info,nullptr);
++    if(v==3)return launch<2,64,false,true,false,false,2,false,6,3>(a,b,m,n,4096,256,t,info,nullptr);
++    if(v==2)return launch<2,64,false,true,false,false,2,false,6,2>(a,b,m,n,4096,256,t,info,nullptr);
++    return cudaErrorInvalidValue;
++}
++extern "C" int persistent_pow(int v,const int8_t* a,const int8_t* b,int m,int n,
++ const uint32_t* key,const uint32_t* target,uint32_t* t,uint8_t* dig,int* found,int* coord) {
++    auto e=persistent_fold(v,a,b,m,n,t,nullptr);if(e)return e;
++    launch_pearl_blake3(t,(m/16)*(n/16),n,key,target,dig,found,coord,nullptr);
++    return cudaGetLastError();
++}
++"""
++path=Path("/tmp/pearl-persistent-generated.cu");path.write_text(source)
++subprocess.run(["/usr/local/cuda-12.6/bin/nvcc","-std=c++20","-O3","-lineinfo",
++ "-gencode","arch=compute_89,code=sm_89","-Xcompiler","-fPIC","--ptxas-options=-v",
++ "--expt-relaxed-constexpr","-I"+str(root/"csrc/gemm"),"-I"+str(root/"csrc"),
++ "-I/home/xgao/cutlass/include","-shared",str(path),str(root/"csrc/gemm/pearl_blake3_sm61.cu"),
++ "-o","/tmp/libpearl-persistent.so"],check=True)
+diff --git a/tests/bench_ada_persistent.py b/tests/bench_ada_persistent.py
+new file mode 100644
+index 0000000..0b5c406
+--- /dev/null
++++ b/tests/bench_ada_persistent.py
+@@ -0,0 +1,113 @@
++"""Offline GPU0 v121 vs persistent N8 vs fixed-window, region8192."""
++import os
++os.environ["CUDA_VISIBLE_DEVICES"]="0"
++import argparse,ctypes as C,json,re,sys,subprocess
++from pathlib import Path
++import numpy as np
++root=Path(__file__).resolve().parents[1];sys.path.insert(0,str(root/"python"))
++import cuda_capi as cc
++import miner_capi as miner
++from pool_common import real_config
++p=argparse.ArgumentParser()
++p.add_argument("mode",choices=["validate","bench","profile"])
++p.add_argument("--variant",type=int,default=1,choices=range(4))
++p.add_argument("--samples",type=int,default=20)
++p.add_argument("--runs",type=int,default=2)
++p.add_argument("--launches",type=int,default=40)
++args=p.parse_args()
++P=C.c_void_p;I=C.c_int
++lib=C.CDLL("/tmp/libpearl-persistent.so")
++lib.persistent_pow.argtypes=[I,P,P,I,I,P,P,P,P,P,P]
++lib.persistent_fold.argtypes=[I,P,P,I,I,P,P]
++names={0:"v121",3:"fixed8192 ordinary",1:"persistent N8",2:"persistent M16 N8"}
++resources={}
++for v in names:
++ info=np.zeros(5,np.int32)
++ cc._chk(lib.persistent_fold(v,None,None,8192,8192,None,info.ctypes.data),"info")
++ assert info.tolist()==[168,384,69632,1,0],(v,info)
++ resources[v]=info.tolist()
++print("resources",resources,flush=True)
++def pow(v,a,b,key,target,t,d=None,f=None,c=None):
++ cc._chk(lib.persistent_pow(v,cc._as(a),cc._as(b),8192,8192,cc._as(key),cc._as(target),cc._as(t),cc._as(d),cc._as(f),cc._as(c)),"persistent")
++if args.mode in ("validate","profile"):
++ da,db=cc.DBuf(8192*4096),cc.DBuf(8192*4096)
++ key,target=cc.DBuf(32),cc.DBuf(32);target.memset(0)
++ t,d=cc.DBuf(512*512*64),cc.DBuf(512*512*32)
++ results=[]
++ for seed in ([42,1234] if args.mode=="validate" else [42]):
++  rng=np.random.default_rng(seed)
++  da.from_host(rng.integers(-128,128,(8192,4096),np.int8))
++  db.from_host(rng.integers(-128,128,(8192,4096),np.int8))
++  key.from_host(rng.integers(0,256,32,np.uint8))
++  if args.mode=="profile":
++   for _ in range(args.launches):
++    cc._chk(lib.persistent_fold(args.variant,da.ptr,db.ptr,8192,8192,t.ptr,None),"profile")
++    cc.sync()
++   break
++  ref=C.CDLL("/tmp/libpearl-ada-linear-copy.so")
++  ref.trial_pow.argtypes=[I,P,P,I,I,I,I,P,P,P,P,P,P]
++  cc._chk(ref.trial_pow(121,da.ptr,db.ptr,8192,8192,4096,256,key.ptr,target.ptr,t.ptr,d.ptr,None,None),"frozen")
++  cc.sync()
++  expected_t=np.empty((512,512,16),np.uint32);expected_d=np.empty((512,512,32),np.uint8)
++  t.to_host(expected_t);d.to_host(expected_d)
++  for v in names:
++   t.memset(0xA5);d.memset(0xA5)
++   pow(v,da,db,key,target,t,d);cc.sync()
++   actual_t=np.empty_like(expected_t);actual_d=np.empty_like(expected_d)
++   t.to_host(actual_t);d.to_host(actual_d)
++   assert np.array_equal(expected_t,actual_t),(seed,v,"transcript")
++   assert np.array_equal(expected_d,actual_d),(seed,v,"digest")
++   results.append(dict(seed=seed,variant=v,transcript_pass=True,digest_pass=True))
++   print("PASS",results[-1],flush=True)
++ if args.mode=="validate":
++  (root/"artifacts/ada-persistent-correctness.json").write_text(json.dumps(results,indent=2)+"\n")
++else:
++ original_pow=cc.pearl_pow_split;original_setup=cc.setup_job
++ v=0
++ cc.pearl_pow_split=lambda a,b,m,n,k,r,key,target,t,dig,found,coord,variant:pow(v,a,b,key,target,t,dig,found,coord)
++ class Pool:
++  def check_newer_job(self,job):return None
++ class Scheduler:
++  mode="user"
++  def __init__(self):self.grids=0
++  def note(self,elapsed):pass
++  def maybe_switch(self):
++   self.grids+=1;return self.grids>=args.samples+4
++ results=[]
++ try:
++  for repeat in range(args.runs):
++   variants=[0,3,1,2]
++   if repeat%2:variants.reverse()
++   for v in variants:
++    count=[0]
++    def setup(*a):
++     seed=0x504541524c020000+repeat*(args.samples+4)+count[0];count[0]+=1
++     return original_setup(*a[:-1],seed)
++    cc.setup_job=setup
++    times=[];reported=[];buf=miner.Bufs(8192)
++    def log(msg):
++     match=re.search(r"grid wall: ([\d.]+) s",msg)
++     if match:times.append(float(match[1])*1000)
++     match=re.search(r"grid \d+ done:.*\(([\d.]+) TH/s\)",msg)
++     if match:reported.append(float(match[1]))
++    try:miner.mine_job(Pool(),real_config(),bytes(80),0,"offline-persistent",8192,0,Scheduler(),buf,{"user":0,"dev":0},None,log)
++    finally:
++     for value in vars(buf).values():
++      if isinstance(value,cc.DBuf):value.free()
++      elif isinstance(value,list):
++       for b in value:b.free()
++    telemetry=subprocess.check_output(["nvidia-smi","-i","0","--query-gpu=clocks.sm,clocks.mem,temperature.gpu,power.draw,power.limit","--format=csv,noheader"],text=True).strip()
++    assert len(times)==args.samples+4
++    results.append(dict(run=repeat,variant=v,wall_ms=times,reported_search_THS=reported,telemetry=telemetry))
++    print(repeat,names[v],"median",float(np.median(times[4:])),"TH/s",70.368744177664*1000/float(np.median(times[4:])),telemetry,flush=True)
++ finally:cc.pearl_pow_split=original_pow;cc.setup_job=original_setup
++ summary={}
++ for v in names:
++  vals=np.array([t for block in results if block["variant"]==v for t in block["wall_ms"][4:]])
++  med=float(np.median(vals))
++  summary[v]=dict(name=names[v],median_ms=med,mean_ms=float(vals.mean()),p95_ms=float(np.percentile(vals,95)),
++   grids_per_sec=1000/med,effective_THS=70.368744177664*1000/med,
++   search_THS_median=float(np.median([s for b in results if b["variant"]==v for s in b["reported_search_THS"][4:]])))
++ (root/"artifacts/ada-persistent-results.json").write_text(json.dumps(dict(summary=summary,results=results,resources=resources,
++  region=8192,warmup_per_block=4,stable_per_run=args.samples,runs=args.runs),indent=2)+"\n")
++ print(json.dumps(summary,indent=2),flush=True)
+diff --git a/tools/profile_ada_persistent.sh b/tools/profile_ada_persistent.sh
+new file mode 100644
+index 0000000..554b6ef
+--- /dev/null
++++ b/tools/profile_ada_persistent.sh
+@@ -0,0 +1,30 @@
++#!/usr/bin/env bash
++# Offline GPU0 only,8192 region: current v121 / fixed dimensions / persistent N8 / M16 N8.
++# Requires counter access. Validated for Nsight Compute2024.3.2 CLI.
++set -euo pipefail
++cd "$(dirname "$0")/.."
++export CUDA_VISIBLE_DEVICES=0
++
++PROFILE_OUT="${PROFILE_OUT:-/tmp/pearl-ada-persistent-profile}"
++mkdir -p "$PROFILE_OUT"
++METRICS='gpu__time_duration.sum,dram__bytes.sum,lts__t_bytes.sum,sm__sass_data_bytes_mem_shared_op_ldsm.sum,lts__throughput.avg.pct_of_peak_sustained_elapsed,smsp__warp_issue_stalled_barrier_per_warp_active.pct,smsp__warp_issue_stalled_long_scoreboard_per_warp_active.pct,smsp__warp_issue_stalled_short_scoreboard_per_warp_active.pct,smsp__warp_issue_stalled_math_pipe_throttle_per_warp_active.pct,sm__pipe_tensor_op_imma_cycles_active_v2.avg.pct_of_peak_sustained_active'
++for VARIANT in 0 3 1 2; do
++  REPORT="$PROFILE_OUT/v$VARIANT"
++  if [[ ! -s "$REPORT.ncu-rep" ]]; then
++  /usr/local/cuda/bin/ncu --devices 0 --clock-control none \
++    --replay-mode application --cache-control none --kernel-name-base demangled \
++    --kernel-name 'regex:.*pearl_persistent::kernel.*' \
++    --launch-skip 32 --launch-count 3 --metrics "$METRICS" \
++    --section SourceCounters --section SchedulerStats --section WarpStateStats \
++    --warp-sampling-interval auto --warp-sampling-max-passes 5 --import-source yes \
++    -o "$REPORT" .venv/bin/python tests/bench_ada_persistent.py profile --variant "$VARIANT" \
++    > "$REPORT.log" 2>&1
++  else
++    printf 'Reusing existing report: %s\n' "$REPORT.ncu-rep"
++  fi
++  /usr/local/cuda/bin/ncu --import "$REPORT.ncu-rep" --page raw --print-units base --csv > "$REPORT.raw.csv"
++  /usr/local/cuda/bin/ncu --import "$REPORT.ncu-rep" --page source --print-source sass --csv > "$REPORT.sass.csv"
++done
++.venv/bin/python tools/analyze_instruction_stalls.py "$PROFILE_OUT"/v*.sass.csv --output "$PROFILE_OUT/pc-stalls.json"
++.venv/bin/python tools/analyze_ada_ws.py "$PROFILE_OUT" --variants 0 3 1 2 --useful-mma 67108864
++printf 'Reports: %s\n' "$PROFILE_OUT"
+--- a/tools/analyze_ada_ws.py
++++ b/tools/analyze_ada_ws.py
+@@ -2,7 +2,9 @@
+ import argparse,csv,json,statistics
+ from pathlib import Path
+ p=argparse.ArgumentParser();p.add_argument("directory",type=Path)
+-p.add_argument("--variants",type=int,nargs="+",default=[0,1,2]);args=p.parse_args()
++p.add_argument("--variants",type=int,nargs="+",default=[0,1,2])
++p.add_argument("--useful-mma",type=int,default=16777216);args=p.parse_args()
++assert args.useful_mma > 0
+ metrics={
+ "kernel_ns":"gpu__time_duration.sum",
+ "tensor_pct":"sm__pipe_tensor_op_imma_cycles_active_v2.avg.pct_of_peak_sustained_active",
+@@ -33,7 +35,7 @@
+         entry["metrics"][label]={"mean":statistics.mean(vals),"values":vals,"unit":units[metric]}
+     if "l2_bytes" in entry["metrics"]:
+         assert entry["metrics"]["l2_bytes"]["unit"]=="byte",units["lts__t_bytes.sum"]
+-        entry["l2_bytes_per_useful_mma"]=entry["metrics"]["l2_bytes"]["mean"]/16777216
++        entry["l2_bytes_per_useful_mma"]=entry["metrics"]["l2_bytes"]["mean"]/args.useful_mma
+     summary[str(v)]=entry
+ (args.directory/"summary.json").write_text(json.dumps(summary,indent=2)+"\n")
+ print(json.dumps(summary,indent=2))

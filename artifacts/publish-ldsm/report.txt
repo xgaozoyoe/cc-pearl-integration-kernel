@@ -1,0 +1,19 @@
+Early publication LDSM scheduling experiment
+GPU 0 only; 8192 x 8192 region, K4096/rank128. CUDA event time, not full-grid or pool throughput.
+Two independent runs; each variant 200 samples/run; 16 launches/sample, rotating blocks.
+Variant        Run1 mean ms  Run2 mean ms  Run1 time delta %  Run2 time delta %
+native         1.025019490   1.021347440   +0.0000   +0.0000
+drain_b0       1.029464034   1.028884882   +0.4336   +0.7380
+drain_b1       1.022995373   1.027946990   -0.1975   +0.6462
+
+Positive time delta means slower. Unlocked clocks/power-limited; no causal attribution from these small differences.
+Validation: 36 transcript comparisons, 18 transcript+PoW digest comparisons PASS; racecheck 0 hazards, 0 errors, 0 warnings.
+Resources unchanged: 168 registers/thread, 0 local bytes, 69632 dynamic shared bytes/CTA, 384 threads, 1 CTA/SM.
+Changes: reorder existing 23 instructions [0x1570,0x16e0). No instruction addition/removal; original control fields move with instructions.
+drain_b0 advances original LDSM 0x1660 to 0x1610; other LDSM remains 0x16b0.
+drain_b1 advances original LDSM 0x16b0 to 0x1670; original 0x1660 LDSM moves later to 0x16b0.
+Both candidates still have a final LDSM at 0x16b0, cp.wait at 0x16c0 and BAR.ARV at 0x16d0.
+Therefore this tests which B group is drained first, not elimination of the final LDSM-to-publication dependency.
+Conclusion: no reproducible improvement; retain frozen baseline. This result does not rule out earlier completion of BOTH final LDSM reads.
+No production library changes. No hardware-counter profiling or live mining performed in this experiment.
+SASS diffs: drain_b0.diff, drain_b1.diff.

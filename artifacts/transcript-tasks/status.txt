@@ -1,0 +1,6 @@
+Experimental only. Production binary hashes unchanged.
+Independent transcript task protocol passes48normal and24PoW comparisons.
+Racecheck:46cases completed before240s timeout;last2completed in racecheck-tail.log,
+which reports0hazards/errors/warnings. Do not claim original run completed normally.
+Both consumer kernels have spills and are not eligible for deployment.
+Timing runs underway;see report.txt after completion.

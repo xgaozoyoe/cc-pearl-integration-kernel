@@ -1,0 +1,314 @@
+{
+  "window_ns": [
+    1000000000,
+    29000000000
+  ],
+  "devices": [
+    {
+      "miner": "Open-Pearl",
+      "nsight_device": 0,
+      "pci": "0000:41:00.0",
+      "uuid": "d402e695-a15b-4d5a-3137-548c14cab612",
+      "cuda_device": 2,
+      "metrics": [
+        {
+          "name": "Sync Copy Engine Active [Throughput %]",
+          "samples": 27999,
+          "mean": 0,
+          "median": 0,
+          "p05": 0.0,
+          "p95": 0.0
+        },
+        {
+          "name": "Async Copy Engine Active 0 [Throughput %]",
+          "samples": 27999,
+          "mean": 0,
+          "median": 0,
+          "p05": 0.0,
+          "p95": 0.0
+        },
+        {
+          "name": "Async Copy Engine Active 1 [Throughput %]",
+          "samples": 27999,
+          "mean": 0.011678988535304833,
+          "median": 0,
+          "p05": 0.0,
+          "p95": 0.0
+        },
+        {
+          "name": "Async Copy Engine Active 2 [Throughput %]",
+          "samples": 27999,
+          "mean": 0,
+          "median": 0,
+          "p05": 0.0,
+          "p95": 0.0
+        },
+        {
+          "name": "GR Active [Throughput %]",
+          "samples": 27999,
+          "mean": 98.920247151684,
+          "median": 100,
+          "p05": 100.0,
+          "p95": 100.0
+        },
+        {
+          "name": "Sync Compute in Flight [Throughput %]",
+          "samples": 27999,
+          "mean": 0,
+          "median": 0,
+          "p05": 0.0,
+          "p95": 0.0
+        },
+        {
+          "name": "Async Compute in Flight [Throughput %]",
+          "samples": 27999,
+          "mean": 98.45026608093146,
+          "median": 100,
+          "p05": 97.0,
+          "p95": 100.0
+        },
+        {
+          "name": "SMs Active [Throughput %]",
+          "samples": 27999,
+          "mean": 95.84710168220293,
+          "median": 97,
+          "p05": 92.0,
+          "p95": 100.0
+        },
+        {
+          "name": "SM Issue [Throughput %]",
+          "samples": 27999,
+          "mean": 22.667095253401907,
+          "median": 24,
+          "p05": 13.0,
+          "p95": 25.0
+        },
+        {
+          "name": "Tensor Active [Throughput %]",
+          "samples": 27999,
+          "mean": 63.831636844173005,
+          "median": 69,
+          "p05": 3.0,
+          "p95": 72.0
+        },
+        {
+          "name": "Vertex/Tess/Geometry Warps in Flight [Throughput %]",
+          "samples": 27999,
+          "mean": 0,
+          "median": 0,
+          "p05": 0.0,
+          "p95": 0.0
+        },
+        {
+          "name": "Pixel Warps in Flight [Throughput %]",
+          "samples": 27999,
+          "mean": 0,
+          "median": 0,
+          "p05": 0.0,
+          "p95": 0.0
+        },
+        {
+          "name": "Compute Warps in Flight [Throughput %]",
+          "samples": 27999,
+          "mean": 26.219864995178398,
+          "median": 25,
+          "p05": 22.0,
+          "p95": 25.0
+        },
+        {
+          "name": "Unallocated Warps in Active SMs [Throughput %]",
+          "samples": 27999,
+          "mean": 69.62759384263724,
+          "median": 72,
+          "p05": 30.0,
+          "p95": 75.0
+        },
+        {
+          "name": "DRAM Read Bandwidth [Throughput %]",
+          "samples": 27999,
+          "mean": 3.6698453516197005,
+          "median": 3,
+          "p05": 3.0,
+          "p95": 8.0
+        },
+        {
+          "name": "DRAM Write Bandwidth [Throughput %]",
+          "samples": 27999,
+          "mean": 1.736240580020715,
+          "median": 1,
+          "p05": 1.0,
+          "p95": 4.0
+        },
+        {
+          "name": "PCIe RX Throughput [Throughput %]",
+          "samples": 27999,
+          "mean": 0.940212150433944,
+          "median": 1,
+          "p05": 0.0,
+          "p95": 1.0
+        },
+        {
+          "name": "PCIe TX Throughput [Throughput %]",
+          "samples": 27999,
+          "mean": 1,
+          "median": 1,
+          "p05": 1.0,
+          "p95": 1.0
+        }
+      ]
+    },
+    {
+      "miner": "PeakMiner",
+      "nsight_device": 3,
+      "pci": "0000:22:00.0",
+      "uuid": "e2bcf3ea-ca6c-49ce-c8ff-220481820348",
+      "cuda_device": 1,
+      "metrics": [
+        {
+          "name": "Sync Copy Engine Active [Throughput %]",
+          "samples": 28000,
+          "mean": 0,
+          "median": 0.0,
+          "p05": 0.0,
+          "p95": 0.0
+        },
+        {
+          "name": "Async Copy Engine Active 0 [Throughput %]",
+          "samples": 28000,
+          "mean": 0,
+          "median": 0.0,
+          "p05": 0.0,
+          "p95": 0.0
+        },
+        {
+          "name": "Async Copy Engine Active 1 [Throughput %]",
+          "samples": 28000,
+          "mean": 0,
+          "median": 0.0,
+          "p05": 0.0,
+          "p95": 0.0
+        },
+        {
+          "name": "Async Copy Engine Active 2 [Throughput %]",
+          "samples": 28000,
+          "mean": 0,
+          "median": 0.0,
+          "p05": 0.0,
+          "p95": 0.0
+        },
+        {
+          "name": "GR Active [Throughput %]",
+          "samples": 28000,
+          "mean": 99.69307142857143,
+          "median": 100.0,
+          "p05": 100.0,
+          "p95": 100.0
+        },
+        {
+          "name": "Sync Compute in Flight [Throughput %]",
+          "samples": 28000,
+          "mean": 0,
+          "median": 0.0,
+          "p05": 0.0,
+          "p95": 0.0
+        },
+        {
+          "name": "Async Compute in Flight [Throughput %]",
+          "samples": 28000,
+          "mean": 99.68153571428572,
+          "median": 100.0,
+          "p05": 100.0,
+          "p95": 100.0
+        },
+        {
+          "name": "SMs Active [Throughput %]",
+          "samples": 28000,
+          "mean": 99.56289285714286,
+          "median": 100.0,
+          "p05": 100.0,
+          "p95": 100.0
+        },
+        {
+          "name": "SM Issue [Throughput %]",
+          "samples": 28000,
+          "mean": 12.970428571428572,
+          "median": 13.0,
+          "p05": 13.0,
+          "p95": 13.0
+        },
+        {
+          "name": "Tensor Active [Throughput %]",
+          "samples": 28000,
+          "mean": 97.43942857142856,
+          "median": 98.0,
+          "p05": 98.0,
+          "p95": 98.0
+        },
+        {
+          "name": "Vertex/Tess/Geometry Warps in Flight [Throughput %]",
+          "samples": 28000,
+          "mean": 0,
+          "median": 0.0,
+          "p05": 0.0,
+          "p95": 0.0
+        },
+        {
+          "name": "Pixel Warps in Flight [Throughput %]",
+          "samples": 28000,
+          "mean": 0,
+          "median": 0.0,
+          "p05": 0.0,
+          "p95": 0.0
+        },
+        {
+          "name": "Compute Warps in Flight [Throughput %]",
+          "samples": 28000,
+          "mean": 16.95642857142857,
+          "median": 17.0,
+          "p05": 17.0,
+          "p95": 17.0
+        },
+        {
+          "name": "Unallocated Warps in Active SMs [Throughput %]",
+          "samples": 28000,
+          "mean": 82.60692857142857,
+          "median": 83.0,
+          "p05": 83.0,
+          "p95": 83.0
+        },
+        {
+          "name": "DRAM Read Bandwidth [Throughput %]",
+          "samples": 28000,
+          "mean": 6.646357142857143,
+          "median": 4.0,
+          "p05": 4.0,
+          "p95": 10.0
+        },
+        {
+          "name": "DRAM Write Bandwidth [Throughput %]",
+          "samples": 28000,
+          "mean": 0.6271428571428571,
+          "median": 1.0,
+          "p05": 0.0,
+          "p95": 1.0
+        },
+        {
+          "name": "PCIe RX Throughput [Throughput %]",
+          "samples": 28000,
+          "mean": 0.8959642857142858,
+          "median": 1.0,
+          "p05": 0.0,
+          "p95": 1.0
+        },
+        {
+          "name": "PCIe TX Throughput [Throughput %]",
+          "samples": 28000,
+          "mean": 1,
+          "median": 1.0,
+          "p05": 1.0,
+          "p95": 1.0
+        }
+      ]
+    }
+  ]
+}

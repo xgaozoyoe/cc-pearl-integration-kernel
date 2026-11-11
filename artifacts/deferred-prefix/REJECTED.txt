@@ -1,0 +1,6 @@
+NOT VALIDATED. Do not benchmark/profile/mine these cubins.
+relocated_control failed to finish first numerical comparison within30seconds; timeout exit124.
+Only resources printed (168regs,0local,1CTA/SM); no numerical PASS or performance data.
+deferred_prefix was NOT run.
+Old next-iteration P2 clobber was corrected, but it was not the only execution issue. Root cause of this timeout remains unknown.
+All experiment entry scripts disabled. Production files unchanged.

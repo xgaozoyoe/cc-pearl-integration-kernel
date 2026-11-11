@@ -1,0 +1,42 @@
+Fastest-native fixed-SASS address-lifetime controls; all arithmetic correct.
+Names: native; ld_rename keepswait1110; ld_release moveswait1110->1150;
+cp_rename keepswaitf60; cp_release moveswaitf60->f70; both_release combines.
+Same instruction addresses/count,MMA,LDSM,copies,shared memory,register allocation,barrier phases.
+R154 reused only while dead; cp address temp ends1010; LDSM address temp starts1110 ends14f0.
+No instruction deleted, no memory completion or stage synchronization removed.
+Copy experiment exposes only one additional instruction before next required wait; not the cost of all copy dependencies.
+The LDSM experiment shifts address-read completion only; does not remove operand-result waiting.
+Rejected initial R166 build triggeredCUDA715 before benchmarking; preserved in rejected-r166. Not included in any performance claim.
+
+events.json: name n mean_ms median_ms p95_ms
+native 200 1.023170 1.022624 1.048510
+ld_rename 200 1.024415 1.023115 1.042174
+ld_release 200 1.025690 1.026589 1.043264
+cp_rename 200 1.024157 1.022903 1.041558
+cp_release 200 1.023438 1.022430 1.039939
+both_release 200 1.022598 1.020129 1.045098
+ld_rename->ld_release:time change +0.1245%,work-rate change -0.1243%
+Paired block work-rate changes%: -1.641, -1.916, -1.556, +1.211, +0.806, -0.161, +0.242, +1.723, -0.080, +0.204
+cp_rename->cp_release:time change -0.0702%,work-rate change +0.0702%
+Paired block work-rate changes%: +0.398, -0.566, -0.031, +2.218, +0.746, -0.145, -0.582, +0.721, -1.573, -0.438
+native->both_release:time change -0.0560%,work-rate change +0.0560%
+Paired block work-rate changes%: +2.209, +0.168, -0.860, -1.189, -1.821, +0.157, +0.739, +0.650, +0.646, -0.096
+Unfixed clocks. Region CUDA events and full-grid wall time are different workloads; do not infer pool TH/s from region rates.
+grids.json: name n mean_ms median_ms p95_ms
+native 60 292.768333 292.350000 297.825000
+ld_rename 60 293.023333 293.150000 298.810000
+ld_release 60 292.826667 292.500000 299.400000
+cp_rename 60 292.985000 292.550000 298.425000
+cp_release 60 292.803333 292.800000 298.215000
+both_release 60 292.583333 292.500000 298.405000
+ld_rename->ld_release:time change -0.0671%,work-rate change +0.0672%
+Paired block work-rate changes%: +0.250, +0.137, -0.109, +0.212, +0.113, -0.198
+cp_rename->cp_release:time change -0.0620%,work-rate change +0.0620%
+Paired block work-rate changes%: +0.161, +0.253, -0.058, +0.144, -0.048, -0.078
+native->both_release:time change -0.0632%,work-rate change +0.0632%
+Paired block work-rate changes%: -0.225, +0.065, +0.198, -0.058, +0.256, +0.144
+Unfixed clocks. Region CUDA events and full-grid wall time are different workloads; do not infer pool TH/s from region rates.
+
+Decision:No promotion. Moving these two narrowly scoped read-completion waits does not produce a repeatable substantial speedup. Full-grid changes versus matched rename controls are about0.06-0.07%, with mixed paired-block signs. This does not exclude broader operand-result or stage-handoff dependencies.
+Validation:72edge transcript comparisons and36transcript+PoW comparisons PASS. GPU0 only. No hardware counter results for these six variants yet; tools/profile_address_controls.sh is prepared.
+Combined both_release variant:memcheck0errors;racecheck0hazards/0errors/0warnings. Other variants have transcript/digest checks, not individual sanitizer runs. Production and frozen baseline hashes unchanged.

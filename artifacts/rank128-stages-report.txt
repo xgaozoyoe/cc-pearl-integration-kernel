@@ -1,0 +1,32 @@
+R128 pipeline-depth experiment — GPU 0 only
+
+Frozen accepted R128 source; same CTA256x192, warp64x64, K64, Lead2,
+Layout6, full transcript and PoW. Only stage template 2 -> 3 changes.
+Production and GPU2 miner unchanged.
+
+Each variant: four warmup grids then 40 samples; two runs with reversed order.
+Full grid M=N=131072 K4096, region8192, matched generated inputs and job setup.
+Includes V3/setup/noise/fold/PoW; offline target zero, no pool or proof submission.
+Clocks/power settings unchanged; clocks not locked or continuously recorded.
+Timing has 0.1ms log resolution. These are full-grid wall times, not kernel-only.
+
+2 stages: mean 331.29125 ms/grid; 3.01849 grids/s; 212.407 equivalent TH/s.
+  run 0: median 331.100, mean 330.950, p95 333.020 ms.
+  run 1: median 331.600, mean 331.632, p95 332.815 ms.
+3 stages: mean 334.91000 ms/grid; 2.98588 grids/s; 210.112 equivalent TH/s.
+  run 0: median 334.750, mean 334.785, p95 336.515 ms.
+  run 1: median 335.000, mean 335.035, p95 336.425 ms.
+
+Three stages takes 3.61875 ms longer (1.092%).
+Both 168 registers/thread, zero spills, 384 threads, 1 CTA/SM, 12 warps/SM.
+Shared memory: 69,632 -> 98,304 bytes/CTA.
+SASS: both 64 static IMMA,16 LDSM; triple stage actually uses DEPBAR.LE SB0,1,
+with SB0,0 at tail; extra prologue copy/commit sites are not extra useful traffic.
+All 12 transcript/digest comparisons pass against frozen accepted library.
+Small partial/full CTA racecheck: zero hazards/errors/warnings.
+Small partial/full CTA synccheck: zero errors.
+
+Conclusion: reject promotion; deeper cp.async buffering alone does not help.
+This does not prove latency is absent. Extra index/control work and changed
+scheduling may offset overlap; no counters collected to attribute the regression.
+Do not infer a 300TH/s path from this result. Preserve the two-stage baseline.

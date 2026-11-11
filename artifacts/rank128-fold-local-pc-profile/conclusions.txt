@@ -1,0 +1,28 @@
+GPU0 local-XOR PC analysis; capture /tmp/pearl-fold-local-stalls.eyMr59
+Input library/source SHA256 verified. Correct baseline/fast namespaces confirmed. Three8192-region kernels per variant after32 warmups;application replay12passes;clock-control none. Kernel timings below exclude full-grid setup/PoW. No new kernel changes in this analysis.
+
+kernel_ns: baseline=1042282.666666667;candidate=1058037.333333333;delta=15754.666666667;unit=ns
+tensor_pct: baseline=78.736666667;candidate=77.013333333;delta=-1.723333333;unit=%
+l2_util_pct: baseline=46.540000000;candidate=45.676666667;delta=-0.863333333;unit=%
+l2_bytes: baseline=2533941440.000000000;candidate=2533946474.666666508;delta=5034.666666508;unit=byte
+barrier_pct: baseline=12.793333333;candidate=12.973333333;delta=0.180000000;unit=%
+long_scoreboard_pct: baseline=2.893333333;candidate=3.573333333;delta=0.680000000;unit=%
+short_scoreboard_pct: baseline=7.336666667;candidate=7.310000000;delta=-0.026666667;unit=%
+math_throttle_pct: baseline=45.393333333;candidate=44.313333333;delta=-1.080000000;unit=%
+eligible_warps_per_scheduler: baseline=0.320000000;candidate=0.330000000;delta=0.010000000;unit=warp
+active_warps_per_scheduler: baseline=3.000000000;candidate=3.000000000;delta=0.000000000;unit=warp
+issued_warps_per_cycle: baseline=0.220000000;candidate=0.220000000;delta=0.000000000;unit=
+
+Kernel slowdown:1.511554%. Full-grid prior matched test309.12->313.26875ms,throughput-1.3243%. L2 bytes/usefulMMA37.75866985->37.75874488 effectively unchanged. Activewarps/scheduler3 in both. No spill. IMMA active-cycle utilization78.737->77.013;not NsightSystems elapsedTensorActive denominator.
+
+Variant0: sampled stall_wait/all samples=14.795747%. Raw samples are not elapsed cycles.
+Variant1: sampled stall_wait/all samples=14.765917%. Raw samples are not elapsed cycles.
+Candidate early XOR PCs:4640 wait samples;0.451132% of all samples,3.055224% of wait samples. At0x16d0:1536 wait samples;zero long/short scoreboard samples. Static0x16c0IMMA readsR136 and0x16d0LOP3 writesR136;XOR also reads prior C values. Wait samples support a dependency/readiness issue at that PC but cannot distinguish input RAW vs destination reuse WAR. Not proof of complete slowdown cause.
+
+Candidate long-scoreboard hotspot0xef0=10109,0xf60=13119,0xff0=8897;combined32125/36455=88.122% of long-scoreboard samples. First two increment shared destinationR141 afterLDGSTS,third overwritesR141 after finalA-copy. These are asynchronous-copy/address-reuse locations,not transcript XOR. Baseline has corresponding long-scoreboard hotspots too;this is a regression in an existing issue,not wholly new latency. PC attribution can be downstream of initiating instruction.
+
+Barrier samples98.34% at0xd10BRA associated with main-loop barrier;1.66% at exit. Short-scoreboard approximately unchanged7.337->7.310%;hot PCs remain IMMA operand consumers. Math throttle45.393->44.313% decreases while kernel slows:lower throttle does not imply higher performance.
+
+Interpretation: early XOR did not eliminate aggregate fixed-latency waiting. Strongest aggregate stall increase is long-scoreboard(+0.68percentage points),localized to copy/address scheduling. Source-level local-XOR changes also perturb whole-kernel register allocation/scheduling;available data does not establish how many microseconds each effect causes. Do not add stall percentages or equate sample share to recoverable wall time.
+
+Next controlled test should isolate the copy/address allocation regression before expanding XOR interleave. Compare an XOR candidate/control with closely matched cp.async/address SASS and resource usage,then verify counters and actual full-grid timing. No new optimization or production deployment in this analysis.

@@ -1,0 +1,155 @@
+{
+  "warning": "INVALID PEARL arithmetic except native. Offline diagnostic only. RZ means literal zero; no compiler or initialization changes. Preserve all copy/load/MMA/output work and control flow.",
+  "variants": {
+    "native": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "104c0c1b265260dea5c9ab0bb174ebbbe7ee9cceb0cf0acebf2a9d1dfa4d50aa",
+      "smem": 69632,
+      "correct": true,
+      "zero_fields": [],
+      "wait_changes": []
+    },
+    "a_zero": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "80647852e7b53c56c96c12e49e2a157252e50f661bb13581a6f1301514f3cfd4",
+      "smem": 69632,
+      "correct": false,
+      "zero_fields": [
+        3
+      ],
+      "wait_changes": []
+    },
+    "b_zero": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "fbf6b7fe2efd066f44e2ef618d6683f9dab66568b5e1f07c15af4ea058c7660c",
+      "smem": 69632,
+      "correct": false,
+      "zero_fields": [
+        4
+      ],
+      "wait_changes": []
+    },
+    "ab_zero": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "4a4f5f87679b12dcf86c6d79b200da6ab99130529401e63751be61faaf89d8c6",
+      "smem": 69632,
+      "correct": false,
+      "zero_fields": [
+        3,
+        4
+      ],
+      "wait_changes": []
+    },
+    "b_release": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "d090c9a7d27fd38afc820b7d911f5e4ee6329c08fb22581ab4d84589413d5e54",
+      "smem": 69632,
+      "correct": false,
+      "zero_fields": [
+        4
+      ],
+      "wait_changes": [
+        {
+          "pc": "0x11e0",
+          "old_wait": 2,
+          "new_wait": 0
+        },
+        {
+          "pc": "0x1220",
+          "old_wait": 0,
+          "new_wait": 2
+        },
+        {
+          "pc": "0x1290",
+          "old_wait": 2,
+          "new_wait": 0
+        },
+        {
+          "pc": "0x12d0",
+          "old_wait": 0,
+          "new_wait": 2
+        },
+        {
+          "pc": "0x1350",
+          "old_wait": 2,
+          "new_wait": 0
+        },
+        {
+          "pc": "0x1410",
+          "old_wait": 0,
+          "new_wait": 2
+        }
+      ]
+    },
+    "bc_zero": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "c5be6b5860568a848d4b633e9904de3a0ed219cc649f15866c403e640759652b",
+      "smem": 69632,
+      "correct": false,
+      "zero_fields": [
+        4,
+        8
+      ],
+      "wait_changes": []
+    },
+    "bc_release": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "aa40a0406b7d99890ccbaa6188d662a07f21989504f7a1d070816ea87417e21a",
+      "smem": 69632,
+      "correct": false,
+      "zero_fields": [
+        4,
+        8
+      ],
+      "wait_changes": [
+        {
+          "pc": "0x11e0",
+          "old_wait": 2,
+          "new_wait": 0
+        },
+        {
+          "pc": "0x1220",
+          "old_wait": 0,
+          "new_wait": 2
+        },
+        {
+          "pc": "0x1290",
+          "old_wait": 2,
+          "new_wait": 0
+        },
+        {
+          "pc": "0x12d0",
+          "old_wait": 0,
+          "new_wait": 2
+        },
+        {
+          "pc": "0x1350",
+          "old_wait": 2,
+          "new_wait": 0
+        },
+        {
+          "pc": "0x1410",
+          "old_wait": 0,
+          "new_wait": 2
+        }
+      ]
+    }
+  },
+  "moves": [
+    [
+      4560,
+      4576,
+      4640
+    ],
+    [
+      4736,
+      4752,
+      4816
+    ],
+    [
+      4928,
+      4944,
+      5136
+    ]
+  ]
+}

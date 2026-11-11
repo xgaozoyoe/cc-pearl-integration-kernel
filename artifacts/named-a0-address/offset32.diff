@@ -1,0 +1,20 @@
+--- publish_after_a
++++ offset32
+@@ -1,6 +1,6 @@
+ #include <cuda_runtime.h>
+ #include <cstdint>
+-namespace named_a0_publish_after_a {
++namespace named_address_offset32 {
+ constexpr int BM=256, BN=192, THREADS=384;
+ constexpr int WORDS=(BM/16)*(BN/16)*16;
+ struct Fragment { unsigned v[4]; };
+@@ -119,7 +119,8 @@
+     unsigned logical=t^((t>>3)&3u);
+     unsigned row=logical/4,col=(logical%4)*16;
+     unsigned dst=__cvta_generic_to_shared(stage+t*16);
+-    const signed char* src=a+(size_t(cm*BM)+row)*k+copy_k*64+col;
++    unsigned off=(unsigned(cm*BM)+row)*unsigned(k)+unsigned(copy_k*64)+col;
++    const signed char* src=a+off;
+     asm volatile("cp.async.cg.shared.global [%0],[%1],16,16;"
+                  :: "r"(dst),"l"(src) : "memory");
+     // No added commit: the unchanged stage_copy commits all future copies.

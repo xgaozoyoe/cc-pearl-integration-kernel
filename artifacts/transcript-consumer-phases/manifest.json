@@ -1,0 +1,25 @@
+{
+  "variants": {
+    "control": {
+      "entry": "_ZN23consumer_phases_control6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "b86b830fbb82cb6dbdbb9fbfb0b6dbd03923ee48e8a2a586d3f5dd6ad65ed33a",
+      "threads": 320,
+      "smem": 63120,
+      "correct": true
+    },
+    "phases": {
+      "entry": "_ZN22consumer_phases_phases6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "74fd3e59e53188f7d34dbddbea52c2f4657e46c65629abd888d011311454115e",
+      "threads": 320,
+      "smem": 63120,
+      "correct": true
+    },
+    "lanes4": {
+      "entry": "_ZN22consumer_phases_lanes46kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "b90d4c0884bf60cffc8aaa792ec361c92f95e98c4c217e056c77b037a2697c7c",
+      "threads": 320,
+      "smem": 63120,
+      "correct": true
+    }
+  }
+}

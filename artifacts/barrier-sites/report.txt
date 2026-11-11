@@ -1,0 +1,13 @@
+Frozen baseline single-site ablations, GPU0 only, offline and deliberately racy.
+no_initial:0xba0 BAR.SYNC0 ->NOP; own-thread cp.async wait retained.
+no_final:0x2a50 BAR.SYNC0 ->NOP; output instructions retained.
+All main-loop named arrive/sync,IMMA,LDSM,copies,launch geometry and168regs unchanged.
+Positive gain=(native_time-variant_time)/native_time. Effects are configuration-specific, not additive.
+No correctness claim. Removing synchronization can change operand values, warp phasing and switching activity.
+No isolated main-loop BAR.ARV or BAR.SYNC cost measured in this experiment.
+
+Unlocked CUDA event region8192x8192,K4096; not full-grid time.
+native {"samples": 200, "mean_ms": 1.0251810103654861, "median_ms": 1.020281970500946, "p95_ms": 1.0547840595245361} mean_delta_us=+0.000000, time_reduction_pct=+0.0000
+no_initial {"samples": 200, "mean_ms": 1.0216838592290878, "median_ms": 1.0198019742965698, "p95_ms": 1.043073260784149} mean_delta_us=+3.497151, time_reduction_pct=+0.3411
+no_final {"samples": 200, "mean_ms": 1.01609748005867, "median_ms": 1.0162559747695923, "p95_ms": 1.0312430143356324} mean_delta_us=+9.083530, time_reduction_pct=+0.8860
+Small unlocked differences need fixed-clock/cycle-normalized confirmation before attribution.

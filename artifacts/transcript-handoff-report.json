@@ -1,0 +1,59 @@
+{
+  "baseline": {
+    "kernel_samples": 240,
+    "grid_samples": 60,
+    "kernel_mean_ms": 1.0874185810486476,
+    "kernel_median_ms": 1.0894370079040527,
+    "kernel_p95_ms": 1.1051137804985045,
+    "grid_mean_ms": 308.485,
+    "grid_median_ms": 308.40000000000003,
+    "grid_p95_ms": 312.8,
+    "grids_sec": 3.2416487025301066,
+    "effective_ths": 228.11074826219752,
+    "resources": [
+      168,
+      384,
+      69632,
+      1,
+      0
+    ]
+  },
+  "late": {
+    "kernel_samples": 240,
+    "grid_samples": 60,
+    "kernel_mean_ms": 1.180365299185117,
+    "kernel_median_ms": 1.1806319952011108,
+    "kernel_p95_ms": 1.1984641313552857,
+    "grid_mean_ms": 330.89500000000004,
+    "grid_median_ms": 330.40000000000003,
+    "grid_p95_ms": 334.72499999999997,
+    "grids_sec": 3.0221067105879507,
+    "effective_ths": 212.66185399496516,
+    "resources": [
+      168,
+      384,
+      69640,
+      1,
+      0
+    ]
+  },
+  "overlap": {
+    "kernel_samples": 240,
+    "grid_samples": 60,
+    "kernel_mean_ms": 1.134665999809901,
+    "kernel_median_ms": 1.1371189951896667,
+    "kernel_p95_ms": 1.1455566227436065,
+    "grid_mean_ms": 319.36999999999995,
+    "grid_median_ms": 318.85,
+    "grid_p95_ms": 323.105,
+    "grids_sec": 3.131164480070139,
+    "effective_ths": 220.3361122762439,
+    "resources": [
+      168,
+      384,
+      69640,
+      1,
+      0
+    ]
+  }
+}

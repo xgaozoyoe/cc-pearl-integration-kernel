@@ -1,0 +1,32 @@
+{
+  "variants": {
+    "native": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "104c0c1b265260dea5c9ab0bb174ebbbe7ee9cceb0cf0acebf2a9d1dfa4d50aa",
+      "smem": 69632,
+      "correct": true,
+      "threads": 384
+    },
+    "source_control": {
+      "entry": "_ZN28arrival_order_source_control6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "a65136c09fa8b2df6874664d82217e12d32ca3de55ec606c370733d72321df1d",
+      "threads": 384,
+      "smem": 69632,
+      "correct": true
+    },
+    "early_a": {
+      "entry": "_ZN16named_a0_early_a6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "5d8f340f286935816fee0443920e81ae80226fe5a11c2ab5d7c81f4eaf2af457",
+      "smem": 69632,
+      "threads": 384,
+      "correct": true
+    },
+    "publish_after_a": {
+      "entry": "_ZN24named_a0_publish_after_a6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "41c615d69011874d71f51adb5ab6493e8f3f4b026060fea65bda98a34338da2a",
+      "smem": 69632,
+      "threads": 384,
+      "correct": true
+    }
+  }
+}

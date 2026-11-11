@@ -1,0 +1,248 @@
+{
+  "baseline": 104,
+  "baseline_library": "/tmp/libpearl-ada-v2-retest.so",
+  "candidate_library": "/tmp/libpearl-ada-layout.so",
+  "warmup_per_block": 2,
+  "stable_grids_per_variant": 20,
+  "results": [
+    {
+      "variant": 0,
+      "name": "production",
+      "times": [
+        0.4211,
+        0.4214,
+        0.4286,
+        0.4201,
+        0.4199,
+        0.422,
+        0.4184,
+        0.4234,
+        0.4185,
+        0.4225,
+        0.4201,
+        0.4248
+      ],
+      "median_seconds_excluding_first": 0.4214,
+      "grids_per_second": 2.3730422401518747,
+      "effective_THS": 166.98800232003796,
+      "reported_search_THS": [
+        173.87,
+        173.41,
+        170.23,
+        174.17,
+        173.89,
+        173.13,
+        174.59,
+        172.48,
+        174.58,
+        172.83,
+        173.9,
+        171.89
+      ],
+      "median_reported_search_THS": 173.41
+    },
+    {
+      "variant": 104,
+      "name": "hand Ada v2 lead2",
+      "times": [
+        0.3562,
+        0.3613,
+        0.3647,
+        0.3642,
+        0.3614,
+        0.3643,
+        0.3643,
+        0.364,
+        0.3671,
+        0.367,
+        0.3664,
+        0.3666
+      ],
+      "median_seconds_excluding_first": 0.3643,
+      "grids_per_second": 2.744990392533626,
+      "effective_THS": 193.16152670234422,
+      "reported_search_THS": [
+        206.16,
+        203.63,
+        201.7,
+        201.79,
+        203.39,
+        201.71,
+        201.74,
+        201.86,
+        200.13,
+        200.1,
+        200.76,
+        200.37
+      ],
+      "median_reported_search_THS": 201.71
+    },
+    {
+      "variant": 109,
+      "name": "raw address regrouping",
+      "times": [
+        0.3511,
+        0.3581,
+        0.3607,
+        0.3585,
+        0.3596,
+        0.3617,
+        0.3596,
+        0.3603,
+        0.3558,
+        0.3599,
+        0.3618,
+        0.3607
+      ],
+      "median_seconds_excluding_first": 0.3599,
+      "grids_per_second": 2.7785495971103082,
+      "effective_THS": 195.52304578400665,
+      "reported_search_THS": [
+        209.28,
+        205.69,
+        203.78,
+        205.09,
+        204.52,
+        203.35,
+        204.53,
+        204.31,
+        206.72,
+        204.28,
+        203.45,
+        204.07
+      ],
+      "median_reported_search_THS": 204.31
+    },
+    {
+      "variant": 109,
+      "name": "raw address regrouping",
+      "times": [
+        0.3549,
+        0.3589,
+        0.3609,
+        0.3593,
+        0.3617,
+        0.3612,
+        0.3597,
+        0.3614,
+        0.3602,
+        0.3592,
+        0.3613,
+        0.3614
+      ],
+      "median_seconds_excluding_first": 0.3609,
+      "grids_per_second": 2.770850651149903,
+      "effective_THS": 194.98128062528124,
+      "reported_search_THS": [
+        207.21,
+        204.83,
+        203.83,
+        204.67,
+        203.17,
+        203.68,
+        204.69,
+        203.3,
+        204.1,
+        204.84,
+        203.52,
+        203.64
+      ],
+      "median_reported_search_THS": 203.83
+    },
+    {
+      "variant": 104,
+      "name": "hand Ada v2 lead2",
+      "times": [
+        0.3594,
+        0.3648,
+        0.3675,
+        0.3649,
+        0.3649,
+        0.3656,
+        0.366,
+        0.3656,
+        0.3672,
+        0.3673,
+        0.3679,
+        0.3661
+      ],
+      "median_seconds_excluding_first": 0.366,
+      "grids_per_second": 2.73224043715847,
+      "effective_THS": 192.26432835427323,
+      "reported_search_THS": [
+        204.25,
+        201.54,
+        199.98,
+        201.48,
+        201.57,
+        201.22,
+        200.79,
+        200.93,
+        200.35,
+        200.05,
+        199.88,
+        200.71
+      ],
+      "median_reported_search_THS": 200.79
+    },
+    {
+      "variant": 0,
+      "name": "production",
+      "times": [
+        0.4186,
+        0.4245,
+        0.4324,
+        0.423,
+        0.4305,
+        0.4256,
+        0.4269,
+        0.4287,
+        0.4272,
+        0.4291,
+        0.4237,
+        0.4303
+      ],
+      "median_seconds_excluding_first": 0.4272,
+      "grids_per_second": 2.340823970037453,
+      "effective_THS": 164.72084311250936,
+      "reported_search_THS": [
+        174.34,
+        172.11,
+        168.92,
+        172.72,
+        169.66,
+        171.8,
+        171.03,
+        170.47,
+        170.96,
+        170.13,
+        172.48,
+        169.74
+      ],
+      "median_reported_search_THS": 170.96
+    }
+  ],
+  "summary": {
+    "0": {
+      "median_ms": 424.25,
+      "mean_ms": 424.78499999999997,
+      "p95_ms": 430.59499999999997,
+      "grids_per_second": 2.3571007660577488,
+      "effective_THS": 165.86622080769357
+    },
+    "104": {
+      "median_ms": 365.79999999999995,
+      "mean_ms": 365.65,
+      "p95_ms": 367.52,
+      "grids_per_second": 2.7337342810278846,
+      "effective_THS": 192.36944827136142
+    },
+    "109": {
+      "median_ms": 360.5,
+      "mean_ms": 360.245,
+      "p95_ms": 361.705,
+      "grids_per_second": 2.7739251040221915,
+      "effective_THS": 195.19762601293758
+    }
+  }
+}

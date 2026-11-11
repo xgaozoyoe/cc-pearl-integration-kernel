@@ -1,0 +1,29 @@
+Fastest native IMMA input cuts. All but native deliberately violate Pearl arithmetic.
+No compiler:all instruction PCs/counts and64staticIMMA/16LDSM/copy/transcript/barrier sites retained.
+a_zero:A=RZ. b_zero:B=RZ. ab_zero:A=B=RZ. bc_zero:B=C=RZ.
+C denotes old INT32 accumulator input; destination register remains unchanged.
+b_release/bc_release move3B-result waits after removing B-input consumption;
+waits remain before original B destination registers are overwritten. All other waits/fixed stalls preserved.
+First-half three wait moves:11e0->1220,1290->12d0,1350->1410.
+Input substitution is literalzero, not prefetched real B. No compiler DCE or new initialization.
+C cut does not remove destination hazards, fixed scheduling delays or all dependencies.
+No output hashing, share submission or full-grid mining-rate claims for diagnostic variants.
+
+UNLOCKED-CLOCK region events8192x8192x4096:200samples/variant,16launches/sample,10rotated batches.
+name mean_ms median_ms p95_ms
+native 1.020346 1.016929 1.048454
+a_zero 0.936843 0.935904 0.943942
+b_zero 0.939126 0.937948 0.947840
+ab_zero 0.928809 0.928448 0.930371
+b_release 0.919037 0.917184 0.922895
+bc_zero 0.933727 0.933219 0.937266
+bc_release 0.912379 0.911063 0.917251
+native->a_zero:time change -8.184%
+native->b_zero:time change -7.960%
+b_zero->b_release:time change -2.139%
+b_zero->bc_zero:time change -0.575%
+b_release->bc_release:time change -0.724%
+IMPORTANT:zero operands change power/clock behavior. Unlocked wall-time differences are NOT isolated dependency costs. Require same-clock,cycle-normalized counters before deciding bottleneck.
+Resources {"native": [168, 0, 0, 1], "a_zero": [168, 0, 0, 1], "b_zero": [168, 0, 0, 1], "ab_zero": [168, 0, 0, 1], "b_release": [168, 0, 0, 1], "bc_zero": [168, 0, 0, 1], "bc_release": [168, 0, 0, 1]}
+
+Validation:84expected-output edge comparisons PASS (native accepted-reference, diagnostics zero);all7large8192x8192 outputs checked before timing. b_release andbc_release memcheck0errors,racecheck0hazards/0errors/0warnings. Diagnostics are NOT bit-exact Pearl. No deployment. Fixed-clock counters pending user-run profile script.

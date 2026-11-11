@@ -1,0 +1,62 @@
+--- current-astream.cu
++++ early-local-xor.cu
+@@ -106,6 +106,20 @@
+         grB+=THREADS/4;offB+=unsigned(THREADS/4)*unsigned(k);dstB+=THREADS*16;
+     }
+     asm volatile("cp.async.commit_group;");
++}
++
++
++__device__ __forceinline__ unsigned local_xor(const unsigned* a,const unsigned* b) {
++ unsigned x;
++ // Volatile PTX prevents moving the local fold back into the REDUX epilogue.
++ asm volatile("{ .reg .b32 p,q;\n"
++              "lop3.b32 p,%1,%2,%3,0x96;\n"
++              "lop3.b32 q,%4,%5,%6,0x96;\n"
++              "lop3.b32 p,p,%7,%8,0x96;\n"
++              "xor.b32 %0,p,q; }"
++              : "=r"(x) : "r"(a[0]),"r"(a[1]),"r"(a[2]),"r"(a[3]),
++                           "r"(b[0]),"r"(b[1]),"r"(b[2]),"r"(b[3]));
++ return x;
+ }
+ 
+ template<int Lead,int TileK=64,bool Planar=false,bool PackedB=false,bool UnrollCopy=false,bool FixedCopy=false,int Stages=2,bool Wide=false,int Layout=0>
+@@ -132,6 +146,7 @@
+     for(int p=0;p<Stages-1;++p)
+         stage_copy<TileK,Planar,UnrollCopy,FixedCopy,Layout>(a,b,sa+p*BM*TileK,sb+p*BN*TileK,cm,cn,p,m,n,k);
+     for(int kt=0;kt<(k+TileK-1)/TileK;++kt) {
++        unsigned partial[4][1];
+         if constexpr(Stages==2) asm volatile("cp.async.wait_group 0;");
+         else {
+             if(kt+Stages-1<(k+TileK-1)/TileK) asm volatile("cp.async.wait_group 1;");
+@@ -184,6 +199,10 @@
+                     if(slice+1<TileK/32 && (TileK==64 || kt*TileK+(slice+1)*32<k) && group==Groups-1 && half==1)
+                         ar[row]=nextA;
+                 }
++                // Fold rows0/1 after rows2/3 issue independent MMAs.
++                // Only two short-lived partials; rows2/3 use normal epilogue.
++                if(slice==1 && (kt+1)%2==0 && group==Groups-1 && row>=2)
++                    partial[row-2][0]=local_xor(c[row-2][group][0],c[row-2][group][1]);
+             }
+             if constexpr(TileK!=64) {
+         if(group==Groups-1 && (kt*TileK+(slice+1)*32)%128==0) {
+@@ -217,11 +236,15 @@
+             for(int row=0;row<4;++row) {
+                 #pragma unroll
+                 for(int group=0;group<Groups;++group) {
+-                    unsigned x=0;
+-                    #pragma unroll
+-                    for(int half=0;half<2;++half) {
++                    unsigned x;
++                    if(group==Groups-1 && row<2)x=partial[row][0];
++                    else {
++                        x=0;
+                         #pragma unroll
+-                        for(int v=0;v<4;++v) x^=c[row][group][half][v];
++                        for(int half=0;half<2;++half) {
++                            #pragma unroll
++                            for(int v=0;v<4;++v)x^=c[row][group][half][v];
++                        }
+                     }
+                     x=__reduce_xor_sync(0xffffffffu,x);
+                     if(lane==0) {

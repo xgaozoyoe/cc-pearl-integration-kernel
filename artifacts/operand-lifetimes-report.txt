@@ -1,0 +1,54 @@
+Operand lifetime audit, 2026-10-09
+
+Source: existing 2026-10-08 A-stream baseline v0 SASS and PC samples.
+No new GPU run; production kernel/library unchanged.
+Reproduce: .venv/bin/python tools/analyze_operand_lifetimes.py
+
+K64 contains 64 static warp IMMA instructions and 16 LDSM.x4 instructions.
+Each of the 8 A and 8 B fragments feeds 8 IMMA instructions.
+
+B load -> first use      intervening IMMA   short-SB samples at first use
+0x1090 -> 0x10e0         0                  9170
+0x1190 -> 0x11a0         0                  11816
+0x1240 -> 0x1250         0                  9409
+0x1300 -> 0x1310         0                  6625
+0x14e0 -> 0x1500         0                  14904
+0x14f0 -> 0x1550         4                  0
+0x1620 -> 0x1680         4                  0
+0x1670 -> 0x16c0         4                  0
+
+The three loads at 0x1190/0x1240/0x1300 reuse R148-R151. Each directly
+follows the final old-fragment IMMA and directly precedes the first new-
+fragment IMMA. Their first-use PCs account for 37.69% of all short-SB
+samples, not 37.69% of execution time. There is no window to hoist these
+loads in the existing physical-register assignment without clobbering B.
+
+Source already has br[Lead+1], Lead=1, and prefetch at row1/half0.
+The source's two logical slots therefore do NOT guarantee two overlapping
+physical B-fragment lifetimes throughout the generated machine code.
+Later instructions use both R148-R151 and R152-R155 and achieve a four-
+IMMA lead. The compiler's final scheduling/register allocation differs
+substantially between the first and second halves of the K64 body.
+
+Within the unrolled body, 32 repeated C updates have 19..48 intervening
+IMMA instructions. This is not a backedge or cycle-level latency analysis,
+but it does not resemble a tight single-accumulator serial recurrence.
+Two instructions rename the accumulator destination (R100 -> R96 and
+R96 -> R100); the analyzer tracks their actual C/D operands.
+
+Interpretation:
+There is concrete intra-warp operand-supply imbalance, independent of the
+unproven inter-warp phase-alignment hypothesis. Prioritize preserving B
+fragment overlap in generated SASS, rather than merely moving its source
+load earlier. First inspect previous prefetch experiment SASS against this
+criterion before repeating an experiment. A controlled new candidate is
+useful only if it actually changes these dependency distances without
+adding spills, extra loads/MMA, or another occupancy reduction.
+
+Caveats:
+- PC sample attribution may be downstream; zero samples are not zero delay.
+- At first-use PCs, A dependencies can also contribute.
+- Static instruction distances are not execution cycles.
+- Percentages refer to stall samples, not removable wall time.
+- This is not dynamic evidence that all warps enter phases together.
+- No performance improvement has been measured in this audit.

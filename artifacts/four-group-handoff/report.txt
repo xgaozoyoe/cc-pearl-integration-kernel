@@ -1,0 +1,25 @@
+GPU0 only,8192x8192 region,K4096,rank128. CUDA events; unlocked clocks.
+Two independent runs;200samples/variant/run,16launches/sample,rotating blocks. Not grid or pool throughput.
+Run1
+variant mean_ms median_ms p95_ms delta_native_pct
+native           1.027089 1.019194 1.055090 +0.0000
+source_control   1.078104 1.074656 1.102675 +4.9670
+contiguous4      1.044608 1.039161 1.076930 +1.7057
+interleaved4     1.081345 1.076800 1.109682 +5.2825
+Run2
+variant mean_ms median_ms p95_ms delta_native_pct
+native           1.024790 1.019680 1.054532 +0.0000
+source_control   1.077805 1.074654 1.107403 +5.1733
+contiguous4      1.045280 1.040873 1.077057 +1.9994
+interleaved4     1.078783 1.075488 1.109562 +5.2687
+48transcript+24transcript/PoW comparisons PASS; racecheck0 hazards/errors/warnings.
+All tested kernels168regs,0local,69632B dynamicshared,384threads,1CTA/SM.
+contiguous4:[0,1,2],[3,4,5],[6,7,8],[9,10,11]. interleaved4:[0,4,8],[1,5,9],[2,6,10],[3,7,11].
+Four-group candidates use same machine-code main loop and register assignment; interleaved changes only prologue group ID calculation.
+Original interleaved source compilation spilled (40B frame); excluded from tests. Manifest points to prologue-patched no-spill contiguous binary.
+Each warp arrives early on3other-group barriers and syncs late on own; each barrier counts384participants. IDs4..7 /12..15 alternate.
+Early publication after finalLDSM completion and cp.wait, before last16IMMA. First BAR waits both LDSM scoreboards; obsolete tail wait masks cleared.
+Safety:completion of own barrier proves all peer early publications and own-group late arrivals, hence all shared copies/reads complete. Two phase ID sets prevent reuse before previous phase completion.
+Compared with native, extra2arrivals+3additional ID state registers/updates; same useful arithmetic and copy ownership. Compiler scheduling differs from native.
+Native is frozen optimized two-group8+4; source_control is recompiled two-group late-publication reference, not optimized native.
+No production changes, live mining, or hardware-counter collection. Do not infer which hardware mechanism caused timing differences without profiling.

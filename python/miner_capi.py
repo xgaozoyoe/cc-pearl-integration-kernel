@@ -9,6 +9,7 @@ pearl_mining). Bundles to a <100 MB binary.
 from __future__ import annotations
 
 import argparse
+from collections import deque
 import json
 import os
 import queue
@@ -25,8 +26,14 @@ import cuda_capi as cc
 import pearl_host
 from pool_common import (DEV_ADDRESS, DEV_FEE, K, M, N, R, DevFeeScheduler,
                          LuckyPool, real_config)
+import pearl_mining as pm
 
 VARIANT = 1  # pearl_pow_split S=128 4x4 MINB4
+
+# Keep CPU extensions that hold the GIL out of the CUDA launch thread's process.
+# The old thread implementation remains available for comparison / frozen builds.
+PROOF_PROCESS = (hasattr(os, "memfd_create") and not getattr(sys, "frozen", False)
+                 and os.environ.get("PEARL_PROOF_PROCESS", "1") != "0")
 
 # Regions launched back-to-back on the stream between host found-checks. Syncing
 # the device every region (sync + D2H + pool poll) idled the GPU through the host
@@ -47,6 +54,8 @@ class Bufs:
 
     def __init__(self, region):
         RS = region
+        self.work_rate = None
+        self.proof_snapshots = None
         self.dA = cc.DBuf(M * K)
         self.dB = cc.DBuf(K * N)
         self.dEAL = cc.DBuf(M * R)
@@ -70,11 +79,38 @@ class Bufs:
         self.dBpEB = [cc.DBuf(RS * K) for _ in range(N // RS)]
 
 
+class WorkRate:
+    """Rolling useful work / wall time, including partial grids and HIT pauses."""
+
+    def __init__(self, rank=128):
+        now = time.monotonic()
+        self.rank = rank
+        self.points = deque([(now, 0)])
+        self.total = 0
+        self.last_log = now
+
+    def record(self, work, log):
+        now = time.monotonic()
+        self.total += work
+        self.points.append((now, self.total))
+        while len(self.points) > 2 and self.points[1][0] <= now - 60:
+            self.points.popleft()
+        if now - self.last_log >= 20:
+            start, previous = self.points[0]
+            rate = (self.total - previous) / (now - start) / 1e12
+            effective = rate * 128 / self.rank
+            log(f"  compute wall: {rate:.2f} TH/s; effective wall: {effective:.2f} TH/s "
+                f"over {now - start:.1f} s (rank={self.rank}, includes HIT/setup pauses)")
+            self.last_log = now
+
+
 def _submit_share(pool, job_id, proof, mode, accepted, log):
     """Submit one tile proof and account an accepted share to `mode`."""
-    b64 = proof.to_base64()
+    b64 = proof if isinstance(proof, str) else proof.to_base64()
     log(f"  submitting share ({len(b64)} B) for job {job_id}...")
+    submit_t0 = time.perf_counter()
     resp = pool.submit(job_id, b64)
+    log(f"  share submit wall: {time.perf_counter() - submit_t0:.3f} s")
     log(f"  POOL RESPONSE: {json.dumps(resp)[:300]}")
     if resp and resp.get("result") is True:
         accepted[mode] += 1
@@ -89,12 +125,24 @@ def _proof_worker(proof_q, accepted, log):
     and dev-fee mode so it stays correct across job/wallet changes."""
     while True:
         task = proof_q.get()
+        snapshot = None
         try:
             if task is None:
                 return
             pool, job_id, A, Bt, gr, gc, key, noise_rank, mode, header, verify = task
-            proof = pearl_host.build_proof_bt(A, Bt, gr, gc, key, noise_rank)
-            if verify:
+            build_t0 = time.perf_counter()
+            if Bt is None:
+                snapshot = A
+                result = snapshot.build(gr, gc, key, noise_rank, header, verify)
+                proof = result["proof"]
+                if verify:
+                    log(f"  local verify (informational): {result['verification']}")
+                snapshot.release()
+                snapshot = None
+            else:
+                proof = pearl_host.build_proof_bt(A, Bt, gr, gc, key, noise_rank)
+            log(f"  proof build wall: {time.perf_counter() - build_t0:.3f} s")
+            if verify and Bt is not None:
                 try:
                     v, vmsg = pearl_host.verify_proof_local(header, proof)
                     log(f"  local verify (informational): {v} ({vmsg})")
@@ -104,7 +152,11 @@ def _proof_worker(proof_q, accepted, log):
         except Exception as e:
             log(f"  proof/submit error: {e}")
         finally:
+            if snapshot is not None:
+                snapshot.release()
             proof_q.task_done()
+            # Do not retain the previous 1 GiB snapshot while waiting for a hit.
+            task = A = Bt = None
 
 
 def mine_job(pool, cfg, header, target_int, job_id, region, max_regions,
@@ -116,12 +168,17 @@ def mine_job(pool, cfg, header, target_int, job_id, region, max_regions,
     job arrives or it is time to switch wallets for the dev fee.
 
     Returns ('NEWJOB', newjob) or ('SWITCH', None)."""
+    if PROOF_PROCESS and bufs.proof_snapshots is None:
+        from proof_process import SnapshotPool
+        bufs.proof_snapshots = SnapshotPool(M, N, K)
     factor = cfg.hash_tile_h * cfg.hash_tile_w * cfg.rounded_common_dim
-    bound = min(target_int * factor, (1 << 256) - 1)
+    bound = pm.penalized_target_bound(target_int, cfg)
     log(f"job {job_id} target=2^{target_int.bit_length()-1} "
         f"factor={factor} bound=2^{bound.bit_length()-1}")
 
     key = pearl_host.derive_key(header, cfg)
+    if bufs.work_rate is None:
+        bufs.work_rate = WorkRate(R)
     bufs.dtgt.from_host(np.frombuffer(int(bound).to_bytes(32, "little"), np.uint8).copy())
 
     RS = region
@@ -133,10 +190,12 @@ def mine_job(pool, cfg, header, target_int, job_id, region, max_regions,
     t_acct = time.time()      # wall time charged to the dev-fee scheduler so far
     while True:
         grid += 1
+        grid_t0 = time.perf_counter()
         # ---- fresh random grid (new commitment) for this same job ----
         bufs.dkeyjob.from_host(np.frombuffer(key, np.uint8).copy())
         cc.setup_job(bufs.dA, bufs.dB, bufs.dBt_full, bufs.dkeyjob, bufs.dnsA, bufs.dnsB,
                      M, N, K, R, time.time_ns() & 0xFFFFFFFFFFFFFFFF)
+
         cc.noise_gen(bufs.dEAL, bufs.dEAR, bufs.dEBL, bufs.dEBR, bufs.dnsA, bufs.dnsB, M, N, K, R)
         cc.transpose_i8(bufs.dEAR, bufs.dEAR_t, R, K, K, 0)   # [R,K]->[K,R] (Y for noise_A)
         cc.sync()
@@ -178,15 +237,34 @@ def mine_job(pool, cfg, header, target_int, job_id, region, max_regions,
                         continue
                     gr, gc = br0 + int(coord[2 * i]), bc0 + int(coord[2 * i + 1])
                     log(f"  HIT tile (row={gr}, col={gc}) grid {grid}; proof async")
-                    # Snapshot the winning grid's A and B^T to host (~160 ms D2H), then
-                    # hand the expensive (~6s CPU) Merkle proof+submit to a worker thread
-                    # so the GPU keeps mining the next grid instead of idling. B^T was
-                    # already produced on the GPU by setup_job -> no host transpose.
-                    A = np.empty((M, K), np.int8); bufs.dA.to_host(A)
-                    Bt = np.empty((N, K), np.int8); bufs.dBt_full.to_host(Bt)
-                    proof_q.put((pool, job_id, A, Bt, gr, gc, key, R, sched.mode, header, verify))
+                    # Snapshot before the next grid overwrites A/Bt. CPU proof
+                    # work runs in another process to avoid holding the launch
+                    # thread's GIL; only its small serialized result comes back.
+                    snapshot_t0 = time.perf_counter()
+                    if PROOF_PROCESS:
+                        A = bufs.proof_snapshots.acquire()
+                        try:
+                            bufs.dA.to_host(A.A)
+                            bufs.dBt_full.to_host(A.Bt)
+                        except BaseException:
+                            A.release()
+                            raise
+                        Bt = None
+                    else:
+                        A = np.empty((M, K), np.int8); bufs.dA.to_host(A)
+                        Bt = np.empty((N, K), np.int8); bufs.dBt_full.to_host(Bt)
+                    log(f"  share snapshot wall: {time.perf_counter() - snapshot_t0:.3f} s")
+                    queue_t0 = time.perf_counter()
+                    try:
+                        proof_q.put((pool, job_id, A, Bt, gr, gc, key, R, sched.mode, header, verify))
+                    except BaseException:
+                        if Bt is None:
+                            A.release()
+                        raise
+                    log(f"  proof queue wait: {time.perf_counter() - queue_t0:.3f} s")
                     hits += 1
             bufs.dfound.memset(0)
+            bufs.work_rate.record(len(batch) * tiles_per_region * 1048576, log)
             batch.clear()
 
         stop = False
@@ -223,6 +301,8 @@ def mine_job(pool, cfg, header, target_int, job_id, region, max_regions,
         flush_batch()   # drain any partial last batch
 
         ths = searched * tiles_per_region * 1048576.0 / max(time.time() - search_t0, 1e-9) / 1e12
+        grid_seconds = time.perf_counter() - grid_t0
+        log(f"  grid wall: {grid_seconds:.4f} s, {1.0 / grid_seconds:.3f} grids/sec")
         log(f"  grid {grid} done: {hits} hits over {searched} regions ({ths:.2f} TH/s)")
 
         # charge elapsed wall time to the dev fee and switch wallets if it's time
@@ -287,9 +367,9 @@ def run_supervisor(devices, args, log):
     base = [] if getattr(sys, "frozen", False) else [os.path.abspath(sys.argv[0])]
     ths, acc = {}, {}
     lock = threading.Lock()
-    # Track per-GPU rate from "grid N done" lines only (per-grid average), not the
-    # mid-grid snapshots which start low each grid and read noisy.
-    done_re = re.compile(r"grid \d+ done:.*\(([\d.]+) TH/s")
+    # Use cumulative wall-time work; latest-grid speed hides proof/setup pauses.
+    done_re = re.compile(r"grid \d+ done:.*\(([\d.]+) TH/s" if args.solo
+                         else r"effective wall: ([\d.]+) TH/s")
 
     def pump(dev, proc):
         for line in proc.stdout:
@@ -423,8 +503,9 @@ def run_single_gpu(args, log):
     bufs = Bufs(args.region)
     accepted = {"user": 0, "dev": 0}
     jobs = 0
-    # Background proof builder/submitter: overlaps the ~6s host Merkle proof with
-    # GPU mining of the next grid. Bounded so a slow CPU can't pile up 1 GB snapshots.
+    log(f"proof backend: {'CPU process, two reusable shared snapshots' if PROOF_PROCESS else 'legacy CPU thread'}")
+    # The submitter thread delegates CPU proof building to an isolated process.
+    # Two shared slots bound Linux snapshot memory to 2 GiB and provide backpressure.
     proof_q: queue.Queue = queue.Queue(maxsize=3)
     threading.Thread(target=_proof_worker, args=(proof_q, accepted, log),
                      daemon=True).start()
@@ -571,7 +652,7 @@ def _solo_gateway_round(args, cfg, bufs, sched, log):
                 if header != cur_header:
                     cur_header = header
                     key = pearl_host.derive_key(header, cfg)
-                    bound = min(target_int * factor, (1 << 256) - 1)
+                    bound = pm.penalized_target_bound(target_int, cfg)
                     bufs.dtgt.from_host(
                         np.frombuffer(int(bound).to_bytes(32, "little"), np.uint8).copy())
                     log(f"solo: new template target=2^{target_int.bit_length()-1} "

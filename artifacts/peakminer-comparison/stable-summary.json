@@ -1,0 +1,15 @@
+{
+  "samples": 13,
+  "interval_s": 120,
+  "ths_mean": 314.7252117934959,
+  "ths_min": 313.561126435644,
+  "ths_max": 315.4813216428973,
+  "power_mean": 448.6923076923077,
+  "accepted_start": 11,
+  "accepted_end": 13,
+  "invalid_end": 0,
+  "core_mhz_range": [
+    2460,
+    2490
+  ]
+}

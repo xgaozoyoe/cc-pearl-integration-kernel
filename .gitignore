@@ -39,3 +39,10 @@ releases/*.whl
 # OS
 Thumbs.db
 .DS_Store
+
+# Local experiment outputs. Curated source snapshots, reports and compact
+# results are tracked explicitly; binaries and raw profiler captures stay local.
+/artifacts/
+/log
+/python/*.bak
+/python/*.pre-v3

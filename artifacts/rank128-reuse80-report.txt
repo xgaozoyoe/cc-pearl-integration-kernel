@@ -1,0 +1,39 @@
+R128 operand-reuse intermediate-width experiment — 2026-10-08
+GPU0 only; independent /tmp/libpearl-rank128-reuse80.so. No promotion.
+
+Baseline: CTA256x192, warp64x64, 12warps/CTA, 168regs/thread, 69632B shared.
+Candidate: CTA256x160, warp64x80, 8warps/CTA, 236regs/thread, 63488B shared.
+Both 1CTA/SM and zero stack/local/spills; accumulators stay in registers.
+K4096, K64, two stages, Lead2, Layout6, R128, transcript and PoW unchanged.
+12 transcript/digest comparisons PASS against frozen accepted R128 library.
+Shapes32x48,320x320,8192x8192; seeds42,1234; each variant.
+
+Initial CTA320x160/10warp build spilled (216B stack,292B spill stores,316B loads).
+Rejected without running. Candidate reduced to eight warps; zero-spill build tested.
+This is an explicit reuse/concurrency tradeoff, not an identical-geometry comparison.
+
+Static SASS per warp per K64:
+baseline64IMMA/16LDSM, candidate80IMMA/18LDSM; LDSM per MMA -10%.
+CTA global->shared geometric bytes/MMA: (256+160)/(256*160) versus
+(256+192)/(256*192), +8.571%. This is a model, NOT measured L2 traffic.
+8192 region launch padding: baseline32*43*256*192 outputs vs
+candidate32*52*256*160: candidate executes0.775% more padded MMA.
+Useful output and useful arithmetic are identical, padded work is not.
+Resident warp count decreases12->8; theoretical warp occupancy25%->16.67%.
+
+Benchmark: full offline grid M=N131072,K4096,region8192, matched setup seeds.
+Includes V3/noise/setup/fold/PoW; targetzero excludes proof/submission work.
+Each run4warmup+40measurements; two runs with reversed order. No clock/power
+settings changed or clocks locked. Measurement resolution0.1ms from grid wall log.
+
+{"variant": 0, "samples": 80, "mean_ms": 331.97875, "median_ms": 332.0, "p95_ms": 334.1, "grids_sec": 3.012240994340752, "ths": 211.96761593223664}
+{"variant": 1, "samples": 80, "mean_ms": 353.38125, "median_ms": 353.55, "p95_ms": 355.41499999999996, "grids_sec": 2.829804920323305, "ths": 199.12981851092553}
+
+Candidate mean time increases 6.447%; throughput changes -6.056%.
+Conclusion: reject this intermediate warp width. Reducing LDSM/MMA is real but
+insufficient to offset this mapping's other costs. Timings alone cannot separate
+reduced scheduling concurrency, global/shared traffic, integer/control work,
+register scheduling, and padding. No Nsight counter collection or live mining
+was performed for this rejected candidate. Production hashes verified unchanged.
+No claim that operand reuse in general is exhausted, or that the full performance
+gap can be recovered by changing warp width.

@@ -1,0 +1,29 @@
+--- cta192
++++ batch_reduce
+@@ -1,6 +1,6 @@
+ #include <cuda_runtime.h>
+ #include <cstdint>
+-namespace transcript_cta192_consumer {
++namespace handoff_diagnosis_batch_reduce {
+ constexpr int BM=192, BN=192, THREADS=288;
+ constexpr int WORDS=(BM/16)*(BN/16)*16;
+ struct Fragment { unsigned v[4]; };
+@@ -129,12 +129,13 @@
+                 for(int row=0;row<4;++row) values[row]=tasks[producer*128+row*32+lane];
+                 task_arrive(barbase+producer*16+8);
+                 #pragma unroll
+-                for(int row=0;row<4;++row) {
+-                    unsigned x=__reduce_xor_sync(0xffffffffu,values[row]);
+-                    if(lane==0) {
++                for(int row=0;row<4;++row) values[row]=__reduce_xor_sync(0xffffffffu,values[row]);
++                if(lane==0) {
++                    #pragma unroll
++                    for(int row=0;row<4;++row) {
+                         int idx=(((producer%3)*4+row)*(BN/16)+(producer/3)*4+group)*16+(rb&15u);
+-                        if(rb<16)transcript[idx]=x;
+-                        else {unsigned prev=transcript[idx];transcript[idx]=((prev<<13)|(prev>>19))^x;}
++                        if(rb<16) transcript[idx]=values[row];
++                        else {unsigned prev=transcript[idx];transcript[idx]=((prev<<13)|(prev>>19))^values[row];}
+                     }
+                 }
+             }

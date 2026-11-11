@@ -1,0 +1,11 @@
+Capture: /tmp/pearl-c-dependency.95kFNp
+Captured input hashes all verified. Both variants:67,633,152 dynamic IMMA per launch,3 sampled launches each.
+NCU clock-control base; region timing only, not mining performance.
+Native mean1.134517ms, diagnostic1.138507ms (+0.3516%); IMMA/SM elapsed cycle0.208833590->0.208727913 (-0.05060%).
+Tensor utilization85.7733->85.8000%; shortSB7.6800->7.6867%; math throttle40.9267->40.9267%; eligible warps0.36->0.36.
+PC sample totals native->cut: wait156403->156225; IMMA wait86549->86672; math377991->377787; shortSB71004->71364. No material wait reduction observed.
+Conclusion: source-C substitution alone provides no demonstrated throughput benefit in the preserved schedule. Unlocked1.31%gain is not reproduced in cycle-normalized capture.
+Important limitation: static stalls/wait masks, destination WAW constraints and transcript consumers remain unchanged. This is not proof that all accumulator-related scheduling constraints are irrelevant.
+Nonzero A words replace C; register aliasing and arithmetic differ. Diagnostic is never valid mining arithmetic.
+Next evidence needed: attribute retained static stalls to producer-consumer distances and resource issue constraints before attempting any isolated diagnostic rescheduling. Do not blindly remove waits.
+Production binary unchanged.

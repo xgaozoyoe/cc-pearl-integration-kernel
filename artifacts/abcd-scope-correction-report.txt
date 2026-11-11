@@ -1,0 +1,30 @@
+Corrected ABCD scope: all per-K preparation (user confirmed option1).
+
+Coverage: A-copy src64/dst32/participation predicates; B-copy src64/dst32/valid lengths; all8 A and8 B LDSM addresses; current/next stage; own/peer barrier IDs; future-copy predicate. Loop trip count and transcript arithmetic remain fixed.
+
+A/B native anchors kept. B SASS matches accepted lean toggle.
+Full-scope replay feasibility prototype: all41 prepared scalar fields retained by volatile stores; C consumes a previously recorded same-value plan. B_probe and C share the exact same kernel/regs/instruction stream, with replay-pointer aliasing changed. Small/edge tests compare every written preparation field and transcript;8192 preflight transcripts also pass.
+This prototype is REJECTED for native causal attribution: B_probe7.805766ms vs B1.022961ms,7.6306x; C13.917820ms. Trace storage/read traffic, store-to-load dependencies, different aliasing/working sets, and72B local storage contaminate comparison. No conclusion about original preparation bottlenecks follows. C is NOT a completed valid causal control. Do not ask user to profile this heavy probe.
+
+Native D removes replay operations. It hoists global-copy origins, uses bounded32-bit offsets, simplifies A-copy predicates and A/B shared swizzle arithmetic, preserves true preparation dependencies and original stage/barrier protocol. Entire prepared plan is equivalent to B in small/edge field validation; native transcript+PoW match reference including8192 region.
+Native B/D both168 registers,384threads,69632B shared,1CTA/SM,0 spill.64 static IMMA and16LDSM each. Static hot-loop span490 ->463 slots, including alternative fold paths: NOT a measured dynamic ALU count.
+Native region CUDA-event results (unlocked clocks,240 samples each):
+{
+  "B_native": {
+    "mean_ms": 1.0726119538148244,
+    "median_ms": 1.0676480531692505,
+    "p95_ms": 1.0936300575733184,
+    "samples": 240
+  },
+  "D_native": {
+    "mean_ms": 1.0838565746943156,
+    "median_ms": 1.0833920240402222,
+    "p95_ms": 1.1024794280529022,
+    "samples": 240
+  }
+}
+D time increase percent: 1.0483400673933163
+These are not fixed-frequency Nsight findings or end-to-end mining throughput.
+
+Pending: valid low-perturbation C; fixed-clock dynamic counters for native D. No production change or deployment.
+Optional D counter capture: sudo bash tools/profile_abcd_native_d.sh

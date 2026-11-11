@@ -1,0 +1,194 @@
+[
+  {
+    "name": "offset32",
+    "m": 256,
+    "n": 384,
+    "seed": 42,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "shared_address",
+    "m": 256,
+    "n": 384,
+    "seed": 42,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "offset32",
+    "m": 256,
+    "n": 384,
+    "seed": 1234,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "shared_address",
+    "m": 256,
+    "n": 384,
+    "seed": 1234,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "offset32",
+    "m": 256,
+    "n": 384,
+    "seed": 9876,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "shared_address",
+    "m": 256,
+    "n": 384,
+    "seed": 9876,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "offset32",
+    "m": 256,
+    "n": 400,
+    "seed": 42,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "shared_address",
+    "m": 256,
+    "n": 400,
+    "seed": 42,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "offset32",
+    "m": 256,
+    "n": 400,
+    "seed": 1234,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "shared_address",
+    "m": 256,
+    "n": 400,
+    "seed": 1234,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "offset32",
+    "m": 256,
+    "n": 400,
+    "seed": 9876,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "shared_address",
+    "m": 256,
+    "n": 400,
+    "seed": 9876,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "offset32",
+    "m": 512,
+    "n": 768,
+    "seed": 42,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "shared_address",
+    "m": 512,
+    "n": 768,
+    "seed": 42,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "offset32",
+    "m": 512,
+    "n": 768,
+    "seed": 1234,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "shared_address",
+    "m": 512,
+    "n": 768,
+    "seed": 1234,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "offset32",
+    "m": 512,
+    "n": 768,
+    "seed": 9876,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "shared_address",
+    "m": 512,
+    "n": 768,
+    "seed": 9876,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "offset32",
+    "m": 512,
+    "n": 800,
+    "seed": 42,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "shared_address",
+    "m": 512,
+    "n": 800,
+    "seed": 42,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "offset32",
+    "m": 512,
+    "n": 800,
+    "seed": 1234,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "shared_address",
+    "m": 512,
+    "n": 800,
+    "seed": 1234,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "offset32",
+    "m": 512,
+    "n": 800,
+    "seed": 9876,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "shared_address",
+    "m": 512,
+    "n": 800,
+    "seed": 9876,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  }
+]

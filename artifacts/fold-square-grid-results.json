@@ -1,0 +1,122 @@
+[
+  {
+    "variant": 0,
+    "name": "production",
+    "times": [
+      0.4215,
+      0.4217,
+      0.4294,
+      0.4251,
+      0.4287,
+      0.4282
+    ],
+    "median_seconds_excluding_first": 0.4282,
+    "grids_per_second": 2.335357309668379,
+    "effective_THS": 164.3361610874918,
+    "reported_search_THS": [
+      173.7,
+      173.31,
+      169.98,
+      171.93,
+      170.37,
+      170.5
+    ],
+    "median_reported_search_THS": 170.5
+  },
+  {
+    "variant": 20,
+    "name": "best 2x4",
+    "times": [
+      0.3857,
+      0.3914,
+      0.3917,
+      0.3886,
+      0.3911,
+      0.3938
+    ],
+    "median_seconds_excluding_first": 0.3914,
+    "grids_per_second": 2.5549310168625445,
+    "effective_THS": 179.78728711717935,
+    "reported_search_THS": [
+      189.75,
+      187.13,
+      186.93,
+      188.46,
+      187.37,
+      186.02
+    ],
+    "median_reported_search_THS": 187.13
+  },
+  {
+    "variant": 47,
+    "name": "square 192x192",
+    "times": [
+      0.4129,
+      0.4175,
+      0.4238,
+      0.4172,
+      0.4254,
+      0.4206
+    ],
+    "median_seconds_excluding_first": 0.4206,
+    "grids_per_second": 2.3775558725630055,
+    "effective_THS": 167.30562096448884,
+    "reported_search_THS": [
+      176.79,
+      174.92,
+      172.25,
+      175.23,
+      172.31,
+      173.7
+    ],
+    "median_reported_search_THS": 173.7
+  },
+  {
+    "variant": 20,
+    "name": "best 2x4",
+    "times": [
+      0.386,
+      0.3906,
+      0.3909,
+      0.3898,
+      0.391,
+      0.3903
+    ],
+    "median_seconds_excluding_first": 0.3906,
+    "grids_per_second": 2.5601638504864312,
+    "effective_THS": 180.1555150477829,
+    "reported_search_THS": [
+      189.6,
+      187.61,
+      187.36,
+      187.99,
+      187.26,
+      187.59
+    ],
+    "median_reported_search_THS": 187.59
+  },
+  {
+    "variant": 0,
+    "name": "production",
+    "times": [
+      0.4178,
+      0.4245,
+      0.4323,
+      0.4252,
+      0.4294,
+      0.4259
+    ],
+    "median_seconds_excluding_first": 0.4259,
+    "grids_per_second": 2.34796900680911,
+    "effective_THS": 165.2236303772341,
+    "reported_search_THS": [
+      174.65,
+      172.04,
+      168.95,
+      171.93,
+      170.07,
+      171.65
+    ],
+    "median_reported_search_THS": 171.65
+  }
+]

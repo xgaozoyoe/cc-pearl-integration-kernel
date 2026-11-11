@@ -1,0 +1,28 @@
+--- A-stream baseline
++++ late
+@@ -41,6 +41,12 @@
+             : "=r"(x.v[0]),"=r"(x.v[1]),"=r"(x.v[2]),"=r"(x.v[3]) : "r"(addr));
+         return x;
+     }
++}
++template<int TileK,bool Planar,int Layout>
++__device__ __forceinline__ void loadBhalf(Fragment& x,int half,const signed char* base,int row,int col,int lane,int height) {
++    unsigned addr=__cvta_generic_to_shared(base+offset<TileK,Planar,Layout>(row+half*8+(lane&7),col+((lane>>3)&1)*16,height));
++    asm volatile("ldmatrix.sync.aligned.m8n8.x2.shared.b16 {%0,%1},[%2];"
++        : "=r"(x.v[half*2]),"=r"(x.v[half*2+1]) : "r"(addr));
+ }
+ template<bool Packed=false>
+ __device__ __forceinline__ void mma(unsigned* c,const Fragment& a,const Fragment& b,int half) {
+@@ -177,8 +183,10 @@
+                 Fragment nextA;
+                 #pragma unroll
+                 for(int half=0;half<2;++half) {
+-                    if(half==0 && row==1 && g+Lead<Groups*(TileK/32) && (TileK==64 || kt*TileK+((g+Lead)/Groups)*32<k))
+-                        br[(g+Lead)%slots]=loadB16x32<TileK,Planar,PackedB,Layout>(bb,wn*WarpN+((g+Lead)%Groups)*16,((g+Lead)/Groups)*32,lane,BN);
++                    if((row==1 && half==0) && g+Lead<Groups*(TileK/32))
++                        loadBhalf<TileK,Planar,Layout>(br[(g+Lead)%slots],0,bb,wn*WarpN+((g+Lead)%Groups)*16,((g+Lead)/Groups)*32,lane,BN);
++                    if((row==3 && half==0) && g+Lead<Groups*(TileK/32))
++                        loadBhalf<TileK,Planar,Layout>(br[(g+Lead)%slots],1,bb,wn*WarpN+((g+Lead)%Groups)*16,((g+Lead)/Groups)*32,lane,BN);
+                     if(half==0 && slice+1<TileK/32 && (TileK==64 || kt*TileK+(slice+1)*32<k) && group==Groups-1) nextA=load16x32<TileK,Planar,Layout>(aa,wm*64+row*16,(slice+1)*32,lane,BM);
+                     mma<PackedB>(c[row][group][half],ar[row],br[slot],half);
+                     if(slice+1<TileK/32 && (TileK==64 || kt*TileK+(slice+1)*32<k) && group==Groups-1 && half==1)

@@ -1,0 +1,2 @@
+Physical GPU 0 PCI 00000000:21:00.0 -> Nsight 2
+Physical GPU 1 PCI 00000000:22:00.0 -> Nsight 3

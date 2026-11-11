@@ -1,0 +1,65 @@
+Frozen fastest binary: both_compact.cubin, hash checked by tools/audit_next_iteration_handoff.py.
+CPU-only audit; no GPU timing, binary modifications or production changes.
+
+Continuing iteration path:
+2a00 named sync ->2a10 exit predicate ->2a20 old-ID-consumption protection/toggle
+->2a30/2a40 control ->bb0..db0 common preparation ->dc0 future-copy skip
+->dd0..f30 copy preparation ->f40..1070 copies/interleaved address work
+->1080 async commit ->1090 first A LDSM ->10c0 first B LDSM.
+Final loop exit goes to2a50 CTA barrier and output. Final compute iteration
+skips future copies via dc0->1090. Do not collapse these two conditions.
+
+Instruction classification:
+bb0..db0:33 local address/predicate instructions; no cross-warp shared access.
+dd0..f30:23 instructions; constants, addresses and predicates, plus3 never-executed
+@!PT LDS placeholders. Thus56 static preparation slots are not56 active ALU ops.
+Local register/scoreboard lifetimes remain relevant; native bb0 waitmask6 must
+not be discarded merely because this work does not depend on peer data.
+f40/fb0/1020: A copies;1060/1070:B copies. They write shared memory, so old-stage
+read completion must be established before each overlapping destination write.
+Address calculations between copies have no peer-data dependency, but registers
+may still be consumed by previous async instructions; preserve scoreboard guards.
+1080:commit copies; does not establish other warps' data readiness.
+1090/10c0:LDSM requires the actual operand producers to have completed/published.
+BAR.SYNC.DEFER_BLOCKING issue does not itself timestamp actual warp blocking or
+resumption. Preserve scheduling controls and pending barrier operand consumption.
+
+Earlier experiments, as recorded in their reports:
+deferred-prefix-v3:33instruction prefix; no benefit, mean +0.419% vs native.
+deferred-copy-prefix:33+23preparation slots before sync; full-grid late variant
+291.562ms vs matched291.417ms (+0.050%); no stable gain attributable to delay.
+handoff-first-ldsm:move first reads ahead of copies, still after original sync;
+full-grid +0.117%/+0.160% vs native, no gain.
+ready-free:SM80-compatible mbarriers split free-before-copy and ready-before-read.
+Deferred variant ~3.1% faster than immediate-wait version, yet ~10.2% slower
+than frozen native and~5.1..5.3% slower than source control. Codegen differs;
+cannot assign entire regression to barrier overhead alone.
+
+New per-instruction granularity distinction:
+The union-of-dependencies audit assumed ONE gate before the entire next iteration.
+Individual copies need far fewer old-stage readers. For warp0:
+f40 A rows0..7:readers W0,W4,W8
+fb0 A rows96..103:readers W1,W5,W9
+1020 A rows192..199:readers W3,W7,W11
+1060 B rows0..7:readers W0,W1,W2,W3
+1070 B rows96..103:readers W4,W5,W6,W7
+Union is11warps, but each copy involves only3or4readers. Same region graph
+applies to interior tiles and non-drain iterations. Complete table in copy-region-readers.csv.
+The recorded ready-free prototype uses whole-stage384participant barriers, not
+these per-copy-region sets. This audit does not claim all historical variants
+were exhaustively searched for region-specific protocols.
+
+Decision boundary:
+Moving only address preparation has already failed a matched test.
+Simply replacing the current barrier with the previous ready/free implementation
+has already regressed. A new experiment must change actual safe shared-access
+timing, while avoiding larger per-copy synchronization overhead.
+Per-region release is a logical opportunity, not a ready implementation: phase
+reuse, visibility, last reads, waiting cost and signal count require a protocol.
+Do not put a fresh barrier before each of the5copies without costing it first.
+Existing source markers combine own async-copy completion and read completion;
+they cannot quantify when each smaller region actually became safe to overwrite.
+
+Reproduce: .venv/bin/python tools/audit_next_iteration_handoff.py
+Outputs:next-iteration-instructions.csv (87instructions),copy-region-readers.csv
+(56 active warp-copy operations). No correctness/speedup claim for an unbuilt kernel.

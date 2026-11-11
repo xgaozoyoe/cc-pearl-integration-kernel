@@ -1,0 +1,70 @@
+[
+  {
+    "variant": 0,
+    "name": "original A-stream",
+    "samples": 80,
+    "mean_ms": 309.45875,
+    "median_ms": 309.5,
+    "p95_ms": 313.815,
+    "ths": 227.3929697501331,
+    "grids_sec": 3.2314484563774655,
+    "resources": [
+      168,
+      384,
+      69632,
+      1,
+      0
+    ]
+  },
+  {
+    "variant": 1,
+    "name": "copy bundle original XOR",
+    "samples": 80,
+    "mean_ms": 317.56,
+    "median_ms": 317.09999999999997,
+    "p95_ms": 322.41,
+    "ths": 221.5919642828568,
+    "grids_sec": 3.1490112104799093,
+    "resources": [
+      168,
+      384,
+      69632,
+      1,
+      0
+    ]
+  },
+  {
+    "variant": 2,
+    "name": "copy bundle early XOR",
+    "samples": 80,
+    "mean_ms": 316.52625,
+    "median_ms": 315.75,
+    "p95_ms": 322.0,
+    "ths": 222.3156663236114,
+    "grids_sec": 3.159295635038168,
+    "resources": [
+      168,
+      384,
+      69632,
+      1,
+      0
+    ]
+  },
+  {
+    "variant": 3,
+    "name": "copy bundle late XOR",
+    "samples": 80,
+    "mean_ms": 316.10875,
+    "median_ms": 315.45000000000005,
+    "p95_ms": 319.81499999999994,
+    "ths": 222.60928929573763,
+    "grids_sec": 3.1634682684361,
+    "resources": [
+      168,
+      384,
+      69632,
+      1,
+      0
+    ]
+  }
+]

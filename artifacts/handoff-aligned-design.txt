@@ -1,0 +1,21 @@
+GPU0-only shared-stage address experiment; baseline and verified lean checkpoint retained.
+0baseline;1lean toggle checkpoint;2B-stage padded;3padding plus rolling stage byte.
+
+Logical tile stays256x192,K64,2stages,12warps,384threads,K4096,R128.
+A stage16KiB; B useful data12KiB but reserves16KiB in padded variants.
+Two B stages add8KiB shared allocation:69632->77824bytes, residency remains1CTA/SM.
+No additional A/B data copied. Transcript offset increases8KiB; logical indexing unchanged.
+The four16KiB shared operand slots are A0,A1,B0,B1; output transcript follows.
+
+Padded control retains kt%2 stage selection. Rolling variant maintains stage_byte
+(0 or16384), next_byte=stage_byte XOR16384, then toggles after receive barrier.
+Only addresses differ; cp.async count, MMA tile/count, barrier participants/order,
+transcript and PoW arithmetic are preserved. K64/2stage restrictions are static.
+
+Resource queries:baseline168regs,checkpoint168,padded168,rolling167;0local/spill;
+all1CTA/SM. Static64IMMA+16LDSM in every variant. Baseline and checkpoint SASS
+instruction text/PCs exactly match previous binaries, making controls identifiable.
+
+No clock/power changes. No production replacement,V3/target/proof changes or live mining.
+Runtime tests must decide if extra shared capacity and address simplification help;
+source simplification alone is not a performance result.

@@ -1,0 +1,23 @@
+{
+  "variants": {
+    "native": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "104c0c1b265260dea5c9ab0bb174ebbbe7ee9cceb0cf0acebf2a9d1dfa4d50aa",
+      "smem": 69632,
+      "correct": true
+    },
+    "tid_move": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "2020c4d1e04977807b5422fe33178095dfabed5c094e3b7d31f825668613193e",
+      "smem": 69632,
+      "correct": true
+    },
+    "tid_bounds": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "e6c1f95ae37a1bb348d7e0b434d193b0ec978da5e53008b2e7a3cf68b56c3046",
+      "smem": 69632,
+      "correct": true
+    }
+  },
+  "warning": "GPU0 offline diagnostic; fixed384-thread CTA only; never replace production."
+}

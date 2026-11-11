@@ -1,0 +1,39 @@
+Ada R128 isolated experiment, 2026-10-07
+
+R256 matched baseline: v121, CTA256x192, warp64x64, K64, 2 stages, region8192.
+R128: same mapping/MMA; fold every128 K instead of256. Second16 folds rotate13
+and XOR into the existing16 transcript words. Accumulators stay in registers.
+Both:168regs/thread,384threads,69632B shared,1CTA/SM,12warps/SM,0local/spill.
+Production CUDA library and GPU2 live miner remain unchanged.
+
+Validation:
+8 CPU NumPy transcript + CPU keyed BLAKE3 cases (2 ranks,2 seeds,2 matrix shapes).
+DP4A comparison on all256x384 cases; partial CTA32x48 exercises edge predicates.
+Official salted V3 GPU seed parity and verify_plain_proof_v3 PASS on GPU-found
+R128 proof; noise generation/proof construction unchanged.
+Compute Sanitizer memcheck:0errors. Six host pipeline regressions pass.
+
+Benchmark GPU0 only; no HITs; full setup/V3/noise/GEMM/transcript/PoW included.
+40samples after4warmup perrun,2runs reversedorder perrank. Clocks not locked.
+R256 means318.1675/317.9350ms; raw221.17/221.33; normalized110.58/110.67TH/s.
+R128 means329.8775/328.4150ms; raw and normalized213.32/214.27TH/s.
+Rank-only normalized improvement93.26%; raw throughput drops about3.37%.
+These figures exclude live proof overhead and are not guaranteed pool payouts.
+
+Live GPU0 compatibility check:
+Independent worker ada-rank128-gpu0-check,region8192,one job,automatic exit.
+21:26:48 and21:27:03: two actual LuckyPool shares accepted, no rejection.
+21:26:55 wall rate213.23TH/s normalized/raw. Only20srate sample, not15mpool estimate.
+Exit0; GPU2 production process was not restarted.
+
+Artifacts:
+artifacts/libpearl-rank.so (isolatedSM89library)
+artifacts/ada-rank.patch,ada-rank-results.json,ada-rank-proof.json,ada-rank-live.log
+Build:python3 tools/build_ada_rank.py
+Run:/home/xgao/pearl-official/.venv/bin/python tools/run_rank128.py --gpu 0 --wallet YOUR_WALLET --worker ada-rank128-test --region 8192
+Use--gpu2 only after stopping the old miner onGPU2; never run both on the sameGPU.
+Rollback:stop this runner and use the previous packaging/p40_miner_lite_main.py command.
+Do not merely change pool_common.R:production CuTe fold contains R256-specific
+indexing; this runner dispatches to the separate validated R128 kernel instead.
+Current source logging now distinguishes raw compute from128/rank-normalized
+rate. Existing running processes pick this up only on restart. No git commit.

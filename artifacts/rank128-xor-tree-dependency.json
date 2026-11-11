@@ -1,0 +1,134 @@
+[
+  {
+    "function": "_ZN17xor_tree_balanced6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+    "instructions": 888,
+    "first_redux_pc": "1950",
+    "local_logic_depth": 2,
+    "trace": {
+      "pc": "1920",
+      "source": "LOP3.LUT R96, R96, R97, R98, 0x96, !PT ;",
+      "inputs": [
+        {
+          "pc": "18b0",
+          "source": "LOP3.LUT R96, R124, R125, R126, 0x96, !PT ;",
+          "inputs": [
+            {
+              "register": "R124",
+              "depth": 0
+            },
+            {
+              "register": "R125",
+              "depth": 0
+            },
+            {
+              "register": "R126",
+              "depth": 0
+            }
+          ],
+          "depth": 1
+        },
+        {
+          "pc": "18d0",
+          "source": "LOP3.LUT R97, R127, R120, R121, 0x96, !PT ;",
+          "inputs": [
+            {
+              "register": "R127",
+              "depth": 0
+            },
+            {
+              "register": "R120",
+              "depth": 0
+            },
+            {
+              "register": "R121",
+              "depth": 0
+            }
+          ],
+          "depth": 1
+        },
+        {
+          "pc": "18f0",
+          "source": "LOP3.LUT R98, R122, R123, RZ, 0x3c, !PT ;",
+          "inputs": [
+            {
+              "register": "R122",
+              "depth": 0
+            },
+            {
+              "register": "R123",
+              "depth": 0
+            }
+          ],
+          "depth": 1
+        }
+      ],
+      "depth": 2
+    }
+  },
+  {
+    "function": "_ZN17xor_tree_original6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+    "instructions": 880,
+    "first_redux_pc": "18e0",
+    "local_logic_depth": 4,
+    "trace": {
+      "pc": "18a0",
+      "source": "LOP3.LUT R137, R19, R96, RZ, 0x3c, !PT ;",
+      "inputs": [
+        {
+          "register": "R19",
+          "depth": 0
+        },
+        {
+          "pc": "1880",
+          "source": "LOP3.LUT R96, R18, R17, R96, 0x96, !PT ;",
+          "inputs": [
+            {
+              "register": "R18",
+              "depth": 0
+            },
+            {
+              "register": "R17",
+              "depth": 0
+            },
+            {
+              "pc": "1870",
+              "source": "LOP3.LUT R96, R16, R35, R96, 0x96, !PT ;",
+              "inputs": [
+                {
+                  "register": "R16",
+                  "depth": 0
+                },
+                {
+                  "register": "R35",
+                  "depth": 0
+                },
+                {
+                  "pc": "1850",
+                  "source": "LOP3.LUT R96, R34, R33, R32, 0x96, !PT ;",
+                  "inputs": [
+                    {
+                      "register": "R34",
+                      "depth": 0
+                    },
+                    {
+                      "register": "R33",
+                      "depth": 0
+                    },
+                    {
+                      "register": "R32",
+                      "depth": 0
+                    }
+                  ],
+                  "depth": 1
+                }
+              ],
+              "depth": 2
+            }
+          ],
+          "depth": 3
+        }
+      ],
+      "depth": 4
+    }
+  }
+]

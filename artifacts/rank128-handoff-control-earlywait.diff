@@ -1,0 +1,25 @@
+--- current-A-stream
++++ earlywait
+@@ -131,12 +131,9 @@
+     #pragma unroll
+     for(int p=0;p<Stages-1;++p)
+         stage_copy<TileK,Planar,UnrollCopy,FixedCopy,Layout>(a,b,sa+p*BM*TileK,sb+p*BN*TileK,cm,cn,p,m,n,k);
++    static_assert(Stages==2);
++    asm volatile("cp.async.wait_group 0;");
+     for(int kt=0;kt<(k+TileK-1)/TileK;++kt) {
+-        if constexpr(Stages==2) asm volatile("cp.async.wait_group 0;");
+-        else {
+-            if(kt+Stages-1<(k+TileK-1)/TileK) asm volatile("cp.async.wait_group 1;");
+-            else asm volatile("cp.async.wait_group 0;");
+-        }
+         __syncthreads();
+         int current=kt%Stages,next=(kt+Stages-1)%Stages;
+         if(kt+Stages-1<(k+TileK-1)/TileK)
+@@ -210,6 +207,7 @@
+             }
+         }
+         }
++        asm volatile("cp.async.wait_group 0;");
+         if constexpr(TileK==64) {
+         if((kt+1)%2==0) {
+             int rb=(kt+1)/2-1;

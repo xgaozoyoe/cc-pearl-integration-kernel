@@ -1,0 +1,62 @@
+{
+  "89": {
+    "encoding_hash": "83e145bffacaf26d23dadf8f5a9ae68399bf378b307c29e36c2a6647ed0c3cfd",
+    "matches_benchmark_binary": true,
+    "sync_points": [
+      {
+        "offset": "0x0910",
+        "instruction": "LDGDEPBAR ;"
+      },
+      {
+        "offset": "0x0f60",
+        "instruction": "LDGDEPBAR ;"
+      },
+      {
+        "offset": "0x0fa0",
+        "instruction": "DEPBAR.LE SB0, 0x0 ;"
+      },
+      {
+        "offset": "0x0fb0",
+        "instruction": "BAR.SYNC.DEFER_BLOCKING 0x0 ;"
+      },
+      {
+        "offset": "0x1590",
+        "instruction": "LDGDEPBAR ;"
+      },
+      {
+        "offset": "0x2960",
+        "instruction": "BAR.SYNC.DEFER_BLOCKING 0x0 ;"
+      }
+    ]
+  },
+  "88": {
+    "encoding_hash": "3a818449c960adf3121d3824e31da2a9ebb9b2f095a2fd4655d64ea0f18dfc5f",
+    "matches_benchmark_binary": true,
+    "sync_points": [
+      {
+        "offset": "0x0910",
+        "instruction": "LDGDEPBAR ;"
+      },
+      {
+        "offset": "0x0f60",
+        "instruction": "LDGDEPBAR ;"
+      },
+      {
+        "offset": "0x0fa0",
+        "instruction": "DEPBAR.LE SB0, 0x0 ;"
+      },
+      {
+        "offset": "0x0fb0",
+        "instruction": "BAR.SYNC.DEFER_BLOCKING 0x0 ;"
+      },
+      {
+        "offset": "0x15a0",
+        "instruction": "LDGDEPBAR ;"
+      },
+      {
+        "offset": "0x2990",
+        "instruction": "BAR.SYNC.DEFER_BLOCKING 0x0 ;"
+      }
+    ]
+  }
+}

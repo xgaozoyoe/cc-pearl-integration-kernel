@@ -1,0 +1,18 @@
+Goal: enlarge the existing named-barrier overlap window without changing operands, MMA order, tile, stage count, transcript work or register allocation.
+
+baseline: arrival at0x17d0, after all64 IMMA.
+tail5: rotate that exact BAR.ARV word to0x1780, before final5 IMMA.
+tail9: rotate that exact BAR.ARV word to0x1740, before final9 IMMA.
+
+Safety audit:
+- Last cp.async-completion DEPBAR.LE SB0,0 is at0x16b0, unchanged.
+- Last two LDSM are0x1650 (write scoreboard1, R148..151) and0x16a0 (write scoreboard2, R152..155).
+- Wait mask2 at0x16c0 and mask4 at0x1700 establish completion of both. Prior LDSM groups have already been consumed/waited; no later shared operand reads exist before arrival.
+- Peer ID is computed intoR96 by0x1720. Preserve0x1730 IMMA, leaving1+8 scheduled cycles before earliest arrival at0x1740. No scalar latency padding is added.
+- Shifted IMMA instructions neither read nor writeR96, create no scoreboard entries and have no wait masks.
+- BAR.ARV retains its read scoreboard1 and all original control bits. The later original retirement wait remains at its old PC; no intervening instruction reuses that scoreboard in the rotated block.
+- IMMA relative order, instruction words including fixed stalls/reuse bits, branch PCs, BAR.SYNC and transcript instructions are unchanged. Both variants merely rotate one128-bit instruction within a branch-free block.
+- After publication, tail IMMA reads registers. Transcript storage lies outside the operand stage being reused. Existing alternating barrier ID protocol is unchanged.
+
+Expected resources:168registers/thread,384threads,69632B shared,1CTA/SM,0local/spill; verified by driver harness.
+This is an offline fixed-SASS experiment; no production library replacement.

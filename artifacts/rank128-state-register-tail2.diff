@@ -1,0 +1,39 @@
+--- A-stream baseline
++++ tail2
+@@ -126,6 +126,7 @@
+     int wm=warp%4,wn=warp/4;
+     // Native MMA lane ownership: row=lane/4 (+8 for c2,c3),
+     // column=2*(lane%4) (+1 for c1,c3). Two halves form a16x16 tile.
++    unsigned saved_state=0;
+     unsigned c[4][Groups][2][4]={};
+     Fragment ar[4], br[Lead+1];
+     #pragma unroll
+@@ -224,7 +225,14 @@
+                         for(int v=0;v<4;++v) x^=c[row][group][half][v];
+                     }
+                     x=__reduce_xor_sync(0xffffffffu,x);
+-                    if(lane==0) {
++                    if(row==3 && group>=Groups-2) {
++                        // Two tiles share one register across disjoint half-warps.
++                        int owner=(group-(Groups-2))*16+(rb%16);
++                        if(lane==owner) {
++                            if(rb<16) saved_state=x;
++                            else saved_state=((saved_state<<13)|(saved_state>>19))^x;
++                        }
++                    } else if(lane==0) {
+                         int idx=((wm*4+row)*(BN/16)+wn*Groups+group)*16+(rb%16);
+                         if(rb<16) transcript[idx]=x;
+                         else { unsigned prev=transcript[idx]; transcript[idx]=((prev<<13)|(prev>>19))^x; }
+@@ -233,6 +241,12 @@
+             }
+         }
+         }
++    }
++    // Publish once before the existing coalesced output barrier.
++    if(lane<32) {
++        int group=Groups-2+lane/16;
++        int idx=((wm*4+3)*(BN/16)+wn*Groups+group)*16+lane%16;
++        transcript[idx]=saved_state;
+     }
+     __syncthreads();
+     for(int i=threadIdx.x;i<WORDS;i+=Threads) {

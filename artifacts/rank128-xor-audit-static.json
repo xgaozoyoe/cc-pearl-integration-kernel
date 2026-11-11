@@ -1,0 +1,162 @@
+{
+  "audit": {
+    "tree": {
+      "instructions": 888,
+      "first_redux_logic_depth": 2,
+      "first_redux_logic_cone": [
+        [
+          "1920",
+          "LOP3.LUT R96, R96, R97, R98, 0x96, !PT"
+        ],
+        [
+          "18b0",
+          "LOP3.LUT R96, R124, R125, R126, 0x96, !PT"
+        ],
+        [
+          "18d0",
+          "LOP3.LUT R97, R127, R120, R121, 0x96, !PT"
+        ],
+        [
+          "18f0",
+          "LOP3.LUT R98, R122, R123, RZ, 0x3c, !PT"
+        ]
+      ],
+      "fold_bssy": 16,
+      "fold_bsync": 16,
+      "fold_bra": 18
+    },
+    "serial": {
+      "instructions": 888,
+      "first_redux_logic_depth": 4,
+      "first_redux_logic_cone": [
+        [
+          "1950",
+          "LOP3.LUT R96, R96, R123, RZ, 0x3c, !PT"
+        ],
+        [
+          "1920",
+          "LOP3.LUT R96, R96, R121, R122, 0x96, !PT"
+        ],
+        [
+          "18f0",
+          "LOP3.LUT R96, R96, R127, R120, 0x96, !PT"
+        ],
+        [
+          "18b0",
+          "LOP3.LUT R96, R124, R125, R126, 0x96, !PT"
+        ]
+      ],
+      "fold_bssy": 16,
+      "fold_bsync": 16,
+      "fold_bra": 18
+    },
+    "original": {
+      "instructions": 880,
+      "first_redux_logic_depth": 4,
+      "first_redux_logic_cone": [
+        [
+          "18a0",
+          "LOP3.LUT R137, R19, R96, RZ, 0x3c, !PT"
+        ],
+        [
+          "1880",
+          "LOP3.LUT R96, R18, R17, R96, 0x96, !PT"
+        ],
+        [
+          "1870",
+          "LOP3.LUT R96, R16, R35, R96, 0x96, !PT"
+        ],
+        [
+          "1850",
+          "LOP3.LUT R96, R34, R33, R32, 0x96, !PT"
+        ]
+      ],
+      "fold_bssy": 1,
+      "fold_bsync": 1,
+      "fold_bra": 5
+    },
+    "serial_vs_tree_prefix_equal": true,
+    "original_vs_serial_prefix_equal": false,
+    "original_vs_tree_prefix_equal": false
+  },
+  "nonvolatile": {
+    "tree": {
+      "instructions": 880,
+      "first_redux_logic_depth": 2,
+      "first_redux_logic_cone": [
+        [
+          "18a0",
+          "LOP3.LUT R137, R96, R97, R98, 0x96, !PT"
+        ],
+        [
+          "1870",
+          "LOP3.LUT R96, R32, R33, R34, 0x96, !PT"
+        ],
+        [
+          "1880",
+          "LOP3.LUT R97, R35, R16, R17, 0x96, !PT"
+        ],
+        [
+          "17b0",
+          "LOP3.LUT R98, R18, R19, RZ, 0x3c, !PT"
+        ]
+      ],
+      "fold_bssy": 1,
+      "fold_bsync": 1,
+      "fold_bra": 5
+    },
+    "serial": {
+      "instructions": 880,
+      "first_redux_logic_depth": 4,
+      "first_redux_logic_cone": [
+        [
+          "18a0",
+          "LOP3.LUT R137, R96, R19, RZ, 0x3c, !PT"
+        ],
+        [
+          "1880",
+          "LOP3.LUT R96, R96, R17, R18, 0x96, !PT"
+        ],
+        [
+          "1870",
+          "LOP3.LUT R96, R96, R35, R16, 0x96, !PT"
+        ],
+        [
+          "1850",
+          "LOP3.LUT R96, R32, R33, R34, 0x96, !PT"
+        ]
+      ],
+      "fold_bssy": 1,
+      "fold_bsync": 1,
+      "fold_bra": 5
+    },
+    "original": {
+      "instructions": 880,
+      "first_redux_logic_depth": 4,
+      "first_redux_logic_cone": [
+        [
+          "18a0",
+          "LOP3.LUT R137, R19, R96, RZ, 0x3c, !PT"
+        ],
+        [
+          "1880",
+          "LOP3.LUT R96, R18, R17, R96, 0x96, !PT"
+        ],
+        [
+          "1870",
+          "LOP3.LUT R96, R16, R35, R96, 0x96, !PT"
+        ],
+        [
+          "1850",
+          "LOP3.LUT R96, R34, R33, R32, 0x96, !PT"
+        ]
+      ],
+      "fold_bssy": 1,
+      "fold_bsync": 1,
+      "fold_bra": 5
+    },
+    "serial_vs_tree_prefix_equal": false,
+    "original_vs_serial_prefix_equal": true,
+    "original_vs_tree_prefix_equal": false
+  }
+}

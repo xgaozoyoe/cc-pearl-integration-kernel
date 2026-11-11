@@ -1,0 +1,14 @@
+[
+  {
+    "entry": "_ZN16barrier_timeline6kernelILb1ELi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+    "arrival": "0x1820",
+    "mma_before": 56,
+    "mma_after": 8
+  },
+  {
+    "entry": "_ZN16barrier_timeline6kernelILb0ELi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+    "arrival": "0x1790",
+    "mma_before": 64,
+    "mma_after": 0
+  }
+]

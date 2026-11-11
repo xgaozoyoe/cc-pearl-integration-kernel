@@ -1,0 +1,37 @@
+--- fastest-native
++++ cp_release
+@@ -244,18 +244,18 @@
+ 0f30 @!PT LDS RZ, [RZ]
+ 0f40 @!P4 LDGSTS.E.BYPASS.128 [R141], [R96.64]
+ 0f50 @!P2 IMAD.X R99, RZ, RZ, c[0x0][0x164], P5
+-0f60 IMAD R96, R157, 0x1000, R142
++0f60 IMAD R154, R157, 0x1000, R142
+ 0f70 @!P4 IADD3 R141, R141, 0x1800, RZ
+ 0f80 IMAD.U32 R142, RZ, RZ, UR4
+ 0f90 @!P3 IADD3 R138, P4, R138, c[0x0][0x160], RZ
+-0fa0 IADD3 R97, R96.reuse, 0x60000, RZ
++0fa0 IADD3 R97, R154.reuse, 0x60000, RZ
+ 0fb0 @!P2 LDGSTS.E.BYPASS.128 [R141], [R98.64]
+-0fc0 SEL R96, R96, RZ, !P1
++0fc0 SEL R154, R154, RZ, !P1
+ 0fd0 @!P3 IMAD.X R139, RZ, RZ, c[0x0][0x164], P4
+ 0fe0 SEL R97, R97, RZ, !P0
+ 0ff0 IMAD R137, R142, 0x3000, R137
+ 1000 @!P2 IADD3 R141, R141, 0x1800, RZ
+-1010 IADD3 R96, P2, R96, c[0x0][0x168], RZ
++1010 IADD3 R96, P2, R154, c[0x0][0x168], RZ
+ 1020 @!P3 LDGSTS.E.BYPASS.128 [R141], [R138.64]
+ 1030 IADD3 R98, P3, R97, c[0x0][0x168], RZ
+ 1040 IMAD.X R97, RZ, RZ, c[0x0][0x16c], P2
+[
+  {
+    "pc": "0xf60",
+    "old_wait": 2,
+    "new_wait": 0
+  },
+  {
+    "pc": "0xf70",
+    "old_wait": 0,
+    "new_wait": 2
+  }
+]

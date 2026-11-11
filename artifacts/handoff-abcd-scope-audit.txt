@@ -1,0 +1,40 @@
+ABCD scope audit: validated handoff_lean_toggle, not a new benchmark result.
+Ranges below are half-open static SASS regions; counts are not runtime instruction counts.
+
+prologue_before_first_wait: [0x0,0xb90), 185 instruction slots
+{"CS2R": 64, "F2I.FTZ.U32.TRUNC.NTZ": 2, "I2F.RP": 1, "I2F.U32.RP": 1, "IABS": 3, "IADD3": 20, "IMAD": 12, "IMAD.HI.U32": 4, "IMAD.IADD": 3, "IMAD.MOV": 7, "IMAD.MOV.U32": 9, "IMAD.SHL.U32": 6, "IMAD.X": 5, "IMNMX": 1, "ISETP.GE.AND": 3, "ISETP.GE.U32.AND": 3, "ISETP.GT.U32.AND": 5, "ISETP.NE.AND": 1, "ISETP.NE.U32.AND": 1, "LDGDEPBAR": 1, "LDGSTS.E.BYPASS.128": 5, "LEA.HI": 1, "LOP3.LUT": 11, "MUFU.RCP": 2, "S2R": 1, "S2UR": 2, "SEL": 3, "SHF.R.S32.HI": 2, "SHF.R.U32.HI": 2, "UIMAD": 1, "ULDC": 1, "ULDC.64": 1, "UMOV": 1}
+
+loop_stage_and_operand_address_setup: [0xbb0,0xdd0), 34 instruction slots
+{"BRA": 1, "IADD3": 4, "IMAD": 5, "IMAD.SHL.U32": 2, "IMAD.U32": 1, "LOP3.LUT": 12, "PLOP3.LUT": 1, "SHF.R.U32.HI": 3, "UIADD3": 1, "UIMAD": 1, "UISETP.GT.U32.AND": 1, "ULOP3.LUT": 1, "UMOV": 1}
+
+future_copy_address_and_issue: [0xdd0,0x1090), 44 instruction slots
+{"IADD3": 13, "IMAD": 4, "IMAD.SHL.U32": 1, "IMAD.U32": 2, "IMAD.X": 5, "ISETP.GT.U32.AND": 3, "LDGDEPBAR": 1, "LDGSTS.E.BYPASS.128": 5, "LDS": 3, "S2R": 1, "SEL": 2, "ULDC.64": 1, "ULOP3.LUT": 2, "USHF.L.U32": 1}
+
+operand_load_compute_and_late_preparation: [0x1090,0x17e0), 117 instruction slots
+{"BAR.ARV": 1, "DEPBAR.LE": 1, "IADD3": 6, "IMAD": 4, "IMMA.16832.S8.S8": 64, "ISETP.NE.AND": 1, "LDSM.16.M88.4": 16, "LOP3.LUT": 15, "SHF.R.U32.HI": 7, "UISETP.NE.AND": 1, "UMOV": 1}
+
+transcript_and_its_preparation: [0x17e0,0x2a00), 290 instruction slots
+{"BRA": 4, "BSSY": 1, "BSYNC": 1, "IMAD": 1, "IMAD.SHL.U32": 1, "IMAD.U32": 32, "ISETP.NE.AND": 2, "LDS": 16, "LEA": 1, "LOP3.LUT": 142, "PLOP3.LUT": 1, "REDUX.XOR": 32, "S2R": 1, "SHF.L.W.U32.HI": 16, "SHF.R.U32.HI": 1, "STS": 32, "UIADD3": 1, "UISETP.GE.U32.AND": 1, "ULEA.HI": 2, "ULOP3.LUT": 1, "USHF.R.S32.HI": 1}
+
+handoff_and_next_iteration: [0x2a00,0x2a50), 5 instruction slots
+{"BAR.SYNC.DEFER_BLOCKING": 1, "BRA": 1, "CALL.REL.NOINC": 1, "LOP3.LUT": 1, "PLOP3.LUT": 1}
+
+Per-K preparation has multiple consumers:
+1. Copy addresses/validity -> LDGSTS -> LDGDEPBAR/DEPBAR -> handoff.
+2. Stage and swizzle addresses -> 16 LDSM -> 64 IMMA -> transcript.
+3. own_bar/peer_bar -> BAR.ARV/BAR.SYNC -> next K iteration.
+4. Transcript index/phase -> XOR/reduction/output and the next handoff.
+
+Changing only IMMA B operands cannot cut all of these paths.
+A real-B prefetch experiment changes operand lifetime and scheduling; it is not the proposed C control.
+
+Correction status:
+Previous A/B are valid anchors. Previous C/D are local probes, not the requested complete initialization experiment.
+Withdraw any inference that those probes exclude the complete preparation dependency chain.
+Do not reuse the real-B/pair-B measurements as evidence for ABCD.
+
+Required before constructing replacement C/D: identify whether initialization means all per-K preparation, only named-barrier additions, or one-time prologue. These imply different dependency cuts and correctness constraints.
+If a shadow source is introduced for C, add a matched instrumented B control carrying the same shadow setup, register/storage footprint and retention sink. A/B production anchors alone cannot subtract that overhead.
+C acceptance: original preparation survives SASS and dynamic counting; explicitly enumerate every disconnected edge and remaining wait/consumer. No RZ substitution advertised as real data.
+D acceptance: reduce the same preparation subgraph, preserve real value dependence and bit-exact output. Quantify retained NOP slots versus actual instruction removal.
+All comparisons: fixed-clock GPU0, same shape/data/MMA work, register/shared/spill audit; no production modifications.

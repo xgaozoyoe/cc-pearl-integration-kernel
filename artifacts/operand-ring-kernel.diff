@@ -1,0 +1,48 @@
+--- baseline/tests/fold_ops.cuh
++++ tests/fold_ops.cuh
+@@ -215,6 +215,34 @@
+                     }
+                 }
+             }
++        } else if constexpr (Schedule == 23 || Schedule == 24) {
++            // Explicit rolling storage: all K32 slices reuse A slice zero;
++            // B groups reuse two or three physical fragment slots.
++            constexpr int slots = Schedule == 23 ? 3 : 2;
++            constexpr int lead = slots-1;
++            constexpr int groups=decltype(size<1>(tXrB))::value;
++            static_assert(bK==64 && groups==4);
++            copy(s2r_A,tXsA(_,_,0,wr),tXrA(_,_,0));
++            CUTE_UNROLL
++            for(int p=0;p<lead;++p)
++                copy(s2r_B,tXsB(_,p,0,wr),tXrB(_,p,0));
++            CUTE_UNROLL
++            for(int g=0;g<2*groups;++g) {
++                int kk=g/groups, bn=g%groups, slot=g%slots;
++                CUTE_UNROLL
++                for(int half=0;half<2;++half) {
++                    CUTE_UNROLL
++                    for(int tm=0;tm<size<1>(tCrC);++tm) {
++                        if(half==0 && tm==2 && g+lead<2*groups)
++                            copy(s2r_B,tXsB(_,(g+lead)%groups,(g+lead)/groups,wr),
++                                        tXrB(_,(g+lead)%slots,0));
++                        gemm(tiled_mma,tCrC(_,tm,2*bn+half),tCrA(_,tm,0),
++                             tCrB(_,2*slot+half,0),tCrC(_,tm,2*bn+half));
++                        if(bn==groups-1 && half==1 && kk==0)
++                            copy(s2r_A,tXsA(_,tm,1,wr),tXrA(_,tm,0));
++                    }
++                }
++            }
+         } else if constexpr (Schedule == 21 || Schedule == 22) {
+             // Register software pipeline spanning both K32 slices of K64.
+             // Each B group is loaded once and consumed by eight independent
+--- baseline/tests/fold_ops.cu
++++ tests/fold_ops.cu
+@@ -144,6 +144,8 @@
+         case 98:return variant<256,192,2,100,false,64,9,4,3,-108,true,false,20>(a,b,m,n,k,r,t,info);
+         case 99:return variant<256,192,2,100,false,64,9,4,3,-108,true,false,21>(a,b,m,n,k,r,t,info);
+         case 100:return variant<256,192,2,100,false,64,9,4,3,-108,true,false,22>(a,b,m,n,k,r,t,info);
++        case 101:return variant<256,192,2,100,false,64,9,4,3,-108,true,false,23>(a,b,m,n,k,r,t,info);
++        case 102:return variant<256,192,2,100,false,64,9,4,3,-108,true,false,24>(a,b,m,n,k,r,t,info);
+ #if !defined(PEARL_FOCUS_SQUARE) && !defined(PEARL_PURE_BENCH_ONLY)
+         case 21:return variant<128,256,4,-1,false,32,4,2,4>(a,b,m,n,k,r,t,info);
+         case 22:return variant<128,256,3,-1,false,64,4,1,8>(a,b,m,n,k,r,t,info);

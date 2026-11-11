@@ -1,0 +1,33 @@
+--- lean-toggle
++++ compact
+@@ -127,7 +127,7 @@
+     // Native MMA lane ownership: row=lane/4 (+8 for c2,c3),
+     // column=2*(lane%4) (+1 for c1,c3). Two halves form a16x16 tile.
+     unsigned c[4][Groups][2][4]={};
+-    Fragment ar[4], br[Lead+1];
++    Fragment ar[4], br[Lead];
+     #pragma unroll
+     for(int p=0;p<Stages-1;++p)
+         stage_copy<TileK,Planar,UnrollCopy,FixedCopy,Layout>(a,b,sa+p*BM*TileK,sb+p*BN*TileK,cm,cn,p,m,n,k);
+@@ -171,7 +171,7 @@
+         for(int p=0;p<Lead;++p) br[p]=loadB16x32<TileK,Planar,PackedB,Layout>(bb,wn*WarpN+p*16,0,lane,BN);
+         #pragma unroll
+         for(int g=0;g<Groups*(TileK/32);++g) {
+-            constexpr int slots=Lead+1;
++            constexpr int slots=Lead;
+             int slice=g/Groups,group=g%Groups,slot=g%slots;
+             if constexpr(TileK!=64) { if(kt*TileK+slice*32>=k) continue; }
+             #pragma unroll
+@@ -179,10 +179,10 @@
+                 Fragment nextA;
+                 #pragma unroll
+                 for(int half=0;half<2;++half) {
+-                    if(half==0 && row==1 && g+Lead<Groups*(TileK/32) && (TileK==64 || kt*TileK+((g+Lead)/Groups)*32<k))
+-                        br[(g+Lead)%slots]=loadB16x32<TileK,Planar,PackedB,Layout>(bb,wn*WarpN+((g+Lead)%Groups)*16,((g+Lead)/Groups)*32,lane,BN);
+                     if(half==0 && slice+1<TileK/32 && (TileK==64 || kt*TileK+(slice+1)*32<k) && group==Groups-1) nextA=load16x32<TileK,Planar,Layout>(aa,wm*64+row*16,(slice+1)*32,lane,BM);
+                     mma<PackedB>(c[row][group][half],ar[row],br[slot],half);
++                    if(half==1 && row==3 && g+Lead<Groups*(TileK/32) && (TileK==64 || kt*TileK+((g+Lead)/Groups)*32<k))
++                        br[(g+Lead)%slots]=loadB16x32<TileK,Planar,PackedB,Layout>(bb,wn*WarpN+((g+Lead)%Groups)*16,((g+Lead)/Groups)*32,lane,BN);
+                     if(slice+1<TileK/32 && (TileK==64 || kt*TileK+(slice+1)*32<k) && group==Groups-1 && half==1)
+                         ar[row]=nextA;
+                 }

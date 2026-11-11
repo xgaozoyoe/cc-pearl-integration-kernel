@@ -1,0 +1,19 @@
+--- native
++++ no_initial
+@@ -184,7 +184,7 @@
+ 0b70 IADD3 R97, R0, 0x820, RZ
+ 0b80 LOP3.LUT R0, R2, R97, RZ, 0x3c, !PT
+ 0b90 DEPBAR.LE SB0, 0x0
+-0ba0 BAR.SYNC.DEFER_BLOCKING 0x0
++0ba0 NOP
+ 0bb0 SHF.R.U32.HI R96, RZ, 0x7, R162
+ 0bc0 IMAD.SHL.U32 R98, R162.reuse, 0x2, RZ
+ 0bd0 LOP3.LUT R97, R162, 0x7, RZ, 0xc0, !PT
+[
+  {
+    "pc": "0xba0",
+    "original": "BAR.SYNC.DEFER_BLOCKING 0x0",
+    "replacement": "NOP",
+    "waits_and_static_stalls_preserved": true
+  }
+]

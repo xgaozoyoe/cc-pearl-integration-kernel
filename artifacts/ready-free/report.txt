@@ -1,0 +1,32 @@
+GPU0 only;8192x8192 region,K4096,rank128. CUDA event kernel times;not full-grid or pool rate.
+Two independent runs;200samples/variant/run,16launches/sample,10 rotating blocks;unlocked clocks.
+Run1: name mean_ms median_ms p95_ms delta_native_pct delta_source_pct
+native           1.021843 1.013504 1.054358 +0.0000 -4.6383
+source_control   1.071544 1.065851 1.106458 +4.8639 +0.0000
+split_late       1.161302 1.155264 1.191707 +13.6478 +8.3765
+split_deferred   1.125683 1.120357 1.161028 +10.1621 +5.0524
+deferred vs late time delta:-3.0671%
+Run2: name mean_ms median_ms p95_ms delta_native_pct delta_source_pct
+native           1.023800 1.017403 1.049732 +0.0000 -4.4221
+source_control   1.071168 1.063678 1.100798 +4.6267 +0.0000
+split_late       1.165616 1.162048 1.192003 +13.8519 +8.8172
+split_deferred   1.127958 1.121797 1.158342 +10.1737 +5.3016
+deferred vs late time delta:-3.2307%
+native static SASS {"IMMA.": 64, "LDSM.": 16, "LDGSTS.E.": 10, "BAR.ARV": 1, "BAR.SYNC": 3, "ARRIVES.LDGSTSBAR": 0, "ATOMS.ARRIVE": 0, "MEMBAR.ALL.CTA": 0} smem=69632
+ last IMMA=0x17d0 publication=0x16d0
+source_control static SASS {"IMMA.": 64, "LDSM.": 16, "LDGSTS.E.": 10, "BAR.ARV": 1, "BAR.SYNC": 3, "ARRIVES.LDGSTSBAR": 0, "ATOMS.ARRIVE": 0, "MEMBAR.ALL.CTA": 0} smem=69632
+ last IMMA=0x17c0 publication=0x17d0
+split_late static SASS {"IMMA.": 64, "LDSM.": 16, "LDGSTS.E.": 10, "BAR.ARV": 0, "BAR.SYNC": 2, "ARRIVES.LDGSTSBAR": 2, "ATOMS.ARRIVE": 1, "MEMBAR.ALL.CTA": 1} smem=69664
+ last IMMA=0x1960 publication=0x19d0
+split_deferred static SASS {"IMMA.": 64, "LDSM.": 16, "LDGSTS.E.": 10, "BAR.ARV": 0, "BAR.SYNC": 2, "ARRIVES.LDGSTSBAR": 2, "ATOMS.ARRIVE": 1, "MEMBAR.ALL.CTA": 1} smem=69664
+ last IMMA=0x1aa0 publication=0x1b10
+48 transcript +24 transcript/PoW comparisons PASS;racecheck0 hazards/errors/warnings.
+All168regs,0spills/local,384threads,1CTA/SM. Dynamicshared:69632B native/control,69664B split.
+Both split variants:4mbarriers (ready/free per physical slot),eachcount384,phase(k/2)&1.
+One async-ready arrival/thread/copied stage,one free arrival/thread/read stage. No extra normal arrival on ready.
+late waits on free(current) and ready(next) at loop end. deferred waits on free before overwrite and ready before LDSM.
+No main-loop CTA barrier added. Shared mbarriers are SM80+ facilities, not Hopper transaction barriers.
+Important confound:source_control is recompiled and publishes after64IMMA;frozen native after48IMMA. Split SASS also schedules differently. Timing does not isolate barrier instruction latency.
+No hardware counters collected;no claim of measured tensor utilization or polling stall proportions.
+No production libraries changed,no live mining. No full-grid benefit claimed.
+PTX semantics reference:https://docs.nvidia.com/cuda/archive/11.8.0/parallel-thread-execution/index.html#parallel-synchronization-and-communication-instructions-cp-async-mbarrier-arrive

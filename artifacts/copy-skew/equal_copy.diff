@@ -1,0 +1,19 @@
+--- native
++++ equal_copy
+@@ -256,7 +256,7 @@
+ 0ff0 IMAD R137, R142, 0x3000, R137
+ 1000 @!P2 IADD3 R141, R141, 0x1800, RZ
+ 1010 IADD3 R96, P2, R96, c[0x0][0x168], RZ
+-1020 @!P3 LDGSTS.E.BYPASS.128 [R141], [R138.64]
++1020 NOP
+ 1030 IADD3 R98, P3, R97, c[0x0][0x168], RZ
+ 1040 IMAD.X R97, RZ, RZ, c[0x0][0x16c], P2
+ 1050 IMAD.X R99, RZ, RZ, c[0x0][0x16c], P3
+[
+  {
+    "pc": "0x1020",
+    "original": "@!P3 LDGSTS.E.BYPASS.128 [R141], [R138.64]",
+    "replacement": "NOP",
+    "waits_and_static_stalls_preserved": true
+  }
+]

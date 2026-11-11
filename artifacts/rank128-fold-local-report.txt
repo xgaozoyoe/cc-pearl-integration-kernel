@@ -1,0 +1,50 @@
+Local-XOR scheduling trials, isolated GPU0 SM89, 2026-10-08.
+
+Baseline is the validated A-stream candidate. CTA256x192,12warps,K64,
+2stages,69632Bshared,1CTA/SM,12residentwarps; R128,K4096.
+Only per-lane XOR is advanced; REDUX and transcript writes stay in original
+boundary epilogue. Accumulators remain register resident. No proof/V3/target
+changes. Libraries export experimental APIs only; no production replacement.
+
+Local XOR of eight accumulator words uses volatile inline PTX logical ops.
+This constrains compiler movement; it does not by itself prove cycle overlap.
+Same fragment boundaries and unsigned32-bit transcript values are retained.
+Each fragment consumes precisely its completed R128-boundary accumulators.
+
+Rejected at compile time (no GPU performance claims):
+First1/2/4 N16 groups,4/8/16 partial scalars per lane:40/48/72Bstack;
+Last2 N16 groups,8 partial scalars:48Bstack. Spill store/load counts are in
+build logs. The extra partial lifetimes plus scheduling exceed allocation.
+
+Measured late1: last N16 group only,4 local partial scalars per lane;
+source delays folding a fragment until the following fragment's MMA pair.
+Final fragment drains at end.167registers/thread,zero spill.
+SASS864static instructions vs880baseline; early logical XOR instructions
+at IMMA counts59..62, while every REDUX remains after64.
+
+Measured tail2: only first two M16 fragments in last N16 group;
+source delays fold by two output fragments (four MMA instructions).
+Only2 short-lived partials,other XORs use unchanged epilogue.
+168registers/thread,zero spill. SASS872instructions; early XORs at counts56..58;
+all REDUX after64. Compiler also reorders MMA; these static instruction counts
+are not measured dependency latency and do not establish a four-MMA gap in SASS.
+
+Performance: real offline mine_job,131072x131072,K4096,R128,region8192.
+Includes random A/B,noise,Merkle,V3,transcript,PoW. Zero target/no network.
+Two reversed-order runs,4warmups+40measured grids each variant each run.
+Identical deterministic setup seeds; no clock/power modifications or locks.
+Log times have0.1ms precision. No hardware stall-counter capture this round.
+Correctness compares full transcript and digest to accepted R128 across2seeds
+and4shapes(256x48,256x384,256x400,8192x8192),including partial N output CTAs.
+
+Results:
+{"experiment": "fold_local_late1", "variant": 0, "samples": 80, "mean_ms": 309.12, "median_ms": 309.09999999999997, "p95_ms": 310.90500000000003, "ths": 227.64215895983438, "resources": [168, 384, 69632, 1, 0]}
+{"experiment": "fold_local_late1", "variant": 1, "samples": 80, "mean_ms": 313.26875, "median_ms": 313.3, "p95_ms": 315.10999999999996, "ths": 224.6273979695198, "resources": [167, 384, 69632, 1, 0]}
+Throughput change:-1.324342%
+{"experiment": "fold_local_tail2", "variant": 0, "samples": 80, "mean_ms": 309.225, "median_ms": 309.5, "p95_ms": 311.59999999999997, "ths": 227.56486111298892, "resources": [168, 384, 69632, 1, 0]}
+{"experiment": "fold_local_tail2", "variant": 1, "samples": 80, "mean_ms": 323.56375, "median_ms": 323.5, "p95_ms": 325.005, "ths": 217.4803085254884, "resources": [168, 384, 69632, 1, 0]}
+Throughput change:-4.431507%
+
+No measured speedup. Do not promote either trial. Local XOR timing changed in machine code without spills or early REDUX, but that alone did not improve scheduling. Broader partial sets spill; narrowly scoped sets still slow down. Hardware stall attribution was not measured, so no definitive causal claim about the remaining waits. Existing optimized/production libraries unchanged; SHA256 verified. No live mining or commits.
+
+Both measured pairs passed16 full transcript/digest comparisons each; both small-case racecheck runs reported0hazards/0errors/0warnings.

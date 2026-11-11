@@ -1,0 +1,61 @@
+Fold scheduling experiment on A-stream candidate; GPU0 only; 2026-10-08.
+
+All measured variants: R128,K4096,CTA256x192,12warps,warp64x64,K64,
+2operand stages,69632Bshared,1CTA/SM. Accumulators stay in registers.
+Accepted V3/noise/target/proof implementations are untouched.
+
+Control timeline (kt denotes K64 iteration):
+ wait current copy -> CTA barrier -> async copy kt+1 -> LDSM/IMMA kt
+ -> if kt odd, fold current R128 boundary.
+
+Interleave (auxiliary, within same iteration):
+ final K32 slice of boundary iteration: finish fragment j,
+ finish fragment j+1 -> XOR/REDUX/store fragment j.
+ Drain last fragment after final MMA. Static SASS confirms REDUX between
+ MMA36..64 rather than all after64. This interleaves the complete fold,
+ not just local XOR. Therefore a slowdown does not alone isolate XOR latency.
+
+Crossloop (rejected before GPU timing):
+ fold previous boundary immediately before each fragment's first new MMA.
+ Fine-grained control increased pressure: initial68Bspill stores/loads,
+ reordered version100Bstores/108Bloads. Not benchmarked or deployed.
+
+Crossgroup (main user-requested experiment):
+ wait current copy -> CTA barrier -> async copy kt+1 -> load operands
+ -> for each N16 group in first K32 slice:
+      fold its four previous-boundary M16 tiles, then advance their MMA
+ -> second K32 slice MMA.
+ Fold pending only for even kt>0, using rb=kt/2-1. Final kt63 boundary
+ is folded explicitly before output. No stale or next-boundary values.
+ SASS REDUX at IMMA counts0,8,16,24 in steady-state; final drain after64.
+ 168registers/thread,zero spill. This removes the fragment-level spill.
+
+Handoff (cross-iteration memory overlap control):
+ wait current copy -> CTA barrier -> async copy kt+1
+ -> fold entire pending boundary -> LDSM/IMMA kt.
+ New future cp.async can progress during prior-boundary fold.
+ Same final drain as crossgroup.167registers/thread,zero spill.
+ Code ordering proves the schedule change, not how many cycles overlap.
+
+Each A/B performance test: actual miner.mine_job,region8192,
+M=N=131072,K4096,R128. Zero-target/offline; real generation/noise/Merkle/V3,
+transcript and PoW included. Two reversed-order runs;4warmups+40measured
+full grids per variant per run. Same deterministic setup seeds per variant.
+No clock or power modifications/locks; sampled log wall times0.1ms precision.
+No hardware counter attribution in this round. Tests run sequentially.
+
+Reference correctness: compare every transcript/digest element with accepted
+R128 for two seeds,4shapes including8192x8192 and partial N CTA tails.
+No live mining, no changes to production or opt-in A-stream candidate libraries.
+
+Measured results:
+{"experiment": "interleave", "variant": 0, "samples": 80, "mean_ms": 308.7975, "median_ms": 309.09999999999997, "p95_ms": 310.705, "ths": 227.8799024527854, "resources": [168, 384, 69632, 1, 0]}
+{"experiment": "interleave", "variant": 1, "samples": 80, "mean_ms": 352.9975, "median_ms": 353.3, "p95_ms": 354.8, "ths": 199.34629615695295, "resources": [168, 384, 69632, 1, 0]}
+{"experiment": "crossgroup", "variant": 0, "samples": 80, "mean_ms": 309.20875, "median_ms": 309.59999999999997, "p95_ms": 310.91, "ths": 227.57682044141376, "resources": [168, 384, 69632, 1, 0]}
+{"experiment": "crossgroup", "variant": 1, "samples": 80, "mean_ms": 338.48, "median_ms": 338.4, "p95_ms": 339.40999999999997, "ths": 207.89631345327345, "resources": [168, 384, 69632, 1, 0]}
+{"experiment": "handoff", "variant": 0, "samples": 80, "mean_ms": 310.14875, "median_ms": 310.09999999999997, "p95_ms": 312.015, "ths": 226.88707975661356, "resources": [168, 384, 69632, 1, 0]}
+{"experiment": "handoff", "variant": 1, "samples": 80, "mean_ms": 324.465, "median_ms": 324.40000000000003, "p95_ms": 326.30499999999995, "ths": 216.87622448542677, "resources": [167, 384, 69632, 1, 0]}
+
+Conclusion: no tested variant improves throughput. Same-iteration interleave loses12.52%; cross-iteration MMA grouping loses~8.7%; copy handoff loses~4.4%. These tests interleave full fold (XOR+REDUX+transcript update), not local XOR alone. No claim that all possible software pipelines fail. Static machine ordering confirmed; actual overlap/stall causes require new profiling and were not measured here. No promotion or production changes.
+
+Validation completed: each measured variant pair passed16 transcript+digest comparisons against accepted R128. Crossgroup and handoff small-case racecheck:0hazards/0errors/0warnings. Baseline and A-stream library SHA256 verification passed. No live mining or commits. See per-variant kernel.diff for exact normalized-namespace changes.

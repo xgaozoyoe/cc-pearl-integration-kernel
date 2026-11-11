@@ -1,0 +1,243 @@
+{
+  "entry": "_ZN24handoff_control_baseline6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+  "variants": {
+    "baseline": {
+      "sha256": "3be626ab702bb0c460b09f0c34e32c671756465f3a950be111405152e6d8019c",
+      "removed_ldsm": 0,
+      "changes": []
+    },
+    "ab_zero": {
+      "sha256": "1be57066bcac886d4cf67bd88a65dac6e67aecf252f41c665b7ea2a1cbd4f536",
+      "removed_ldsm": 0,
+      "changes": []
+    },
+    "no_b": {
+      "sha256": "a76797ab71fcbb888387b08bd54990667b5695f7cb5e6e835809f32b96285a6c",
+      "removed_ldsm": 8,
+      "changes": [
+        {
+          "pc": "0x1090",
+          "removed_load": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0x10e0",
+          "removed_load": false,
+          "cleared_wait_mask": 4
+        },
+        {
+          "pc": "0x1190",
+          "removed_load": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0x11a0",
+          "removed_load": false,
+          "cleared_wait_mask": 2
+        },
+        {
+          "pc": "0x1240",
+          "removed_load": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0x1250",
+          "removed_load": false,
+          "cleared_wait_mask": 2
+        },
+        {
+          "pc": "0x1300",
+          "removed_load": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0x1310",
+          "removed_load": false,
+          "cleared_wait_mask": 2
+        },
+        {
+          "pc": "0x14e0",
+          "removed_load": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0x14f0",
+          "removed_load": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0x1500",
+          "removed_load": false,
+          "cleared_wait_mask": 2
+        },
+        {
+          "pc": "0x1550",
+          "removed_load": false,
+          "cleared_wait_mask": 4
+        },
+        {
+          "pc": "0x1620",
+          "removed_load": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0x1670",
+          "removed_load": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0x1680",
+          "removed_load": false,
+          "cleared_wait_mask": 2
+        },
+        {
+          "pc": "0x16c0",
+          "removed_load": false,
+          "cleared_wait_mask": 4
+        }
+      ]
+    },
+    "no_ab": {
+      "sha256": "ca0927a683db378f2d5dbead4198d88628190e4dde4000c2e0c794f1766455af",
+      "removed_ldsm": 16,
+      "changes": [
+        {
+          "pc": "0x1060",
+          "removed_load": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0x1090",
+          "removed_load": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0x10b0",
+          "removed_load": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0x10c0",
+          "removed_load": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0x10d0",
+          "removed_load": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0x10e0",
+          "removed_load": false,
+          "cleared_wait_mask": 4
+        },
+        {
+          "pc": "0x10f0",
+          "removed_load": false,
+          "cleared_wait_mask": 2
+        },
+        {
+          "pc": "0x1100",
+          "removed_load": false,
+          "cleared_wait_mask": 8
+        },
+        {
+          "pc": "0x1110",
+          "removed_load": false,
+          "cleared_wait_mask": 16
+        },
+        {
+          "pc": "0x1190",
+          "removed_load": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0x11a0",
+          "removed_load": false,
+          "cleared_wait_mask": 2
+        },
+        {
+          "pc": "0x1240",
+          "removed_load": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0x1250",
+          "removed_load": false,
+          "cleared_wait_mask": 2
+        },
+        {
+          "pc": "0x1300",
+          "removed_load": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0x1310",
+          "removed_load": false,
+          "cleared_wait_mask": 2
+        },
+        {
+          "pc": "0x1480",
+          "removed_load": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0x1490",
+          "removed_load": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0x14c0",
+          "removed_load": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0x14d0",
+          "removed_load": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0x14e0",
+          "removed_load": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0x14f0",
+          "removed_load": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0x1500",
+          "removed_load": false,
+          "cleared_wait_mask": 2
+        },
+        {
+          "pc": "0x1550",
+          "removed_load": false,
+          "cleared_wait_mask": 4
+        },
+        {
+          "pc": "0x1620",
+          "removed_load": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0x1670",
+          "removed_load": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0x1680",
+          "removed_load": false,
+          "cleared_wait_mask": 2
+        },
+        {
+          "pc": "0x16c0",
+          "removed_load": false,
+          "cleared_wait_mask": 4
+        }
+      ]
+    }
+  },
+  "caveat": "Wrong arithmetic. Removes load work AND dependencies, not a latency-only experiment. Fixed stalls, copy pipeline, CTA barriers remain."
+}

@@ -1,0 +1,11 @@
+{
+  "rank": 128,
+  "seed": 42,
+  "coord": [
+    48,
+    192
+  ],
+  "v3_seed_pass": true,
+  "official_v3_proof_pass": true,
+  "message": "Mining solution verified successfully"
+}

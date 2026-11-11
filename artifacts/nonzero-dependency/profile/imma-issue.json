@@ -1,0 +1,113 @@
+{
+  "0": {
+    "launches": [
+      {
+        "tensor_instructions": 67633152.0,
+        "expected_sass_IMMA": 67633152,
+        "count_matches_sass": true,
+        "imma_per_SM_elapsed_cycle": 0.2087741896673057,
+        "imma_per_SMSP_elapsed_cycle": 0.05219354741682643,
+        "tensor_Ginst_sec": 59.57986130687264,
+        "kernel_ms": 1.135168
+      },
+      {
+        "tensor_instructions": 67633152.0,
+        "expected_sass_IMMA": 67633152,
+        "count_matches_sass": true,
+        "imma_per_SM_elapsed_cycle": 0.20879764022675126,
+        "imma_per_SMSP_elapsed_cycle": 0.052199410056687816,
+        "tensor_Ginst_sec": 59.335654126895,
+        "kernel_ms": 1.13984
+      },
+      {
+        "tensor_instructions": 67633152.0,
+        "expected_sass_IMMA": 67633152,
+        "count_matches_sass": true,
+        "imma_per_SM_elapsed_cycle": 0.20885583175662198,
+        "imma_per_SMSP_elapsed_cycle": 0.052213957939155495,
+        "tensor_Ginst_sec": 59.347316990986435,
+        "kernel_ms": 1.139616
+      }
+    ],
+    "means": {
+      "imma_per_SM_elapsed_cycle": 0.20880922055022633,
+      "imma_per_SMSP_elapsed_cycle": 0.05220230513755658,
+      "tensor_Ginst_sec": 59.42094414158469,
+      "kernel_ms": 1.1382079999999999
+    }
+  },
+  "1": {
+    "launches": [
+      {
+        "tensor_instructions": 67633152.0,
+        "expected_sass_IMMA": 67633152,
+        "count_matches_sass": true,
+        "imma_per_SM_elapsed_cycle": 0.20859232777226547,
+        "imma_per_SMSP_elapsed_cycle": 0.05214808194306637,
+        "tensor_Ginst_sec": 59.27408363014275,
+        "kernel_ms": 1.141024
+      },
+      {
+        "tensor_instructions": 67633152.0,
+        "expected_sass_IMMA": 67633152,
+        "count_matches_sass": true,
+        "imma_per_SM_elapsed_cycle": 0.2086200952240495,
+        "imma_per_SMSP_elapsed_cycle": 0.05215502380601238,
+        "tensor_Ginst_sec": 59.28239649949512,
+        "kernel_ms": 1.140864
+      },
+      {
+        "tensor_instructions": 67633152.0,
+        "expected_sass_IMMA": 67633152,
+        "count_matches_sass": true,
+        "imma_per_SM_elapsed_cycle": 0.20881901225448346,
+        "imma_per_SMSP_elapsed_cycle": 0.052204753063620865,
+        "tensor_Ginst_sec": 59.59162037950771,
+        "kernel_ms": 1.134944
+      }
+    ],
+    "means": {
+      "imma_per_SM_elapsed_cycle": 0.20867714508359947,
+      "imma_per_SMSP_elapsed_cycle": 0.05216928627089987,
+      "tensor_Ginst_sec": 59.38270016971519,
+      "kernel_ms": 1.138944
+    }
+  },
+  "2": {
+    "launches": [
+      {
+        "tensor_instructions": 67633152.0,
+        "expected_sass_IMMA": 67633152,
+        "count_matches_sass": true,
+        "imma_per_SM_elapsed_cycle": 0.21324892579795918,
+        "imma_per_SMSP_elapsed_cycle": 0.053312231449489794,
+        "tensor_Ginst_sec": 60.82993236436897,
+        "kernel_ms": 1.11184
+      },
+      {
+        "tensor_instructions": 67633152.0,
+        "expected_sass_IMMA": 67633152,
+        "count_matches_sass": true,
+        "imma_per_SM_elapsed_cycle": 0.21315551950972947,
+        "imma_per_SMSP_elapsed_cycle": 0.05328887987743237,
+        "tensor_Ginst_sec": 60.8124298662063,
+        "kernel_ms": 1.11216
+      },
+      {
+        "tensor_instructions": 67633152.0,
+        "expected_sass_IMMA": 67633152,
+        "count_matches_sass": true,
+        "imma_per_SM_elapsed_cycle": 0.21301217805330255,
+        "imma_per_SMSP_elapsed_cycle": 0.05325304451332564,
+        "tensor_Ginst_sec": 60.77745506829619,
+        "kernel_ms": 1.1128
+      }
+    ],
+    "means": {
+      "imma_per_SM_elapsed_cycle": 0.21313887445366372,
+      "imma_per_SMSP_elapsed_cycle": 0.05328471861341593,
+      "tensor_Ginst_sec": 60.80660576629049,
+      "kernel_ms": 1.1122666666666667
+    }
+  }
+}

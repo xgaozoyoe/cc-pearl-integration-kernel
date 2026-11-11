@@ -1,0 +1,27 @@
+Cross-K copy offset experiment on verified lean named-barrier checkpoint.
+0production baseline;1lean checkpoint;2hoisted row origins;3offset induction.
+
+Logical copy work unchanged: A2 full rounds plus256 lanes, B2 full rounds,
+16B per cp.async, same Layout6 lane permutation. Partial B rows use src_size0
+and valid fallback pointer b+0, matching the checkpoint. A is full CTA-aligned.
+All export entrypoints reject nonpositive sizes, m%256, n%16 and sizes>2^20.
+Fixed K4096; valid row byte offsets fit unsigned32bit. Invalid B row offsets
+may wrap but are never dereferenced (pointer selects b+0 and zero byte count).
+
+Hoist: initial per-thread row origins=(globalrow*4096)+column, then per-K
+copy uses origin+(kt+1)*64. Initial copy uses offset0.
+Induction: initial copy uses origins, cursors initialize origin+64. Each
+iteration issues next-stage copies using cursors then adds64 to both. At K63
+no future copy is issued; unused final cursor advance is harmless.
+Shared addresses, slot sizes, stage selection, arrival/wait, transcript and
+MMA mapping are unchanged. Initial and final synchronization are unchanged.
+
+All four:168registers/thread,0local/spill,69632Bshared,1CTA/SM,12warps/CTA.
+Each kernel64staticIMMA+16LDSM. Baseline/checkpoint instruction text and PCs
+exactly match previous binaries. No replacement of known-good library.
+
+Static main-loop body counts (including alternative fold paths, not dynamic):
+checkpoint490;hoist479;induction476. These do not prove runtime instruction
+savings; compare CUDA events/full grids and then counters if warranted.
+
+No V3,target,proof,clocks,power or live mining changes. GPU0 only.

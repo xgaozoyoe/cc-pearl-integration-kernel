@@ -1,0 +1,31 @@
+Nonzero fixed-SASS dependency controls: capture /tmp/pearl-nonzero-dependency.LFZ2ZG.
+All input hashes verified against current files. GPU0 only. Three launches per variant.
+Application replay,clock-control base; effective measured clocks2.2200..2.2295GHz.
+All variants execute67633152warpIMMA/region, identical to expected padded work.
+
+variant         kernel_ms Tensor_pct IMMA/SMelapsedcycle shortSB_pct barrier_pct
+native          1.138208 85.7867     0.20880922          7.6800      14.2767
+a_as_b          1.138944 85.7667     0.20867715          7.7000      14.2467
+a_as_b_release  1.112267 87.5533     0.21313887          5.1700      14.9933
+
+A-derived B substitution alone:cycle-normalized throughput-0.0633%, effectively unchanged.
+Moving3Bwaits under identical nonzero diagnostic arithmetic:IMMA/SMcycle+2.1381%,kernel time-2.3423%.
+Against native,cycle-normalized throughput+2.0735%. Profiler time is not grid time/mining speed.
+L2bytes remain~2.534GB and activewarps3/scheduler; no reduction of useful/padded MMA work.
+
+Shortscoreboard samples accumulated across3launches:
+oldPCs11e0/1290/1350:7271+10536+9432=27239 for a_as_b;zero for release.
+newPCs1220/12d0/1410:0 before;59+1376+472=1907 after.
+Wait samples are not merely relocated in equal quantity; substantial waiting is hidden by intervening instructions.
+Raw sample count depends on sampling exposure; totals are not cycle counts or wall-time savings.
+Aggregate shortSB metric falls7.70->5.17%. Total shortSB samples71735->46936.
+1110(address read reuse) samples8561->8728;16d0(lastLDSM publication)8120->8336.
+Their percentage of remaining shortSB samples rises mostly because other samples vanished.
+
+Conclusion:encoded first-use wait placement at these three Bload consumers is a measurable scheduling constraint.
+Merely replacing operand registers does not remove the encoded waits, which explains the unchanged control.
+The~2%cycle-normalized diagnostic benefit is real here, but is not a usable correct-Pearl optimization or a ceiling on all operand dependencies.
+Real B operands still require completion before use; realizing benefit requires preparing realB earlier or doing independent work before its first use.
+Operand correlation/register-file reads differ from native; decisive matched comparison is a_as_b vs a_as_b_release.
+C/accumulator dependency is NOT tested by this capture. No claim it has been ruled out.
+No production mutation or new optimization in this analysis.

@@ -1,0 +1,61 @@
+--- /dev/null
++++ b/tools/select_nsys_metric_device.py
+@@ -0,0 +1,25 @@
++"""Map nvidia-smi PCI address to Nsight's own metrics-device enumeration."""
++import re,sys
++from pathlib import Path
++
++def pci_key(value):
++    match=re.search(r'([0-9a-fA-F]+):([0-9a-fA-F]+):([0-9a-fA-F]+)\.([0-7])',value)
++    if not match:raise ValueError('Invalid PCI bus address: '+value)
++    return tuple(int(x,16) for x in match.groups())
++
++def select_device(text, pci):
++    matches=[]
++    for line in text.splitlines():
++        bus=re.search(r'PCI\[([^]]+)\]',line,re.I)
++        if not bus or pci_key(bus[1])!=pci_key(pci):continue
++        # Supported-device list uses a numeric ID prefix. Never infer an ID
++        # from line order in the unsupported/permission-error list.
++        prefix=line[:bus.start()]
++        number=re.match(r'^\s*(?:(?:GPU|Device)\s*)?\[?(\d+)\]?\s*[:=.-]\s*',prefix,re.I)
++        if number and 'Insufficient privilege' not in line:matches.append(int(number[1]))
++    if len(matches)!=1:
++        raise ValueError('Cannot uniquely map PCI address to a supported Nsight ID. Inspect device-list.txt; refusing capture.')
++    return matches[0]
++
++if __name__=='__main__':
++    print(select_device(Path(sys.argv[1]).read_text(),sys.argv[2]))
+--- /dev/null
++++ b/tools/profile_peakminer_gpu1_metrics.sh
+@@ -0,0 +1,30 @@
++#!/usr/bin/env bash
++# External GPU1 metrics. Leaves the running PeakMiner and GPU2 miner intact.
++set -euo pipefail
++cd "$(dirname "$0")/.."
++if [[ ${EUID} -ne 0 ]]; then
++  echo 'GPU hardware counters require root on this host (RmProfilingAdminOnly=1).' >&2
++  echo 'Run: sudo bash tools/profile_peakminer_gpu1_metrics.sh' >&2
++  exit 1
++fi
++unset CUDA_VISIBLE_DEVICES CUDA_DEVICE_ORDER
++OUT=$(mktemp -d /tmp/pearl-peakminer-gpu1-metrics.XXXXXX)
++chmod 755 "$OUT"
++printf 'Report directory: %s\n' "$OUT"
++printf '%s\n' "$OUT" > /tmp/pearl-peakminer-last-metrics.txt
++chmod 644 /tmp/pearl-peakminer-last-metrics.txt
++/usr/local/cuda/bin/nsys profile --gpu-metrics-devices=help > "$OUT/device-list.txt" 2>&1
++PCI_BUS=$(nvidia-smi -i 1 --query-gpu=pci.bus_id --format=csv,noheader)
++METRIC_DEVICE=$(python3 tools/select_nsys_metric_device.py "$OUT/device-list.txt" "$PCI_BUS")
++printf 'Physical GPU 1 PCI %s -> Nsight metrics device %s\n' "$PCI_BUS" "$METRIC_DEVICE" | tee "$OUT/device-selection.txt"
++curl -fsS --max-time 5 http://127.0.0.1:4068/summary > "$OUT/miner-before.json"
++nvidia-smi -i 1 --query-gpu=index,uuid,temperature.gpu,power.draw,clocks.sm,clocks.mem --format=csv > "$OUT/gpu-before.csv"
++# No CUDA injection into the miner: /bin/sleep is the only launched target.
++# All selected GPU metrics are device-wide; cannot attribute them to kernel PCs.
++/usr/local/cuda/bin/nsys profile --trace=none --sample=none --cpuctxsw=none \
++  --gpu-metrics-devices="$METRIC_DEVICE" --gpu-metrics-frequency=1000 \
++  --duration=30 --kill=none --wait=primary --output="$OUT/gpu1" /bin/sleep 32 > "$OUT/nsys.log" 2>&1
++/usr/local/cuda/bin/nsys export --type sqlite --output "$OUT/gpu1.sqlite" "$OUT/gpu1.nsys-rep" > "$OUT/export.log" 2>&1
++curl -fsS --max-time 5 http://127.0.0.1:4068/summary > "$OUT/miner-after.json"
++chmod -R a+rX "$OUT"
++printf 'Complete: %s\n' "$OUT"

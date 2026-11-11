@@ -1,0 +1,37 @@
+GPU0 only,8192x8192 region,K4096,rank128. Kernel CUDA-event timings,not fullgrid/pool throughput.
+2 independent runs,200samples/variant/run,16launches/sample,10rotating blocks;unlocked clocks.
+Run1: name mean_ms median_ms p95_ms delta_native_pct
+native           1.016884 1.011264 1.048083 +0.000
+source_control   1.069862 1.067962 1.097533 +5.210
+consumer_late    6.286220 6.286361 6.301571 +518.184
+consumer_fine    6.430136 6.427008 6.459142 +532.337
+fine vs late time delta:+2.289%
+resources [regs,local_bytes,static_shared,CTAs/SM] {"native": [168, 0, 0, 1], "source_control": [168, 0, 0, 1], "consumer_late": [128, 328, 0, 1], "consumer_fine": [128, 280, 0, 1]}
+Run2: name mean_ms median_ms p95_ms delta_native_pct
+native           1.017421 1.011392 1.049898 +0.000
+source_control   1.072384 1.068288 1.101843 +5.402
+consumer_late    6.296736 6.296926 6.303958 +518.892
+consumer_fine    6.436553 6.429064 6.461375 +532.634
+fine vs late time delta:+2.220%
+resources [regs,local_bytes,static_shared,CTAs/SM] {"native": [168, 0, 0, 1], "source_control": [168, 0, 0, 1], "consumer_late": [128, 328, 0, 1], "consumer_fine": [128, 280, 0, 1]}
+consumer_late task publications after MMA counts:[(10416, 64), (11040, 64), (11728, 64), (12416, 64)]
+ptxas info    : 0 bytes gmem
+ptxas info    : Compiling entry function '_ZN30transcript_tasks_consumer_late6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj' for 'sm_89'
+ptxas info    : Function properties for _ZN30transcript_tasks_consumer_late6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj
+    328 bytes stack frame, 460 bytes spill stores, 468 bytes spill loads
+ptxas info    : Used 128 registers, used 16 barriers, 328 bytes cumulative stack size, 392 bytes cmem[0]
+consumer_fine task publications after MMA counts:[(7744, 40), (8976, 48), (10368, 56), (11664, 64)]
+ptxas info    : 0 bytes gmem
+ptxas info    : Compiling entry function '_ZN30transcript_tasks_consumer_fine6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj' for 'sm_89'
+ptxas info    : Function properties for _ZN30transcript_tasks_consumer_fine6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj
+    280 bytes stack frame, 504 bytes spill stores, 500 bytes spill loads
+ptxas info    : Used 128 registers, used 16 barriers, 280 bytes cumulative stack size, 392 bytes cmem[0]
+Normal transcript validation48comparisons PASS;PoW24comparisons PASS.
+Racecheck original run completed46cases without reported hazards but timed out at240s;remaining2cases separately completed with0hazards/errors/warnings. No single full-run completion summary.
+12MMA producers+1independent consumer;4tile tasks depend only on their producer warp and corresponding final MMA group.
+Fine variant changes actual SASS publication points,not just source organization.
+Consumer has fixed group-major/producer order,NOT ready-any scheduling;head-of-line waiting remains a limitation.
+Explicit task shared traffic1.5MiB/CTA/K4096,excluding flags and existing transcript stores. Not measured DRAM traffic.
+13warp variants incur register spills;therefore not acceptable production candidates. Timing includes spills,shared transport,notification and compiler schedule changes.
+These timings cannot establish a general limit on fine-grained transcript dependency scheduling.
+No production libraries changed,no live mining,no hardware-counter or full-grid speedup claims.

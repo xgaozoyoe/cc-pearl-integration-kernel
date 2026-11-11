@@ -1,0 +1,29 @@
+Isolated accumulator shared-memory experiment (not production).
+
+Both controls use CTA128x64, 128threads/4warps, warp32x64, K128,
+2 operand stages, IMMA16x8x32, signed INT8 to INT32. K4096,R128.
+Each warp has 8 output16x16 tiles. Both variants issue the same useful MMAs
+and load A/B with the same copy and operand schedule.
+
+Register control holds 64 INT32 accumulators/lane across 32 K128 steps.
+Shared variant holds one16x16 tile (8 INT32 values/lane) in registers,
+reads previous cumulative state from shared at each K128 boundary,
+updates with four K32 slices, folds the boundary into transcript,
+and writes state for the next boundary. First read and last write omitted.
+State layout [warp][row][group][half][element][lane] ensures consecutive
+lanes access consecutive words. Each lane exclusively owns its state:
+no new cross-warp state barriers required. Existing operand-stage barriers
+remain. Volatile shared accesses prevent removal of the intended experiment.
+
+32768B additional state/CTA,2031616B additional state transfers/CTA
+(31 reads and31 writes).32 candidates/CTA ->63488B/candidate.
+Register control:126regs,51200Bshared,1CTA/SM,4activewarps,zero spills.
+Shared state:68regs,83968Bshared,1CTA/SM,4activewarps,zero spills.
+Thus register reduction does not increase occupancy in this experiment.
+
+CTA reduction was necessary to fit shared state. It reduces operand reuse
+relative to the optimized256x192 candidate. Comparisons between the two
+small-CTA variants isolate explicit state storage under this schedule;
+comparisons with the optimized candidate include mapping/scheduling changes.
+Do not interpret this as ruling out every possible partial-state design.
+No current live-mining paths or accepted libraries are modified.

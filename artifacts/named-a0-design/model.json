@@ -1,0 +1,16 @@
+{
+  "schedules": 1002,
+  "random_seeds": 1000,
+  "rounds": 64,
+  "old_arrivals_per_cta": 1536,
+  "new_arrivals_per_cta": 372,
+  "checks": [
+    "no duplicate participants",
+    "phase progression",
+    "no partial barrier at exit",
+    "no modeled overwrite/read-before-ready",
+    "same copy count",
+    "no modeled deadlock"
+  ],
+  "limitations": "Abstract event model, not CUDA/SASS memory-order validation, exhaustive proof, or performance evidence."
+}

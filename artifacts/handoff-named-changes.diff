@@ -1,0 +1,593 @@
+diff --git a/tools/build_handoff_wait_modes.py b/tools/build_handoff_wait_modes.py
+new file mode 100644
+index 0000000..fc9bd05
+--- /dev/null
++++ b/tools/build_handoff_wait_modes.py
+@@ -0,0 +1,40 @@
++"""Source-only SM89 handoff controls; never replace the production library."""
++from pathlib import Path
++import subprocess,difflib
++root=Path(__file__).resolve().parents[1]
++source=(root/'artifacts/transcript-handoff-source.cu').read_text()
++def section(ns):
++ a=source.index('namespace '+ns);b=source.index('// namespace '+ns,a)+len('// namespace '+ns)
++ return source[a:b]
++base=section('transcript_handoff_baseline');spin=section('transcript_handoff_overlap')
++names=['baseline','spin','token','delegate'];parts=['#include <cuda_runtime.h>\n#include <cstdint>\n']
++for name in names:
++ old=base if name=='baseline' else spin;new=old
++ if name=='token':
++  new=new.replace('void handoff_arrive(unsigned bar)', 'unsigned long long handoff_arrive(unsigned bar)')
++  new=new.replace('    asm volatile("mbarrier.arrive.shared.b64 _, [%0];" :: "r"(bar) : "memory");', '    unsigned long long token;\n    asm volatile("mbarrier.arrive.shared.b64 %0, [%1];" : "=l"(token) : "r"(bar) : "memory");\n    return token;')
++  new=new.replace('unsigned bar,unsigned phase)', 'unsigned bar,unsigned long long token)')
++  new=new.replace('mbarrier.test_wait.parity.shared.b64', 'mbarrier.test_wait.shared.b64').replace('"r"(bar),"r"(phase)', '"r"(bar),"l"(token)')
++  new=new.replace('        handoff_arrive(handoff_bar);', '        unsigned long long token=handoff_arrive(handoff_bar);').replace('handoff_wait(handoff_bar,unsigned(kt&1));','handoff_wait(handoff_bar,token);')
++ if name=='delegate':
++  new=new.replace('        handoff_wait(handoff_bar,unsigned(kt&1));', '''        // All 384 threads still arrive and publish cp.async completion.
++        // Warp0 acquires that completion; CTA barrier propagates visibility
++        // and prevents any next-iteration overwrite before all readers finish.
++        if(threadIdx.x<32) handoff_wait(handoff_bar,unsigned(kt&1));
++        __syncthreads();''')
++ ns='transcript_handoff_baseline' if name=='baseline' else 'transcript_handoff_overlap'
++ (root/f'artifacts/handoff-wait-modes-{name}.diff').write_text(''.join(difflib.unified_diff(old.splitlines(True),new.splitlines(True),fromfile='validated-'+ns,tofile=name)))
++ parts.append(new.replace(ns,'handoff_wait_modes_'+name))
++parts.append('''void launch_pearl_blake3(const uint32_t*,int,int,const uint32_t*,const uint32_t*,uint8_t*,int*,int*,cudaStream_t);
++extern "C" int handoff_wait_modes_fold(int v,const int8_t* a,const int8_t* b,int m,int n,uint32_t* t,int* info) {
++if(m<=0 || n<=0 || m%256 || n%16 || m>1048576 || n>1048576)return cudaErrorInvalidValue;
++''')
++for v,name in enumerate(names):parts.append(f'if(v=={v})return handoff_wait_modes_{name}::launch<1,64,false,true,false,false,2,false,6>(a,b,m,n,4096,128,t,info,nullptr);')
++parts.append('''return cudaErrorInvalidValue;
++}
++extern "C" int handoff_wait_modes_pow(int v,const int8_t* a,const int8_t* b,int m,int n,const uint32_t* key,const uint32_t* target,uint32_t* t,uint8_t* dig,int* found,int* coord) {
++auto e=handoff_wait_modes_fold(v,a,b,m,n,t,nullptr);if(e)return e;
++launch_pearl_blake3(t,(m/16)*(n/16),n,key,target,dig,found,coord,nullptr);return cudaGetLastError();
++}''')
++p=root/'artifacts/handoff-wait-modes-source.cu';p.write_text('\n'.join(parts))
++subprocess.run(['/usr/local/cuda-12.6/bin/nvcc','-std=c++20','-O3','-lineinfo','-gencode','arch=compute_89,code=sm_89','-Xcompiler','-fPIC','--ptxas-options=-v','--expt-relaxed-constexpr','-I/home/xgao/cutlass/include','-Icsrc','-Icsrc/gemm','-shared',str(p),str(root/'csrc/gemm/pearl_blake3_sm61.cu'),'-o',str(root/'artifacts/libpearl-handoff-wait-modes.so')],check=True)
+diff --git a/tests/bench_handoff_wait_modes.py b/tests/bench_handoff_wait_modes.py
+new file mode 100644
+index 0000000..5c173c3
+--- /dev/null
++++ b/tests/bench_handoff_wait_modes.py
+@@ -0,0 +1,83 @@
++"""GPU0-only full-A-tile fast path R128 test. Production library is never replaced."""
++import os
++os.environ['CUDA_VISIBLE_DEVICES']='0'
++import argparse,ctypes as C,json,re,statistics,sys,subprocess
++from pathlib import Path
++import numpy as np
++root=Path(__file__).resolve().parents[1];sys.path.insert(0,str(root/'python'))
++sys.path.insert(0,str(root/'tools'))
++from check_gpu0_idle import check_gpu0_idle
++check_gpu0_idle(int(os.environ.get('PEARL_IDLE_SUPERVISOR_PID','0')))
++import cuda_capi as cc
++import miner_capi as miner
++import pool_common
++P,I=C.c_void_p,C.c_int
++lib=C.CDLL(str(root/'artifacts/libpearl-handoff-wait-modes.so'))
++lib.handoff_wait_modes_fold.argtypes=[I,P,P,I,I,P,P]
++lib.handoff_wait_modes_pow.argtypes=[I,P,P,I,I,P,P,P,P,P,P]
++ref=C.CDLL(str(root/'artifacts/libpearl-rank.so'))
++ref.rank_pow.argtypes=[I,P,P,I,I,P,P,P,P,P,P]
++def pow_call(v,a,b,m,n,key,target,t,d=None,f=None,c=None):
++ cc._chk(lib.handoff_wait_modes_pow(v,cc._as(a),cc._as(b),m,n,cc._as(key),cc._as(target),cc._as(t),cc._as(d),cc._as(f),cc._as(c)),'xor control pow')
++p=argparse.ArgumentParser();p.add_argument('mode',choices=['validate','bench','profile']);p.add_argument('--variant',type=int,default=0);p.add_argument('--small-only',action='store_true');args=p.parse_args()
++resources={}
++for v in (0,1,2,3):
++ info=np.zeros(5,np.int32);cc._chk(lib.handoff_wait_modes_fold(v,None,None,8192,8192,None,info.ctypes.data),'info');resources[v]=info.tolist()
++print('resources',resources,flush=True)
++if args.mode=='validate':
++ results=[]
++ for m,n in (((256,48),(256,384),(256,400)) if args.small_only else ((256,48),(256,384),(256,400),(8192,8192))):
++  for seed in (42,1234):
++   rng=np.random.default_rng(seed);alloc=[]
++   def buf(size):
++    x=cc.DBuf(size);alloc.append(x);return x
++   a,b=buf(m*4096),buf(n*4096);a.from_host(rng.integers(-128,128,(m,4096),np.int8));b.from_host(rng.integers(-128,128,(n,4096),np.int8))
++   key,target=buf(32),buf(32);key.from_host(rng.integers(0,256,32,np.uint8));target.memset(0)
++   t,d=buf(m*n//256*64),buf(m*n//256*32)
++   cc._chk(ref.rank_pow(128,a.ptr,b.ptr,m,n,key.ptr,target.ptr,t.ptr,d.ptr,None,None),'frozen')
++   expected_t=np.empty(m*n//256*16,np.uint32);expected_d=np.empty(m*n//256*32,np.uint8)
++   t.to_host(expected_t);d.to_host(expected_d)
++   for v in (0,1,2,3):
++    t.memset(0xa5);d.memset(0xa5);pow_call(v,a,b,m,n,key,target,t,d)
++    actual_t=np.empty_like(expected_t);actual_d=np.empty_like(expected_d);t.to_host(actual_t);d.to_host(actual_d)
++    assert np.array_equal(actual_t,expected_t),(v,m,n,seed,'transcript')
++    assert np.array_equal(actual_d,expected_d),(v,m,n,seed,'digest')
++    row=dict(variant=v,m=m,n=n,seed=seed,transcript_pass=True,digest_pass=True);results.append(row);print('PASS',row,flush=True)
++   for x in alloc:x.free()
++ Path('artifacts/handoff-wait-modes-correctness-small.json' if args.small_only else 'artifacts/handoff-wait-modes-correctness.json').write_text(json.dumps(results,indent=2)+'\n')
++elif args.mode=='profile':
++ a,b,t=cc.DBuf(8192*4096),cc.DBuf(8192*4096),cc.DBuf(512*512*64)
++ rng=np.random.default_rng(42)
++ for x in (a,b):x.from_host(rng.integers(-128,128,(8192,4096),np.int8))
++ for _ in range(40):
++  cc._chk(lib.handoff_wait_modes_fold(args.variant,a.ptr,b.ptr,8192,8192,t.ptr,None),'profile');cc.sync()
++else:
++ assert all(x[3]==1 and x[4]==0 for x in resources.values()),resources
++ miner.PROOF_PROCESS=False;miner.R=pool_common.R=128
++ class Pool:
++  def check_newer_job(self,job):return None
++ class Scheduler:
++  mode='user'
++  def __init__(self):self.grids=0
++  def note(self,elapsed):pass
++  def maybe_switch(self):self.grids+=1;return self.grids>=12
++ original_setup=cc.setup_job;results=[]
++ for repeat in range(6):
++  for v in tuple((repeat+j)%4 for j in range(4)):
++   scheduler=Scheduler();times=[];bufs=miner.Bufs(8192)
++   cc.setup_job=lambda *a:original_setup(*a[:-1],202610070000+scheduler.grids)
++   cc.pearl_pow_split=lambda a,b,m,n,k,r,key,target,t,dig,found,coord,variant:pow_call(v,a,b,m,n,key,target,t,dig,found,coord)
++   def log(line):
++    match=re.search(r'grid wall: ([\d.]+) s',line)
++    if match:times.append(float(match[1])*1000)
++   miner.mine_job(Pool(),pool_common.real_config(),bytes(80),0,'offline',8192,0,scheduler,bufs,dict(user=0,dev=0),None,log)
++   values=times[2:];mean=statistics.mean(values)
++   row=dict(variant=v,repeat=repeat,samples=len(values),median_ms=statistics.median(values),mean_ms=mean,p95_ms=float(np.percentile(values,95)),grids_sec=1000/mean,consensus_equivalent_ths=(2**46/1e12)*1000/mean)
++   row["telemetry_end"]=subprocess.check_output(['nvidia-smi','-i','0','--query-gpu=clocks.sm,clocks.mem,power.draw,temperature.gpu','--format=csv,noheader'],text=True).strip()
++   row["samples_ms"]=values;results.append(row);print(json.dumps({k:x for k,x in row.items() if k!="samples_ms"}),flush=True)
++   for value in vars(bufs).values():
++    if isinstance(value,cc.DBuf):value.free()
++    elif isinstance(value,list):
++     for x in value:
++      if isinstance(x,cc.DBuf):x.free()
++ Path('artifacts/handoff-wait-modes-results.json').write_text(json.dumps(dict(resources=resources,measurements=results),indent=2)+'\n')
+diff --git a/tests/bench_handoff_wait_modes_events.py b/tests/bench_handoff_wait_modes_events.py
+new file mode 100644
+index 0000000..e8ddc12
+--- /dev/null
++++ b/tests/bench_handoff_wait_modes_events.py
+@@ -0,0 +1,93 @@
++"""GPU0-only matched XOR controls; CUDA events exclude host/setup/PoW."""
++import os
++os.environ['CUDA_VISIBLE_DEVICES'] = '0'
++import argparse
++import ctypes as C
++import json
++from pathlib import Path
++import subprocess
++import sys
++import numpy as np
++
++root = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(root / 'python'))
++p = argparse.ArgumentParser()
++p.add_argument('--profile', action='store_true')
++p.add_argument('--variant', type=int, choices=(0, 1, 2, 3), default=0)
++args = p.parse_args()
++sys.path.insert(0,str(root/'tools'))
++from check_gpu0_idle import check_gpu0_idle
++if not args.profile:check_gpu0_idle(int(os.environ.get('PEARL_IDLE_SUPERVISOR_PID','0')))
++import cuda_capi as cc
++P, I = C.c_void_p, C.c_int
++lib = C.CDLL(str(root / 'artifacts/libpearl-handoff-wait-modes.so'))
++lib.handoff_wait_modes_fold.argtypes = [I, P, P, I, I, P, P]
++ref = C.CDLL(str(root / 'artifacts/libpearl-rank.so'))
++ref.rank_fold.argtypes = [I, P, P, I, I, P, P]
++runtime = C.CDLL('/usr/local/cuda-12.6/lib64/libcudart.so')
++runtime.cudaEventCreate.argtypes = [C.POINTER(P)]
++runtime.cudaEventRecord.argtypes = [P, P]
++runtime.cudaEventSynchronize.argtypes = [P]
++runtime.cudaEventElapsedTime.argtypes = [C.POINTER(C.c_float), P, P]
++runtime.cudaEventDestroy.argtypes = [P]
++resources = {}
++for v in range(4):
++    info = np.zeros(5, np.int32)
++    cc._chk(lib.handoff_wait_modes_fold(v, None, None, 8192, 8192, None, info.ctypes.data), 'info')
++    resources[v] = info.tolist()
++assert all(x[3] == 1 and x[4] == 0 for x in resources.values()), resources
++print('resources', resources, flush=True)
++m = n = 8192
++a, b, t = cc.DBuf(m*4096), cc.DBuf(n*4096), cc.DBuf(m*n//256*64)
++rng = np.random.default_rng(42)
++for buf in (a, b):
++    buf.from_host(rng.integers(-128, 128, (8192,4096), np.int8))
++def launch(v):
++    cc._chk(lib.handoff_wait_modes_fold(v, a.ptr, b.ptr, m, n, t.ptr, None), 'fold')
++if args.profile:
++    for _ in range(40):
++        launch(args.variant)
++        cc.sync()
++    sys.exit(0)
++cc._chk(ref.rank_fold(128, a.ptr, b.ptr, m, n, t.ptr, None), 'reference')
++expected = np.empty(m*n//256*16, np.uint32)
++t.to_host(expected)
++for v in range(4):
++    t.memset(0xa5)
++    launch(v)
++    actual = np.empty_like(expected)
++    t.to_host(actual)
++    assert np.array_equal(actual, expected), ('transcript mismatch', v)
++print('All four full transcripts match accepted R128 at 8192x8192', flush=True)
++start, end = P(), P()
++cc._chk(runtime.cudaEventCreate(C.byref(start)), 'event create')
++cc._chk(runtime.cudaEventCreate(C.byref(end)), 'event create')
++results = []
++# Six rotated blocks, 40 samples each variant/block, 16 launches per sample.
++for repeat in range(6):
++    for j in range(4):
++        v = (repeat + j) % 4
++        for _ in range(100):
++            launch(v)
++        cc.sync()
++        values = []
++        for _ in range(40):
++            cc._chk(runtime.cudaEventRecord(start, None), 'event record')
++            for _ in range(16):
++                launch(v)
++            cc._chk(runtime.cudaEventRecord(end, None), 'event record')
++            cc._chk(runtime.cudaEventSynchronize(end), 'event sync')
++            ms = C.c_float()
++            cc._chk(runtime.cudaEventElapsedTime(C.byref(ms), start, end), 'event time')
++            values.append(ms.value/16)
++        row = dict(variant=v, repeat=repeat, mean_ms=float(np.mean(values)),
++                   median_ms=float(np.median(values)), p95_ms=float(np.percentile(values,95)), samples_ms=values)
++        row['telemetry_end'] = subprocess.check_output(['nvidia-smi','-i','0',
++            '--query-gpu=clocks.sm,clocks.mem,power.draw,temperature.gpu','--format=csv,noheader'], text=True).strip()
++        results.append(row)
++        print(json.dumps({k:v for k,v in row.items() if k != 'samples_ms'}), flush=True)
++(root / 'artifacts/handoff-wait-modes-events.json').write_text(json.dumps(dict(resources=resources, measurements=results), indent=2)+'\n')
++for event in (start, end):
++    cc._chk(runtime.cudaEventDestroy(event), 'event destroy')
++for buf in (a,b,t):
++    buf.free()
+diff --git a/tools/build_handoff_named.py b/tools/build_handoff_named.py
+new file mode 100644
+index 0000000..7a7d195
+--- /dev/null
++++ b/tools/build_handoff_named.py
+@@ -0,0 +1,52 @@
++"""SM89 symmetric two-group split named barriers; all warps retain MMA work.
++Four named barriers alternate by K parity, preventing early arrival into a
++peer's still-active previous phase. Production backend is never touched.
++"""
++from pathlib import Path
++import subprocess,difflib
++root=Path(__file__).resolve().parents[1]
++source=(root/'artifacts/transcript-handoff-source.cu').read_text()
++def section(ns):
++ a=source.index('namespace '+ns);b=source.index('// namespace '+ns,a)+len('// namespace '+ns)
++ return source[a:b]
++base=section('transcript_handoff_baseline');spin=section('transcript_handoff_overlap')
++names=['baseline','spin','late','overlap'];parts=['#include <cuda_runtime.h>\n#include <cstdint>\n']
++for name in names:
++ old=spin if name=='spin' else base;new=old
++ if name in ('late','overlap'):
++  start=new.index('        if constexpr(Stages==2) asm volatile("cp.async.wait_group 0;");');end=new.index('        int current=kt%Stages',start)
++  new=new[:start]+'''        if(kt==0) {
++            asm volatile("cp.async.wait_group 0;" ::: "memory");
++            __syncthreads();
++        }
++        // Two groups of six warps, no dedicated producers. IDs1/2 for
++        // even iterations,3/4 for odd; barrier0 remains initialization/output.
++        const unsigned group=threadIdx.x/192;
++        const unsigned own_bar=1+2*(kt&1)+group;
++        const unsigned peer_bar=1+2*(kt&1)+(group^1);
++'''+new[end:]
++  arrive='''        // Publish this group's completed future copies and old-stage reads.
++        asm volatile("cp.async.wait_group 0;" ::: "memory");
++        asm volatile("bar.arrive %0, 384;" :: "r"(peer_bar) : "memory");
++'''
++  point='        if constexpr(TileK==64) {\n        if((kt+1)%2==0) {';assert new.count(point)==1
++  if name=='overlap':new=new.replace(point,arrive+point)
++  point='    }\n    __syncthreads();\n    for(int i=threadIdx.x;i<WORDS;';assert new.count(point)==1
++  wait='        asm volatile("bar.sync %0, 384;" :: "r"(own_bar) : "memory");\n'
++  new=new.replace(point,(arrive if name=='late' else '')+wait+point)
++ ns='transcript_handoff_overlap' if name=='spin' else 'transcript_handoff_baseline'
++ (root/f'artifacts/handoff-named-{name}.diff').write_text(''.join(difflib.unified_diff(old.splitlines(True),new.splitlines(True),fromfile='validated-'+ns,tofile=name)))
++ parts.append(new.replace(ns,'handoff_named_'+name))
++parts.append('''void launch_pearl_blake3(const uint32_t*,int,int,const uint32_t*,const uint32_t*,uint8_t*,int*,int*,cudaStream_t);
++extern "C" int handoff_named_fold(int v,const int8_t* a,const int8_t* b,int m,int n,uint32_t* t,int* info) {
++if(m<=0 || n<=0 || m%256 || n%16 || m>1048576 || n>1048576)return cudaErrorInvalidValue;
++''')
++for v,name in enumerate(names):parts.append(f'if(v=={v})return handoff_named_{name}::launch<1,64,false,true,false,false,2,false,6>(a,b,m,n,4096,128,t,info,nullptr);')
++parts.append('''return cudaErrorInvalidValue;
++}
++extern "C" int handoff_named_pow(int v,const int8_t* a,const int8_t* b,int m,int n,const uint32_t* key,const uint32_t* target,uint32_t* t,uint8_t* dig,int* found,int* coord) {
++auto e=handoff_named_fold(v,a,b,m,n,t,nullptr);if(e)return e;
++launch_pearl_blake3(t,(m/16)*(n/16),n,key,target,dig,found,coord,nullptr);return cudaGetLastError();
++}''')
++p=root/'artifacts/handoff-named-source.cu';p.write_text('\n'.join(parts))
++subprocess.run(['/usr/local/cuda-12.6/bin/nvcc','-std=c++20','-O3','-lineinfo','-gencode','arch=compute_89,code=sm_89','-Xcompiler','-fPIC','--ptxas-options=-v','--expt-relaxed-constexpr','-I/home/xgao/cutlass/include','-Icsrc','-Icsrc/gemm','-shared',str(p),str(root/'csrc/gemm/pearl_blake3_sm61.cu'),'-o',str(root/'artifacts/libpearl-handoff-named.so')],check=True)
+diff --git a/tests/bench_handoff_named.py b/tests/bench_handoff_named.py
+new file mode 100644
+index 0000000..6c0066e
+--- /dev/null
++++ b/tests/bench_handoff_named.py
+@@ -0,0 +1,83 @@
++"""GPU0-only full-A-tile fast path R128 test. Production library is never replaced."""
++import os
++os.environ['CUDA_VISIBLE_DEVICES']='0'
++import argparse,ctypes as C,json,re,statistics,sys,subprocess
++from pathlib import Path
++import numpy as np
++root=Path(__file__).resolve().parents[1];sys.path.insert(0,str(root/'python'))
++sys.path.insert(0,str(root/'tools'))
++from check_gpu0_idle import check_gpu0_idle
++check_gpu0_idle(int(os.environ.get('PEARL_IDLE_SUPERVISOR_PID','0')))
++import cuda_capi as cc
++import miner_capi as miner
++import pool_common
++P,I=C.c_void_p,C.c_int
++lib=C.CDLL(str(root/'artifacts/libpearl-handoff-named.so'))
++lib.handoff_named_fold.argtypes=[I,P,P,I,I,P,P]
++lib.handoff_named_pow.argtypes=[I,P,P,I,I,P,P,P,P,P,P]
++ref=C.CDLL(str(root/'artifacts/libpearl-rank.so'))
++ref.rank_pow.argtypes=[I,P,P,I,I,P,P,P,P,P,P]
++def pow_call(v,a,b,m,n,key,target,t,d=None,f=None,c=None):
++ cc._chk(lib.handoff_named_pow(v,cc._as(a),cc._as(b),m,n,cc._as(key),cc._as(target),cc._as(t),cc._as(d),cc._as(f),cc._as(c)),'xor control pow')
++p=argparse.ArgumentParser();p.add_argument('mode',choices=['validate','bench','profile']);p.add_argument('--variant',type=int,default=0);p.add_argument('--small-only',action='store_true');p.add_argument('--variants',type=int,nargs='+',choices=range(4),default=[0,1,2,3]);args=p.parse_args()
++resources={}
++for v in (0,1,2,3):
++ info=np.zeros(5,np.int32);cc._chk(lib.handoff_named_fold(v,None,None,8192,8192,None,info.ctypes.data),'info');resources[v]=info.tolist()
++print('resources',resources,flush=True)
++if args.mode=='validate':
++ results=[]
++ for m,n in (((256,48),(256,384),(256,400)) if args.small_only else ((256,48),(256,384),(256,400),(8192,8192))):
++  for seed in (42,1234):
++   rng=np.random.default_rng(seed);alloc=[]
++   def buf(size):
++    x=cc.DBuf(size);alloc.append(x);return x
++   a,b=buf(m*4096),buf(n*4096);a.from_host(rng.integers(-128,128,(m,4096),np.int8));b.from_host(rng.integers(-128,128,(n,4096),np.int8))
++   key,target=buf(32),buf(32);key.from_host(rng.integers(0,256,32,np.uint8));target.memset(0)
++   t,d=buf(m*n//256*64),buf(m*n//256*32)
++   cc._chk(ref.rank_pow(128,a.ptr,b.ptr,m,n,key.ptr,target.ptr,t.ptr,d.ptr,None,None),'frozen')
++   expected_t=np.empty(m*n//256*16,np.uint32);expected_d=np.empty(m*n//256*32,np.uint8)
++   t.to_host(expected_t);d.to_host(expected_d)
++   for v in (0,1,2,3):
++    t.memset(0xa5);d.memset(0xa5);pow_call(v,a,b,m,n,key,target,t,d)
++    actual_t=np.empty_like(expected_t);actual_d=np.empty_like(expected_d);t.to_host(actual_t);d.to_host(actual_d)
++    assert np.array_equal(actual_t,expected_t),(v,m,n,seed,'transcript')
++    assert np.array_equal(actual_d,expected_d),(v,m,n,seed,'digest')
++    row=dict(variant=v,m=m,n=n,seed=seed,transcript_pass=True,digest_pass=True);results.append(row);print('PASS',row,flush=True)
++   for x in alloc:x.free()
++ Path('artifacts/handoff-named-correctness-small.json' if args.small_only else 'artifacts/handoff-named-correctness.json').write_text(json.dumps(results,indent=2)+'\n')
++elif args.mode=='profile':
++ a,b,t=cc.DBuf(8192*4096),cc.DBuf(8192*4096),cc.DBuf(512*512*64)
++ rng=np.random.default_rng(42)
++ for x in (a,b):x.from_host(rng.integers(-128,128,(8192,4096),np.int8))
++ for _ in range(40):
++  cc._chk(lib.handoff_named_fold(args.variant,a.ptr,b.ptr,8192,8192,t.ptr,None),'profile');cc.sync()
++else:
++ assert all(x[3]==1 and x[4]==0 for x in resources.values()),resources
++ miner.PROOF_PROCESS=False;miner.R=pool_common.R=128
++ class Pool:
++  def check_newer_job(self,job):return None
++ class Scheduler:
++  mode='user'
++  def __init__(self):self.grids=0
++  def note(self,elapsed):pass
++  def maybe_switch(self):self.grids+=1;return self.grids>=12
++ original_setup=cc.setup_job;results=[]
++ for repeat in range(6):
++  for v in tuple(args.variants[(repeat+j)%len(args.variants)] for j in range(len(args.variants))):
++   scheduler=Scheduler();times=[];bufs=miner.Bufs(8192)
++   cc.setup_job=lambda *a:original_setup(*a[:-1],202610070000+scheduler.grids)
++   cc.pearl_pow_split=lambda a,b,m,n,k,r,key,target,t,dig,found,coord,variant:pow_call(v,a,b,m,n,key,target,t,dig,found,coord)
++   def log(line):
++    match=re.search(r'grid wall: ([\d.]+) s',line)
++    if match:times.append(float(match[1])*1000)
++   miner.mine_job(Pool(),pool_common.real_config(),bytes(80),0,'offline',8192,0,scheduler,bufs,dict(user=0,dev=0),None,log)
++   values=times[2:];mean=statistics.mean(values)
++   row=dict(variant=v,repeat=repeat,samples=len(values),median_ms=statistics.median(values),mean_ms=mean,p95_ms=float(np.percentile(values,95)),grids_sec=1000/mean,consensus_equivalent_ths=(2**46/1e12)*1000/mean)
++   row["telemetry_end"]=subprocess.check_output(['nvidia-smi','-i','0','--query-gpu=clocks.sm,clocks.mem,power.draw,temperature.gpu','--format=csv,noheader'],text=True).strip()
++   row["samples_ms"]=values;results.append(row);print(json.dumps({k:x for k,x in row.items() if k!="samples_ms"}),flush=True)
++   for value in vars(bufs).values():
++    if isinstance(value,cc.DBuf):value.free()
++    elif isinstance(value,list):
++     for x in value:
++      if isinstance(x,cc.DBuf):x.free()
++ Path('artifacts/handoff-named-results.json').write_text(json.dumps(dict(resources=resources,measurements=results),indent=2)+'\n')
+diff --git a/tests/bench_handoff_named_events.py b/tests/bench_handoff_named_events.py
+new file mode 100644
+index 0000000..3dc166a
+--- /dev/null
++++ b/tests/bench_handoff_named_events.py
+@@ -0,0 +1,98 @@
++"""GPU0-only matched XOR controls; CUDA events exclude host/setup/PoW."""
++import os
++os.environ['CUDA_VISIBLE_DEVICES'] = '0'
++import argparse
++import ctypes as C
++import json
++from pathlib import Path
++import subprocess
++import sys
++import time
++import numpy as np
++
++root = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(root / 'python'))
++p = argparse.ArgumentParser()
++p.add_argument('--profile', action='store_true')
++p.add_argument('--variant', type=int, choices=(0, 1, 2, 3), default=0)
++args = p.parse_args()
++sys.path.insert(0,str(root/'tools'))
++from check_gpu0_idle import check_gpu0_idle
++if not args.profile:check_gpu0_idle(int(os.environ.get('PEARL_IDLE_SUPERVISOR_PID','0')))
++import cuda_capi as cc
++P, I = C.c_void_p, C.c_int
++lib = C.CDLL(str(root / 'artifacts/libpearl-handoff-named.so'))
++lib.handoff_named_fold.argtypes = [I, P, P, I, I, P, P]
++ref = C.CDLL(str(root / 'artifacts/libpearl-rank.so'))
++ref.rank_fold.argtypes = [I, P, P, I, I, P, P]
++runtime = C.CDLL('/usr/local/cuda-12.6/lib64/libcudart.so')
++runtime.cudaEventCreate.argtypes = [C.POINTER(P)]
++runtime.cudaEventRecord.argtypes = [P, P]
++runtime.cudaEventSynchronize.argtypes = [P]
++runtime.cudaEventElapsedTime.argtypes = [C.POINTER(C.c_float), P, P]
++runtime.cudaEventDestroy.argtypes = [P]
++resources = {}
++for v in range(4):
++    info = np.zeros(5, np.int32)
++    cc._chk(lib.handoff_named_fold(v, None, None, 8192, 8192, None, info.ctypes.data), 'info')
++    resources[v] = info.tolist()
++assert all(x[3] == 1 and x[4] == 0 for x in resources.values()), resources
++print('resources', resources, flush=True)
++m = n = 8192
++a, b, t = cc.DBuf(m*4096), cc.DBuf(n*4096), cc.DBuf(m*n//256*64)
++rng = np.random.default_rng(42)
++for buf in (a, b):
++    buf.from_host(rng.integers(-128, 128, (8192,4096), np.int8))
++def launch(v):
++    cc._chk(lib.handoff_named_fold(v, a.ptr, b.ptr, m, n, t.ptr, None), 'fold')
++if args.profile:
++    for _ in range(40):
++        launch(args.variant)
++        cc.sync()
++    sys.exit(0)
++cc._chk(ref.rank_fold(128, a.ptr, b.ptr, m, n, t.ptr, None), 'reference')
++expected = np.empty(m*n//256*16, np.uint32)
++t.to_host(expected)
++for v in range(4):
++    t.memset(0xa5)
++    launch(v)
++    actual = np.empty_like(expected)
++    t.to_host(actual)
++    assert np.array_equal(actual, expected), ('transcript mismatch', v)
++print('All four full transcripts match accepted R128 at 8192x8192', flush=True)
++start, end = P(), P()
++cc._chk(runtime.cudaEventCreate(C.byref(start)), 'event create')
++cc._chk(runtime.cudaEventCreate(C.byref(end)), 'event create')
++results = []
++warm_until = time.perf_counter()+3
++while time.perf_counter()<warm_until:
++    for _ in range(16):launch(0)
++    cc.sync()
++# Six rotated blocks, 40 samples each variant/block, 16 launches per sample.
++for repeat in range(6):
++    for j in range(4):
++        v = (repeat + j) % 4
++        for _ in range(100):
++            launch(v)
++        cc.sync()
++        values = []
++        for _ in range(40):
++            cc._chk(runtime.cudaEventRecord(start, None), 'event record')
++            for _ in range(16):
++                launch(v)
++            cc._chk(runtime.cudaEventRecord(end, None), 'event record')
++            cc._chk(runtime.cudaEventSynchronize(end), 'event sync')
++            ms = C.c_float()
++            cc._chk(runtime.cudaEventElapsedTime(C.byref(ms), start, end), 'event time')
++            values.append(ms.value/16)
++        row = dict(variant=v, repeat=repeat, mean_ms=float(np.mean(values)),
++                   median_ms=float(np.median(values)), p95_ms=float(np.percentile(values,95)), samples_ms=values)
++        row['telemetry_end'] = subprocess.check_output(['nvidia-smi','-i','0',
++            '--query-gpu=clocks.sm,clocks.mem,power.draw,temperature.gpu','--format=csv,noheader'], text=True).strip()
++        results.append(row)
++        print(json.dumps({k:v for k,v in row.items() if k != 'samples_ms'}), flush=True)
++(root / 'artifacts/handoff-named-events.json').write_text(json.dumps(dict(resources=resources, measurements=results), indent=2)+'\n')
++for event in (start, end):
++    cc._chk(runtime.cudaEventDestroy(event), 'event destroy')
++for buf in (a,b,t):
++    buf.free()
+diff --git a/tools/profile_handoff_named.sh b/tools/profile_handoff_named.sh
+new file mode 100644
+index 0000000..f1acf31
+--- /dev/null
++++ b/tools/profile_handoff_named.sh
+@@ -0,0 +1,48 @@
++#!/usr/bin/env bash
++# Offline GPU0 only: Correct-arithmetic split arrival/wait controls; diagnostic only.
++# Requires counter access. Validated for Nsight Compute2024.3.2 CLI.
++set -euo pipefail
++cd "$(dirname "$0")/.."
++if [[ $EUID -ne 0 ]]; then
++ echo 'Hardware counters require root: sudo bash tools/profile_handoff_named.sh' >&2
++ exit 1
++fi
++.venv/bin/python tools/check_gpu0_idle.py --allow-supervisor-pid "${1:-0}"
++export CUDA_VISIBLE_DEVICES=0
++export PEARL_IDLE_SUPERVISOR_PID="${1:-0}"
++
++PROFILE_OUT="${PROFILE_OUT:-$(mktemp -d /tmp/pearl-handoff-named.XXXXXX)}"
++printf '%s\n' "$PROFILE_OUT" > /tmp/pearl-handoff-named-last.txt
++chmod 644 /tmp/pearl-handoff-named-last.txt
++mkdir -p "$PROFILE_OUT"
++if compgen -G "$PROFILE_OUT/v*.ncu-rep" > /dev/null; then
++ echo 'Use a fresh PROFILE_OUT directory; existing reports must not mix with changed binaries.' >&2
++ exit 1
++fi
++sha256sum artifacts/libpearl-handoff-named.so artifacts/handoff-named-source.cu tests/bench_handoff_named_events.py > "$PROFILE_OUT/inputs.sha256"
++nvidia-smi -i 0 --query-gpu=uuid,name,driver_version,clocks.sm,clocks.mem,power.limit,temperature.gpu --format=csv > "$PROFILE_OUT/gpu-before.csv"
++/usr/local/cuda/bin/ncu --version > "$PROFILE_OUT/ncu-version.txt"
++METRICS='sm__cycles_elapsed.sum,smsp__cycles_elapsed.sum,smsp__inst_executed_pipe_tensor_v2.sum,smsp__inst_executed_pipe_tensor_v2.avg.per_cycle_elapsed,gpu__time_duration.sum,dram__bytes.sum,lts__t_bytes.sum,sm__sass_data_bytes_mem_shared_op_ldsm.sum,lts__throughput.avg.pct_of_peak_sustained_elapsed,smsp__warp_issue_stalled_barrier_per_warp_active.pct,smsp__warp_issue_stalled_long_scoreboard_per_warp_active.pct,smsp__warp_issue_stalled_short_scoreboard_per_warp_active.pct,smsp__warp_issue_stalled_math_pipe_throttle_per_warp_active.pct,sm__pipe_tensor_op_imma_cycles_active_v2.avg.pct_of_peak_sustained_active'
++for VARIANT in 0 2 3; do
++  REPORT="$PROFILE_OUT/v$VARIANT"
++  if [[ ! -s "$REPORT.ncu-rep" ]]; then
++  /usr/local/cuda/bin/ncu --devices 0 --clock-control none \
++    --replay-mode application --cache-control none --kernel-name-base demangled \
++    --kernel-name 'regex:.*handoff_named_.*::kernel.*' \
++    --launch-skip 32 --launch-count 3 --metrics "$METRICS" \
++    --section SourceCounters --section SchedulerStats --section WarpStateStats \
++    --warp-sampling-interval auto --warp-sampling-max-passes 5 --import-source yes \
++    -o "$REPORT" "$PWD/.venv/bin/python" tests/bench_handoff_named_events.py --profile --variant "$VARIANT" \
++    > "$REPORT.log" 2>&1
++  else
++    printf 'Reusing existing report: %s\n' "$REPORT.ncu-rep"
++  fi
++  /usr/local/cuda/bin/ncu --import "$REPORT.ncu-rep" --page raw --print-units base --csv > "$REPORT.raw.csv"
++  /usr/local/cuda/bin/ncu --import "$REPORT.ncu-rep" --page source --print-source sass --csv > "$REPORT.sass.csv"
++done
++"$PWD/.venv/bin/python" tools/analyze_instruction_stalls.py "$PROFILE_OUT"/v*.sass.csv --output "$PROFILE_OUT/pc-stalls.json"
++"$PWD/.venv/bin/python" tools/analyze_ada_ws.py "$PROFILE_OUT" --variants 0 2 3 --useful-mma 67108864
++nvidia-smi -i 0 --query-gpu=uuid,name,driver_version,clocks.sm,clocks.mem,power.limit,temperature.gpu --format=csv > "$PROFILE_OUT/gpu-after.csv"
++"$PWD/.venv/bin/python" tools/analyze_imma_issue.py "$PROFILE_OUT" --variants 0 2 3
++chmod -R a+rX "$PROFILE_OUT"
++printf 'Reports: %s\n' "$PROFILE_OUT"
+diff --git a/tools/report_handoff_named.py b/tools/report_handoff_named.py
+new file mode 100644
+index 0000000..313a30e
+--- /dev/null
++++ b/tools/report_handoff_named.py
+@@ -0,0 +1,48 @@
++"""Summarize source-only handoff experiments; no production promotion."""
++from pathlib import Path
++import json,numpy as np
++root=Path(__file__).resolve().parents[1];art=root/'artifacts'
++lines=['GPU0 source-only stage handoff experiments; production path unchanged.','',
++'Fixed CTA256x192,K64,2stages,384threads,12warps,K4096,R128;64staticIMMA/16LDSM.',
++'Event sample = mean of16 launches,240 samples/variant/run in rotated blocks.',
++'GPU clocks/power settings untouched; DVFS not locked. Differences are descriptive, not cycle-normalized.',
++'First experiment: parity spin vs token vs one-warp polling+CTA broadcast.']
++def summary(path,names):
++ x=json.loads(path.read_text());s={}
++ for v,name in enumerate(names):
++  a=np.array([t for r in x['measurements'] if r['variant']==v for t in r['samples_ms']])
++  if not len(a):continue
++  s[name]=dict(samples=len(a),mean_ms=float(a.mean()),median_ms=float(np.median(a)),p95_ms=float(np.percentile(a,95)))
++  lines.append(f'{name:12} n={len(a):3} mean={a.mean():.6f} median={np.median(a):.6f} p95={np.percentile(a,95):.6f} ms')
++ return s
++wait=summary(art/'handoff-wait-modes-events.json',['baseline','spin','token','delegate'])
++lines+=['Token and delegate do not improve on baseline. All4 variants168regs,0local,1CTA/SM.','',
++'Second experiment: two symmetric groups; named barriers replace mbarrier polling.']
++results={}
++for tag,path in [('run1',art/'handoff-named-events-run1.json'),('run2',art/'handoff-named-events.json')]:
++ lines.append(tag);s=summary(path,['baseline','spin','late','overlap']);results[tag]=s
++ lines.append(f"Overlap time reduction vs late={100*(1-s['overlap']['mean_ms']/s['late']['mean_ms']):.3f}%; vs baseline={100*(1-s['overlap']['mean_ms']/s['baseline']['mean_ms']):.3f}%.")
++lines+=['Named variants167regs,0spill,shared69632B,1CTA/SM. Baseline168regs,shared69632B; spin168regs,69640B.',
++'No polling LDS/R2UR loop, no mbarrier ATOMS in named variants. One BAR.ARV and one receiving BAR per iteration.',
++'Four alternating IDs prevent double arrival to an unreset peer phase. All12 warps compute, none dedicated to movement.',
++'Overlap moves arrival before transcript; local cp.async.wait_group0 remains BEFORE arrival.',
++'SASS: overlap wait1690,arrival1800,firstREDUX1970; late firstREDUX1910,wait2a00,arrival2a70.',
++'Thus this measures overlap of inter-warp handoff and transcript, not elimination of copy completion waiting.','']
++grid=art/'handoff-named-results.json'
++if grid.exists():
++ lines.append('Full offline grids (includes setup/noise/Merkle/GEMM/PoW),same deterministic seed sequence;60 measured/variant after per-block warmup:')
++ g=json.loads(grid.read_text());gs={}
++ for v,name in [(0,'baseline'),(3,'overlap')]:
++  a=np.array([t for r in g['measurements'] if r['variant']==v for t in r['samples_ms']]);mean=float(a.mean());gs[name]=dict(mean_ms=mean,median_ms=float(np.median(a)),p95_ms=float(np.percentile(a,95)),samples=len(a),grids_sec=1000/mean,ths=2**46/mean/1e9)
++  lines.append(f'{name:12} n={len(a)} mean={mean:.3f} median={np.median(a):.3f} p95={np.percentile(a,95):.3f} ms grids/s={1000/mean:.6f} TH/s={2**46/mean/1e9:.3f}')
++ lines.append(f"Full-grid time reduction={100*(1-gs['overlap']['mean_ms']/gs['baseline']['mean_ms']):.3f}%.");results['grids']=gs
++lines+=['','Correctness: each suite32 complete transcript+PoW comparisons,including8192x8192,passed.',
++'Both suites:ComputeSanitizer2025.2.1 racecheck24 small/edge cases:0hazards;full-size memcheck:0errors.',
++'Named-barrier synccheck2025.2.1:0errors on24 small/edge comparisons.',
++'Earlier sleep/NOP experiment remains quarantined: its racecheck issue is unresolved; not used here.',
++'No live mining; no production/V3/target/proof changes; no net production speedup claimed.',
++'Tensor density has NOT been measured for these variants yet. Required next evidence: same-metric IMMA/SMcycle,Tensor utilization,copy-wait and barrier PC stalls.',
++'Next capture: sudo bash tools/profile_handoff_named.sh 2270585',
++'References: named-barrier semantics and repeated-arrival restriction:',
++'https://docs.nvidia.com/cuda/archive/12.0.1/parallel-thread-execution/index.html']
++(art/'handoff-named-report.txt').write_text('\n'.join(lines)+'\n');(art/'handoff-named-summary.json').write_text(json.dumps(results,indent=2)+'\n');print('\n'.join(lines))

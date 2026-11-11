@@ -1,0 +1,58 @@
+[
+  {
+    "repeat": 0,
+    "mode": "thread",
+    "median_ms": 431.5,
+    "mean_ms": 792.4166666666666,
+    "max_ms": 3606.3999999999996,
+    "equivalent_ths": 88.80270587148681,
+    "snapshot_seconds": [
+      0.164,
+      0.163,
+      0.164
+    ],
+    "offline_proofs": 3
+  },
+  {
+    "repeat": 0,
+    "mode": "process",
+    "median_ms": 423.54999999999995,
+    "mean_ms": 504.6208333333333,
+    "max_ms": 1079.6,
+    "equivalent_ths": 139.44874949540795,
+    "snapshot_seconds": [
+      0.66,
+      0.66,
+      0.66
+    ],
+    "offline_proofs": 3
+  },
+  {
+    "repeat": 1,
+    "mode": "process",
+    "median_ms": 424.8,
+    "mean_ms": 504.9166666666667,
+    "max_ms": 1080.3,
+    "equivalent_ths": 139.3670457388955,
+    "snapshot_seconds": [
+      0.661,
+      0.662,
+      0.663
+    ],
+    "offline_proofs": 3
+  },
+  {
+    "repeat": 1,
+    "mode": "thread",
+    "median_ms": 430.65,
+    "mean_ms": 782.2541666666667,
+    "max_ms": 3311.4,
+    "equivalent_ths": 89.95636862826639,
+    "snapshot_seconds": [
+      0.191,
+      0.192,
+      0.192
+    ],
+    "offline_proofs": 3
+  }
+]

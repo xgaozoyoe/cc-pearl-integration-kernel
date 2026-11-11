@@ -1,0 +1,134 @@
+[
+  {
+    "m": 256,
+    "n": 384,
+    "seed": 42,
+    "checks": {
+      "full": "full transcript bit-exact",
+      "fold_sink": "final R120 per-thread sink matches",
+      "gemm_sink": "final R120 per-thread sink matches"
+    },
+    "sink_sha256": "b4b385bb07915a9c9093496e9af496c8a6942da1ab030d51699ab3e7b316f26e"
+  },
+  {
+    "m": 256,
+    "n": 384,
+    "seed": 1234,
+    "checks": {
+      "full": "full transcript bit-exact",
+      "fold_sink": "final R120 per-thread sink matches",
+      "gemm_sink": "final R120 per-thread sink matches"
+    },
+    "sink_sha256": "4a7ce9d009d5c62a1a6ed5bdd13e99a597b78ac7ea62cebd841ddb40b02c1b00"
+  },
+  {
+    "m": 256,
+    "n": 384,
+    "seed": 9876,
+    "checks": {
+      "full": "full transcript bit-exact",
+      "fold_sink": "final R120 per-thread sink matches",
+      "gemm_sink": "final R120 per-thread sink matches"
+    },
+    "sink_sha256": "d4c0253d9530b33f063cdbb28d8062fb5326d84a499727fbc892011c6178d9ff"
+  },
+  {
+    "m": 256,
+    "n": 400,
+    "seed": 42,
+    "checks": {
+      "full": "full transcript bit-exact",
+      "fold_sink": "final R120 per-thread sink matches",
+      "gemm_sink": "final R120 per-thread sink matches"
+    },
+    "sink_sha256": "319785cd06dbaf42337ae50a81a633dc131740d16a572729e4533e1c643ca0d8"
+  },
+  {
+    "m": 256,
+    "n": 400,
+    "seed": 1234,
+    "checks": {
+      "full": "full transcript bit-exact",
+      "fold_sink": "final R120 per-thread sink matches",
+      "gemm_sink": "final R120 per-thread sink matches"
+    },
+    "sink_sha256": "492ed5933932dae61b67a7f1294805879528d5fdf45eefdb74670b10bc78160f"
+  },
+  {
+    "m": 256,
+    "n": 400,
+    "seed": 9876,
+    "checks": {
+      "full": "full transcript bit-exact",
+      "fold_sink": "final R120 per-thread sink matches",
+      "gemm_sink": "final R120 per-thread sink matches"
+    },
+    "sink_sha256": "1f8ac6956cff4c7ae8aa08e8facfc5bc72ea8e5c847da10ca1f4be62ecd1b4df"
+  },
+  {
+    "m": 512,
+    "n": 768,
+    "seed": 42,
+    "checks": {
+      "full": "full transcript bit-exact",
+      "fold_sink": "final R120 per-thread sink matches",
+      "gemm_sink": "final R120 per-thread sink matches"
+    },
+    "sink_sha256": "e8f8cbcb970b656ddeba9f36e144655eb5abc5d7394360af0b13356b030f8e3f"
+  },
+  {
+    "m": 512,
+    "n": 768,
+    "seed": 1234,
+    "checks": {
+      "full": "full transcript bit-exact",
+      "fold_sink": "final R120 per-thread sink matches",
+      "gemm_sink": "final R120 per-thread sink matches"
+    },
+    "sink_sha256": "8fd6f3b8c7dd4b43536b873c4439aac2b61659b358c989c981523a9b20146e39"
+  },
+  {
+    "m": 512,
+    "n": 768,
+    "seed": 9876,
+    "checks": {
+      "full": "full transcript bit-exact",
+      "fold_sink": "final R120 per-thread sink matches",
+      "gemm_sink": "final R120 per-thread sink matches"
+    },
+    "sink_sha256": "f827b41a4acbdf470eedf65e13a086b6ebfe551bacaa150ebb5e671f119dcb52"
+  },
+  {
+    "m": 512,
+    "n": 800,
+    "seed": 42,
+    "checks": {
+      "full": "full transcript bit-exact",
+      "fold_sink": "final R120 per-thread sink matches",
+      "gemm_sink": "final R120 per-thread sink matches"
+    },
+    "sink_sha256": "94ab95cbdb5168f7ed491dc716dc2f3f2e6dc5044b41efafffca09c9ba6975fb"
+  },
+  {
+    "m": 512,
+    "n": 800,
+    "seed": 1234,
+    "checks": {
+      "full": "full transcript bit-exact",
+      "fold_sink": "final R120 per-thread sink matches",
+      "gemm_sink": "final R120 per-thread sink matches"
+    },
+    "sink_sha256": "f8c93c930e2e81f875a4b1b8ff4783dde665bc13552633369accf483ed7c2791"
+  },
+  {
+    "m": 512,
+    "n": 800,
+    "seed": 9876,
+    "checks": {
+      "full": "full transcript bit-exact",
+      "fold_sink": "final R120 per-thread sink matches",
+      "gemm_sink": "final R120 per-thread sink matches"
+    },
+    "sink_sha256": "02f90d6982d0ed350d0a02e0ccbdae6115b18b860d0da8b68061e033f0823cf7"
+  }
+]

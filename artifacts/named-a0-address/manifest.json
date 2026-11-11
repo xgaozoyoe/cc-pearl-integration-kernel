@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "native": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "104c0c1b265260dea5c9ab0bb174ebbbe7ee9cceb0cf0acebf2a9d1dfa4d50aa",
+      "smem": 69632,
+      "correct": true,
+      "threads": 384
+    },
+    "publish_after_a": {
+      "entry": "_ZN24named_a0_publish_after_a6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "41c615d69011874d71f51adb5ab6493e8f3f4b026060fea65bda98a34338da2a",
+      "smem": 69632,
+      "threads": 384,
+      "correct": true
+    },
+    "offset32": {
+      "entry": "_ZN22named_address_offset326kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "6265c0171e93e82ebf62ca53838320f2b04c2f81fcd7a503104d0065058d9b39",
+      "smem": 69632,
+      "correct": true
+    },
+    "shared_address": {
+      "entry": "_ZN28named_address_shared_address6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "e32a60857316460b196025ebdf2e4e8696a6aaef4647617ce50fb3f8051548b2",
+      "smem": 69632,
+      "correct": true
+    }
+  }
+}

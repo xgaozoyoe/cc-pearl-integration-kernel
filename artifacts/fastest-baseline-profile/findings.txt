@@ -1,0 +1,30 @@
+Capture /tmp/pearl-fastest-baseline.f4QN8l, GPU0 SM89, frozen both_compact SHA256104c0c1b265260dea5c9ab0bb174ebbbe7ee9cceb0cf0acebf2a9d1dfa4d50aa.
+Two independent captures x3launches, application replay, clock-control base (~2.23GHz), cache-control none.
+Kernel times1.136459/1.134059ms; these are regional profiler times, not full-grid timings.
+Dynamic IMMA count67633152 each launch matches expected padded work; useful67108864.
+Tensor active85.793/85.797%; actual IMMA/SMelapsedcycle0.208741/0.208890.
+L2throughput48.93/49.02%; L2bytes~2.534GB,37.759B/usefulMMA. DRAM~50.1MB, shared LDSM8.657GB/region.
+No evidence of sustained L2 bandwidth saturation in this capture; transient/local pressure is not excluded.
+Eligible warps0.36/scheduler,active3.0/scheduler,issued0.24/cycle. Averages do not establish temporal warp alignment.
+
+Warp stall metrics:math throttle40.92%,barrier14.27%,shortscoreboard7.685%,longscoreboard2.823%.
+These are warp-stall metrics, not percentages of kernel time recoverable by optimizations.
+96.51%of math-throttle samples occur on IMMA. HotPC1400,1530,1250,1120.
+98.59%of barrier samples occur at2a30, deferred fromBAR.SYNC2a00. This is K-stage handoff, not function-call overhead.
+54.41%of shortscoreboard samples lie inside the LDSM/IMMA body;11.73%atinitial-load/address block;11.27%at early arrival;17.69%transcript.
+Three immediate B-load/use pairs:
+ 11d0 LDSM R148 ->11e0 IMMA waitSB1
+ 1280 LDSM R148 ->1290 IMMA waitSB1
+ 1340 LDSM R148 ->1350 IMMA waitSB1
+Those consumer PCs together account for~38.4%of shortscoreboard samples, not38.4%of runtime.
+Address-lifetime waits also exist:
+ 1100 LDSM reads addressR152 with readSB4;1110 rewritesR152 and waitsSB4.
+ f40 LDGSTS readsR96/R97 andR141 with readSB1;f60 overwritesR96 and waitsSB1.
+ fb0 LDGSTS readSB1;1000 incrementsR141 and waitsSB1.
+Thus some samples atinteger instructions reflect operand-address reuse constraints, not integer arithmetic latency.
+Early arrival16d0 waitsSB1+SB2 from lastLDSM before publication. It cannot simply drop these waits.
+
+Conclusion: mixed stage-handoff + internal operand/address dependency constraints, with substantial IMMA pipe pressure while compute is issuing. Do not attribute all remaining Tensor inactivity to first loads, transcript or L2 saturation.
+Current PC distributions alone do not prove cross-warp burst synchronization or distinguish all accumulator/fixed-latency waits.
+Next bounded investigation on this exactbinary: audit address-register read-lifetimes first; test an isolated rename/schedule control without deleting real waits or changing physical register count. Separately evaluate internal Bload/use distances only if the new control differs from earlier failed Bprefetch experiments.
+No new optimization or production mutation in this analysis. Reporter text filter corrected to include NCU stall_short_sb/stall_long_sb/stall_math/stall_mio aliases; raw capture was already complete.

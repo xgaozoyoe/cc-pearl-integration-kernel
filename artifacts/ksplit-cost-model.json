@@ -1,0 +1,186 @@
+{
+  "inputs": {
+    "M": 131072,
+    "N": 131072,
+    "K": 4096,
+    "rank": 128,
+    "boundaries": 32,
+    "sm_count": 128,
+    "nominal_bandwidth_scenario_Bps": 1008000000000.0,
+    "baseline_grid_ms": 307.6583333333334
+  },
+  "int32_full_matrix_GiB": 64.0,
+  "all_boundary_partial_TiB": 2.0,
+  "all_boundary_write_read_TiB": 4.0,
+  "all_boundary_dram_floor_ms": 4363.141380063493,
+  "region_partial_GiB": 8.0,
+  "prefix_additions": 532575944704,
+  "transcript_output_GiB": 4.0,
+  "coarse_split": [
+    {
+      "splits": 2,
+      "k_per_split": 2048,
+      "stored_matrices_optimistic": 17,
+      "storage_TiB": 1.0625,
+      "minimum_write_read_TiB": 2.125,
+      "dram_floor_ms": 2317.91885815873,
+      "required_cache_TBps_for_24ms": 97.35259204266667
+    },
+    {
+      "splits": 4,
+      "k_per_split": 1024,
+      "stored_matrices_optimistic": 25,
+      "storage_TiB": 1.5625,
+      "minimum_write_read_TiB": 3.125,
+      "dram_floor_ms": 3408.704203174603,
+      "required_cache_TBps_for_24ms": 143.16557653333334
+    },
+    {
+      "splits": 8,
+      "k_per_split": 512,
+      "stored_matrices_optimistic": 29,
+      "storage_TiB": 1.8125,
+      "minimum_write_read_TiB": 3.625,
+      "dram_floor_ms": 3954.0968756825396,
+      "required_cache_TBps_for_24ms": 166.07206877866665
+    },
+    {
+      "splits": 16,
+      "k_per_split": 256,
+      "stored_matrices_optimistic": 31,
+      "storage_TiB": 1.9375,
+      "minimum_write_read_TiB": 3.875,
+      "dram_floor_ms": 4226.793211936508,
+      "required_cache_TBps_for_24ms": 177.52531490133333
+    },
+    {
+      "splits": 32,
+      "k_per_split": 128,
+      "stored_matrices_optimistic": 32,
+      "storage_TiB": 2.0,
+      "minimum_write_read_TiB": 4.0,
+      "dram_floor_ms": 4363.141380063493,
+      "required_cache_TBps_for_24ms": 183.25193796266666
+    }
+  ],
+  "launch_sensitivity": [
+    {
+      "extra_launches_per_region": 1,
+      "regions": 256,
+      "launch_us": 3,
+      "unhidden_full_grid_ms": 0.768
+    },
+    {
+      "extra_launches_per_region": 1,
+      "regions": 256,
+      "launch_us": 5,
+      "unhidden_full_grid_ms": 1.28
+    },
+    {
+      "extra_launches_per_region": 1,
+      "regions": 256,
+      "launch_us": 10,
+      "unhidden_full_grid_ms": 2.56
+    },
+    {
+      "extra_launches_per_region": 1,
+      "regions": 256,
+      "launch_us": 20,
+      "unhidden_full_grid_ms": 5.12
+    },
+    {
+      "extra_launches_per_region": 2,
+      "regions": 256,
+      "launch_us": 3,
+      "unhidden_full_grid_ms": 1.536
+    },
+    {
+      "extra_launches_per_region": 2,
+      "regions": 256,
+      "launch_us": 5,
+      "unhidden_full_grid_ms": 2.56
+    },
+    {
+      "extra_launches_per_region": 2,
+      "regions": 256,
+      "launch_us": 10,
+      "unhidden_full_grid_ms": 5.12
+    },
+    {
+      "extra_launches_per_region": 2,
+      "regions": 256,
+      "launch_us": 20,
+      "unhidden_full_grid_ms": 10.24
+    }
+  ],
+  "cache_batch_example": {
+    "assumed_available_MiB": 48,
+    "partial_MiB_per_CTA": 6.0,
+    "CTAs_fitting": 8,
+    "partial_MiB_for_128_CTAs": 768.0
+  },
+  "issue": {
+    "0": {
+      "launches": 3,
+      "executed_warp_imma_per_launch": 67633152.0,
+      "useful_equivalent_imma": 67108864,
+      "padding_fraction": 0.0078125,
+      "kernel_ms": 1.0402453333333335,
+      "imma_Ginst_per_sec": 65.01653968807358,
+      "gpc_elapsed_cycles": 2756506.5433333335,
+      "effective_gpc_GHz": 2.6498619652543502,
+      "estimated_imma_per_SM_elapsed_cycle": 0.19168610402101433,
+      "estimated_imma_per_SMSP_elapsed_cycle": 0.04792152600525358,
+      "estimated_SMSP_cycles_per_imma": 20.867449001736112,
+      "estimated_fraction_dense_issue_roof": 0.7667444160840573,
+      "theoretical_roof_assumption": "0.25 warp m16n8k32 per SM cycle =1024 INT8 MAC/SM/cycle",
+      "useful_kernel_TMAC_sec": 264.2433454262071,
+      "warp_imma_share_of_instructions": 0.22652274063089609,
+      "tensor_active_pct": 78.75
+    },
+    "1": {
+      "launches": 3,
+      "executed_warp_imma_per_launch": 67633152.0,
+      "useful_equivalent_imma": 67108864,
+      "padding_fraction": 0.0078125,
+      "kernel_ms": 0.9556053333333334,
+      "imma_Ginst_per_sec": 70.77519310621958,
+      "gpc_elapsed_cycles": 2561306.85,
+      "effective_gpc_GHz": 2.680297776348395,
+      "estimated_imma_per_SM_elapsed_cycle": 0.20629468897879222,
+      "estimated_imma_per_SMSP_elapsed_cycle": 0.051573672244698054,
+      "estimated_SMSP_cycles_per_imma": 19.389738144985465,
+      "estimated_fraction_dense_issue_roof": 0.8251787559151689,
+      "theoretical_roof_assumption": "0.25 warp m16n8k32 per SM cycle =1024 INT8 MAC/SM/cycle",
+      "useful_kernel_TMAC_sec": 287.64794142072594,
+      "warp_imma_share_of_instructions": 0.3163422922459067,
+      "tensor_active_pct": 84.79333333333334
+    },
+    "4": {
+      "launches": 3,
+      "executed_warp_imma_per_launch": 67633152.0,
+      "useful_equivalent_imma": 67108864,
+      "padding_fraction": 0.0078125,
+      "kernel_ms": 1.049344,
+      "imma_Ginst_per_sec": 64.45279336423518,
+      "gpc_elapsed_cycles": 2779387.94,
+      "effective_gpc_GHz": 2.6486909345267136,
+      "estimated_imma_per_SM_elapsed_cycle": 0.19010804227638695,
+      "estimated_imma_per_SMSP_elapsed_cycle": 0.047527010569096736,
+      "estimated_SMSP_cycles_per_imma": 21.040666939195734,
+      "estimated_fraction_dense_issue_roof": 0.7604321691055478,
+      "theoretical_roof_assumption": "0.25 warp m16n8k32 per SM cycle =1024 INT8 MAC/SM/cycle",
+      "useful_kernel_TMAC_sec": 261.95214052207854,
+      "warp_imma_share_of_instructions": 0.2256989339631225,
+      "tensor_active_pct": 78.11666666666666
+    }
+  },
+  "notes": [
+    "Global partial materialization only; floors exclude producer compute, prefix additional traffic, final writes, launch, and synchronization.",
+    "Non-first partitions cannot combine local XOR with an offset XOR because integer addition carries. Need full local cumulative matrices, recomputation, or a fused on-chip alternative.",
+    "Launch times are sensitivity assumptions, not measured empty-kernel latency; host overhead may overlap GPU execution.",
+    "Cycle-normalized issue uses gpc cycles proxy. A direct sm__cycles_elapsed.sum capture is needed for exact SM-cycle normalization.",
+    "Dense roof is a stated architectural scenario, not a measured sustained roof. Old roof microbenchmark had different conditions.",
+    "Within-CTA split-K/shared partials are a separate mapping experiment; DRAM floors do not rule them out."
+  ]
+}

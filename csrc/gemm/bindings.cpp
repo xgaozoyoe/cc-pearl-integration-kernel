@@ -486,7 +486,7 @@ std::vector<at::Tensor> setup_job(at::Tensor key,
       A_root.data_ptr<uint8_t>(), B_root.data_ptr<uint8_t>(),
       key.data_ptr<uint8_t>(),
       noise_seed_A.data_ptr<uint8_t>(), noise_seed_B.data_ptr<uint8_t>(),
-      dprops, stream);
+      dprops, stream, M, N);
 
   return {A, B, noise_seed_A, noise_seed_B};
 }

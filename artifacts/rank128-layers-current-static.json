@@ -1,0 +1,68 @@
+{
+  "registers": {
+    "IMMA": 64,
+    "LDSM": 6,
+    "LDGSTS": 2,
+    "LDL": 0,
+    "STL": 0,
+    "BAR.SYNC": 2,
+    "DEPBAR": 1,
+    "IMMA_first_last": [
+      "0d00",
+      "1120"
+    ]
+  },
+  "shared": {
+    "IMMA": 64,
+    "LDSM": 16,
+    "LDGSTS": 2,
+    "LDL": 0,
+    "STL": 0,
+    "BAR.SYNC": 2,
+    "DEPBAR": 1,
+    "IMMA_first_last": [
+      "0d30",
+      "13a0"
+    ]
+  },
+  "shared_sync": {
+    "IMMA": 64,
+    "LDSM": 16,
+    "LDGSTS": 2,
+    "LDL": 0,
+    "STL": 0,
+    "BAR.SYNC": 3,
+    "DEPBAR": 1,
+    "IMMA_first_last": [
+      "0d40",
+      "13b0"
+    ]
+  },
+  "global": {
+    "IMMA": 64,
+    "LDSM": 16,
+    "LDGSTS": 4,
+    "LDL": 0,
+    "STL": 0,
+    "BAR.SYNC": 2,
+    "DEPBAR": 1,
+    "IMMA_first_last": [
+      "10f0",
+      "1780"
+    ]
+  },
+  "full": {
+    "IMMA": 64,
+    "LDSM": 16,
+    "LDGSTS": 4,
+    "LDL": 0,
+    "STL": 0,
+    "BAR.SYNC": 2,
+    "DEPBAR": 1,
+    "IMMA_first_last": [
+      "10e0",
+      "1770"
+    ]
+  },
+  "full_matches_measured_baseline": true
+}

@@ -1,0 +1,28 @@
+Capture: /tmp/pearl-dependency-wait.wghnHM
+All captured input hashes match; 3 profiled launches/variant, each 67,633,152 IMMA.
+
+Variant     kernel_ms  Tensor%  shortSB%  mathThrottle%  IMMA/SMcycle  gain_vs_ABzero%
+baseline    1.032256   78.750   7.337     45.397       0.191627514   -1.039
+ab_zero     0.998293   79.500   7.207     45.850       0.193639865   +0.000
+ab_wait2    0.996128   79.673   5.043     48.050       0.194042816   +0.208
+ab_wait3    0.995648   79.730   4.310     48.503       0.194167299   +0.272
+
+AB-zero -> 3 waits relocated: short scoreboard decreases ~40%; per-cycle IMMA throughput increases only ~0.27%.
+Selected short-scoreboard PC samples, summed across 3 launches (not time fractions):
+PC          AB-zero    wait3
+0x11a0        10932        0
+0x11e0            0     1418
+0x1250         9395        0
+0x1290            0        1
+0x1310         6836        0
+0x1420            0        0
+
+Interpretation: targeted waits were successfully hidden, with limited residual waiting at new locations.
+A large reduction in this warp stall metric does not imply a similar wall-time reduction.
+Higher math throttle is consistent with ready IMMA work encountering issue/pipeline backpressure; it does not prove its root cause.
+Eligible warps/scheduler remains rounded to 0.33; issued warps/cycle remains rounded to 0.22.
+All L2 bytes/useful MMA remain ~37.759. No work-count or operand-reuse change explains the result.
+Only three B windows were tested. Other LDSM waits, fixed scheduling stalls and IMMA issue cadence remain unresolved.
+Next investigative priority: map remaining wait sites (10e0,1500) and hot IMMA sequences (1210,1500,1580), separating encoded stalls from operand waits and math-pipe backpressure.
+Do not remove fixed stalls indiscriminately: that can violate C accumulator dependencies.
+No production change justified by this result; all AB-zero variants intentionally compute invalid Pearl transcripts.

@@ -1,0 +1,23 @@
+{
+  "description": "Correctness candidate: replace paired named-barrier handoff with one full CTA barrier either at the original end-of-iteration location or at early publication after cp.wait and final LDSM completion. No code motion, no cp.async changes.",
+  "variants": {
+    "native": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "104c0c1b265260dea5c9ab0bb174ebbbe7ee9cceb0cf0acebf2a9d1dfa4d50aa",
+      "smem": 69632,
+      "correct": true
+    },
+    "late_cta": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "7e9049cd0457fc86e22563ad326754e9dbacc4ed4f5fe087056492531aed2f9f",
+      "smem": 69632,
+      "correct": true
+    },
+    "early_cta": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "3bc7c0dbcdfa0b3f4c69ae618e09ca874a40244461c9ebebe355dc0e73e1879a",
+      "smem": 69632,
+      "correct": true
+    }
+  }
+}

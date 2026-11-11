@@ -1,0 +1,58 @@
+--- current A-stream
++++ split8
+@@ -127,6 +127,7 @@
+     // Native MMA lane ownership: row=lane/4 (+8 for c2,c3),
+     // column=2*(lane%4) (+1 for c1,c3). Two halves form a16x16 tile.
+     unsigned c[4][Groups][2][4]={};
++    unsigned pending_x=0;
+     Fragment ar[4], br[Lead+1];
+     #pragma unroll
+     for(int p=0;p<Stages-1;++p)
+@@ -184,6 +185,38 @@
+                     if(slice+1<TileK/32 && (TileK==64 || kt*TileK+(slice+1)*32<k) && group==Groups-1 && half==1)
+                         ar[row]=nextA;
+                 }
++                // In the last K32 slice, groups0/1 are complete before groups2/3.
++                if(slice==1 && (kt+1)%2==0 && group>=2) {
++                    int tile=(group-2)*4+row;
++if(tile>0) {
++{
++ unsigned reduced=__reduce_xor_sync(0xffffffffu,pending_x);
++ if(lane==0) {
++ int rb=(kt+1)/2-1;
++ int idx=((wm*4+((tile-1)%4))*(BN/16)+wn*Groups+((tile-1)/4))*16+rb%16;
++ if(rb<16)transcript[idx]=reduced;
++ else { unsigned prev=transcript[idx];transcript[idx]=((prev<<13)|(prev>>19))^reduced; }
++ }
++ }
++}
++unsigned x=0;
++ #pragma unroll
++ for(int h=0;h<2;++h)
++ #pragma unroll
++ for(int v=0;v<4;++v)x^=c[tile%4][tile/4][h][v];
++pending_x=x;
++if(tile==7) {
++{
++ unsigned reduced=__reduce_xor_sync(0xffffffffu,pending_x);
++ if(lane==0) {
++ int rb=(kt+1)/2-1;
++ int idx=((wm*4+(3))*(BN/16)+wn*Groups+(1))*16+rb%16;
++ if(rb<16)transcript[idx]=reduced;
++ else { unsigned prev=transcript[idx];transcript[idx]=((prev<<13)|(prev>>19))^reduced; }
++ }
++ }
++}
++                }
+             }
+             if constexpr(TileK!=64) {
+         if(group==Groups-1 && (kt*TileK+(slice+1)*32)%128==0) {
+@@ -216,7 +249,7 @@
+             #pragma unroll
+             for(int row=0;row<4;++row) {
+                 #pragma unroll
+-                for(int group=0;group<Groups;++group) {
++                for(int group=2;group<Groups;++group) {
+                     unsigned x=0;
+                     #pragma unroll
+                     for(int half=0;half<2;++half) {

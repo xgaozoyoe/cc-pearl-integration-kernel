@@ -1,0 +1,139 @@
+{
+  "baseline_sass_identical_to_frozen_v121": true,
+  "baseline_instructions": 740,
+  "baseline": {
+    "instruction_count": 740,
+    "imma_static": 64,
+    "ldsm_static": 16,
+    "spill_load_static": 0,
+    "spill_store_static": 0,
+    "handoff_and_async": [
+      [
+        "0790",
+        "LDGSTS.E.BYPASS.128 [R7], [R4.64], !P1 ;"
+      ],
+      [
+        "0940",
+        "LDGSTS.E.BYPASS.128 [R7+0x8000], [R4.64], !P0 ;"
+      ],
+      [
+        "0980",
+        "LDGDEPBAR ;"
+      ],
+      [
+        "0dc0",
+        "DEPBAR.LE SB0, 0x0 ;"
+      ],
+      [
+        "0de0",
+        "BAR.SYNC.DEFER_BLOCKING 0x0 ;"
+      ],
+      [
+        "1000",
+        "LDGSTS.E.BYPASS.128 [R51], [R48.64], !P1 ;"
+      ],
+      [
+        "11f0",
+        "LDGSTS.E.BYPASS.128 [R51+0x8000], [R48.64], !P0 ;"
+      ],
+      [
+        "1230",
+        "LDGDEPBAR ;"
+      ],
+      [
+        "21f0",
+        "BAR.SYNC.DEFER_BLOCKING 0x0 ;"
+      ]
+    ]
+  },
+  "WS1": {
+    "instruction_count": 922,
+    "imma_static": 64,
+    "ldsm_static": 16,
+    "spill_load_static": 87,
+    "spill_store_static": 84,
+    "handoff_and_async": [
+      [
+        "0c30",
+        "BAR.SYNC.DEFER_BLOCKING R106, 0x1a0 ;"
+      ],
+      [
+        "2710",
+        "BAR.ARV R104, 0x1a0 ;"
+      ],
+      [
+        "2820",
+        "@P0 BAR.SYNC.DEFER_BLOCKING R2, 0x1a0 ;"
+      ],
+      [
+        "29c0",
+        "LDGSTS.E.BYPASS.128 [R7], [R2.64], !P1 ;"
+      ],
+      [
+        "2ba0",
+        "LDGSTS.E.BYPASS.128 [R9+0x8000], [R2.64], !P0 ;"
+      ],
+      [
+        "2bf0",
+        "LDGDEPBAR ;"
+      ],
+      [
+        "2c30",
+        "DEPBAR.LE SB0, 0x0 ;"
+      ],
+      [
+        "2c50",
+        "BAR.ARV R2, 0x1a0 ;"
+      ],
+      [
+        "2c90",
+        "BAR.SYNC.DEFER_BLOCKING 0x0 ;"
+      ]
+    ]
+  },
+  "WS2": {
+    "instruction_count": 922,
+    "imma_static": 64,
+    "ldsm_static": 16,
+    "spill_load_static": 87,
+    "spill_store_static": 84,
+    "handoff_and_async": [
+      [
+        "0c30",
+        "BAR.SYNC.DEFER_BLOCKING R106, 0x1c0 ;"
+      ],
+      [
+        "2710",
+        "BAR.ARV R104, 0x1c0 ;"
+      ],
+      [
+        "2820",
+        "@P0 BAR.SYNC.DEFER_BLOCKING R2, 0x1c0 ;"
+      ],
+      [
+        "29c0",
+        "LDGSTS.E.BYPASS.128 [R7], [R2.64], !P1 ;"
+      ],
+      [
+        "2ba0",
+        "LDGSTS.E.BYPASS.128 [R9+0x8000], [R2.64], !P0 ;"
+      ],
+      [
+        "2bf0",
+        "LDGDEPBAR ;"
+      ],
+      [
+        "2c30",
+        "DEPBAR.LE SB0, 0x0 ;"
+      ],
+      [
+        "2c50",
+        "BAR.ARV R2, 0x1c0 ;"
+      ],
+      [
+        "2c90",
+        "BAR.SYNC.DEFER_BLOCKING 0x0 ;"
+      ]
+    ]
+  }
+}

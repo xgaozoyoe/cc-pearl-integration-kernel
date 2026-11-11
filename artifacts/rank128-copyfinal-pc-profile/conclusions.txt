@@ -1,0 +1,27 @@
+Latest capture /tmp/pearl-copyfinal-stalls.KG431m, original accepted R128 vs copywalk-fulla R128, physicalGPU0,2026-10-08.3profiled8192x8192/K4096 main GEMM+transcript launches pervariant after32warmups. Offline, noPoW or full-grid setup included in these kernel timings. NsightCompute application replay12passes. Variant names confirmed in logs.
+
+Metric                            Original       Copywalk-fulla
+Kernel ms                         1.126848       1.058219
+IMMA active-cycle utilization%   72.010         77.197
+L2 throughput utilization%       42.793         45.757
+L2 bytes/useful MMA              37.7589997     37.7595498
+Barrier stall%                   14.950         13.020
+Long scoreboard%                  2.703          3.780
+Short scoreboard%                 6.750          6.760
+Math-pipe throttle%              40.157         45.637
+Eligiblewarps/scheduler            0.36           0.32
+Activewarps/scheduler              3.00           3.00
+Issuedwarps/cycle                  0.25           0.21
+Kernel duration-6.090%, work/time+6.485%. L2 bytes unchanged within0.0015%; improvement is not increased operand reuse or less L2 traffic. Active warps unchanged. Reduced issued-warp rate alongside faster IMMA work is consistent with elimination of non-MMA instructions.
+These active-cycle IMMA percentages must NOT be directly compared with NsightSystems elapsed Tensor Active(64.15->68.30%,Peak97.4%). Different tools/denominators/workload scope.
+
+PC localization (fractions are of each stall-reason's samples, not of total kernel time):
+New barrier98.32% at0xd10 near main-loop DEPBAR0xc30/BAR.SYNC0xc40;1.68% near exit0x2a20. Still dominated by main stage handoff, not transcript output.
+New long-scoreboard:38.50% at0xf50 IADD3 R141,R141,0x1800;23.91% at0xee0 same shared-address advance;26.57% at0xfe0 LOP3 overwriting R97 shortly after global-copy source pointer R96.64 was used.9.51% atBAR.SYNC0xc40.
+At0xf10 LDGSTS consumes shared addressR141;0xf50 updates R141 before nextLDGSTS0xf70. This is a concrete candidate for source/address register-reuse dependency investigation, not proof that address arithmetic itself has global-memory latency. PC samples can appear downstream of initiating instructions.
+New short-scoreboard76.72% atIMMA instructions;hot consumers0x1110,0x11c0,0x1520 together49.95% of this reason. Consistent with operand-ready dependencies; exact triggering operand needs controlled follow-up/SASS dependency inspection.
+New math-throttle98.46% atIMMA, hotspots0x1520,0x15c0,0x1620,0x1180,0x1110. Increased share while kernel improves is not evidence the optimization regressed; Tensor pipeline pressure becomes more visible. Do not interpret45.64% as45.64% recoverable runtime.
+Sampled fixed-latency wait fraction20.70%->14.61% (sampling column,not an additive runtime decomposition).
+
+Next targeted experiment: keep A shared destination base invariant and encode0/6144/12288 as PTX address immediates, avoiding in-place R141 advances between cp.async instructions. Also inspect source pointer register reuse if address-only change helps. Require zero spills, bit-exact transcript/digest, same copy bytes/MMA count, and matched full-grid benchmarks. The expected benefit is not inferred by adding stall percentages. Current3-stage and coarser overlap tests did not give large gains; do not repeat them without new evidence.
+Production/candidate libraries and liveGPU1/GPU2 processes were not modified in this analysis. Reports and compact top-PC summaries preserved here.

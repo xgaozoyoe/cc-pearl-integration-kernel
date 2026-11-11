@@ -1,0 +1,20 @@
+Fastest-native fixed-SASS nonzero diagnostic. Incorrect Pearl arithmetic except native.
+B input uses currentlyrequired A fragment:half0=Aregisters0,1;half1=Aregisters2,3.
+B data is derived from real random matrix data, not constantzero. No new instructions/registers/initialization.
+Original Bglobalcopy/LDSM traffic and all64MMA sites preserved; Caccumulation remains real and nonzero.
+Only a_as_b_release moves3Bwaits after independent IMMA; completion still enforced before reuse.
+Source oracle compiled independently with equivalent A-derived Bsemantics; oracle is NOT timed.
+This removes additional Bload dependency conditional on Aready. It also changes operand correlation/register-file reads.
+Does not model a real prefetchedB optimization. Fixed clock counters still needed to isolate DVFS.
+
+UNLOCKED region events:200samples/variant,16launches/sample,10rotating blocks. ms,notfullgrid.
+native {"samples": 200, "mean_ms": 1.022291318178177, "median_ms": 1.0169600248336792, "p95_ms": 1.054860270023346}
+block-end SMclock min/max 2415/2625MHz;not timeaveraged.
+a_as_b {"samples": 200, "mean_ms": 1.0170053297281265, "median_ms": 1.0116530060768127, "p95_ms": 1.0350170195102693}
+block-end SMclock min/max 2400/2550MHz;not timeaveraged.
+a_as_b_release {"samples": 200, "mean_ms": 1.0103500792384148, "median_ms": 1.0084800124168396, "p95_ms": 1.0399334847927093}
+block-end SMclock min/max 2385/2670MHz;not timeaveraged.
+native->a_as_b:time -0.517%
+a_as_b->a_as_b_release:time -0.654%
+
+Validation:36edge comparisons PASS (native vs acceptedPearl, diagnostics vs independentlycompiled modified-semantics oracle). All3large8192x8192 outputs compared before timing. Oracle outputs have nonzero transcript words. a_as_b_release memcheck0errors,racecheck0hazards/0errors/0warnings. Production and accepted reference SHA256 unchanged.

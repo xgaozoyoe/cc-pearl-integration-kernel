@@ -1,0 +1,98 @@
+[
+  {
+    "variant": 0,
+    "m": 32,
+    "n": 48,
+    "seed": 42,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "variant": 1,
+    "m": 32,
+    "n": 48,
+    "seed": 42,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "variant": 0,
+    "m": 32,
+    "n": 48,
+    "seed": 1234,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "variant": 1,
+    "m": 32,
+    "n": 48,
+    "seed": 1234,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "variant": 0,
+    "m": 256,
+    "n": 384,
+    "seed": 42,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "variant": 1,
+    "m": 256,
+    "n": 384,
+    "seed": 42,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "variant": 0,
+    "m": 256,
+    "n": 384,
+    "seed": 1234,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "variant": 1,
+    "m": 256,
+    "n": 384,
+    "seed": 1234,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "variant": 0,
+    "m": 8192,
+    "n": 8192,
+    "seed": 42,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "variant": 1,
+    "m": 8192,
+    "n": 8192,
+    "seed": 42,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "variant": 0,
+    "m": 8192,
+    "n": 8192,
+    "seed": 1234,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "variant": 1,
+    "m": 8192,
+    "n": 8192,
+    "seed": 1234,
+    "transcript_pass": true,
+    "digest_pass": true
+  }
+]

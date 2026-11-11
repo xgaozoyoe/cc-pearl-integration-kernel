@@ -1,0 +1,29 @@
+--- region_deferred
++++ compact_poll
+@@ -1,6 +1,6 @@
+ #include <cuda_runtime.h>
+ #include <cstdint>
+-namespace region_free_region_deferred {
++namespace region_compact_compact_poll {
+ constexpr int BM=256, BN=192, THREADS=384;
+ constexpr int WORDS=(BM/16)*(BN/16)*16;
+ struct Fragment { unsigned v[4]; };
+@@ -54,10 +54,14 @@
+           "r"(b.v[Packed?2*half:half]),"r"(b.v[Packed?2*half+1:half+2]));
+ }
+ __device__ __forceinline__ void rf_wait(unsigned bar,unsigned parity) {
+- unsigned done;
+- do {
+-  asm volatile("{ .reg .pred p; mbarrier.test_wait.parity.shared.b64 p,[%1],%2; selp.u32 %0,1,0,p; }" : "=r"(done) : "r"(bar),"r"(parity) : "memory");
+- } while(!done);
++ // Every participating warp is full and all lanes use the same region/phase.
++ // All lanes still execute test_wait. Vote makes the loop exit uniform.
++ asm volatile("{ .reg .pred p,all_done;\n"
++              "region_poll:\n"
++              "mbarrier.test_wait.parity.shared.b64 p,[%0],%1;\n"
++              "vote.sync.all.pred all_done,p,0xffffffff;\n"
++              "@!all_done bra.uni region_poll;\n}"
++              :: "r"(bar),"r"(parity) : "memory");
+ }
+ __device__ __forceinline__ void rf_ready(unsigned bar) {
+  // One asynchronous arrival per thread, count384; no extra normal arrival.

@@ -1,0 +1,18 @@
+[
+  {
+    "name": "prep_wait",
+    "m": 512,
+    "n": 800,
+    "seed": 9876,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "redux_wait",
+    "m": 512,
+    "n": 800,
+    "seed": 9876,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  }
+]

@@ -1,0 +1,62 @@
+Matched copy/wait Nsight analysis, 2026-10-09
+Capture:/tmp/pearl-handoff-control.K6Oouz,16:27 local time.
+Preserved:artifacts/rank128-handoff-control-profile (raw reports and CSVs).
+Input library/source SHA256 both match the benchmark artifacts.
+GPU0 only,256x192CTA,12warps/CTA,168registers,69632Bshared,zero spill.
+Three launches/variant. No new changes to production or experimental kernels.
+
+Variant      kernel ms  Tensor%  L2 B/usefulMMA  barrier%  longSB% shortSB% math%
+Baseline     1.033909   78.7567  37.75984        12.7900   2.8900  7.3367  45.39
+Late copy    1.132661   70.4867  37.76046        14.0300  11.0300  6.1900  42.69
+Early wait   1.040235   78.2333  37.75836        11.1033   2.8967  7.1100  47.28
+Tensor metric:sm__pipe_tensor_op_imma_cycles_active_v2.avg.pct_of_peak_sustained_active.
+Do not compare it directly against Nsys elapsed Tensor Active on PeakMiner.
+
+Direct elapsed-cycle normalization (not earlier GPC-cycle proxy):
+All nine launches execute EXACTLY67633152 tensor instructions,matchingSASS.
+               IMMA/SM elapsed cycle    elapsed cycles/IMMA/SMSP
+Baseline       0.191708                  20.8651
+Late copy      0.171767                  23.2873
+Early wait     0.190484                  20.9991
+These are aggregate throughput measures,not latency per individual MMA.
+Eligible warps/scheduler:0.32/0.30/0.33;issued warps/cycle:0.22/0.20/0.22.
+Resident active warps/scheduler:3.0 for all variants.
+
+Instruction attribution:
+1. Latecopy:94.63% of its long-scoreboard samples at0xb00,immediately
+   following DEPBAR.LE SB0,0 at0xaf0. Long-SB rises2.89->11.03%,while
+   L2bytes/usefulMMA stays constant. This strongly supports exposed
+   asynchronous-copy completion waiting when per-warp lookahead is removed.
+   It does not imply all inter-warp overlap vanished.
+2. Baseline:long-SB hotspots0xfd0(46.16%) and0xf50(34.41%) are address
+   updates shortly after LDGSTS uses those registers. Combined80.57% of
+   long-SB samples. Static dataflow suggests address-register reuse/WAR
+   constraints; PC samples alone cannot prove the exact scoreboard cause.
+   Only12.47% of baseline long-SB samples are at0xc40 following the main
+   DEPBAR at0xc30. This is not evidence of a dominant unhidden end-of-copy wait.
+3. Earlywait:barrier decreases12.79->11.10,but math throttle rises45.39->47.28.
+   At the matching IMMA R36,R100,R152,R36,baselinePC0x1680 has2183math samples;
+   earlywaitPC0x1690 afterDEPBAR0x1680 has37426. Neither has long-SB samples.
+   Repositioning the wait changes scheduling/where samples accumulate;
+   it does not increase actual IMMA throughput or improve measured timing.
+4. Main-loop handoff still accounts for98.32%/98.56%/98.28% of barrier
+   samples. Transcript epilogue is the remaining small fraction.
+
+Interpretation:
+Current lookahead already hides substantial transfer latency. Moving wait
+alone is not productive. The next narrow question is overhead inside the
+copy-issue/address section,not blindly adding another wait/prefetch stage.
+Its baseline long-SB category is only2.89%;do not promise it explains the
+whole gap to another miner or translate those samples into recoverable ms.
+Further optimization must preserve operand reuse and confirm real SASS
+changes,especially since previous bundled-address rewrites did not win.
+
+Limitations:PC sampling may attribute a stall after the blocking instruction;
+shares are within each sample category,not wall-time fractions. Counter
+capture clocks were not locked. Kernel profiling times are not full-grid
+wall time and not pool TH/s. Prior independent60-grid measurements remain
+baseline308.145ms,latecopy332.893ms,earlywait309.183ms. No new speedup claimed.
+
+Reproduce hotspot analysis:tools/analyze_handoff_capture.py
+Raw metric analysis:tools/analyze_ada_ws.py;tools/analyze_imma_issue.py
+Capture input hashes verified. No live workers or production libraries changed.

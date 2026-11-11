@@ -135,7 +135,7 @@ P40_API int p40_setup_job(void* A, void* B, void* Bt, const void* key,
   tensor_hash((const uint8_t*)Bt, (uint32_t)((int64_t)N * K), B_root,
               (const uint8_t*)key, nbB, tpb, 2, 512, scratch, prop, s);
   commitment_hash_from_merkle_roots(A_root, B_root, (const uint8_t*)key,
-                                     (uint8_t*)nsA, (uint8_t*)nsB, prop, s);
+                                     (uint8_t*)nsA, (uint8_t*)nsB, prop, s, M, N);
   cudaError_t e = cudaGetLastError();
   cudaFree(A_root);
   cudaFree(B_root);

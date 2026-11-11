@@ -1,0 +1,10 @@
+--- validated-transcript_handoff_overlap
++++ sleep128
+@@ -118,6 +118,7 @@
+     do {
+         asm volatile("{ .reg .pred p; mbarrier.test_wait.parity.shared.b64 p, [%1], %2; selp.u32 %0, 1, 0, p; }"
+                      : "=r"(done) : "r"(bar),"r"(phase) : "memory");
++        if(!done) __nanosleep(128);
+     } while(!done);
+ }
+ template<int Lead,int TileK=64,bool Planar=false,bool PackedB=false,bool UnrollCopy=false,bool FixedCopy=false,int Stages=2,bool Wide=false,int Layout=0>

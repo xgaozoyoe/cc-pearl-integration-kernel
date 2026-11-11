@@ -1,0 +1,44 @@
+SM89 symmetric split named-barrier experiment (GPU0, offline only)
+
+Fixed: CTA256x192, K64,2stages,384threads,12warps,warp64x64,
+64 static IMMA and16 LDSM per K64, K4096/R128 transcript, input/layout unchanged.
+All12 warps retain their original MMA outputs. No producer-only warps.
+
+Groups: A=warps0..5, B=warps6..11.
+K-even: A receives barrier1 / signals2; B receives2 / signals1.
+K-odd:  A receives barrier3 / signals4; B receives4 / signals3.
+Expected count384 on each barrier:192 peer arrivals +192 local sync arrivals.
+Each thread executes exactly one instruction on each active barrier per iteration.
+
+Steady state overlap:
+ A: issue future copy -> current MMA -> cp.wait0 -> arrive B -> fold -> sync A
+ B: issue future copy -> current MMA -> cp.wait0 -> arrive A -> fold -> sync B
+Late control moves cp.wait0+arrive to AFTER fold. The own sync stays at loop end.
+
+Safety:
+- cp.wait0 completes this thread's copies before arrival; current shared operand
+  reads precede arrival. Receiver sync acquires all peer arrivals and own arrivals.
+- Own group's sync waits for all own threads, so no own read is outstanding.
+- The peer need not finish transcript: transcript uses registers and disjoint
+  shared transcript slots, not the recycled shared A/B operand stage.
+- Final CTA barrier still protects cross-warp transcript output.
+- Alternating TWO PAIRS of barriers is essential: a fast group could otherwise
+  arrive into the peer's previous unreset barrier a second time.
+  Before group A can reuse a pair at K+2, it must complete own sync at K+1;
+  that needs group B's arrival at K+1, which is after B's own sync at K.
+  Therefore B's receiving barrier from K has reset before A reuses it at K+2.
+- No mbarrier, shared readiness polling, sleep, TMA or SM90-only instruction
+  is used by the named variants.
+
+Limits:
+This overlaps inter-warp handoff with transcript but still completes local copies
+before publishing arrival. It does not overlap local cp.wait0 with transcript.
+Additional barrier issue and ID arithmetic can erase the benefit.
+Register167 vs baseline168 rounds to the same allocation class; residency1CTA/SM.
+
+SASS overlap: DEPBAR1690, BAR.ARV1800, firstREDUX1970, receiveBAR2a60.
+SASS late: firstREDUX1910, DEPBAR2a00, BAR.ARV2a70, receiveBAR2a80.
+Thus arrival actually precedes fold in the generated overlap binary.
+
+Reference: NVIDIA PTX named-barrier semantics and restriction on multiple arrivals:
+https://docs.nvidia.com/cuda/archive/12.0.1/parallel-thread-execution/index.html

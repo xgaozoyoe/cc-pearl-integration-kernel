@@ -1,0 +1,52 @@
+[
+  {
+    "variant": 0,
+    "seed": 42,
+    "pass_bit_exact": true
+  },
+  {
+    "variant": 1,
+    "seed": 42,
+    "pass_bit_exact": true
+  },
+  {
+    "variant": 2,
+    "seed": 42,
+    "pass_bit_exact": true
+  },
+  {
+    "variant": 3,
+    "seed": 42,
+    "pass_bit_exact": true
+  },
+  {
+    "variant": 4,
+    "seed": 42,
+    "pass_bit_exact": true
+  },
+  {
+    "variant": 0,
+    "seed": 1234,
+    "pass_bit_exact": true
+  },
+  {
+    "variant": 1,
+    "seed": 1234,
+    "pass_bit_exact": true
+  },
+  {
+    "variant": 2,
+    "seed": 1234,
+    "pass_bit_exact": true
+  },
+  {
+    "variant": 3,
+    "seed": 1234,
+    "pass_bit_exact": true
+  },
+  {
+    "variant": 4,
+    "seed": 1234,
+    "pass_bit_exact": true
+  }
+]

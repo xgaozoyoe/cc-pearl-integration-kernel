@@ -1,0 +1,30 @@
+Real-B scheduling experiment (GPU0 only)
+8192x8192 K4096 region; CUDA events exclude setup/PoW. Clocks unlocked; no fixed-clock attribution.
+
+realb
+variant samples mean_ms median_ms p95_ms time_vs_control
+control 240 1.073379 1.071072 1.099836 +0.000%
+early 240 1.071622 1.073740 1.093507 -0.164%
+two_ahead 240 1.080032 1.079264 1.099317 +0.620%
+compact 240 1.074763 1.072926 1.088156 +0.129%
+resources: {"0": [168, 384, 69632, 1, 0], "1": [168, 384, 69632, 1, 0], "2": [168, 384, 69632, 1, 0], "3": [168, 384, 69632, 1, 0]}
+pairb
+variant samples mean_ms median_ms p95_ms time_vs_control
+control 240 1.075585 1.073790 1.096864 +0.000%
+paired 240 1.141553 1.143424 1.157763 +6.133%
+paired block 0: +6.379% time
+paired block 1: +5.314% time
+paired block 2: +6.670% time
+paired block 3: +6.451% time
+paired block 4: +6.705% time
+paired block 5: +5.275% time
+resources: {"0": [168, 384, 69632, 1, 0], "1": [168, 384, 69632, 1, 40]}
+
+Findings:
+- early is byte-for-byte identical SASS to control, including instruction control encoding.
+- two_ahead/compact do not move the three immediate first-half B load-consumer edges.
+- paired changes real B use order and increases some load-to-use distances, but introduces40B stack,40B spill stores,48B spill loads (ptxas static counts, not runtime traffic).
+- All kernels retain64 static IMMA and16 LDSM. Control matches validated lean-toggle SASS.
+- Transcript and PoW digest match reference for full8192 region and edge shapes; racecheck/memcheck/synccheck pass on edge suite.
+- No production replacement. Negative timing does not prove real B prefetch intrinsically ineffective; compiler scheduling and spill costs are confounders.
+- Fixed-base-clock optional profile: sudo bash tools/profile_handoff_pairb.sh

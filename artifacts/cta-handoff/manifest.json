@@ -1,0 +1,17 @@
+{
+  "description": "Correctness candidate: replace paired named-barrier handoff with one full CTA barrier at the same end-of-iteration location. No code motion, no cp.async changes.",
+  "variants": {
+    "native": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "104c0c1b265260dea5c9ab0bb174ebbbe7ee9cceb0cf0acebf2a9d1dfa4d50aa",
+      "smem": 69632,
+      "correct": true
+    },
+    "cta_sync": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "7e9049cd0457fc86e22563ad326754e9dbacc4ed4f5fe087056492531aed2f9f",
+      "smem": 69632,
+      "correct": true
+    }
+  }
+}

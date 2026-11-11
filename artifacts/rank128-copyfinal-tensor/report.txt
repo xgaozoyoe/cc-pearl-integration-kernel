@@ -1,0 +1,48 @@
+baseline physical GPU 1
+  Sync Copy Engine Active [Throughput %] 0
+  Async Copy Engine Active 0 [Throughput %] 0
+  Async Copy Engine Active 1 [Throughput %] 0
+  Async Copy Engine Active 2 [Throughput %] 0
+  GR Active [Throughput %] 99.766
+  SMs Active [Throughput %] 99.61
+  SM Issue [Throughput %] 12.967
+  Tensor Active [Throughput %] 97.322
+  Unallocated Warps in Active SMs [Throughput %] 82.561
+  DRAM Read Bandwidth [Throughput %] 7.162
+  DRAM Write Bandwidth [Throughput %] 0.658
+baseline physical GPU 0
+  Sync Copy Engine Active [Throughput %] 0
+  Async Copy Engine Active 0 [Throughput %] 0
+  Async Copy Engine Active 1 [Throughput %] 0.012
+  Async Copy Engine Active 2 [Throughput %] 0
+  GR Active [Throughput %] 99.164
+  SMs Active [Throughput %] 96.363
+  SM Issue [Throughput %] 22.748
+  Tensor Active [Throughput %] 64.147
+  Unallocated Warps in Active SMs [Throughput %] 69.958
+  DRAM Read Bandwidth [Throughput %] 3.689
+  DRAM Write Bandwidth [Throughput %] 1.745
+candidate physical GPU 1
+  Sync Copy Engine Active [Throughput %] 0
+  Async Copy Engine Active 0 [Throughput %] 0
+  Async Copy Engine Active 1 [Throughput %] 0
+  Async Copy Engine Active 2 [Throughput %] 0
+  GR Active [Throughput %] 99.736
+  SMs Active [Throughput %] 99.593
+  SM Issue [Throughput %] 12.973
+  Tensor Active [Throughput %] 97.467
+  Unallocated Warps in Active SMs [Throughput %] 82.632
+  DRAM Read Bandwidth [Throughput %] 7.266
+  DRAM Write Bandwidth [Throughput %] 0.646
+candidate physical GPU 0
+  Sync Copy Engine Active [Throughput %] 0
+  Async Copy Engine Active 0 [Throughput %] 0
+  Async Copy Engine Active 1 [Throughput %] 0.013
+  Async Copy Engine Active 2 [Throughput %] 0
+  GR Active [Throughput %] 99.095
+  SMs Active [Throughput %] 96.255
+  SM Issue [Throughput %] 19.854
+  Tensor Active [Throughput %] 68.297
+  Unallocated Warps in Active SMs [Throughput %] 69.715
+  DRAM Read Bandwidth [Throughput %] 3.767
+  DRAM Write Bandwidth [Throughput %] 1.816

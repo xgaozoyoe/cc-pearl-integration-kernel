@@ -1,0 +1,246 @@
+{
+  "baseline": 89,
+  "warmup_per_block": 2,
+  "stable_grids_per_variant": 20,
+  "results": [
+    {
+      "variant": 0,
+      "name": "production",
+      "times": [
+        0.4276,
+        0.4243,
+        0.4288,
+        0.4268,
+        0.4279,
+        0.4315,
+        0.4277,
+        0.4323,
+        0.4282,
+        0.4315,
+        0.4283,
+        0.4297
+      ],
+      "median_seconds_excluding_first": 0.4283,
+      "grids_per_second": 2.3348120476301655,
+      "effective_THS": 164.29779168261499,
+      "reported_search_THS": [
+        171.12,
+        172.24,
+        170.28,
+        171.07,
+        170.78,
+        169.13,
+        170.84,
+        169.04,
+        170.48,
+        169.25,
+        170.53,
+        170.01
+      ],
+      "median_reported_search_THS": 170.48
+    },
+    {
+      "variant": 89,
+      "name": "B prefetch before group",
+      "times": [
+        0.3592,
+        0.3702,
+        0.3734,
+        0.3707,
+        0.3697,
+        0.3713,
+        0.3721,
+        0.3694,
+        0.3698,
+        0.3719,
+        0.3702,
+        0.3714
+      ],
+      "median_seconds_excluding_first": 0.3707,
+      "grids_per_second": 2.6975991367682766,
+      "effective_THS": 189.82666354913408,
+      "reported_search_THS": [
+        204.38,
+        198.14,
+        196.45,
+        197.83,
+        198.78,
+        197.66,
+        197.36,
+        198.83,
+        198.35,
+        197.61,
+        198.45,
+        197.65
+      ],
+      "median_reported_search_THS": 197.83
+    },
+    {
+      "variant": 98,
+      "name": "interleaved MMA halves",
+      "times": [
+        0.3649,
+        0.3731,
+        0.3731,
+        0.371,
+        0.3703,
+        0.3705,
+        0.3727,
+        0.3727,
+        0.37,
+        0.3709,
+        0.3712,
+        0.3731
+      ],
+      "median_seconds_excluding_first": 0.3712,
+      "grids_per_second": 2.6939655172413794,
+      "effective_THS": 189.5709703062069,
+      "reported_search_THS": [
+        201.03,
+        196.62,
+        196.82,
+        198.03,
+        198.36,
+        197.98,
+        196.81,
+        197.15,
+        198.55,
+        197.77,
+        198.0,
+        196.8
+      ],
+      "median_reported_search_THS": 197.77
+    },
+    {
+      "variant": 98,
+      "name": "interleaved MMA halves",
+      "times": [
+        0.3629,
+        0.3692,
+        0.3736,
+        0.3693,
+        0.3692,
+        0.3731,
+        0.3699,
+        0.3721,
+        0.3717,
+        0.3716,
+        0.3732,
+        0.3706
+      ],
+      "median_seconds_excluding_first": 0.3716,
+      "grids_per_second": 2.691065662002153,
+      "effective_THS": 189.3669111347255,
+      "reported_search_THS": [
+        202.18,
+        198.98,
+        196.31,
+        199.11,
+        198.79,
+        196.68,
+        198.41,
+        197.32,
+        197.71,
+        197.66,
+        196.85,
+        198.03
+      ],
+      "median_reported_search_THS": 197.71
+    },
+    {
+      "variant": 89,
+      "name": "B prefetch before group",
+      "times": [
+        0.364,
+        0.3686,
+        0.3744,
+        0.3719,
+        0.3716,
+        0.3689,
+        0.371,
+        0.3711,
+        0.3716,
+        0.3739,
+        0.372,
+        0.3719
+      ],
+      "median_seconds_excluding_first": 0.3716,
+      "grids_per_second": 2.691065662002153,
+      "effective_THS": 189.3669111347255,
+      "reported_search_THS": [
+        201.52,
+        199.26,
+        196.06,
+        197.47,
+        197.67,
+        199.3,
+        198.05,
+        197.93,
+        197.65,
+        196.57,
+        197.5,
+        197.34
+      ],
+      "median_reported_search_THS": 197.65
+    },
+    {
+      "variant": 0,
+      "name": "production",
+      "times": [
+        0.4194,
+        0.4264,
+        0.4349,
+        0.4253,
+        0.4329,
+        0.4262,
+        0.4297,
+        0.4311,
+        0.4287,
+        0.432,
+        0.4269,
+        0.4299
+      ],
+      "median_seconds_excluding_first": 0.4297,
+      "grids_per_second": 2.3272050267628575,
+      "effective_THS": 163.76249517724924,
+      "reported_search_THS": [
+        173.98,
+        171.37,
+        167.89,
+        171.66,
+        168.68,
+        171.29,
+        169.88,
+        169.47,
+        170.41,
+        168.96,
+        171.04,
+        169.9
+      ],
+      "median_reported_search_THS": 169.9
+    }
+  ],
+  "summary": {
+    "0": {
+      "median_ms": 429.25,
+      "mean_ms": 429.515,
+      "p95_ms": 433.0,
+      "grids_per_second": 2.3296447291788,
+      "effective_THS": 163.93417397242632
+    },
+    "89": {
+      "median_ms": 371.5,
+      "mean_ms": 371.41,
+      "p95_ms": 373.92500000000007,
+      "grids_per_second": 2.6917900403768504,
+      "effective_THS": 189.41788473126246
+    },
+    "98": {
+      "median_ms": 371.4,
+      "mean_ms": 371.49,
+      "p95_ms": 373.21999999999997,
+      "grids_per_second": 2.6925148088314486,
+      "effective_THS": 189.46888577723212
+    }
+  }
+}

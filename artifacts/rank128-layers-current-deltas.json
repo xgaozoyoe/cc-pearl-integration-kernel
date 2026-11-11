@@ -1,0 +1,11 @@
+{
+  "adjacent_differences_ms": [
+    0.01074068099260328,
+    0.058111751973628945,
+    0.09820832967758186,
+    0.0968353396654128
+  ],
+  "full_vs_register_difference_ms": 0.2638961023092269,
+  "full_vs_register_time_ratio": 1.3229545769132305,
+  "caveat": "Diagnostic deltas include code-generation, DVFS, and data-reuse changes; not additive causal instruction costs."
+}

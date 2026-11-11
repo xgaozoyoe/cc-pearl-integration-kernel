@@ -1,0 +1,64 @@
+R128 dual-CTA experiment — 2026-10-08
+
+GPU0 only; GPU2 live miner and both production/accepted R128 libraries unchanged.
+Isolated /tmp/libpearl-rank128-dual.so; no live submissions with candidate.
+
+Baseline:CTA256x192,12warps,warp64x64,168regs/thread,69632B shared,1CTA/SM.
+Candidate:CTA128x192,8warps,warp32x96,127regs/thread,47104B shared,2CTAs/SM.
+Both K64,2stages,R128,K4096,register accumulators,no local/spill memory.
+Resident warps12->16; theoretical occupancy25%->33.3% (48warps/SM).
+
+Correctness:12 comparisons against frozen accepted R128 transcript and digest:
+two variants x two seeds x shapes32x48,256x384,8192x8192. All bit-exact.
+
+End-to-end offline grid:region8192,real setup/V3/noise/GEMM/transcript/PoW,
+target0(no proof work or submissions).4warmup+40measured grids per variant,
+two repetitions reversedorder. Same seed sequence, GPU0; clocks not locked.
+Baseline medians329.70/331.05ms,means329.7075/331.0075ms,
+p95 332.51/332.505ms,213.43/212.59TH/s.
+Candidate medians344.95/345.15ms,means344.9075/345.0400ms,
+p95 346.64/346.905ms,204.02/203.94TH/s.
+Mean times 330.35750->344.97375ms,
+4.42% longer;4.24% lower throughput.
+
+SASS static main-loop instructions per warp:baseline64IMMA/16LDSM,
+candidate48IMMA/16LDSM. Thus LDSM instructions/usefulMMA increases33.3%.
+Geometry predicts operand global->shared bytes/usefulMMA +42.9%, because
+(BM+BN)/(BM*BN) rises; this is NOT a measured L2counter result.
+Candidate passed occupancy/zero-spill objectives, but loses wall-clock performance.
+Additional reuse traffic is a plausible cause; actual barrier/L2/math attribution
+requires the pending counter profile, not inferred from timings alone.
+
+Keep current single-CTA live kernel. Do not promote this candidate.
+To finish attribution:sudo bash tools/profile_rank128_dual.sh
+This usesGPU0 only and writes /tmp/pearl-rank128-dual-profile.
+Next design should preserve/improve operand reuse; increasing occupancy alone
+is not a sufficient optimization criterion. No further redesign implemented.
+
+
+Completed Nsight/PC analysis (2026-10-08):
+Three profiled region launches per variant; requested aggregate metrics complete.
+Baseline -> dualCTA:
+kernel1.123435 ->1.212395ms (+7.92%; profiling, not end-to-end wall timing).
+Tensor72.01 ->73.48%; L2util42.79 ->58.56%.
+L2B/usefulMMA37.75867 ->53.75868 (+42.375%).
+LDSM bytes8,657,043,456 ->11,542,724,608 (+33.333%).
+DRAM~51.27MB ->~50.09MB: extra traffic is primarily on-chip reuse traffic,
+not evidence of higher off-chip DRAM traffic or saturated DRAM bandwidth.
+Barrier14.95 ->7.51%; short scoreboard6.753 ->4.96%; long2.703 ->2.59%.
+Eligible warps/scheduler0.36 ->0.58; issued/cycle0.25 ->0.35;
+active warps/scheduler3.00 ->3.92. Occupancy objective achieved.
+Math throttle40.153 ->46.193%; mostly IMMA PCs in both variants.
+
+98.76%/98.75% of barrier not-issued samples are at main-loop handoff,
+following BAR.SYNC.DEFER_BLOCKING0xdf0/0xaa0 (sampledPC0xe10/0xad0).
+Residual~1.25% is transcript epilogue. Percentages are stall sample shares,
+not additive wall-clock components or directly recoverable speedups.
+
+Conclusion: dualCTA improves scheduling availability and reported barrier stalls,
+but the smaller CTA/warp mapping increases data movement per useful MMA and is
+slower in both profiling and independent end-to-end benchmarks. Extra on-chip
+traffic is a measured regression, though these counters cannot assign every lost
+millisecond to traffic alone. Do not deploy this candidate; retain singleCTA.
+Next work should preserve current operand reuse while examining main-loop address,
+copy issue and LDSM/IMMA instruction scheduling, rather than occupancy alone.

@@ -1,0 +1,474 @@
+[
+  {
+    "file": "/tmp/pearl-copyfinal-stalls.KG431m/v0.sass.csv",
+    "sample_columns": {
+      "Warp Stall Sampling (All Samples)": 1100101.0,
+      "Warp Stall Sampling (Not-issued Samples)": 810398.0,
+      "# Samples": 1100101.0,
+      "stall_barrier": 164493.0,
+      "stall_branch_resolving": 10504.0,
+      "stall_dispatch": 7871.0,
+      "stall_drain": 29.0,
+      "stall_imc": 270.0,
+      "stall_lg": 1.0,
+      "stall_long_sb": 29533.0,
+      "stall_math": 442115.0,
+      "stall_membar": 0.0,
+      "stall_mio": 7899.0,
+      "stall_misc": 0.0,
+      "stall_no_inst": 4822.0,
+      "stall_not_selected": 40903.0,
+      "stall_selected": 89800.0,
+      "stall_short_sb": 74138.0,
+      "stall_sleep": 0.0,
+      "stall_tex": 0.0,
+      "stall_wait": 227723.0,
+      "stall_barrier (Not Issued)": 132816.0,
+      "stall_branch_resolving (Not Issued)": 7361.0,
+      "stall_dispatch (Not Issued)": 1131.0,
+      "stall_drain (Not Issued)": 29.0,
+      "stall_imc (Not Issued)": 260.0,
+      "stall_lg (Not Issued)": 0.0,
+      "stall_long_sb (Not Issued)": 14446.0,
+      "stall_math (Not Issued)": 411218.0,
+      "stall_membar (Not Issued)": 0.0,
+      "stall_mio (Not Issued)": 5896.0,
+      "stall_misc (Not Issued)": 0.0,
+      "stall_no_inst (Not Issued)": 3856.0,
+      "stall_not_selected (Not Issued)": 0.0,
+      "stall_selected (Not Issued)": 0.0,
+      "stall_short_sb (Not Issued)": 60145.0,
+      "stall_sleeping (Not Issued)": 0.0,
+      "stall_tex (Not Issued)": 0.0,
+      "stall_wait (Not Issued)": 173240.0
+    },
+    "top": {
+      "stall_barrier": [
+        {
+          "pc": "0xe10",
+          "source": "@P0   BRA 0x7bc9ef25bf60",
+          "samples": 161960.0,
+          "fraction_of_reason": 0.9846011684387785
+        },
+        {
+          "pc": "0x2cc0",
+          "source": "@P0   EXIT",
+          "samples": 2533.0,
+          "fraction_of_reason": 0.01539883156122145
+        },
+        {
+          "pc": "0x0",
+          "source": "IMAD.MOV.U32 R1, RZ, RZ, c[0x0][0x28]",
+          "samples": 0.0,
+          "fraction_of_reason": 0.0
+        },
+        {
+          "pc": "0x10",
+          "source": "IMAD.MOV.U32 R0, RZ, RZ, c[0x0][0xc]",
+          "samples": 0.0,
+          "fraction_of_reason": 0.0
+        },
+        {
+          "pc": "0x20",
+          "source": "S2UR UR4, SR_CTAID.X",
+          "samples": 0.0,
+          "fraction_of_reason": 0.0
+        },
+        {
+          "pc": "0x30",
+          "source": "ULDC UR6, c[0x0][0xc]",
+          "samples": 0.0,
+          "fraction_of_reason": 0.0
+        }
+      ],
+      "stall_long_sb": [
+        {
+          "pc": "0x1040",
+          "source": "@!P1  BRA 0x7bc9ef25bbf0",
+          "samples": 16908.0,
+          "fraction_of_reason": 0.5725121051027664
+        },
+        {
+          "pc": "0x1230",
+          "source": "@!P0  BRA 0x7bc9ef25bde0",
+          "samples": 10166.0,
+          "fraction_of_reason": 0.34422510412081403
+        },
+        {
+          "pc": "0xde0",
+          "source": "UISETP.GT.U32.AND UP0, UPT, UR5, 0x3f, UPT",
+          "samples": 2115.0,
+          "fraction_of_reason": 0.07161480377882369
+        },
+        {
+          "pc": "0x7c0",
+          "source": "@!P1  BRA 0x7bc9ef25b370",
+          "samples": 251.0,
+          "fraction_of_reason": 0.008498967256966783
+        },
+        {
+          "pc": "0x970",
+          "source": "@!P0  BRA 0x7bc9ef25b520",
+          "samples": 93.0,
+          "fraction_of_reason": 0.003149019740629127
+        },
+        {
+          "pc": "0x0",
+          "source": "IMAD.MOV.U32 R1, RZ, RZ, c[0x0][0x28]",
+          "samples": 0.0,
+          "fraction_of_reason": 0.0
+        }
+      ],
+      "stall_short_sb": [
+        {
+          "pc": "0x1540",
+          "source": "IMMA.16832.S8.S8 R64, R148.ROW, R144.COL, R64",
+          "samples": 10717.0,
+          "fraction_of_reason": 0.14455474925139605
+        },
+        {
+          "pc": "0x1490",
+          "source": "IMMA.16832.S8.S8 R116, R148.ROW, R144.COL, R116",
+          "samples": 10048.0,
+          "fraction_of_reason": 0.1355310367153147
+        },
+        {
+          "pc": "0x1800",
+          "source": "IMMA.16832.S8.S8 R116, R148.ROW, R152.COL, R116",
+          "samples": 9090.0,
+          "fraction_of_reason": 0.12260918827052254
+        },
+        {
+          "pc": "0x16c0",
+          "source": "IMMA.16832.S8.S8 R16, R148.ROW, R104.COL, R16",
+          "samples": 8664.0,
+          "fraction_of_reason": 0.1168631471040492
+        },
+        {
+          "pc": "0x15f0",
+          "source": "IMMA.16832.S8.S8 R60, R148.ROW, R144.COL, R60",
+          "samples": 8369.0,
+          "fraction_of_reason": 0.11288408103806415
+        },
+        {
+          "pc": "0xe50",
+          "source": "ISETP.GT.AND P1, PT, R107, 0x3ff, PT",
+          "samples": 6977.0,
+          "fraction_of_reason": 0.09410828455043298
+        }
+      ],
+      "stall_math": [
+        {
+          "pc": "0x1750",
+          "source": "IMMA.16832.S8.S8 R44, R148.ROW, R146.COL, R44",
+          "samples": 121289.0,
+          "fraction_of_reason": 0.2743381246960632
+        },
+        {
+          "pc": "0x1800",
+          "source": "IMMA.16832.S8.S8 R116, R148.ROW, R152.COL, R116",
+          "samples": 68625.0,
+          "fraction_of_reason": 0.15521979575449826
+        },
+        {
+          "pc": "0x1490",
+          "source": "IMMA.16832.S8.S8 R116, R148.ROW, R144.COL, R116",
+          "samples": 45669.0,
+          "fraction_of_reason": 0.10329665358560555
+        },
+        {
+          "pc": "0x16c0",
+          "source": "IMMA.16832.S8.S8 R16, R148.ROW, R104.COL, R16",
+          "samples": 14481.0,
+          "fraction_of_reason": 0.03275392149101478
+        },
+        {
+          "pc": "0x15f0",
+          "source": "IMMA.16832.S8.S8 R60, R148.ROW, R144.COL, R60",
+          "samples": 9126.0,
+          "fraction_of_reason": 0.02064168824853262
+        },
+        {
+          "pc": "0x1540",
+          "source": "IMMA.16832.S8.S8 R64, R148.ROW, R144.COL, R64",
+          "samples": 6764.0,
+          "fraction_of_reason": 0.015299186863146467
+        }
+      ],
+      "stall_wait": [
+        {
+          "pc": "0x1040",
+          "source": "@!P1  BRA 0x7bc9ef25bbf0",
+          "samples": 8286.0,
+          "fraction_of_reason": 0.03638631143977552
+        },
+        {
+          "pc": "0x1230",
+          "source": "@!P0  BRA 0x7bc9ef25bde0",
+          "samples": 6306.0,
+          "fraction_of_reason": 0.02769153752585378
+        },
+        {
+          "pc": "0x2c80",
+          "source": "@P0   CALL.REL.NOINC 0x7bc9ef25d9a0",
+          "samples": 3063.0,
+          "fraction_of_reason": 0.013450551766839538
+        },
+        {
+          "pc": "0xfa0",
+          "source": "IMAD.WIDE R100, R103, 0x1000, R100",
+          "samples": 3060.0,
+          "fraction_of_reason": 0.01343737786696996
+        },
+        {
+          "pc": "0x1050",
+          "source": "BSYNC B0",
+          "samples": 2841.0,
+          "fraction_of_reason": 0.012475683176490737
+        },
+        {
+          "pc": "0xff0",
+          "source": "@!PT  LDS RZ, [RZ]",
+          "samples": 2836.0,
+          "fraction_of_reason": 0.012453726676708106
+        }
+      ]
+    }
+  },
+  {
+    "file": "/tmp/pearl-copyfinal-stalls.KG431m/v1.sass.csv",
+    "sample_columns": {
+      "Warp Stall Sampling (All Samples)": 1026133.0,
+      "Warp Stall Sampling (Not-issued Samples)": 794056.0,
+      "# Samples": 1026133.0,
+      "stall_barrier": 133561.0,
+      "stall_branch_resolving": 3921.0,
+      "stall_dispatch": 3720.0,
+      "stall_drain": 27.0,
+      "stall_imc": 313.0,
+      "stall_lg": 19952.0,
+      "stall_long_sb": 38247.0,
+      "stall_math": 468298.0,
+      "stall_membar": 0.0,
+      "stall_mio": 25733.0,
+      "stall_misc": 0.0,
+      "stall_no_inst": 3057.0,
+      "stall_not_selected": 36392.0,
+      "stall_selected": 73561.0,
+      "stall_short_sb": 69403.0,
+      "stall_sleep": 0.0,
+      "stall_tex": 0.0,
+      "stall_wait": 149948.0,
+      "stall_barrier (Not Issued)": 100360.0,
+      "stall_branch_resolving (Not Issued)": 3399.0,
+      "stall_dispatch (Not Issued)": 1439.0,
+      "stall_drain (Not Issued)": 25.0,
+      "stall_imc (Not Issued)": 299.0,
+      "stall_lg (Not Issued)": 17336.0,
+      "stall_long_sb (Not Issued)": 29520.0,
+      "stall_math (Not Issued)": 427428.0,
+      "stall_membar (Not Issued)": 0.0,
+      "stall_mio (Not Issued)": 22831.0,
+      "stall_misc (Not Issued)": 0.0,
+      "stall_no_inst (Not Issued)": 2592.0,
+      "stall_not_selected (Not Issued)": 0.0,
+      "stall_selected (Not Issued)": 0.0,
+      "stall_short_sb (Not Issued)": 60198.0,
+      "stall_sleeping (Not Issued)": 0.0,
+      "stall_tex (Not Issued)": 0.0,
+      "stall_wait (Not Issued)": 128629.0
+    },
+    "top": {
+      "stall_barrier": [
+        {
+          "pc": "0xd10",
+          "source": "@P2   BRA 0x7efab32637e0",
+          "samples": 131317.0,
+          "fraction_of_reason": 0.9831986882398305
+        },
+        {
+          "pc": "0x2a20",
+          "source": "@P0   EXIT",
+          "samples": 2244.0,
+          "fraction_of_reason": 0.01680131176016951
+        },
+        {
+          "pc": "0x0",
+          "source": "IMAD.MOV.U32 R1, RZ, RZ, c[0x0][0x28]",
+          "samples": 0.0,
+          "fraction_of_reason": 0.0
+        },
+        {
+          "pc": "0x10",
+          "source": "IMAD.MOV.U32 R0, RZ, RZ, c[0x0][0xc]",
+          "samples": 0.0,
+          "fraction_of_reason": 0.0
+        },
+        {
+          "pc": "0x20",
+          "source": "S2UR UR4, SR_CTAID.X",
+          "samples": 0.0,
+          "fraction_of_reason": 0.0
+        },
+        {
+          "pc": "0x30",
+          "source": "ULDC UR6, c[0x0][0xc]",
+          "samples": 0.0,
+          "fraction_of_reason": 0.0
+        }
+      ],
+      "stall_long_sb": [
+        {
+          "pc": "0xf50",
+          "source": "@!P3  IADD3 R141, R141, 0x1800, RZ",
+          "samples": 14726.0,
+          "fraction_of_reason": 0.385023661986561
+        },
+        {
+          "pc": "0xfe0",
+          "source": "LOP3.LUT R97, R163, 0x10, R160, 0xf8, !PT",
+          "samples": 10164.0,
+          "fraction_of_reason": 0.2657463330457291
+        },
+        {
+          "pc": "0xee0",
+          "source": "@!P4  IADD3 R141, R141, 0x1800, RZ",
+          "samples": 9144.0,
+          "fraction_of_reason": 0.2390775747117421
+        },
+        {
+          "pc": "0xc40",
+          "source": "BAR.SYNC.DEFER_BLOCKING 0x0",
+          "samples": 3639.0,
+          "fraction_of_reason": 0.09514471723272414
+        },
+        {
+          "pc": "0xb50",
+          "source": "CS2R R6, SRZ",
+          "samples": 175.0,
+          "fraction_of_reason": 0.004575522263184041
+        },
+        {
+          "pc": "0xa70",
+          "source": "IADD3 R6, P4, R8, c[0x0][0x168], RZ",
+          "samples": 163.0,
+          "fraction_of_reason": 0.004261772165137135
+        }
+      ],
+      "stall_short_sb": [
+        {
+          "pc": "0x1520",
+          "source": "IMMA.16832.S8.S8 R112, R144.ROW, R148.COL, R112",
+          "samples": 12153.0,
+          "fraction_of_reason": 0.17510770427791306
+        },
+        {
+          "pc": "0x11c0",
+          "source": "IMMA.16832.S8.S8 R120, R144.ROW, R148.COL, R120",
+          "samples": 11445.0,
+          "fraction_of_reason": 0.16490641614915783
+        },
+        {
+          "pc": "0x1110",
+          "source": "IMMA.16832.S8.S8 R112, R144.ROW, R148.COL, R112",
+          "samples": 11077.0,
+          "fraction_of_reason": 0.1596040516980534
+        },
+        {
+          "pc": "0x1250",
+          "source": "IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32",
+          "samples": 6740.0,
+          "fraction_of_reason": 0.09711395760990159
+        },
+        {
+          "pc": "0x1310",
+          "source": "IMMA.16832.S8.S8 R48, R136.ROW, R148.COL, R48",
+          "samples": 6709.0,
+          "fraction_of_reason": 0.09666729103929225
+        },
+        {
+          "pc": "0xda0",
+          "source": "ISETP.GT.U32.AND P4, PT, R138, 0x3ff, PT",
+          "samples": 2620.0,
+          "fraction_of_reason": 0.03775052951601516
+        }
+      ],
+      "stall_math": [
+        {
+          "pc": "0x1520",
+          "source": "IMMA.16832.S8.S8 R112, R144.ROW, R148.COL, R112",
+          "samples": 74363.0,
+          "fraction_of_reason": 0.1587941866076729
+        },
+        {
+          "pc": "0x15c0",
+          "source": "IMMA.16832.S8.S8 R24, R136.ROW, R152.COL, R24",
+          "samples": 57167.0,
+          "fraction_of_reason": 0.12207397853503538
+        },
+        {
+          "pc": "0x1620",
+          "source": "IMMA.16832.S8.S8 R12, R140.ROW, R154.COL, R12",
+          "samples": 43547.0,
+          "fraction_of_reason": 0.0929899337601271
+        },
+        {
+          "pc": "0x1180",
+          "source": "IMMA.16832.S8.S8 R88, R140.ROW, R150.COL, R88",
+          "samples": 42571.0,
+          "fraction_of_reason": 0.09090579075716744
+        },
+        {
+          "pc": "0x1110",
+          "source": "IMMA.16832.S8.S8 R112, R144.ROW, R148.COL, R112",
+          "samples": 41151.0,
+          "fraction_of_reason": 0.08787353351925484
+        },
+        {
+          "pc": "0x1310",
+          "source": "IMMA.16832.S8.S8 R48, R136.ROW, R148.COL, R48",
+          "samples": 9708.0,
+          "fraction_of_reason": 0.020730389623701148
+        }
+      ],
+      "stall_wait": [
+        {
+          "pc": "0x29e0",
+          "source": "@!P2  CALL.REL.NOINC 0x7efab3265200",
+          "samples": 3134.0,
+          "fraction_of_reason": 0.020900578867340678
+        },
+        {
+          "pc": "0x1640",
+          "source": "IMMA.16832.S8.S8 R4, R100.ROW, R154.COL, R4",
+          "samples": 1988.0,
+          "fraction_of_reason": 0.013257929415530717
+        },
+        {
+          "pc": "0x1680",
+          "source": "IMMA.16832.S8.S8 R64, R136.ROW, R150.COL, R64",
+          "samples": 1955.0,
+          "fraction_of_reason": 0.01303785312241577
+        },
+        {
+          "pc": "0x16d0",
+          "source": "IMMA.16832.S8.S8 R120, R144.ROW, R152.COL, R120",
+          "samples": 1940.0,
+          "fraction_of_reason": 0.01293781844372716
+        },
+        {
+          "pc": "0x1670",
+          "source": "IMMA.16832.S8.S8 R88, R140.ROW, R150.COL, R88",
+          "samples": 1933.0,
+          "fraction_of_reason": 0.012891135593672474
+        },
+        {
+          "pc": "0x1630",
+          "source": "IMMA.16832.S8.S8 R8, R136.ROW, R154.COL, R8",
+          "samples": 1932.0,
+          "fraction_of_reason": 0.012884466615093232
+        }
+      ]
+    }
+  }
+]

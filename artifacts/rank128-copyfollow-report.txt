@@ -1,0 +1,43 @@
+R128 copy-path follow-up, GPU0 only, 2026-10-08
+
+Confirmed incremental gains, not a claim that219TH/s was an all-time record.
+Historical artifacts/ada-regions-report.md records region8192 at318.3375ms and221.04 raw TMAC/s under R256. Its label 'effective' predated the rank-penalty accounting fix and is misleading for consensus-effective work. Under the established128/R accounting R256 is half its raw MAC rate. Current R128 figures are raw MAC and consensus-effective rates alike. Different rank means different transcript/noise work: do not compare these kernels as identical workloads.
+
+Matched current R128 results (each80 measured grids,2 reversed-order runs,4 warmups/batch):
+Previous copywalk winner -> full-A specialization:
+320.34625ms /219.6646TH/s ->314.15125ms /223.9964TH/s, +1.972%.
+Previous copywalk winner ->3stage candidate:
+320.21625ms /219.7538TH/s ->326.54250ms /215.4964TH/s, -1.937%; rejected.
+
+Direct original accepted R128 library vs final packaged candidate:
+Original mean333.25625ms, median333.350ms,p95 334.905ms,3.00069grids/s,211.1551TH/s.
+Candidate mean314.46250ms,median314.450ms,p95 316.210ms,3.18003grids/s,223.7747TH/s.
+Throughput+5.9765%, grid time-18.79375ms (-5.639%). Both run orders win.
+This direct final comparison avoids multiplying gains measured in separate sessions.
+M=N131072,K4096,R128,region8192; actual A/B generation, V3 seeds, noise, transcript, PoW, setup included. Target0 and offline pool stub exclude hits/proof/network. Clocks/power policy unchanged but not locked; no claim of exact clock-normalized gain or current live pool hashrate.
+
+Final code changes:
+Copy addresses use32-bit regional offsets and fixed stride instead of repeated row/column/swizzle computation. Fixed3 A rounds and2 B rounds. For M divisible by256 all A rows are valid, so remove A bounds checks/source clamping; partial M falls back to the bounds-checked copywalk path. B bounds/zero fill remain intact. Opt-in library rejects R!=128 and dimensions>1048576 before its32-bit offset path.
+Unchanged: CTA256x192,warp64x64,384threads/12warps,K64,2stages,64IMMA+16LDSM per warp/K64,operand reuse,transcript,PoW,V3,target,proof.
+Final168registers,69632shared bytes,1CTA/SM,12resident warps,0spills/local bytes. Rejected3stage167registers/98304shared/1CTA/0spill; no occupancy improvement.
+Static SASS whole-kernel instructions original928 -> copywalk896 -> final888. These are static counts, not dynamic issue density or elapsed Tensor Active.
+MMA per loaded byte is unchanged. Tensor utilization increase has NOT yet been measured. The demonstrated result is higher work per wall-second with less copy/address/control work. Hardware counters are needed to attribute the gain and compare against PeakMiner's earlier97.4% elapsed Tensor Active.
+
+Validation:
+Both follow-up variants pass16 full transcript/digest comparisons versus accepted R128 over2seeds and4shapes,including8192 and partial tiles.
+Packaged final rank_pow ABI passes the same16 comparisons.
+Small-shape memcheck/racecheck logs: artifacts/rank128-copyfinal-{memcheck,racecheck}.log.
+Packaging preserves every GPU SASS instruction from the measured follow-up library.
+Accepted libp40cuda.so,artifacts/libpearl-rank.so and previous copywalk candidate unchanged.
+No live worker restarted or switched; GPU1 PeakMiner andGPU2 Open-Pearl left running.
+
+Final opt-in library: artifacts/libpearl-rank128-copywalk-fulla-candidate.so
+Hash: artifacts/rank128-copyfinal.sha256
+Kernel diff: artifacts/rank128-copyfinal-kernel.diff
+Tools diff: artifacts/rank128-copyfollow-tools.patch
+Rebuild: .venv/bin/python tools/package_rank128_copywalk_fulla.py
+Use existing run_rank128.py with --gpu 0 --region 8192 and --library artifacts/libpearl-rank128-copywalk-fulla-candidate.so, plus normal wallet/worker arguments. Not launched in this task.
+
+Counter experiment prepared, not run (host requires sudo):
+sudo bash tools/profile_copywalk_tensor.sh
+Runs offline full-grid workloads onGPU0, baseline and final candidate sequentially; reads GPU1 metrics without injecting into/restarting PeakMiner. Fails ifGPU0 already has a compute process. Maps Nsight metric IDs byPCI, not physical ordinal. Captures35s each, summarizes common10..30s stable window, writes /tmp/pearl-copywalk-tensor.* and latest pointer /tmp/pearl-copywalk-tensor-last.txt. Uses Nsight Systems elapsed Tensor Active, matching the earlier PeakMiner metric definition. Script syntax/Python compile checked; root hardware collection pending.

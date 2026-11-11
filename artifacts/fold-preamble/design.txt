@@ -1,0 +1,30 @@
+Current8+4 fold preamble only: correct fixed-SASS optimization candidates.
+
+Audit findings:
+- Per-warp transcript shared addresses already use one common base and immediate
+  offsets for16tiles. There is no16-times repeated full address calculation.
+- Lane0 predicate is computed once in each mutually-exclusive first/second half.
+- Eight local accumulator values reduce via3ternaryLOP3+1binaryLOP3, not a scalar
+  loop over256values. Warp reduction uses REDUX.XOR.
+- Fold index rb in[0,31] still uses a generic signed remainder sequence.
+- Thread ID is reread by S2R, thoughR162 preserves threadIdx.x throughout main loop.
+
+baseline: exact hash-preserved native8.
+mod_nop: replace4uniform signed remainder instructions with1AND15 and3NOP.
+No instruction-count reduction here;3fewer uniform ALU operations and shorter
+encoded dependency delays. All later instruction addresses unchanged.
+mod_compact: same AND15, compact preamble, branch over vacated instruction slots.
+First-half folds save3 issued instructions; second-half save2 (extraBRA).
+both_compact: additionally removeS2R and useR162 in warp-index shift.
+First-half folds save4 issued instructions; second-half save3.
+Extra forward branch is a real overhead; count savings do not imply speedup.
+
+Only bytes0x17f0..0x192f change. Main MMA/copy/LDSM/earlyarrival and all remaining
+fold reduction/rotate/store instructions byte-identical. Relative BSSY/BRA targets
+adjusted and disassembly verified. Existing arrival-read completion wait retained
+at first fold instruction whenS2Rremoved; resource metadata unchanged.
+168regs,69632Bshared,384threads,1CTA/SM,0spill. No production changes.
+
+Correctness limited to current K4096/rank128 specialization:32folds,nonnegative rb.
+No use of this rb simplification for unspecified signed indices or different rank.
+All experiments GPU0 offline only; no Nsight and no live mining.

@@ -1,0 +1,30 @@
+[
+  {
+    "function": "_ZN24rank128_copy75_partition6kernelILi2ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+    "instructions": 872,
+    "ops": {
+      "IMMA": 64,
+      "LDSM": 16,
+      "LDGSTS": 2,
+      "IMAD": 155,
+      "ISETP": 31,
+      "BRA": 19,
+      "LDL": 0,
+      "STL": 0
+    }
+  },
+  {
+    "function": "_ZN23rank128_copy75_baseline6kernelILi2ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+    "instructions": 928,
+    "ops": {
+      "IMMA": 64,
+      "LDSM": 16,
+      "LDGSTS": 4,
+      "IMAD": 156,
+      "ISETP": 35,
+      "BRA": 23,
+      "LDL": 0,
+      "STL": 0
+    }
+  }
+]

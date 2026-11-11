@@ -1,0 +1,32 @@
+{
+  "variants": {
+    "control": {
+      "entry": "_ZN24transcript_spill_control6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "87dea0e51c0b0767d0302ea9390f6636ed7fcb5e850efbc699189375d0b0d34e",
+      "threads": 416,
+      "smem": 75968,
+      "correct": true
+    },
+    "short_b": {
+      "entry": "_ZN24transcript_spill_short_b6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "0ca9cab0b9d46460f680addb1e9ae9206eaa30f64cc84f62309ab13e5680e67d",
+      "threads": 416,
+      "smem": 75968,
+      "correct": true
+    },
+    "short_a": {
+      "entry": "_ZN24transcript_spill_short_a6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "ccf6281b46bd54c171eb0590f9dee068f20145bcffbce8e4a4f5ff36723f8a32",
+      "threads": 416,
+      "smem": 75968,
+      "correct": true
+    },
+    "short_ab": {
+      "entry": "_ZN25transcript_spill_short_ab6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "f69ed504185e6e9775561ed1642486561098f4357fafd68d14ce7082c7878779",
+      "threads": 416,
+      "smem": 75968,
+      "correct": true
+    }
+  }
+}

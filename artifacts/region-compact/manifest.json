@@ -1,0 +1,36 @@
+{
+  "variants": {
+    "native": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "104c0c1b265260dea5c9ab0bb174ebbbe7ee9cceb0cf0acebf2a9d1dfa4d50aa",
+      "smem": 69632,
+      "correct": true
+    },
+    "region_deferred": {
+      "entry": "_ZN27region_free_region_deferred6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "5cb1f40237bec5f056f4bee6af6c01d8a25d5f86f1824d66149c11f7ae080e54",
+      "smem": 69760,
+      "correct": true
+    },
+    "compact_poll": {
+      "entry": "_ZN27region_compact_compact_poll6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "ee013ca02eb8f426cd54639d4a8ac70d63c6cf7e43dd33258e1312eef05d4651",
+      "smem": 69760,
+      "correct": false,
+      "safety_status": "Excluded: spills; related polling change not race-validated"
+    },
+    "hoist_only": {
+      "entry": "_ZN25region_compact_hoist_only6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "35199b962030d6e2f544ed8742196ff65136f61b7bf60ea90b3cd8a6d56435d2",
+      "smem": 69760,
+      "correct": true
+    },
+    "compact_hoist": {
+      "entry": "_ZN28region_compact_compact_hoist6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "9c9f61f6938f93949c7c485ed3d0e649fe1df46c1837b79db00c3b6fa9cb2fc7",
+      "smem": 69760,
+      "correct": false,
+      "safety_status": "Excluded: racecheck 5 errors"
+    }
+  }
+}

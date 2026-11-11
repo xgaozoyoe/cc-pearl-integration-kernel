@@ -1,0 +1,89 @@
+--- lean-toggle
++++ paired
+@@ -145,72 +145,29 @@
+             stage_copy<TileK,Planar,UnrollCopy,FixedCopy,Layout>(a,b,sa+next*BM*TileK,sb+next*BN*TileK,cm,cn,kt+Stages-1,m,n,k);
+         signed char* aa=sa+current*BM*TileK;
+         signed char* bb=sb+current*BN*TileK;
+-        if constexpr(Lead==0 || Lead==3) {
++        static_assert(TileK==64 && Groups==4);
++        #pragma unroll
++        for(int slice=0;slice<2;++slice) {
++            Fragment ap[4];
+             #pragma unroll
+-            for(int slice=0;slice<2;++slice) {
+-                Fragment aa_rows[4],bb_groups[2];
++            for(int row=0;row<4;++row)
++                ap[row]=load16x32<TileK,Planar,Layout>(aa,wm*64+row*16,slice*32,lane,BM);
++            #pragma unroll
++            for(int pair=0;pair<2;++pair) {
++                Fragment bp[2];
+                 #pragma unroll
+-                for(int row=0;row<4;++row) aa_rows[row]=load16x32<TileK,Planar,Layout>(aa,wm*64+row*16,slice*32,lane,BM);
+-                if constexpr(Lead==3) bb_groups[0]=loadB16x32<TileK,Planar,PackedB,Layout>(bb,wn*WarpN,slice*32,lane,BN);
++                for(int j=0;j<2;++j)
++                    bp[j]=loadB16x32<TileK,Planar,PackedB,Layout>(bb,wn*WarpN+(2*pair+j)*16,slice*32,lane,BN);
+                 #pragma unroll
+-                for(int group=0;group<Groups;++group) {
+-                    int slot=group%2;
+-                    if constexpr(Lead==0) bb_groups[slot]=loadB16x32<TileK,Planar,PackedB,Layout>(bb,wn*WarpN+group*16,slice*32,lane,BN);
+-                    else if(group+1<Groups) bb_groups[(group+1)%2]=loadB16x32<TileK,Planar,PackedB,Layout>(bb,wn*WarpN+(group+1)*16,slice*32,lane,BN);
++                for(int row=0;row<4;++row) {
+                     #pragma unroll
+                     for(int half=0;half<2;++half) {
+                         #pragma unroll
+-                        for(int row=0;row<4;++row) mma<PackedB>(c[row][group][half],aa_rows[row],bb_groups[slot],half);
++                        for(int j=0;j<2;++j)
++                            mma<PackedB>(c[row][2*pair+j][half],ap[row],bp[j],half);
+                     }
+                 }
+             }
+-        } else {
+-        #pragma unroll
+-        for(int row=0;row<4;++row) ar[row]=load16x32<TileK,Planar,Layout>(aa,wm*64+row*16,0,lane,BM);
+-        #pragma unroll
+-        for(int p=0;p<Lead;++p) br[p]=loadB16x32<TileK,Planar,PackedB,Layout>(bb,wn*WarpN+p*16,0,lane,BN);
+-        #pragma unroll
+-        for(int g=0;g<Groups*(TileK/32);++g) {
+-            constexpr int slots=Lead+1;
+-            int slice=g/Groups,group=g%Groups,slot=g%slots;
+-            if constexpr(TileK!=64) { if(kt*TileK+slice*32>=k) continue; }
+-            #pragma unroll
+-            for(int row=0;row<4;++row) {
+-                Fragment nextA;
+-                #pragma unroll
+-                for(int half=0;half<2;++half) {
+-                    if(half==0 && row==1 && g+Lead<Groups*(TileK/32) && (TileK==64 || kt*TileK+((g+Lead)/Groups)*32<k))
+-                        br[(g+Lead)%slots]=loadB16x32<TileK,Planar,PackedB,Layout>(bb,wn*WarpN+((g+Lead)%Groups)*16,((g+Lead)/Groups)*32,lane,BN);
+-                    if(half==0 && slice+1<TileK/32 && (TileK==64 || kt*TileK+(slice+1)*32<k) && group==Groups-1) nextA=load16x32<TileK,Planar,Layout>(aa,wm*64+row*16,(slice+1)*32,lane,BM);
+-                    mma<PackedB>(c[row][group][half],ar[row],br[slot],half);
+-                    if(slice+1<TileK/32 && (TileK==64 || kt*TileK+(slice+1)*32<k) && group==Groups-1 && half==1)
+-                        ar[row]=nextA;
+-                }
+-            }
+-            if constexpr(TileK!=64) {
+-        if(group==Groups-1 && (kt*TileK+(slice+1)*32)%128==0) {
+-            int rb=(kt*TileK+(slice+1)*32)/128-1;
+-            #pragma unroll
+-            for(int row=0;row<4;++row) {
+-                #pragma unroll
+-                for(int group=0;group<Groups;++group) {
+-                    unsigned x=0;
+-                    #pragma unroll
+-                    for(int half=0;half<2;++half) {
+-                        #pragma unroll
+-                        for(int v=0;v<4;++v) x^=c[row][group][half][v];
+-                    }
+-                    x=__reduce_xor_sync(0xffffffffu,x);
+-                    if(lane==0) {
+-                        int idx=((wm*4+row)*(BN/16)+wn*Groups+group)*16+(rb%16);
+-                        if(rb<16) transcript[idx]=x;
+-                        else { unsigned prev=transcript[idx]; transcript[idx]=((prev<<13)|(prev>>19))^x; }
+-                    }
+-                }
+-            }
+-        }
+-            }
+-        }
+         }
+         // Publish this group's completed future copies and old-stage reads.
+         asm volatile("cp.async.wait_group 0;" ::: "memory");

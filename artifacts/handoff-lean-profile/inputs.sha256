@@ -1,0 +1,3 @@
+5601915b52178cc68927683b9184d5f3687fed684d86c04c05edb29d7addbb04  artifacts/libpearl-handoff-lean.so
+bdbbde42de81ffc1df554d895fc03bc4849b7a5d5e124cdebaa20751974a43dd  artifacts/handoff-lean-source.cu
+794ce00662d005ff5c3b33891f1c968e61abfc4f766384ed12497c3d289b0dd2  tests/bench_handoff_lean_events.py

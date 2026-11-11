@@ -1,0 +1,39 @@
+--- batch_reduce
++++ ready_any
+@@ -1,6 +1,6 @@
+ #include <cuda_runtime.h>
+ #include <cstdint>
+-namespace handoff_diagnosis_batch_reduce {
++namespace transcript_wait_probe_ready_any {
+ constexpr int BM=192, BN=192, THREADS=288;
+ constexpr int WORDS=(BM/16)*(BN/16)*16;
+ struct Fragment { unsigned v[4]; };
+@@ -90,6 +90,11 @@
+ }
+ __device__ __forceinline__ void task_arrive(unsigned bar) {
+  asm volatile("mbarrier.arrive.shared.b64 _,[%0];" :: "r"(bar) : "memory");
++}
++__device__ __forceinline__ bool task_ready(unsigned bar,unsigned phase) {
++ unsigned ok;
++ asm volatile("{ .reg .pred p; mbarrier.test_wait.parity.shared.b64 p,[%1],%2; selp.u32 %0,1,0,p; }" : "=r"(ok) : "r"(bar),"r"(phase) : "memory");
++ return __all_sync(0xffffffffu,ok!=0);
+ }
+ template<int Lead,int TileK=64,bool Planar=false,bool PackedB=false,bool UnrollCopy=false,bool FixedCopy=false,int Stages=2,bool Wide=false,int Layout=0>
+ __global__ void __launch_bounds__(320,1) kernel(const signed char* a,const signed char* b,int m,int n,int k,int r,unsigned* out) {
+@@ -122,8 +127,14 @@
+         // hold producer slots. Each wait targets one producer and4tiles only.
+         for(unsigned seq=0;seq<128;++seq) {
+             unsigned rb=seq/4,group=seq%4;
+-            for(unsigned producer=0;producer<9;++producer) {
+-                task_wait(barbase+producer*16,seq&1u);
++            unsigned pending=511u;
++            while(pending) {
++                unsigned producer=0;
++                for(;;) {
++                    if((pending&(1u<<producer)) && task_ready(barbase+producer*16,seq&1u)) break;
++                    producer=(producer==8)?0:producer+1;
++                }
++                pending&=~(1u<<producer);
+                 unsigned values[4];
+                 #pragma unroll
+                 for(int row=0;row<4;++row) values[row]=tasks[producer*128+row*32+lane];

@@ -1,0 +1,26 @@
+Early publication: delay peer-ID calculation / overlap B2 compute
+GPU 0 only. Region = 8192 x 8192, K4096, rank128. Unlocked clocks.
+Kernel times are CUDA event measurements; each run has 200 samples/variant, 16 launches/sample.
+Run 1:
+variant mean_ms median_ms p95_ms time_change_pct
+native       1.022865 1.016839 1.048640 +0.0000
+id_late      1.016432 1.010013 1.045872 -0.6289
+overlap_b2   1.038040 1.033635 1.065728 +1.4836
+Run 2:
+variant mean_ms median_ms p95_ms time_change_pct
+native       1.025398 1.021600 1.049047 +0.0000
+id_late      1.019232 1.014016 1.041070 -0.6013
+overlap_b2   1.036671 1.033789 1.058946 +1.0994
+Full offline grid wall time (includes setup/noise/Merkle/PoW; excludes network/proof delivery):
+variant n mean_ms median_ms p95_ms grids/sec equivalent_TH/s
+native       60 292.953333 292.900000 298.305000 3.413513 240.204620
+id_late      60 292.486667 292.350000 297.705000 3.418959 240.587870
+Grid time change: -0.1593%; equivalent throughput change: +0.1596%
+Paired grid-batch time changes (%): +0.2188, -0.2285, -0.1845, -0.2491, -0.2967, -0.2150
+Validation:36 transcript and18 transcript+PoW comparisons PASS; racecheck 0 hazards/errors/warnings.
+All variants:168 registers/thread,0 local bytes,69632B dynamic shared/CTA,384threads,1CTA/SM. Same IMMA count.
+id_late: move original LOP3 peer-ID instruction0x1620 to0x16b0. Final LDSM PCs:0x1660->0x1650 and0x16b0->0x16a0. cp.wait0x16c0 and BAR.ARV0x16d0 unchanged.
+overlap_b2: same change plus move first2 B2 IMMA before publication; BAR.ARV now0x16f0. First IMMA gains explicit SB1 completion wait (mask2); BAR retains mask6 for both final loads.
+SASS textual diffs omit control fields: see builder for this added scoreboard wait. No new instructions/registers/barriers.
+Causality limitation: timing does not prove lower barrier stalls or increased tensor utilization. Requires matching hardware counters; not collected this round.
+No production changes or live mining. Equivalent TH/s is offline arithmetic, not a measured pool rate.

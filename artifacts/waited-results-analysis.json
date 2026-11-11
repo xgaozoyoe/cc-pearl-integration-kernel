@@ -1,0 +1,1213 @@
+{
+  "source": "Current A-stream baseline v0, capture2026-10-08; no new GPU profiling.",
+  "caveat": "PC samples can be downstream; static preceding writers/readers do not prove the full dynamic dependency. Percentages are sampling shares,not removable wall time.",
+  "reasons": {
+    "stall_long_sb": {
+      "total_samples": 28862.0,
+      "top": [
+        {
+          "pc": "0xfd0",
+          "samples": 13405.0,
+          "percent_of_reason": 46.44515279606403,
+          "context": [
+            {
+              "pc": "0xf80",
+              "instruction": "IADD3 R99, R98.reuse, 0x60000, RZ"
+            },
+            {
+              "pc": "0xf90",
+              "instruction": "@!P2 LDGSTS.E.BYPASS.128 [R137], [R138.64]"
+            },
+            {
+              "pc": "0xfa0",
+              "instruction": "SEL R98, R98, RZ, !P1"
+            },
+            {
+              "pc": "0xfb0",
+              "instruction": "@!P3 IMAD.X R141, RZ, RZ, c[0x0][0x164], P4"
+            },
+            {
+              "pc": "0xfc0",
+              "instruction": "SEL R99, R99, RZ, !P0"
+            },
+            {
+              "pc": "0xfd0",
+              "instruction": "@!P2 IADD3 R137, R137, 0x1800, RZ"
+            }
+          ]
+        },
+        {
+          "pc": "0xf50",
+          "samples": 9960.0,
+          "percent_of_reason": 34.50904303236089,
+          "context": [
+            {
+              "pc": "0xf00",
+              "instruction": "@!PT LDS RZ, [RZ]"
+            },
+            {
+              "pc": "0xf10",
+              "instruction": "@!PT LDS RZ, [RZ]"
+            },
+            {
+              "pc": "0xf20",
+              "instruction": "@!P4 LDGSTS.E.BYPASS.128 [R137], [R98.64]"
+            },
+            {
+              "pc": "0xf30",
+              "instruction": "IMAD R97, R146, 0x3000, R97"
+            },
+            {
+              "pc": "0xf40",
+              "instruction": "@!P2 IMAD.X R139, RZ, RZ, c[0x0][0x164], P5"
+            },
+            {
+              "pc": "0xf50",
+              "instruction": "IMAD R98, R157, 0x1000, R143"
+            }
+          ]
+        },
+        {
+          "pc": "0xc40",
+          "samples": 3533.0,
+          "percent_of_reason": 12.24100893908946,
+          "context": [
+            {
+              "pc": "0xbf0",
+              "instruction": "ULOP3.LUT UR6, UR4, 0x1, URZ, 0xc0, !UPT"
+            },
+            {
+              "pc": "0xc00",
+              "instruction": "LOP3.LUT R97, R136, 0xffffffc0, R97, 0xe2, !PT"
+            },
+            {
+              "pc": "0xc10",
+              "instruction": "UMOV UR5, 0x3000"
+            },
+            {
+              "pc": "0xc20",
+              "instruction": "IADD3 R155, R3, 0xc00, RZ"
+            },
+            {
+              "pc": "0xc30",
+              "instruction": "DEPBAR.LE SB0, 0x0"
+            },
+            {
+              "pc": "0xc40",
+              "instruction": "LOP3.LUT R96, R97, 0x8, R96, 0xf8, !PT"
+            }
+          ]
+        },
+        {
+          "pc": "0x10b0",
+          "samples": 1510.0,
+          "percent_of_reason": 5.231792668560737,
+          "context": [
+            {
+              "pc": "0x1060",
+              "instruction": "LDSM.16.M88.4 R144, [R144]"
+            },
+            {
+              "pc": "0x1070",
+              "instruction": "ISETP.NE.AND P2, PT, RZ, UR6, PT"
+            },
+            {
+              "pc": "0x1080",
+              "instruction": "UISETP.NE.AND UP1, UPT, UR7, 0x40, UPT"
+            },
+            {
+              "pc": "0x1090",
+              "instruction": "LDSM.16.M88.4 R148, [R148+UR5]"
+            },
+            {
+              "pc": "0x10a0",
+              "instruction": "UMOV UR4, UR7"
+            },
+            {
+              "pc": "0x10b0",
+              "instruction": "LDSM.16.M88.4 R140, [R142]"
+            }
+          ]
+        },
+        {
+          "pc": "0xb00",
+          "samples": 146.0,
+          "percent_of_reason": 0.50585545007276,
+          "context": [
+            {
+              "pc": "0xab0",
+              "instruction": "LDGDEPBAR"
+            },
+            {
+              "pc": "0xac0",
+              "instruction": "CS2R R8, SRZ"
+            },
+            {
+              "pc": "0xad0",
+              "instruction": "CS2R R14, SRZ"
+            },
+            {
+              "pc": "0xae0",
+              "instruction": "IMAD.SHL.U32 R3, R0, 0x40, RZ"
+            },
+            {
+              "pc": "0xaf0",
+              "instruction": "IMAD.SHL.U32 R2, R162, 0x8, RZ"
+            },
+            {
+              "pc": "0xb00",
+              "instruction": "CS2R R10, SRZ"
+            }
+          ]
+        },
+        {
+          "pc": "0xae0",
+          "samples": 119.0,
+          "percent_of_reason": 0.41230683944286606,
+          "context": [
+            {
+              "pc": "0xa90",
+              "instruction": "LDGSTS.E.BYPASS.128 [R13+0x9800], [R10.64], !P0"
+            },
+            {
+              "pc": "0xaa0",
+              "instruction": "UMOV UR4, URZ"
+            },
+            {
+              "pc": "0xab0",
+              "instruction": "LDGDEPBAR"
+            },
+            {
+              "pc": "0xac0",
+              "instruction": "CS2R R8, SRZ"
+            },
+            {
+              "pc": "0xad0",
+              "instruction": "CS2R R14, SRZ"
+            },
+            {
+              "pc": "0xae0",
+              "instruction": "IMAD.SHL.U32 R3, R0, 0x40, RZ"
+            }
+          ]
+        },
+        {
+          "pc": "0xa30",
+          "samples": 113.0,
+          "percent_of_reason": 0.39151825930288964,
+          "context": [
+            {
+              "pc": "0x9e0",
+              "instruction": "@!P3 IMAD.X R9, RZ, RZ, c[0x0][0x164], P5"
+            },
+            {
+              "pc": "0x9f0",
+              "instruction": "IADD3 R2, P4, R6, c[0x0][0x168], RZ"
+            },
+            {
+              "pc": "0xa00",
+              "instruction": "IADD3 R10, P5, R7, c[0x0][0x168], RZ"
+            },
+            {
+              "pc": "0xa10",
+              "instruction": "LOP3.LUT R0, R0, 0xc0, R11, 0xe2, !PT"
+            },
+            {
+              "pc": "0xa20",
+              "instruction": "IMAD.X R3, RZ, RZ, c[0x0][0x16c], P4"
+            },
+            {
+              "pc": "0xa30",
+              "instruction": "@!P2 IADD3 R15, R15, 0x1800, RZ"
+            }
+          ]
+        },
+        {
+          "pc": "0xac0",
+          "samples": 65.0,
+          "percent_of_reason": 0.2252096181830781,
+          "context": [
+            {
+              "pc": "0xa70",
+              "instruction": "@!P3 LDGSTS.E.BYPASS.128 [R15], [R8.64]"
+            },
+            {
+              "pc": "0xa80",
+              "instruction": "LDGSTS.E.BYPASS.128 [R13+0x8000], [R2.64], !P1"
+            },
+            {
+              "pc": "0xa90",
+              "instruction": "LDGSTS.E.BYPASS.128 [R13+0x9800], [R10.64], !P0"
+            },
+            {
+              "pc": "0xaa0",
+              "instruction": "UMOV UR4, URZ"
+            },
+            {
+              "pc": "0xab0",
+              "instruction": "LDGDEPBAR"
+            },
+            {
+              "pc": "0xac0",
+              "instruction": "CS2R R8, SRZ"
+            }
+          ]
+        }
+      ]
+    },
+    "stall_short_sb": {
+      "total_samples": 73889.0,
+      "top": [
+        {
+          "pc": "0x1500",
+          "samples": 14904.0,
+          "percent_of_reason": 20.170796735644007,
+          "context": [
+            {
+              "pc": "0x14b0",
+              "instruction": "IMMA.16832.S8.S8 R96, R96.ROW, R150.COL, R100"
+            },
+            {
+              "pc": "0x14c0",
+              "instruction": "LDSM.16.M88.4 R100, [R164]"
+            },
+            {
+              "pc": "0x14d0",
+              "instruction": "LDSM.16.M88.4 R140, [R140]"
+            },
+            {
+              "pc": "0x14e0",
+              "instruction": "LDSM.16.M88.4 R148, [R149+UR5]"
+            },
+            {
+              "pc": "0x14f0",
+              "instruction": "LDSM.16.M88.4 R152, [R152+UR5]"
+            },
+            {
+              "pc": "0x1500",
+              "instruction": "IMMA.16832.S8.S8 R120, R144.ROW, R148.reuse.COL, R120"
+            }
+          ]
+        },
+        {
+          "pc": "0x11a0",
+          "samples": 11816.0,
+          "percent_of_reason": 15.991554899917444,
+          "context": [
+            {
+              "pc": "0x1150",
+              "instruction": "LOP3.LUT R152, R149, 0x30, R148, 0x78, !PT"
+            },
+            {
+              "pc": "0x1160",
+              "instruction": "IMMA.16832.S8.S8 R84, R140.ROW, R150.reuse.COL, R84"
+            },
+            {
+              "pc": "0x1170",
+              "instruction": "IMMA.16832.S8.S8 R68, R136.ROW, R150.reuse.COL, R68"
+            },
+            {
+              "pc": "0x1180",
+              "instruction": "IMMA.16832.S8.S8 R128, R96.ROW, R150.COL, R128"
+            },
+            {
+              "pc": "0x1190",
+              "instruction": "LDSM.16.M88.4 R148, [R152+UR5]"
+            },
+            {
+              "pc": "0x11a0",
+              "instruction": "IMMA.16832.S8.S8 R112, R144.ROW, R148.reuse.COL, R112"
+            }
+          ]
+        },
+        {
+          "pc": "0x1250",
+          "samples": 9409.0,
+          "percent_of_reason": 12.733965813585243,
+          "context": [
+            {
+              "pc": "0x1200",
+              "instruction": "LOP3.LUT R149, R163, 0x30, R148, 0x78, !PT"
+            },
+            {
+              "pc": "0x1210",
+              "instruction": "IMMA.16832.S8.S8 R64, R140.ROW, R150.reuse.COL, R64"
+            },
+            {
+              "pc": "0x1220",
+              "instruction": "IMMA.16832.S8.S8 R48, R136.ROW, R150.reuse.COL, R48"
+            },
+            {
+              "pc": "0x1230",
+              "instruction": "IMMA.16832.S8.S8 R92, R96.ROW, R150.COL, R92"
+            },
+            {
+              "pc": "0x1240",
+              "instruction": "LDSM.16.M88.4 R148, [R149+UR5]"
+            },
+            {
+              "pc": "0x1250",
+              "instruction": "IMMA.16832.S8.S8 R32, R144.ROW, R148.reuse.COL, R32"
+            }
+          ]
+        },
+        {
+          "pc": "0x10e0",
+          "samples": 9170.0,
+          "percent_of_reason": 12.41050765337195,
+          "context": [
+            {
+              "pc": "0x1090",
+              "instruction": "LDSM.16.M88.4 R148, [R148+UR5]"
+            },
+            {
+              "pc": "0x10a0",
+              "instruction": "UMOV UR4, UR7"
+            },
+            {
+              "pc": "0x10b0",
+              "instruction": "LDSM.16.M88.4 R140, [R142]"
+            },
+            {
+              "pc": "0x10c0",
+              "instruction": "LDSM.16.M88.4 R136, [R136]"
+            },
+            {
+              "pc": "0x10d0",
+              "instruction": "LDSM.16.M88.4 R96, [R96]"
+            },
+            {
+              "pc": "0x10e0",
+              "instruction": "IMMA.16832.S8.S8 R120, R144.ROW, R148.reuse.COL, R120"
+            }
+          ]
+        },
+        {
+          "pc": "0x1310",
+          "samples": 6625.0,
+          "percent_of_reason": 8.9661519305986,
+          "context": [
+            {
+              "pc": "0x12c0",
+              "instruction": "LOP3.LUT R148, R148, 0x30, R152, 0x78, !PT"
+            },
+            {
+              "pc": "0x12d0",
+              "instruction": "IMMA.16832.S8.S8 R12, R140.ROW, R150.reuse.COL, R12"
+            },
+            {
+              "pc": "0x12e0",
+              "instruction": "IMMA.16832.S8.S8 R8, R136.ROW, R150.reuse.COL, R8"
+            },
+            {
+              "pc": "0x12f0",
+              "instruction": "IMMA.16832.S8.S8 R4, R96.ROW, R150.COL, R4"
+            },
+            {
+              "pc": "0x1300",
+              "instruction": "LDSM.16.M88.4 R148, [R148+UR5]"
+            },
+            {
+              "pc": "0x1310",
+              "instruction": "IMMA.16832.S8.S8 R44, R136.reuse.ROW, R148.COL, R44"
+            }
+          ]
+        },
+        {
+          "pc": "0xe10",
+          "samples": 3758.0,
+          "percent_of_reason": 5.086007389462572,
+          "context": [
+            {
+              "pc": "0xdc0",
+              "instruction": "USHF.L.U32 UR4, UR6, 0xe, URZ"
+            },
+            {
+              "pc": "0xdd0",
+              "instruction": "ULDC.64 UR8, c[0x0][0x118]"
+            },
+            {
+              "pc": "0xde0",
+              "instruction": "IMAD R143, R98, 0x40, R161"
+            },
+            {
+              "pc": "0xdf0",
+              "instruction": "ULOP3.LUT UR4, UR4, 0x4000, URZ, 0x3c, !UPT"
+            },
+            {
+              "pc": "0xe00",
+              "instruction": "IMAD R140, R158, 0x1000, R143"
+            },
+            {
+              "pc": "0xe10",
+              "instruction": "ISETP.GT.U32.AND P4, PT, R138.reuse, 0x3ff, PT"
+            }
+          ]
+        },
+        {
+          "pc": "0x1110",
+          "samples": 1926.0,
+          "percent_of_reason": 2.6066126216351555,
+          "context": [
+            {
+              "pc": "0x10c0",
+              "instruction": "LDSM.16.M88.4 R136, [R136]"
+            },
+            {
+              "pc": "0x10d0",
+              "instruction": "LDSM.16.M88.4 R96, [R96]"
+            },
+            {
+              "pc": "0x10e0",
+              "instruction": "IMMA.16832.S8.S8 R120, R144.ROW, R148.reuse.COL, R120"
+            },
+            {
+              "pc": "0x10f0",
+              "instruction": "IMMA.16832.S8.S8 R88, R140.ROW, R148.reuse.COL, R88"
+            },
+            {
+              "pc": "0x1100",
+              "instruction": "IMMA.16832.S8.S8 R72, R136.ROW, R148.reuse.COL, R72"
+            },
+            {
+              "pc": "0x1110",
+              "instruction": "IMMA.16832.S8.S8 R124, R96.ROW, R148.COL, R124"
+            }
+          ]
+        },
+        {
+          "pc": "0x2280",
+          "samples": 1551.0,
+          "percent_of_reason": 2.0990945878276874,
+          "context": [
+            {
+              "pc": "0x2230",
+              "instruction": "@!P2 STS [R96+0xe900], R99"
+            },
+            {
+              "pc": "0x2240",
+              "instruction": "@!P2 STS [R96+0xe940], R141"
+            },
+            {
+              "pc": "0x2250",
+              "instruction": "@!P2 STS [R96+0xe980], R139"
+            },
+            {
+              "pc": "0x2260",
+              "instruction": "@P2 BRA 0x2990"
+            },
+            {
+              "pc": "0x2270",
+              "instruction": "LDS R97, [R96+0xe9c0]"
+            },
+            {
+              "pc": "0x2280",
+              "instruction": "SHF.L.W.U32.HI R97, R97, 0xd, R97"
+            }
+          ]
+        }
+      ]
+    },
+    "stall_wait": {
+      "total_samples": 149201.0,
+      "top": [
+        {
+          "pc": "0x29b0",
+          "samples": 3111.0,
+          "percent_of_reason": 2.08510666818587,
+          "context": [
+            {
+              "pc": "0x2960",
+              "instruction": "@!P2 STS [R96+0xe980], R141"
+            },
+            {
+              "pc": "0x2970",
+              "instruction": "IMAD.U32 R143, RZ, RZ, UR5"
+            },
+            {
+              "pc": "0x2980",
+              "instruction": "@!P2 STS [R96+0xe9c0], R143"
+            },
+            {
+              "pc": "0x2990",
+              "instruction": "BSYNC B0"
+            },
+            {
+              "pc": "0x29a0",
+              "instruction": "PLOP3.LUT P2, PT, PT, PT, UP1, 0x80, 0x0"
+            },
+            {
+              "pc": "0x29b0",
+              "instruction": "@!P2 CALL.REL.NOINC 0x29d0"
+            }
+          ]
+        },
+        {
+          "pc": "0x1600",
+          "samples": 2015.0,
+          "percent_of_reason": 1.3505271412389996,
+          "context": [
+            {
+              "pc": "0x15b0",
+              "instruction": "LOP3.LUT R152, R148, 0x30, R149, 0x78, !PT"
+            },
+            {
+              "pc": "0x15c0",
+              "instruction": "IMMA.16832.S8.S8 R16, R144.ROW, R154.COL, R16"
+            },
+            {
+              "pc": "0x15d0",
+              "instruction": "SHF.R.U32.HI R148, RZ, 0x3, R163"
+            },
+            {
+              "pc": "0x15e0",
+              "instruction": "LOP3.LUT R148, R163, 0x30, R148, 0x78, !PT"
+            },
+            {
+              "pc": "0x15f0",
+              "instruction": "IMMA.16832.S8.S8 R12, R140.ROW, R154.reuse.COL, R12"
+            },
+            {
+              "pc": "0x1600",
+              "instruction": "IMMA.16832.S8.S8 R8, R136.ROW, R154.reuse.COL, R8"
+            }
+          ]
+        },
+        {
+          "pc": "0x1650",
+          "samples": 2004.0,
+          "percent_of_reason": 1.3431545364977446,
+          "context": [
+            {
+              "pc": "0x1600",
+              "instruction": "IMMA.16832.S8.S8 R8, R136.ROW, R154.reuse.COL, R8"
+            },
+            {
+              "pc": "0x1610",
+              "instruction": "IMMA.16832.S8.S8 R4, R100.ROW, R154.COL, R4"
+            },
+            {
+              "pc": "0x1620",
+              "instruction": "LDSM.16.M88.4 R152, [R152+UR5]"
+            },
+            {
+              "pc": "0x1630",
+              "instruction": "IMMA.16832.S8.S8 R116, R144.ROW, R150.reuse.COL, R116"
+            },
+            {
+              "pc": "0x1640",
+              "instruction": "IMMA.16832.S8.S8 R84, R140.ROW, R150.reuse.COL, R84"
+            },
+            {
+              "pc": "0x1650",
+              "instruction": "IMMA.16832.S8.S8 R68, R136.ROW, R150.reuse.COL, R68"
+            }
+          ]
+        },
+        {
+          "pc": "0x1510",
+          "samples": 2002.0,
+          "percent_of_reason": 1.3418140629084256,
+          "context": [
+            {
+              "pc": "0x14c0",
+              "instruction": "LDSM.16.M88.4 R100, [R164]"
+            },
+            {
+              "pc": "0x14d0",
+              "instruction": "LDSM.16.M88.4 R140, [R140]"
+            },
+            {
+              "pc": "0x14e0",
+              "instruction": "LDSM.16.M88.4 R148, [R149+UR5]"
+            },
+            {
+              "pc": "0x14f0",
+              "instruction": "LDSM.16.M88.4 R152, [R152+UR5]"
+            },
+            {
+              "pc": "0x1500",
+              "instruction": "IMMA.16832.S8.S8 R120, R144.ROW, R148.reuse.COL, R120"
+            },
+            {
+              "pc": "0x1510",
+              "instruction": "IMMA.16832.S8.S8 R88, R140.ROW, R148.reuse.COL, R88"
+            }
+          ]
+        },
+        {
+          "pc": "0x1660",
+          "samples": 1969.0,
+          "percent_of_reason": 1.3196962486846604,
+          "context": [
+            {
+              "pc": "0x1610",
+              "instruction": "IMMA.16832.S8.S8 R4, R100.ROW, R154.COL, R4"
+            },
+            {
+              "pc": "0x1620",
+              "instruction": "LDSM.16.M88.4 R152, [R152+UR5]"
+            },
+            {
+              "pc": "0x1630",
+              "instruction": "IMMA.16832.S8.S8 R116, R144.ROW, R150.reuse.COL, R116"
+            },
+            {
+              "pc": "0x1640",
+              "instruction": "IMMA.16832.S8.S8 R84, R140.ROW, R150.reuse.COL, R84"
+            },
+            {
+              "pc": "0x1650",
+              "instruction": "IMMA.16832.S8.S8 R68, R136.ROW, R150.reuse.COL, R68"
+            },
+            {
+              "pc": "0x1660",
+              "instruction": "IMMA.16832.S8.S8 R128, R100.reuse.ROW, R150.COL, R128"
+            }
+          ]
+        },
+        {
+          "pc": "0x1520",
+          "samples": 1967.0,
+          "percent_of_reason": 1.3183557750953412,
+          "context": [
+            {
+              "pc": "0x14d0",
+              "instruction": "LDSM.16.M88.4 R140, [R140]"
+            },
+            {
+              "pc": "0x14e0",
+              "instruction": "LDSM.16.M88.4 R148, [R149+UR5]"
+            },
+            {
+              "pc": "0x14f0",
+              "instruction": "LDSM.16.M88.4 R152, [R152+UR5]"
+            },
+            {
+              "pc": "0x1500",
+              "instruction": "IMMA.16832.S8.S8 R120, R144.ROW, R148.reuse.COL, R120"
+            },
+            {
+              "pc": "0x1510",
+              "instruction": "IMMA.16832.S8.S8 R88, R140.ROW, R148.reuse.COL, R88"
+            },
+            {
+              "pc": "0x1520",
+              "instruction": "IMMA.16832.S8.S8 R72, R136.ROW, R148.reuse.COL, R72"
+            }
+          ]
+        },
+        {
+          "pc": "0x1640",
+          "samples": 1939.0,
+          "percent_of_reason": 1.2995891448448738,
+          "context": [
+            {
+              "pc": "0x15f0",
+              "instruction": "IMMA.16832.S8.S8 R12, R140.ROW, R154.reuse.COL, R12"
+            },
+            {
+              "pc": "0x1600",
+              "instruction": "IMMA.16832.S8.S8 R8, R136.ROW, R154.reuse.COL, R8"
+            },
+            {
+              "pc": "0x1610",
+              "instruction": "IMMA.16832.S8.S8 R4, R100.ROW, R154.COL, R4"
+            },
+            {
+              "pc": "0x1620",
+              "instruction": "LDSM.16.M88.4 R152, [R152+UR5]"
+            },
+            {
+              "pc": "0x1630",
+              "instruction": "IMMA.16832.S8.S8 R116, R144.ROW, R150.reuse.COL, R116"
+            },
+            {
+              "pc": "0x1640",
+              "instruction": "IMMA.16832.S8.S8 R84, R140.ROW, R150.reuse.COL, R84"
+            }
+          ]
+        },
+        {
+          "pc": "0x1610",
+          "samples": 1935.0,
+          "percent_of_reason": 1.2969081976662356,
+          "context": [
+            {
+              "pc": "0x15c0",
+              "instruction": "IMMA.16832.S8.S8 R16, R144.ROW, R154.COL, R16"
+            },
+            {
+              "pc": "0x15d0",
+              "instruction": "SHF.R.U32.HI R148, RZ, 0x3, R163"
+            },
+            {
+              "pc": "0x15e0",
+              "instruction": "LOP3.LUT R148, R163, 0x30, R148, 0x78, !PT"
+            },
+            {
+              "pc": "0x15f0",
+              "instruction": "IMMA.16832.S8.S8 R12, R140.ROW, R154.reuse.COL, R12"
+            },
+            {
+              "pc": "0x1600",
+              "instruction": "IMMA.16832.S8.S8 R8, R136.ROW, R154.reuse.COL, R8"
+            },
+            {
+              "pc": "0x1610",
+              "instruction": "IMMA.16832.S8.S8 R4, R100.ROW, R154.COL, R4"
+            }
+          ]
+        }
+      ]
+    },
+    "stall_math": {
+      "total_samples": 456525.0,
+      "top": [
+        {
+          "pc": "0x1210",
+          "samples": 82584.0,
+          "percent_of_reason": 18.08969935929029,
+          "context": [
+            {
+              "pc": "0x11c0",
+              "instruction": "IMMA.16832.S8.S8 R52, R136.ROW, R148.reuse.COL, R52"
+            },
+            {
+              "pc": "0x11d0",
+              "instruction": "IMMA.16832.S8.S8 R36, R96.ROW, R148.COL, R36"
+            },
+            {
+              "pc": "0x11e0",
+              "instruction": "SHF.R.U32.HI R148, RZ, 0x3, R163"
+            },
+            {
+              "pc": "0x11f0",
+              "instruction": "IMMA.16832.S8.S8 R108, R144.ROW, R150.COL, R108"
+            },
+            {
+              "pc": "0x1200",
+              "instruction": "LOP3.LUT R149, R163, 0x30, R148, 0x78, !PT"
+            },
+            {
+              "pc": "0x1210",
+              "instruction": "IMMA.16832.S8.S8 R64, R140.ROW, R150.reuse.COL, R64"
+            }
+          ]
+        },
+        {
+          "pc": "0x1500",
+          "samples": 75663.0,
+          "percent_of_reason": 16.57368161655988,
+          "context": [
+            {
+              "pc": "0x14b0",
+              "instruction": "IMMA.16832.S8.S8 R96, R96.ROW, R150.COL, R100"
+            },
+            {
+              "pc": "0x14c0",
+              "instruction": "LDSM.16.M88.4 R100, [R164]"
+            },
+            {
+              "pc": "0x14d0",
+              "instruction": "LDSM.16.M88.4 R140, [R140]"
+            },
+            {
+              "pc": "0x14e0",
+              "instruction": "LDSM.16.M88.4 R148, [R149+UR5]"
+            },
+            {
+              "pc": "0x14f0",
+              "instruction": "LDSM.16.M88.4 R152, [R152+UR5]"
+            },
+            {
+              "pc": "0x1500",
+              "instruction": "IMMA.16832.S8.S8 R120, R144.ROW, R148.reuse.COL, R120"
+            }
+          ]
+        },
+        {
+          "pc": "0x1580",
+          "samples": 59288.0,
+          "percent_of_reason": 12.986802475220415,
+          "context": [
+            {
+              "pc": "0x1530",
+              "instruction": "IMMA.16832.S8.S8 R124, R100.ROW, R148.COL, R124"
+            },
+            {
+              "pc": "0x1540",
+              "instruction": "IADD3 R148, R163.reuse, 0x820, RZ"
+            },
+            {
+              "pc": "0x1550",
+              "instruction": "IMMA.16832.S8.S8 R32, R144.ROW, R152.COL, R32"
+            },
+            {
+              "pc": "0x1560",
+              "instruction": "IADD3 R163, R163, 0xc20, RZ"
+            },
+            {
+              "pc": "0x1570",
+              "instruction": "SHF.R.U32.HI R149, RZ, 0x3, R148"
+            },
+            {
+              "pc": "0x1580",
+              "instruction": "IMMA.16832.S8.S8 R28, R140.ROW, R152.reuse.COL, R28"
+            }
+          ]
+        },
+        {
+          "pc": "0x15f0",
+          "samples": 28560.0,
+          "percent_of_reason": 6.255955314604896,
+          "context": [
+            {
+              "pc": "0x15a0",
+              "instruction": "IMMA.16832.S8.S8 R20, R100.ROW, R152.COL, R20"
+            },
+            {
+              "pc": "0x15b0",
+              "instruction": "LOP3.LUT R152, R148, 0x30, R149, 0x78, !PT"
+            },
+            {
+              "pc": "0x15c0",
+              "instruction": "IMMA.16832.S8.S8 R16, R144.ROW, R154.COL, R16"
+            },
+            {
+              "pc": "0x15d0",
+              "instruction": "SHF.R.U32.HI R148, RZ, 0x3, R163"
+            },
+            {
+              "pc": "0x15e0",
+              "instruction": "LOP3.LUT R148, R163, 0x30, R148, 0x78, !PT"
+            },
+            {
+              "pc": "0x15f0",
+              "instruction": "IMMA.16832.S8.S8 R12, R140.ROW, R154.reuse.COL, R12"
+            }
+          ]
+        },
+        {
+          "pc": "0x10e0",
+          "samples": 12273.0,
+          "percent_of_reason": 2.688352226055528,
+          "context": [
+            {
+              "pc": "0x1090",
+              "instruction": "LDSM.16.M88.4 R148, [R148+UR5]"
+            },
+            {
+              "pc": "0x10a0",
+              "instruction": "UMOV UR4, UR7"
+            },
+            {
+              "pc": "0x10b0",
+              "instruction": "LDSM.16.M88.4 R140, [R142]"
+            },
+            {
+              "pc": "0x10c0",
+              "instruction": "LDSM.16.M88.4 R136, [R136]"
+            },
+            {
+              "pc": "0x10d0",
+              "instruction": "LDSM.16.M88.4 R96, [R96]"
+            },
+            {
+              "pc": "0x10e0",
+              "instruction": "IMMA.16832.S8.S8 R120, R144.ROW, R148.reuse.COL, R120"
+            }
+          ]
+        },
+        {
+          "pc": "0x11a0",
+          "samples": 7854.0,
+          "percent_of_reason": 1.7203877115163464,
+          "context": [
+            {
+              "pc": "0x1150",
+              "instruction": "LOP3.LUT R152, R149, 0x30, R148, 0x78, !PT"
+            },
+            {
+              "pc": "0x1160",
+              "instruction": "IMMA.16832.S8.S8 R84, R140.ROW, R150.reuse.COL, R84"
+            },
+            {
+              "pc": "0x1170",
+              "instruction": "IMMA.16832.S8.S8 R68, R136.ROW, R150.reuse.COL, R68"
+            },
+            {
+              "pc": "0x1180",
+              "instruction": "IMMA.16832.S8.S8 R128, R96.ROW, R150.COL, R128"
+            },
+            {
+              "pc": "0x1190",
+              "instruction": "LDSM.16.M88.4 R148, [R152+UR5]"
+            },
+            {
+              "pc": "0x11a0",
+              "instruction": "IMMA.16832.S8.S8 R112, R144.ROW, R148.reuse.COL, R112"
+            }
+          ]
+        },
+        {
+          "pc": "0x1340",
+          "samples": 7794.0,
+          "percent_of_reason": 1.7072449482503695,
+          "context": [
+            {
+              "pc": "0x12f0",
+              "instruction": "IMMA.16832.S8.S8 R4, R96.ROW, R150.COL, R4"
+            },
+            {
+              "pc": "0x1300",
+              "instruction": "LDSM.16.M88.4 R148, [R148+UR5]"
+            },
+            {
+              "pc": "0x1310",
+              "instruction": "IMMA.16832.S8.S8 R44, R136.reuse.ROW, R148.COL, R44"
+            },
+            {
+              "pc": "0x1320",
+              "instruction": "IMMA.16832.S8.S8 R40, R136.ROW, R150.COL, R40"
+            },
+            {
+              "pc": "0x1330",
+              "instruction": "IADD3 R136, R163, 0x20, RZ"
+            },
+            {
+              "pc": "0x1340",
+              "instruction": "IMMA.16832.S8.S8 R104, R144.ROW, R148.COL, R104"
+            }
+          ]
+        },
+        {
+          "pc": "0x11c0",
+          "samples": 7356.0,
+          "percent_of_reason": 1.61130277640874,
+          "context": [
+            {
+              "pc": "0x1170",
+              "instruction": "IMMA.16832.S8.S8 R68, R136.ROW, R150.reuse.COL, R68"
+            },
+            {
+              "pc": "0x1180",
+              "instruction": "IMMA.16832.S8.S8 R128, R96.ROW, R150.COL, R128"
+            },
+            {
+              "pc": "0x1190",
+              "instruction": "LDSM.16.M88.4 R148, [R152+UR5]"
+            },
+            {
+              "pc": "0x11a0",
+              "instruction": "IMMA.16832.S8.S8 R112, R144.ROW, R148.reuse.COL, R112"
+            },
+            {
+              "pc": "0x11b0",
+              "instruction": "IMMA.16832.S8.S8 R76, R140.ROW, R148.reuse.COL, R76"
+            },
+            {
+              "pc": "0x11c0",
+              "instruction": "IMMA.16832.S8.S8 R52, R136.ROW, R148.reuse.COL, R52"
+            }
+          ]
+        }
+      ]
+    },
+    "stall_barrier": {
+      "total_samples": 128733.0,
+      "top": [
+        {
+          "pc": "0xd90",
+          "samples": 126617.0,
+          "percent_of_reason": 98.35628782052775,
+          "context": [
+            {
+              "pc": "0xd40",
+              "instruction": "LOP3.LUT R144, R2, R97, RZ, 0x3c, !PT"
+            },
+            {
+              "pc": "0xd50",
+              "instruction": "IADD3 R97, R97, 0x400, RZ"
+            },
+            {
+              "pc": "0xd60",
+              "instruction": "IMAD R144, R153, 0x4000, R144"
+            },
+            {
+              "pc": "0xd70",
+              "instruction": "LOP3.LUT R142, R2, R97, RZ, 0x3c, !PT"
+            },
+            {
+              "pc": "0xd80",
+              "instruction": "IMAD R142, R153, 0x4000, R142"
+            },
+            {
+              "pc": "0xd90",
+              "instruction": "@P2 BRA 0x1060"
+            }
+          ]
+        },
+        {
+          "pc": "0x29f0",
+          "samples": 2116.0,
+          "percent_of_reason": 1.643712179472241,
+          "context": [
+            {
+              "pc": "0x29a0",
+              "instruction": "PLOP3.LUT P2, PT, PT, PT, UP1, 0x80, 0x0"
+            },
+            {
+              "pc": "0x29b0",
+              "instruction": "@!P2 CALL.REL.NOINC 0x29d0"
+            },
+            {
+              "pc": "0x29c0",
+              "instruction": "BRA 0xb60"
+            },
+            {
+              "pc": "0x29d0",
+              "instruction": "BAR.SYNC.DEFER_BLOCKING 0x0"
+            },
+            {
+              "pc": "0x29e0",
+              "instruction": "ISETP.GT.AND P0, PT, R162, 0xbff, PT"
+            },
+            {
+              "pc": "0x29f0",
+              "instruction": "@P0 EXIT"
+            }
+          ]
+        },
+        {
+          "pc": "0x0",
+          "samples": 0.0,
+          "percent_of_reason": 0.0,
+          "context": [
+            {
+              "pc": "0x0",
+              "instruction": "IMAD.MOV.U32 R1, RZ, RZ, c[0x0][0x28]"
+            }
+          ]
+        },
+        {
+          "pc": "0x10",
+          "samples": 0.0,
+          "percent_of_reason": 0.0,
+          "context": [
+            {
+              "pc": "0x0",
+              "instruction": "IMAD.MOV.U32 R1, RZ, RZ, c[0x0][0x28]"
+            },
+            {
+              "pc": "0x10",
+              "instruction": "IMAD.MOV.U32 R0, RZ, RZ, c[0x0][0xc]"
+            }
+          ]
+        },
+        {
+          "pc": "0x20",
+          "samples": 0.0,
+          "percent_of_reason": 0.0,
+          "context": [
+            {
+              "pc": "0x0",
+              "instruction": "IMAD.MOV.U32 R1, RZ, RZ, c[0x0][0x28]"
+            },
+            {
+              "pc": "0x10",
+              "instruction": "IMAD.MOV.U32 R0, RZ, RZ, c[0x0][0xc]"
+            },
+            {
+              "pc": "0x20",
+              "instruction": "S2UR UR4, SR_CTAID.X"
+            }
+          ]
+        },
+        {
+          "pc": "0x30",
+          "samples": 0.0,
+          "percent_of_reason": 0.0,
+          "context": [
+            {
+              "pc": "0x0",
+              "instruction": "IMAD.MOV.U32 R1, RZ, RZ, c[0x0][0x28]"
+            },
+            {
+              "pc": "0x10",
+              "instruction": "IMAD.MOV.U32 R0, RZ, RZ, c[0x0][0xc]"
+            },
+            {
+              "pc": "0x20",
+              "instruction": "S2UR UR4, SR_CTAID.X"
+            },
+            {
+              "pc": "0x30",
+              "instruction": "ULDC UR6, c[0x0][0xc]"
+            }
+          ]
+        },
+        {
+          "pc": "0x40",
+          "samples": 0.0,
+          "percent_of_reason": 0.0,
+          "context": [
+            {
+              "pc": "0x0",
+              "instruction": "IMAD.MOV.U32 R1, RZ, RZ, c[0x0][0x28]"
+            },
+            {
+              "pc": "0x10",
+              "instruction": "IMAD.MOV.U32 R0, RZ, RZ, c[0x0][0xc]"
+            },
+            {
+              "pc": "0x20",
+              "instruction": "S2UR UR4, SR_CTAID.X"
+            },
+            {
+              "pc": "0x30",
+              "instruction": "ULDC UR6, c[0x0][0xc]"
+            },
+            {
+              "pc": "0x40",
+              "instruction": "S2R R162, SR_TID.X"
+            }
+          ]
+        },
+        {
+          "pc": "0x50",
+          "samples": 0.0,
+          "percent_of_reason": 0.0,
+          "context": [
+            {
+              "pc": "0x0",
+              "instruction": "IMAD.MOV.U32 R1, RZ, RZ, c[0x0][0x28]"
+            },
+            {
+              "pc": "0x10",
+              "instruction": "IMAD.MOV.U32 R0, RZ, RZ, c[0x0][0xc]"
+            },
+            {
+              "pc": "0x20",
+              "instruction": "S2UR UR4, SR_CTAID.X"
+            },
+            {
+              "pc": "0x30",
+              "instruction": "ULDC UR6, c[0x0][0xc]"
+            },
+            {
+              "pc": "0x40",
+              "instruction": "S2R R162, SR_TID.X"
+            },
+            {
+              "pc": "0x50",
+              "instruction": "IMAD.SHL.U32 R0, R0, 0x8, RZ"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "B_fragment_hotspots_share_of_short_sb": 70.27297703311724,
+  "address_overwrite_hotspots_share_of_long_sb": 80.95419582842491
+}

@@ -1,0 +1,47 @@
+Fine-grained transcript tasks, independent execution context, GPU0 offline.
+OriginalMMA tile256x192,K64,2stages retained for12producer warps.
+Add1consumer warp (416threads/CTA);no extra useful MMA/global operand copies.
+
+Task identity:producer w,fold rb(0..31),column group g(0..3).
+Task contains4 tiles:local row0..3,column g within that warp's64x64 region.
+Inputs:7-XOR reduction of each tile's8accumulator elements perlane,represented
+by4 uint32 values/lane. Producer retains logical accumulator state for nextK.
+Producer stores128uint32 (512B) into its private shared queue slot.
+One ready mbarrier/producer,count32,announces this specific task.
+Consumer warp loads128words,signals free count32,does4 REDUX and writes/updates
+4 transcript words (lane0). It never waits for unrelated producer arrivals
+on that task's ready object.
+
+Consumer fixed sequence:rb ->group ->producer0..11. It can be blocked behind
+an unavailable earlier producer task;this first prototype is NOT a work-stealing
+or ready-any queue. Fine dependencies do not guarantee optimal scheduling.
+Producer free-wait before reusing one-slot queue prevents overwrite.
+Ready/free parity=seq%2,seq=4*rb+g. Producer==consumer arrival roles disjoint.
+Queue capacity1 perproducer. Count32 equals all lanes of exactly one warp.
+Before next ready phase can complete,prior consumer acquired ready and released
+free;before next free phase can complete,producer acquired previous free.
+Consumer releases after loads but before REDUX;register copy protects its inputs.
+Read/write ordering comes from mbarrier release/acquire,validated with racecheck.
+All24objects initialized before common CTA barrier;all416threads join finalCTA
+barrier before object invalidation and collective output (original384threads).
+Original compute-warp A/B handoff remains count384;consumer never participates.
+
+Variants:
+source_control:recompiled original384threads,fold ineachproducer.
+consumer_late:all64MMA complete,thenproducer publishes4tasks.
+consumer_fine:after40,48,56,64 usefulMMA logically,producer publishes corresponding
+task (see SASS audit for actual emitted order). Other groups need not complete.
+This is independent transcript execution,not a few moved XOR instructions.
+
+Costs:
+6144B sharedqueue (512B*12);192B mbarriers;total75968B vs69632B.
+Per fold24KiB partial stores+24KiB consumer loads,excluding flags/transcript.
+32folds ->1.5MiB explicitshared tasktraffic/CTA. Not L2/globaltraffic.
+Compile:both consumer variants128regs,with spills;baseline168regs,no spills.
+This violates the desired spill-free performance property,so experimental ONLY.
+Spill bytes reported by ptxas are static compiler diagnostics,not measured traffic.
+Consumer12 must process192tile reductions/fold versus16 perproducer previously.
+One consumer may bottleneck;not established by resource counts alone.
+
+No production writes,no live mining. Both native and source_control measured
+because recompilation loses frozen baseline's tuned SASS scheduling.

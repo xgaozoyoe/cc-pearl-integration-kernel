@@ -1,0 +1,56 @@
+{
+  "variants": {
+    "native8": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "5108fe0168279247a99b83c47dc7d0524ac0b35df098b7533a55f9d5c725ddf6",
+      "smem": 69632,
+      "correct": true,
+      "arrival_pc": "0x16d0",
+      "mma_after_arrival": 16,
+      "groups": [
+        8,
+        4
+      ],
+      "parent": "id16"
+    },
+    "source8": {
+      "entry": "_ZN23handoff_prepare_source86kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "e99e25c57e366f9da8cc19e2fcf6603726afb3fc4b65ba7e65b66372f568706a",
+      "smem": 69632,
+      "correct": true
+    },
+    "late": {
+      "entry": "_ZN20handoff_prepare_late6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "e99e25c57e366f9da8cc19e2fcf6603726afb3fc4b65ba7e65b66372f568706a",
+      "smem": 69632,
+      "correct": true
+    },
+    "early_wait": {
+      "entry": "_ZN26handoff_prepare_early_wait6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "e99e25c57e366f9da8cc19e2fcf6603726afb3fc4b65ba7e65b66372f568706a",
+      "smem": 69632,
+      "correct": true
+    },
+    "early_tail": {
+      "entry": "_ZN26handoff_prepare_early_tail6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "e99e25c57e366f9da8cc19e2fcf6603726afb3fc4b65ba7e65b66372f568706a",
+      "smem": 69632,
+      "correct": true
+    },
+    "late_pub": {
+      "entry": "_ZN20handoff_prepare_late6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "4ebe417dbd94d63d8e31bb068675db068fa4aa44326cd55451e92db1b5b635af",
+      "smem": 69632,
+      "correct": true,
+      "mma_after_arrival": 7
+    },
+    "early_tail_pub": {
+      "entry": "_ZN26handoff_prepare_early_tail6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "c967911a66d991e7a6ab4ec2ffdf10f0485eff26b16ac48165e17ccc3a4c6277",
+      "smem": 69632,
+      "correct": true,
+      "mma_after_arrival": 7
+    }
+  },
+  "warning": "Offline only, compile-time next-K copy-address preparation. Production unchanged."
+}

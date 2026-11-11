@@ -1,0 +1,380 @@
+{
+  "source": "artifacts/rank128-astream-ablation.sass",
+  "loads": [
+    {
+      "load_pc": "0x1060",
+      "register_start": 144,
+      "role": "A",
+      "first_use_pc": "0x10e0",
+      "instructions_between": 7,
+      "independent_IMMA_between": 0,
+      "previous_operand_use_pc": null,
+      "IMMA_after_previous_use_before_load": null,
+      "consumer_count": 8,
+      "short_scoreboard_samples_at_first_use": 9170.0,
+      "percent_of_all_short_scoreboard_samples": 12.41050765337195
+    },
+    {
+      "load_pc": "0x1090",
+      "register_start": 148,
+      "role": "B",
+      "first_use_pc": "0x10e0",
+      "instructions_between": 4,
+      "independent_IMMA_between": 0,
+      "previous_operand_use_pc": null,
+      "IMMA_after_previous_use_before_load": null,
+      "consumer_count": 8,
+      "short_scoreboard_samples_at_first_use": 9170.0,
+      "percent_of_all_short_scoreboard_samples": 12.41050765337195
+    },
+    {
+      "load_pc": "0x10b0",
+      "register_start": 140,
+      "role": "A",
+      "first_use_pc": "0x10f0",
+      "instructions_between": 3,
+      "independent_IMMA_between": 1,
+      "previous_operand_use_pc": null,
+      "IMMA_after_previous_use_before_load": null,
+      "consumer_count": 8,
+      "short_scoreboard_samples_at_first_use": 1428.0,
+      "percent_of_all_short_scoreboard_samples": 1.932628672738838
+    },
+    {
+      "load_pc": "0x10c0",
+      "register_start": 136,
+      "role": "A",
+      "first_use_pc": "0x1100",
+      "instructions_between": 3,
+      "independent_IMMA_between": 2,
+      "previous_operand_use_pc": null,
+      "IMMA_after_previous_use_before_load": null,
+      "consumer_count": 8,
+      "short_scoreboard_samples_at_first_use": 602.0,
+      "percent_of_all_short_scoreboard_samples": 0.8147356169389219
+    },
+    {
+      "load_pc": "0x10d0",
+      "register_start": 96,
+      "role": "A",
+      "first_use_pc": "0x1110",
+      "instructions_between": 3,
+      "independent_IMMA_between": 3,
+      "previous_operand_use_pc": null,
+      "IMMA_after_previous_use_before_load": null,
+      "consumer_count": 8,
+      "short_scoreboard_samples_at_first_use": 1926.0,
+      "percent_of_all_short_scoreboard_samples": 2.6066126216351555
+    },
+    {
+      "load_pc": "0x1190",
+      "register_start": 148,
+      "role": "B",
+      "first_use_pc": "0x11a0",
+      "instructions_between": 0,
+      "independent_IMMA_between": 0,
+      "previous_operand_use_pc": "0x1180",
+      "IMMA_after_previous_use_before_load": 0,
+      "consumer_count": 8,
+      "short_scoreboard_samples_at_first_use": 11816.0,
+      "percent_of_all_short_scoreboard_samples": 15.991554899917444
+    },
+    {
+      "load_pc": "0x1240",
+      "register_start": 148,
+      "role": "B",
+      "first_use_pc": "0x1250",
+      "instructions_between": 0,
+      "independent_IMMA_between": 0,
+      "previous_operand_use_pc": "0x1230",
+      "IMMA_after_previous_use_before_load": 0,
+      "consumer_count": 8,
+      "short_scoreboard_samples_at_first_use": 9409.0,
+      "percent_of_all_short_scoreboard_samples": 12.733965813585243
+    },
+    {
+      "load_pc": "0x1300",
+      "register_start": 148,
+      "role": "B",
+      "first_use_pc": "0x1310",
+      "instructions_between": 0,
+      "independent_IMMA_between": 0,
+      "previous_operand_use_pc": "0x12f0",
+      "IMMA_after_previous_use_before_load": 0,
+      "consumer_count": 8,
+      "short_scoreboard_samples_at_first_use": 6625.0,
+      "percent_of_all_short_scoreboard_samples": 8.9661519305986
+    },
+    {
+      "load_pc": "0x1480",
+      "register_start": 136,
+      "role": "A",
+      "first_use_pc": "0x1520",
+      "instructions_between": 9,
+      "independent_IMMA_between": 3,
+      "previous_operand_use_pc": "0x1320",
+      "IMMA_after_previous_use_before_load": 5,
+      "consumer_count": 8,
+      "short_scoreboard_samples_at_first_use": 0.0,
+      "percent_of_all_short_scoreboard_samples": 0.0
+    },
+    {
+      "load_pc": "0x1490",
+      "register_start": 144,
+      "role": "A",
+      "first_use_pc": "0x1500",
+      "instructions_between": 6,
+      "independent_IMMA_between": 1,
+      "previous_operand_use_pc": "0x1430",
+      "IMMA_after_previous_use_before_load": 1,
+      "consumer_count": 8,
+      "short_scoreboard_samples_at_first_use": 14904.0,
+      "percent_of_all_short_scoreboard_samples": 20.170796735644007
+    },
+    {
+      "load_pc": "0x14c0",
+      "register_start": 100,
+      "role": "A",
+      "first_use_pc": "0x1530",
+      "instructions_between": 6,
+      "independent_IMMA_between": 3,
+      "previous_operand_use_pc": null,
+      "IMMA_after_previous_use_before_load": null,
+      "consumer_count": 8,
+      "short_scoreboard_samples_at_first_use": 0.0,
+      "percent_of_all_short_scoreboard_samples": 0.0
+    },
+    {
+      "load_pc": "0x14d0",
+      "register_start": 140,
+      "role": "A",
+      "first_use_pc": "0x1510",
+      "instructions_between": 3,
+      "independent_IMMA_between": 1,
+      "previous_operand_use_pc": "0x1460",
+      "IMMA_after_previous_use_before_load": 1,
+      "consumer_count": 8,
+      "short_scoreboard_samples_at_first_use": 0.0,
+      "percent_of_all_short_scoreboard_samples": 0.0
+    },
+    {
+      "load_pc": "0x14e0",
+      "register_start": 148,
+      "role": "B",
+      "first_use_pc": "0x1500",
+      "instructions_between": 1,
+      "independent_IMMA_between": 0,
+      "previous_operand_use_pc": "0x14b0",
+      "IMMA_after_previous_use_before_load": 0,
+      "consumer_count": 8,
+      "short_scoreboard_samples_at_first_use": 14904.0,
+      "percent_of_all_short_scoreboard_samples": 20.170796735644007
+    },
+    {
+      "load_pc": "0x14f0",
+      "register_start": 152,
+      "role": "B",
+      "first_use_pc": "0x1550",
+      "instructions_between": 5,
+      "independent_IMMA_between": 4,
+      "previous_operand_use_pc": null,
+      "IMMA_after_previous_use_before_load": null,
+      "consumer_count": 8,
+      "short_scoreboard_samples_at_first_use": 0.0,
+      "percent_of_all_short_scoreboard_samples": 0.0
+    },
+    {
+      "load_pc": "0x1620",
+      "register_start": 152,
+      "role": "B",
+      "first_use_pc": "0x1680",
+      "instructions_between": 5,
+      "independent_IMMA_between": 4,
+      "previous_operand_use_pc": "0x1610",
+      "IMMA_after_previous_use_before_load": 0,
+      "consumer_count": 8,
+      "short_scoreboard_samples_at_first_use": 0.0,
+      "percent_of_all_short_scoreboard_samples": 0.0
+    },
+    {
+      "load_pc": "0x1670",
+      "register_start": 148,
+      "role": "B",
+      "first_use_pc": "0x16c0",
+      "instructions_between": 4,
+      "independent_IMMA_between": 4,
+      "previous_operand_use_pc": "0x1660",
+      "IMMA_after_previous_use_before_load": 0,
+      "consumer_count": 8,
+      "short_scoreboard_samples_at_first_use": 0.0,
+      "percent_of_all_short_scoreboard_samples": 0.0
+    }
+  ],
+  "C_recurrences": [
+    {
+      "previous_pc": "0x10e0",
+      "pc": "0x1500",
+      "independent_IMMA_between": 31
+    },
+    {
+      "previous_pc": "0x10f0",
+      "pc": "0x1510",
+      "independent_IMMA_between": 31
+    },
+    {
+      "previous_pc": "0x1100",
+      "pc": "0x1520",
+      "independent_IMMA_between": 31
+    },
+    {
+      "previous_pc": "0x1110",
+      "pc": "0x1530",
+      "independent_IMMA_between": 31
+    },
+    {
+      "previous_pc": "0x1250",
+      "pc": "0x1550",
+      "independent_IMMA_between": 19
+    },
+    {
+      "previous_pc": "0x1260",
+      "pc": "0x1580",
+      "independent_IMMA_between": 19
+    },
+    {
+      "previous_pc": "0x1270",
+      "pc": "0x1590",
+      "independent_IMMA_between": 19
+    },
+    {
+      "previous_pc": "0x1280",
+      "pc": "0x15a0",
+      "independent_IMMA_between": 19
+    },
+    {
+      "previous_pc": "0x12a0",
+      "pc": "0x15c0",
+      "independent_IMMA_between": 19
+    },
+    {
+      "previous_pc": "0x12d0",
+      "pc": "0x15f0",
+      "independent_IMMA_between": 19
+    },
+    {
+      "previous_pc": "0x12e0",
+      "pc": "0x1600",
+      "independent_IMMA_between": 19
+    },
+    {
+      "previous_pc": "0x12f0",
+      "pc": "0x1610",
+      "independent_IMMA_between": 19
+    },
+    {
+      "previous_pc": "0x1130",
+      "pc": "0x1630",
+      "independent_IMMA_between": 39
+    },
+    {
+      "previous_pc": "0x1160",
+      "pc": "0x1640",
+      "independent_IMMA_between": 39
+    },
+    {
+      "previous_pc": "0x1170",
+      "pc": "0x1650",
+      "independent_IMMA_between": 39
+    },
+    {
+      "previous_pc": "0x1180",
+      "pc": "0x1660",
+      "independent_IMMA_between": 39
+    },
+    {
+      "previous_pc": "0x11d0",
+      "pc": "0x1680",
+      "independent_IMMA_between": 36
+    },
+    {
+      "previous_pc": "0x1230",
+      "pc": "0x1690",
+      "independent_IMMA_between": 33
+    },
+    {
+      "previous_pc": "0x11a0",
+      "pc": "0x16a0",
+      "independent_IMMA_between": 41
+    },
+    {
+      "previous_pc": "0x11f0",
+      "pc": "0x16b0",
+      "independent_IMMA_between": 38
+    },
+    {
+      "previous_pc": "0x13e0",
+      "pc": "0x16c0",
+      "independent_IMMA_between": 23
+    },
+    {
+      "previous_pc": "0x1340",
+      "pc": "0x16d0",
+      "independent_IMMA_between": 26
+    },
+    {
+      "previous_pc": "0x1430",
+      "pc": "0x16e0",
+      "independent_IMMA_between": 24
+    },
+    {
+      "previous_pc": "0x11b0",
+      "pc": "0x16f0",
+      "independent_IMMA_between": 45
+    },
+    {
+      "previous_pc": "0x1210",
+      "pc": "0x1700",
+      "independent_IMMA_between": 42
+    },
+    {
+      "previous_pc": "0x1390",
+      "pc": "0x1710",
+      "independent_IMMA_between": 29
+    },
+    {
+      "previous_pc": "0x1460",
+      "pc": "0x1720",
+      "independent_IMMA_between": 27
+    },
+    {
+      "previous_pc": "0x11c0",
+      "pc": "0x1730",
+      "independent_IMMA_between": 48
+    },
+    {
+      "previous_pc": "0x1220",
+      "pc": "0x1740",
+      "independent_IMMA_between": 45
+    },
+    {
+      "previous_pc": "0x1310",
+      "pc": "0x1750",
+      "independent_IMMA_between": 36
+    },
+    {
+      "previous_pc": "0x1320",
+      "pc": "0x1760",
+      "independent_IMMA_between": 36
+    },
+    {
+      "previous_pc": "0x14b0",
+      "pc": "0x1770",
+      "independent_IMMA_between": 31
+    }
+  ],
+  "caveats": [
+    "Static instructions, not cycle distances.",
+    "No dynamic evidence of warp phase alignment.",
+    "C recurrence counts cover the unrolled body only, not the loop backedge."
+  ]
+}

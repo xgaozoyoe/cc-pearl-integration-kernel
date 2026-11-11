@@ -1,0 +1,37 @@
+{
+  "warning": "Deliberately racy offline diagnostic. 2x2 ablation: omit third A copy at1020 and/or named barriers. Skipped A regions can contain stale or uninitialized shared values, never used as addresses. Copy traffic differs, cannot directly prove warp lateness. Never mine with this binary.",
+  "variants": {
+    "native": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "104c0c1b265260dea5c9ab0bb174ebbbe7ee9cceb0cf0acebf2a9d1dfa4d50aa",
+      "smem": 69632,
+      "correct": true,
+      "drop_extra_A_copy": false,
+      "drop_named_barriers": false
+    },
+    "equal_copy": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "31151c0764823587cba5ae0312a52153b5e9366bec8d7f05e1b25ecd1b4e9e5c",
+      "smem": 69632,
+      "correct": false,
+      "drop_extra_A_copy": true,
+      "drop_named_barriers": false
+    },
+    "no_barrier": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "f5be59b9d8767e50c489514c1d166573a933efe467c4102db3fff9013b197eb1",
+      "smem": 69632,
+      "correct": false,
+      "drop_extra_A_copy": false,
+      "drop_named_barriers": true
+    },
+    "both": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "45d9a0282fc05b7e38a165d166feb433b2c5460146ca915d59a8424e49ee3c88",
+      "smem": 69632,
+      "correct": false,
+      "drop_extra_A_copy": true,
+      "drop_named_barriers": true
+    }
+  }
+}

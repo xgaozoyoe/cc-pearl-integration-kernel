@@ -1,0 +1,40 @@
+GPU0-only shared-stage addressing controls. Production unchanged.
+0baseline,1verified lean checkpoint,2B-stage padded16KiB,3padding+rolling XOR stage offset.
+Each variant same CTA256x192,K64,2stages,384threads,12warps,K4096,R128,64staticIMMA/16LDSM.
+Registers baseline168,control168,padded168,rolling167;shared69632B controls/77824B candidates;0local/spill,1CTA/SM.
+Baseline and verified lean control instruction text and PCs exactly match previous binaries.
+No clocks/power configuration changed; DVFS is not locked. Performance mechanism needs cycle-normalized profiling.
+Event samples average16 launches;240samples/variant/run in rotated blocks after warmup.
+
+run1
+baseline   n=240 mean=1.079494 median=1.080764 p95=1.105851 ms
+control    n=240 mean=1.076113 median=1.067762 p95=1.110016 ms
+padded     n=240 mean=1.071968 median=1.073664 p95=1.092611 ms
+rolling    n=240 mean=1.071513 median=1.067901 p95=1.094298 ms
+padded time reduction vs baseline=0.697%;vs checkpoint=0.385%.
+rolling time reduction vs baseline=0.739%;vs checkpoint=0.428%.
+run2
+baseline   n=240 mean=1.088690 median=1.087040 p95=1.107845 ms
+control    n=240 mean=1.074152 median=1.073803 p95=1.093910 ms
+padded     n=240 mean=1.075137 median=1.073792 p95=1.093733 ms
+rolling    n=240 mean=1.068098 median=1.067992 p95=1.087232 ms
+padded time reduction vs baseline=1.245%;vs checkpoint=-0.092%.
+rolling time reduction vs baseline=1.891%;vs checkpoint=0.564%.
+
+Full offline grids: includes setup/noise/Merkle/GEMM/PoW;60measured/variant after per-block warmup,rotated blocks,same deterministic seeds.
+baseline   n=60 mean=307.633 median=307.500 p95=311.610 ms grids/s=3.250623 TH/s=228.742
+control    n=60 mean=304.180 median=303.850 p95=307.910 ms grids/s=3.287527 TH/s=231.339
+padded     n=60 mean=304.413 median=303.850 p95=308.925 ms grids/s=3.285007 TH/s=231.162
+rolling    n=60 mean=304.182 median=304.100 p95=308.915 ms grids/s=3.287509 TH/s=231.338
+padded full-grid time reduction vs checkpoint=-0.077%;throughput increase vs baseline=1.058%.
+rolling full-grid time reduction vs checkpoint=-0.001%;throughput increase vs baseline=1.135%.
+
+Correctness:32 complete transcript+PoW digest comparisons including8192x8192 passed.
+ComputeSanitizer2025.2.1:racecheck24 small/edge comparisons 0hazards;memcheck full sizes 0errors;synccheck24 small/edge comparisons 0errors.
+No V3 seed/target/proof modifications; no production library change; no live mining.
+Only small performance changes are expected here; no claim of closing the full PeakMiner gap.
+Conclusion: neither padded nor rolling improves full-grid time over the lean checkpoint in this run. Retain the lean checkpoint; do not promote padding based on kernel-only means.
+Extra profiling is optional diagnostic work, not required for promotion: there is currently no demonstrated end-to-end gain.
+Capture: sudo bash tools/profile_handoff_aligned.sh 2270585
+Capture variants0baseline,1lean checkpoint,2padded,3rolling. Do not confuse with previous script variant3.
+No production promotion before reviewing the measurements.

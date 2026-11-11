@@ -1,0 +1,31 @@
+PeakMiner2.18.0 comparison — 2026-10-08
+
+GPU1 normal mining, 13 API samples over120s before profiling:
+314.725TH/s mean;313.561–315.481 range;448.692W mean;core2460–2490MHz.
+Accepted11->13;invalid0. Miner-reported rates, not an independently measured
+24-hour pool rate. Dynamic share difficulty changed to34.76PH, so fewer recent
+shares do not imply an outage. Earlier launch already produced acceptedshares.
+
+Attempt1: Nsight Systems2024.5.1,20s delay/20s duration. Exited0 with no trace/log.
+Attempt2: same profiler,zero delay. Report created, but no CUDA kernel/API events.
+SQLite diagnostics:CUDA profiling might have not been started correctly;
+No CUDA events collected. Target lifetime about7ms; no mining log from traced run.
+Cannot distinguish startup/injection/loader incompatibility from protection
+behavior based on this evidence. No protections bypassed or binary modified.
+
+Control: GPU0 known accepted-style kernel under same Nsight installation captures
+40 CUDA launches,CTA32x43,block384,168registers,69632Bshared. Tool works for control.
+Control regional mean1.190ms is not a full-grid speed comparison with PeakMiner.
+No PeakMiner kernel timing, MMA counts, L2 traffic or register measurements obtained.
+
+GPU1 was stopped gracefully and automatically restored after both attempts.
+Normal miner now runs detached; output /tmp/peakminer-gpu1-restored-console.log,
+original mining log /tmp/peakminer-gpu1.log still appended, API localhost4068.
+Final check~315.39TH/s,accepted8/invalid0 since most recent restart.
+GPU2 original PID1943747 remained running and untouched. Production hashes preserved.
+
+Next prepared:tools/profile_peakminer_gpu1_metrics.sh uses external device-wide
+Nsight metrics for30s on GPU1 while launching only/bin/sleep (no injection into
+PeakMiner). Requires sudo because RmProfilingAdminOnly=1. Not yet executed.
+This can measure available Tensor/SM/memory activity but not per-kernel PCs or
+useful MMA counts. Specific available metrics will be inspected after capture.

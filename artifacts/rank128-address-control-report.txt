@@ -1,0 +1,32 @@
+R128 main-loop address/control experiments — 2026-10-08
+
+No candidate promoted. GPU0-only validation; GPU2 miner and accepted libraries unchanged.
+Frozen accepted R128 baseline: CTA256x192,warp64x64,12warps,K64,2stages,
+Lead2,Layout6,168regs/thread,zero spills. V3,target,proof unchanged.
+
+1. Native 32-bit shared addresses for LDSM
+Changed helper parameters from generic shared pointers to unsigned shared addresses;
+converted sa/sb to shared-space once at stage-base calculation, then added offsets.
+Both kernels' 928 decoded SASS instruction lines (including encodings) identical.
+Both 64 static IMMA,16 LDSM,168 registers,zero stack/spills.
+All12 transcript/digest comparisons with accepted library passed.
+No timing comparison: identical machine instructions provide no optimization claim.
+
+2. Unroll outer K loop by2 (one R128 fold period)
+Same useful MMA/load counts and logical synchronization, preserves mapping/reuse.
+Lead2 build:168registers,112B stack,116B spill stores,136B spill loads.
+All12 transcript/digest tests passed, but rejected on spilling criterion.
+One bounded follow-up lowered B prefetch Lead2->Lead1:
+168registers,128B stack,132B spill stores,148B spill loads; also rejected.
+Final Lead1 build was not run/validated or timed. Harness now refuses local-memory
+candidates before validation or benchmarks. Lead2 correctness artifacts explicitly
+named lead2 to avoid attributing them to final Lead1 binary.
+Spill-byte figures are compiler reports, not measured traffic or timing.
+No claim here identifying which individual spilled values were accumulator values.
+
+Outcome: no speedup or new measured TH/s this round. Retain production baseline.
+Compiler already handles this address simplification. Naive K-loop expansion
+increases register pressure and violates the no-spill requirement, even with Lead1.
+Next useful investigation: inventory main-loop live registers from PTX/SASS, then
+scope address/fragment temporaries at the fold boundary before considering further
+unrolling. This is a proposed direction, not an implemented or measured speedup.

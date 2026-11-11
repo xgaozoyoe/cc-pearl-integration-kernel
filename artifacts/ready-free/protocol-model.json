@@ -1,0 +1,20 @@
+{
+  "deferred": {
+    "schedules": 100,
+    "operations": 535200,
+    "pass": true
+  },
+  "late": {
+    "schedules": 100,
+    "operations": 536400,
+    "pass": true
+  },
+  "negative_ready": {
+    "seed": 0,
+    "detected": "('unready read', 6, 0)"
+  },
+  "negative_free": {
+    "seed": 0,
+    "detected": "('overwrite', 8, 2)"
+  }
+}

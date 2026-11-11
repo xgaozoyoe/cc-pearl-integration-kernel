@@ -1,0 +1,27 @@
+GPU0 only; isolated offline region protocol overhead experiment.
+8192x8192,K4096,rank128,CTA256x192,K64/2stages,384threads. Region CUDA events, NOT full-grid time or pool throughput.
+2 independent runs x40 samples/variant,16launches/sample,3s warmup plus100launch/block. Unlocked clocks;telemetry in logs.
+
+Variants:region_deferred=previous regional free/barrier protocol;hoist_only=specialize copy reuse at the call boundary and hoist phase/base addressing;compact_poll=inline PTX polling with all-lane vote;compact_hoist=both changes.
+No leader-only waiting:all lanes execute test_wait. Nevertheless compact_hoist racecheck reports5 read/write errors. Excluded despite numericalPASS. Root cause of report not established;no timing or correctness claim.
+compact_poll compiled with40Bstack,36Bspillstores/56Bspillloads;excluded without GPU testing and related polling not validated.
+Native,region_deferred,hoist_only all168registers,0local/spills,1CTA/SM. Shared69632Bnative vs69760Bregional. No occupancy regression in measured variants.
+
+run variant mean_ms median_ms p95_ms
+1 native 1.030662 1.041472 1.048577
+1 region_deferred 1.215284 1.211552 1.236914
+1 hoist_only 1.218185 1.213568 1.242758
+2 native 1.032079 1.041637 1.048911
+2 region_deferred 1.211904 1.207321 1.238758
+2 hoist_only 1.216412 1.211001 1.238028
+
+Combined80samples:variant mean_ms median_ms p95_ms
+native 1.031370 1.041536 1.048643
+region_deferred 1.213594 1.208607 1.236920
+hoist_only 1.217298 1.213312 1.241453
+
+Validation:48 transcript comparisons initiallyPASS across native,region_deferred,hoist_only,compact_hoist;compact numericalPASS superseded by racecheck failure. hoist_only12shape/seed numerical casesPASS and standalone512x800 seed9876 racecheck0hazards/errors/warnings. Full8192region numeric output checked before both timing runs. No PoW/live/full-grid tests because no promotable gain.
+Hoist result:+0.239% and+0.372% time vs prior region version across runs;no improvement. Compiler changes layout as well as guards,so not pure ALU instruction latency isolation.
+The regional implementation remains~18%slower than frozen fastest;do not extrapolate this to all possible regional protocols. No hardware counters collected.
+Production lib checksums match artifacts/rank128-profile-baseline.sha256. No commits,production edits or live mining.
+Sources:tools/build_region_compact.py;tests/bench_region_compact.py. Diffs:hoist_only.diff,compact_hoist.diff. Manifest and harness exclude failed/unvalidated polling variants.

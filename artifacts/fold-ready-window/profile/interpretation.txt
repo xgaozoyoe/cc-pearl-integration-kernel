@@ -1,0 +1,85 @@
+GPU0,3profiled launches/variant;NCU base clock policy. Region8192x8192,not full grids.
+Eligible/issued warps are rounded to0.01 in the exported metrics;equal printed values do not prove exact equality.
+Compare SM elapsed-cycle normalized IMMA rate rather than small wall-time differences.
+name kernel_ms IMMA/SMcycle tensor_pct eligible issued barrier_pct short_SB_pct math_throttle_pct L2bytes/usefulMMA
+native 1.145749 0.208703124 85.8000 0.36 0.24 14.2633 7.6833 40.9233 37.758165
+after_wait 1.147179 0.207066330 85.0633 0.36 0.24 14.3400 6.8333 40.3067 37.759697
+before_wait 1.145419 0.206978216 85.0833 0.36 0.24 14.3167 6.8300 40.3200 37.758977
+before_wait vs native:IMMA/cycle -0.82649%;walltime -0.02886%
+before_wait vs after_wait:IMMA/cycle -0.04255%;walltime -0.15342%
+native PC sampling (not instruction latency):
+stall_barrier total=131851.0
+ 0x2a30 130084 @!P2  CALL.REL.NOINC 0x70098f25d750
+ 0x2a70 1218 @P0   EXIT
+ 0xc60 549 UMOV UR5, 0x3000
+stall_short_sb total=70828.0
+ 0x1290 10519 IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32
+ 0x1350 9443 IMMA.16832.S8.S8 R44, R136.ROW, R148.COL, R44
+ 0x1110 8272 IADD3 R152, R164, 0x420, RZ
+stall_math total=378439.0
+ 0x1400 45632 IMMA.16832.S8.S8 R132, R96.ROW, R148.COL, R132
+ 0x1530 37961 IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32
+ 0x1250 27276 IMMA.16832.S8.S8 R72, R140.ROW, R150.COL, R72
+stall_wait total=156297.0
+ 0x1540 2091 IMMA.16832.S8.S8 R28, R140.ROW, R148.COL, R28
+ 0x1150 1988 IMMA.16832.S8.S8 R120, R96.ROW, R148.COL, R120
+ 0x1780 1973 IMMA.16832.S8.S8 R72, R140.ROW, R150.COL, R72
+window PCs:pc all_samples short_SB wait branch_resolving no_inst
+0x16c0 248.0 0.0 0.0 0.0 0.0 DEPBAR.LE SB0, 0x0
+0x16d0 9806.0 7995.0 1343.0 0.0 0.0 BAR.ARV R164, 0x180
+after_wait PC sampling (not instruction latency):
+stall_barrier total=133660.0
+ 0x2a30 131713 @!P2  CALL.REL.NOINC 0x72653326d950
+ 0x2a70 1319 @P0   EXIT
+ 0xc60 628 UMOV UR5, 0x3000
+stall_short_sb total=63499.0
+ 0x1290 10273 IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32
+ 0x1350 9601 IMMA.16832.S8.S8 R44, R136.ROW, R148.COL, R44
+ 0x1110 8393 IADD3 R152, R164, 0x420, RZ
+stall_math total=375205.0
+ 0x1400 42549 IMMA.16832.S8.S8 R132, R96.ROW, R148.COL, R132
+ 0x1530 40960 IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32
+ 0x1250 28472 IMMA.16832.S8.S8 R72, R140.ROW, R150.COL, R72
+stall_wait total=169288.0
+ 0x16d0 6974 BAR.ARV R164, 0x180
+ 0x1540 2181 IMMA.16832.S8.S8 R28, R140.ROW, R148.COL, R28
+ 0x1710 2026 IMMA.16832.S8.S8 R84, R140.ROW, R148.COL, R84
+window PCs:pc all_samples short_SB wait branch_resolving no_inst
+0x16c0 277.0 0.0 0.0 0.0 0.0 BRA 0x72653326e680
+0x16d0 8549.0 342.0 6974.0 794.0 0.0 BAR.ARV R164, 0x180
+0x3780 1526.0 0.0 0.0 813.0 695.0 DEPBAR.LE SB0, 0x0
+0x3790 1562.0 0.0 1254.0 0.0 0.0 LOP3.LUT R165, R34, R33, R32, 0x96, !PT
+0x37a0 2199.0 0.0 1770.0 0.0 0.0 LOP3.LUT R165, R16, R35, R165, 0x96, !PT
+0x37b0 1637.0 0.0 1333.0 0.0 0.0 LOP3.LUT R165, R18, R17, R165, 0x96, !PT
+0x37c0 1513.0 0.0 1240.0 0.0 0.0 BRA 0x72653326c5d0
+before_wait PC sampling (not instruction latency):
+stall_barrier total=133374.0
+ 0x2a30 131447 @!P2  CALL.REL.NOINC 0x79d96f27df50
+ 0x2a70 1309 @P0   EXIT
+ 0xc60 618 UMOV UR5, 0x3000
+stall_short_sb total=64015.0
+ 0x1290 10469 IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32
+ 0x1350 9664 IMMA.16832.S8.S8 R44, R136.ROW, R148.COL, R44
+ 0x1110 8553 IADD3 R152, R164, 0x420, RZ
+stall_math total=375955.0
+ 0x1400 42251 IMMA.16832.S8.S8 R132, R96.ROW, R148.COL, R132
+ 0x1530 40650 IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32
+ 0x1250 28461 IMMA.16832.S8.S8 R72, R140.ROW, R150.COL, R72
+stall_wait total=168721.0
+ 0x16d0 6930 BAR.ARV R164, 0x180
+ 0x1540 2166 IMMA.16832.S8.S8 R28, R140.ROW, R148.COL, R28
+ 0x1790 1999 IMMA.16832.S8.S8 R56, R140.ROW, R152.COL, R56
+window PCs:pc all_samples short_SB wait branch_resolving no_inst
+0x16c0 250.0 0.0 0.0 0.0 0.0 BRA 0x79d96f27ec80
+0x16d0 8477.0 356.0 6930.0 759.0 0.0 BAR.ARV R164, 0x180
+0x3780 1543.0 0.0 0.0 782.0 731.0 LOP3.LUT R165, R34, R33, R32, 0x96, !PT
+0x3790 1614.0 0.0 1252.0 0.0 0.0 LOP3.LUT R165, R16, R35, R165, 0x96, !PT
+0x37a0 2012.0 0.0 1650.0 0.0 0.0 LOP3.LUT R165, R18, R17, R165, 0x96, !PT
+0x37b0 1620.0 0.0 1363.0 0.0 0.0 DEPBAR.LE SB0, 0x0
+0x37c0 1563.0 0.0 1272.0 0.0 0.0 BRA 0x79d96f27cbd0
+Conclusion:no measured increase in eligible warps at reported precision;no material IMMA/cycle benefit versus matched control.
+Short-scoreboard reduction versus native occurs in BOTH relocated variants,so it is not evidence of a before-wait scheduling benefit.
+PCs retain main named-barrier waiting at2a30;local code motion does not remove that synchronization.
+Only3local XORs of1block moved,not REDUX/stores or the full16-block schedule;this result cannot falsify all fine-grained transcript scheduling.
+Extra2branches/iteration,3NOPs/fold,local6cycle stalls and extra nofold XOR issue remain confounds versus native.
+No production changes,no new GPU runs.

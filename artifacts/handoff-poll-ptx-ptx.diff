@@ -1,0 +1,19 @@
+--- validated-transcript_handoff_overlap
++++ ptx
+@@ -114,12 +114,10 @@
+     asm volatile("mbarrier.arrive.shared.b64 _, [%0];" :: "r"(bar) : "memory");
+ }
+ __device__ __forceinline__ void handoff_wait(unsigned bar,unsigned phase) {
+-    unsigned done;
+-    do {
+-        asm volatile("{ .reg .pred p; mbarrier.test_wait.parity.shared.b64 p, [%1], %2; selp.u32 %0, 1, 0, p; }"
+-                     : "=r"(done) : "r"(bar),"r"(phase) : "memory");
+-    } while(!done);
+-}
++    asm volatile("{ .reg .pred ready; handoff_poll: mbarrier.test_wait.parity.shared.b64 ready, [%0], %1; @!ready bra handoff_poll; }"
++                 :: "r"(bar),"r"(phase) : "memory");
++}
++
+ template<int Lead,int TileK=64,bool Planar=false,bool PackedB=false,bool UnrollCopy=false,bool FixedCopy=false,int Stages=2,bool Wide=false,int Layout=0>
+ __global__ void __launch_bounds__(Wide?256:THREADS,1) kernel(const signed char* a,const signed char* b,int m,int n,int k,int r,unsigned* out) {
+     constexpr int WarpN=Wide?96:64, Groups=WarpN/16, Threads=Wide?256:THREADS;

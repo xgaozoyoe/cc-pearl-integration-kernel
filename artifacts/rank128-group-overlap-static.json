@@ -1,0 +1,349 @@
+{
+  "split8": {
+    "instructions": 904,
+    "mma_sites": 64,
+    "ldsm_sites": 16,
+    "reduce_positions": [
+      {
+        "pc": "1820",
+        "prior_static_imma": 52
+      },
+      {
+        "pc": "1960",
+        "prior_static_imma": 54
+      },
+      {
+        "pc": "1aa0",
+        "prior_static_imma": 56
+      },
+      {
+        "pc": "1be0",
+        "prior_static_imma": 58
+      },
+      {
+        "pc": "1d20",
+        "prior_static_imma": 60
+      },
+      {
+        "pc": "1e60",
+        "prior_static_imma": 62
+      },
+      {
+        "pc": "1fb0",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "20c0",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "2220",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "22b0",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "2300",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "2370",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "23d0",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "2440",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "24b0",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "2510",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "2710",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "27e0",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "2830",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "2880",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "28d0",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "2940",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "2980",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "29c0",
+        "prior_static_imma": 64
+      }
+    ],
+    "compute_and_fold_bssy": 9,
+    "compute_and_fold_bra": 20
+  },
+  "group8": {
+    "instructions": 904,
+    "mma_sites": 64,
+    "ldsm_sites": 16,
+    "reduce_positions": [
+      {
+        "pc": "1800",
+        "prior_static_imma": 50
+      },
+      {
+        "pc": "1960",
+        "prior_static_imma": 52
+      },
+      {
+        "pc": "1aa0",
+        "prior_static_imma": 54
+      },
+      {
+        "pc": "1be0",
+        "prior_static_imma": 56
+      },
+      {
+        "pc": "1d20",
+        "prior_static_imma": 58
+      },
+      {
+        "pc": "1e60",
+        "prior_static_imma": 60
+      },
+      {
+        "pc": "1fa0",
+        "prior_static_imma": 62
+      },
+      {
+        "pc": "20f0",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "2240",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "22d0",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "2350",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "23c0",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "2430",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "2490",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "24d0",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "2550",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "2730",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "27e0",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "2830",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "2880",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "28d0",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "2980",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "29c0",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "29f0",
+        "prior_static_imma": 64
+      }
+    ],
+    "compute_and_fold_bssy": 9,
+    "compute_and_fold_bra": 21
+  },
+  "baseline": {
+    "instructions": 880,
+    "mma_sites": 64,
+    "ldsm_sites": 16,
+    "reduce_positions": [
+      {
+        "pc": "18e0",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "1960",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "19d0",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "1a20",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "1a80",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "1ae0",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "1b40",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "1ba0",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "1c10",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "1c80",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "1ce0",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "1d50",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "1dc0",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "1e10",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "1e70",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "1ec0",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "22d0",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "2350",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "23b0",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "2400",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "2460",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "24a0",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "2500",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "2580",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "2600",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "2660",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "26c0",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "2730",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "27a0",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "2810",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "2880",
+        "prior_static_imma": 64
+      },
+      {
+        "pc": "28f0",
+        "prior_static_imma": 64
+      }
+    ],
+    "compute_and_fold_bssy": 1,
+    "compute_and_fold_bra": 5
+  }
+}

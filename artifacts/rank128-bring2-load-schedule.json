@@ -1,0 +1,44 @@
+[
+  {
+    "function": "_ZN22rank128_bring2_compact6kernelILi2ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+    "LDSM_after_IMMA_ordinals": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      8,
+      16,
+      24,
+      27,
+      28,
+      29,
+      31,
+      32,
+      32,
+      40,
+      53
+    ]
+  },
+  {
+    "function": "_ZN23rank128_bring2_baseline6kernelILi2ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+    "LDSM_after_IMMA_ordinals": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      8,
+      16,
+      24,
+      28,
+      30,
+      31,
+      32,
+      32,
+      32,
+      40,
+      53
+    ]
+  }
+]

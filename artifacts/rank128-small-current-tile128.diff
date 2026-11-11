@@ -1,0 +1,112 @@
+--- A-stream baseline
++++ tile128
+@@ -1,5 +1,5 @@
+ namespace rank128_astream_candidate_fast {
+-constexpr int BM=256, BN=192, THREADS=384;
++constexpr int BM=128, BN=128, THREADS=256;
+ constexpr int WORDS=(BM/16)*(BN/16)*16;
+ struct Fragment { unsigned v[4]; };
+ 
+@@ -109,8 +109,8 @@
+ }
+ 
+ template<int Lead,int TileK=64,bool Planar=false,bool PackedB=false,bool UnrollCopy=false,bool FixedCopy=false,int Stages=2,bool Wide=false,int Layout=0>
+-__global__ void __launch_bounds__(Wide?256:THREADS,1) kernel(const signed char* a,const signed char* b,int m,int n,int k,int r,unsigned* out) {
+-    constexpr int WarpN=Wide?96:64, Groups=WarpN/16, Threads=Wide?256:THREADS;
++__global__ void __launch_bounds__(256,2) kernel(const signed char* a,const signed char* b,int m,int n,int k,int r,unsigned* out) {
++    constexpr int WarpN=64, Groups=WarpN/16, Threads=Wide?256:THREADS;
+     // Host launch rejects every K except4096. Retain dynamic-K code in
+     // unpacked controls, specialize only the packed-B experiment.
+     if constexpr(PackedB) k=4096;
+@@ -126,8 +126,8 @@
+     int wm=warp%4,wn=warp/4;
+     // Native MMA lane ownership: row=lane/4 (+8 for c2,c3),
+     // column=2*(lane%4) (+1 for c1,c3). Two halves form a16x16 tile.
+-    unsigned c[4][Groups][2][4]={};
+-    Fragment ar[4], br[Lead+1];
++    unsigned c[2][Groups][2][4]={};
++    Fragment ar[2], br[Lead+1];
+     #pragma unroll
+     for(int p=0;p<Stages-1;++p)
+         stage_copy<TileK,Planar,UnrollCopy,FixedCopy,Layout>(a,b,sa+p*BM*TileK,sb+p*BN*TileK,cm,cn,p,m,n,k);
+@@ -146,9 +146,9 @@
+         if constexpr(Lead==0 || Lead==3) {
+             #pragma unroll
+             for(int slice=0;slice<2;++slice) {
+-                Fragment aa_rows[4],bb_groups[2];
+-                #pragma unroll
+-                for(int row=0;row<4;++row) aa_rows[row]=load16x32<TileK,Planar,Layout>(aa,wm*64+row*16,slice*32,lane,BM);
++                Fragment aa_rows[2],bb_groups[2];
++                #pragma unroll
++                for(int row=0;row<2;++row) aa_rows[row]=load16x32<TileK,Planar,Layout>(aa,wm*32+row*16,slice*32,lane,BM);
+                 if constexpr(Lead==3) bb_groups[0]=loadB16x32<TileK,Planar,PackedB,Layout>(bb,wn*WarpN,slice*32,lane,BN);
+                 #pragma unroll
+                 for(int group=0;group<Groups;++group) {
+@@ -158,13 +158,13 @@
+                     #pragma unroll
+                     for(int half=0;half<2;++half) {
+                         #pragma unroll
+-                        for(int row=0;row<4;++row) mma<PackedB>(c[row][group][half],aa_rows[row],bb_groups[slot],half);
++                        for(int row=0;row<2;++row) mma<PackedB>(c[row][group][half],aa_rows[row],bb_groups[slot],half);
+                     }
+                 }
+             }
+         } else {
+         #pragma unroll
+-        for(int row=0;row<4;++row) ar[row]=load16x32<TileK,Planar,Layout>(aa,wm*64+row*16,0,lane,BM);
++        for(int row=0;row<2;++row) ar[row]=load16x32<TileK,Planar,Layout>(aa,wm*32+row*16,0,lane,BM);
+         #pragma unroll
+         for(int p=0;p<Lead;++p) br[p]=loadB16x32<TileK,Planar,PackedB,Layout>(bb,wn*WarpN+p*16,0,lane,BN);
+         #pragma unroll
+@@ -173,13 +173,13 @@
+             int slice=g/Groups,group=g%Groups,slot=g%slots;
+             if constexpr(TileK!=64) { if(kt*TileK+slice*32>=k) continue; }
+             #pragma unroll
+-            for(int row=0;row<4;++row) {
++            for(int row=0;row<2;++row) {
+                 Fragment nextA;
+                 #pragma unroll
+                 for(int half=0;half<2;++half) {
+                     if(half==0 && row==1 && g+Lead<Groups*(TileK/32) && (TileK==64 || kt*TileK+((g+Lead)/Groups)*32<k))
+                         br[(g+Lead)%slots]=loadB16x32<TileK,Planar,PackedB,Layout>(bb,wn*WarpN+((g+Lead)%Groups)*16,((g+Lead)/Groups)*32,lane,BN);
+-                    if(half==0 && slice+1<TileK/32 && (TileK==64 || kt*TileK+(slice+1)*32<k) && group==Groups-1) nextA=load16x32<TileK,Planar,Layout>(aa,wm*64+row*16,(slice+1)*32,lane,BM);
++                    if(half==0 && slice+1<TileK/32 && (TileK==64 || kt*TileK+(slice+1)*32<k) && group==Groups-1) nextA=load16x32<TileK,Planar,Layout>(aa,wm*32+row*16,(slice+1)*32,lane,BM);
+                     mma<PackedB>(c[row][group][half],ar[row],br[slot],half);
+                     if(slice+1<TileK/32 && (TileK==64 || kt*TileK+(slice+1)*32<k) && group==Groups-1 && half==1)
+                         ar[row]=nextA;
+@@ -189,7 +189,7 @@
+         if(group==Groups-1 && (kt*TileK+(slice+1)*32)%128==0) {
+             int rb=(kt*TileK+(slice+1)*32)/128-1;
+             #pragma unroll
+-            for(int row=0;row<4;++row) {
++            for(int row=0;row<2;++row) {
+                 #pragma unroll
+                 for(int group=0;group<Groups;++group) {
+                     unsigned x=0;
+@@ -200,7 +200,7 @@
+                     }
+                     x=__reduce_xor_sync(0xffffffffu,x);
+                     if(lane==0) {
+-                        int idx=((wm*4+row)*(BN/16)+wn*Groups+group)*16+(rb%16);
++                        int idx=((wm*2+row)*(BN/16)+wn*Groups+group)*16+(rb%16);
+                         if(rb<16) transcript[idx]=x;
+                         else { unsigned prev=transcript[idx]; transcript[idx]=((prev<<13)|(prev>>19))^x; }
+                     }
+@@ -214,7 +214,7 @@
+         if((kt+1)%2==0) {
+             int rb=(kt+1)/2-1;
+             #pragma unroll
+-            for(int row=0;row<4;++row) {
++            for(int row=0;row<2;++row) {
+                 #pragma unroll
+                 for(int group=0;group<Groups;++group) {
+                     unsigned x=0;
+@@ -225,7 +225,7 @@
+                     }
+                     x=__reduce_xor_sync(0xffffffffu,x);
+                     if(lane==0) {
+-                        int idx=((wm*4+row)*(BN/16)+wn*Groups+group)*16+(rb%16);
++                        int idx=((wm*2+row)*(BN/16)+wn*Groups+group)*16+(rb%16);
+                         if(rb<16) transcript[idx]=x;
+                         else { unsigned prev=transcript[idx]; transcript[idx]=((prev<<13)|(prev>>19))^x; }
+                     }

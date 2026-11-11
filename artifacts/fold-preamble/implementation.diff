@@ -1,0 +1,292 @@
+diff --git a/tools/build_fold_preamble.py b/tools/build_fold_preamble.py
+new file mode 100644
+index 0000000..baa82a5
+--- /dev/null
++++ b/tools/build_fold_preamble.py
+@@ -0,0 +1,56 @@
++"""Fixed-SASS correct fold preamble simplification, current8+4 baseline."""
++from pathlib import Path
++import struct,re,json,hashlib,subprocess,difflib
++root=Path(__file__).resolve().parents[1];out=root/'artifacts/fold-preamble';out.mkdir(exist_ok=True)
++src=root/'artifacts/handoff-groups';meta=json.loads((src/'manifest.json').read_text());entry=meta['variants']['group8']['entry'];base=(src/'group8.cubin').read_bytes();assert hashlib.sha256(base).hexdigest()==meta['variants']['group8']['sha256']
++sh=struct.unpack_from('<Q',base,40)[0];sz,n,st=struct.unpack_from('<HHH',base,58);hs=[struct.unpack_from('<IIQQQQIIQQ',base,sh+i*sz) for i in range(n)];h=hs[st];ss=base[h[4]:h[4]+h[5]];off=next(h[4] for h in hs if ss[h[0]:].split(b'\0')[0].decode()=='.text.'+entry)
++def rows(s):
++ s=s.split('Function : '+entry)[1].split('Function : ')[0]
++ return {int(a,16):x for a,x in re.findall(r'/\*([0-9a-f]+)\*/\s+(.*?)\s*;',s)}
++r=rows((src/'group8.sass').read_text())
++def word(pc):return base[off+pc:off+pc+16]
++def ctrl(w):return int.from_bytes(w,'little')>>105&0x1ffff
++def wait(w,mask):
++ v=int.from_bytes(w,'little');return ((v&~(63<<116))|(mask<<116)).to_bytes(16,'little')
++def relative(w,old,new,target):
++ v=int.from_bytes(w,'little');delta=(v>>32)&0xffffffff;delta=delta-(1<<32) if delta>>31 else delta
++ assert old+16+delta==target
++ d=target-new-16;assert d>=0
++ return ((v&~(0xffffffff<<32))|(d<<32)).to_bytes(16,'little')
++assert r[0x17f0]=='S2R R96, SR_TID.X'
++assert r[0x1860]=='ULOP3.LUT UR6, UR6, 0x3ffffff0, URZ, 0xc0, !UPT'
++assert r[0x1880]=='SHF.R.U32.HI R96, RZ, 0x5, R96'
++assert r[0x3700]=='NOP'
++# rb in[0,31], so signed remainder by16 equals bitwiseAND15.
++a=bytearray(word(0x1860));assert a[3]==6;a[3]=5
++v=int.from_bytes(a,'little');v=(v&~(0xffffffff<<32))|(15<<32);andword=v.to_bytes(16,'little')
++manifest={'entry':entry,'variants':{}}
++for name in ('baseline','mod_nop','mod_compact','both_compact'):
++ data=bytearray(base);expected=dict(r)
++ if name=='mod_nop':
++  for pc in (0x1830,0x1840,0x1860,0x1870):
++   w=andword if pc==0x1830 else word(0x3700);data[off+pc:off+pc+16]=w
++   expected[pc]='ULOP3.LUT UR6, UR5, 0xf, URZ, 0xc0, !UPT' if pc==0x1830 else 'NOP'
++ elif name!='baseline':
++  ids=[pc for pc in range(0x17f0,0x1930,16) if pc not in (0x1840,0x1860,0x1870)]
++  if name=='both_compact':ids.remove(0x17f0)
++  for pc in range(0x17f0,0x1930,16):data[off+pc:off+pc+16]=word(0x3700);expected[pc]='NOP'
++  for i,old in enumerate(ids):
++   pc=0x17f0+i*16;w=word(old);x=r[old]
++   if old==0x1830:w=andword;x='ULOP3.LUT UR6, UR5, 0xf, URZ, 0xc0, !UPT'
++   if old in (0x1810,0x1920):w=relative(w,old,pc,0x2a00 if old==0x1810 else 0x2320)
++   if name=='both_compact':
++    if i==0:w=wait(w,2) # retain original early arrival-read completion fence
++    if old==0x1880:
++     q=bytearray(w);assert q[8]==96;q[8]=162;w=bytes(q);x=x.replace('0x5, R96','0x5, R162')
++   data[off+pc:off+pc+16]=w;expected[pc]=x
++  # First-half path branches directly to2320. Second-half falls through
++  # this extra branch, bypassing vacated slots. Net saving2/3 or3/4 instr.
++  pc=0x17f0+len(ids)*16;w=relative(word(0x2310),0x2310,pc,0x29f0)
++  v=int.from_bytes(w,'little');v=(v&~(0xffffffff<<32))|((0x1930-pc-16)<<32)
++  data[off+pc:off+pc+16]=v.to_bytes(16,'little');expected[pc]='BRA 0x1930'
++ assert data[:off+0x17f0]==base[:off+0x17f0] and data[off+0x1930:]==base[off+0x1930:]
++ p=out/(name+'.cubin');p.write_bytes(data);dump=subprocess.check_output(['/usr/local/cuda-12.6/bin/cuobjdump','--dump-sass',str(p)],text=True);(out/(name+'.sass')).write_text(dump);got=rows(dump);assert got==expected
++ (out/(name+'.diff')).write_text(''.join(difflib.unified_diff([f'{pc:04x} {x}\n' for pc,x in r.items()],[f'{pc:04x} {x}\n' for pc,x in got.items()],fromfile='native8',tofile=name)))
++ manifest['variants'][name]={'entry':entry,'sha256':hashlib.sha256(data).hexdigest(),'smem':69632,'correct':True}
++(out/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
+diff --git a/tests/bench_fold_preamble.py b/tests/bench_fold_preamble.py
+new file mode 100644
+index 0000000..f5ac354
+--- /dev/null
++++ b/tests/bench_fold_preamble.py
+@@ -0,0 +1,84 @@
++"""GPU0-only correct-arithmetic early-arrival diagnostic, never a mining backend."""
++import os
++os.environ['CUDA_VISIBLE_DEVICES']='0'
++from pathlib import Path
++import ctypes as C,json,subprocess,sys,argparse,time,hashlib
++import numpy as np
++root=Path(__file__).resolve().parents[1];out=root/'artifacts/fold-preamble';sys.path.insert(0,str(root/'python'))
++p=argparse.ArgumentParser();p.add_argument('mode',choices=['validate','bench','profile']);p.add_argument('--variant',type=int,default=0,choices=range(4));p.add_argument('--allow-supervisor-pid',type=int,default=0);p.add_argument('--names',nargs='+');args=p.parse_args()
++sys.path.insert(0,str(root/'tools'))
++from check_gpu0_idle import check_gpu0_idle
++if args.mode!='profile':check_gpu0_idle(args.allow_supervisor_pid)
++import cuda_capi as cc
++P,I,U=C.c_void_p,C.c_int,C.c_uint
++# Force runtime primary-context creation before using the driver API.
++init=cc.DBuf(4)
++drv=C.CDLL('libcuda.so.1');drv.cuInit.argtypes=[U];drv.cuModuleLoad.argtypes=[C.POINTER(P),C.c_char_p];drv.cuModuleGetFunction.argtypes=[C.POINTER(P),P,C.c_char_p]
++drv.cuFuncSetAttribute.argtypes=[P,I,I];drv.cuFuncGetAttribute.argtypes=[C.POINTER(I),I,P];drv.cuOccupancyMaxActiveBlocksPerMultiprocessor.argtypes=[C.POINTER(I),P,I,C.c_size_t]
++drv.cuLaunchKernel.argtypes=[P,U,U,U,U,U,U,U,P,C.POINTER(P),P]
++def check(x):
++ if x:raise RuntimeError('CUDA driver status '+str(x))
++check(drv.cuInit(0));manifest=json.loads((out/'manifest.json').read_text());names=args.names or list(manifest['variants']);assert len(set(names))==len(names) and all(n in manifest['variants'] for n in names);mods=[];funcs=[];resources={}
++for name in names:
++ assert hashlib.sha256((out/(name+'.cubin')).read_bytes()).hexdigest()==manifest['variants'][name]['sha256']
++ path=out/(name+'.cubin')
++ mod,f=P(),P();check(drv.cuModuleLoad(C.byref(mod),str(path).encode()));check(drv.cuModuleGetFunction(C.byref(f),mod,manifest['variants'][name]['entry'].encode()))
++ check(drv.cuFuncSetAttribute(f,8,manifest['variants'][name]['smem']));check(drv.cuFuncSetAttribute(f,9,100))
++ info=[]
++ for key in (4,3,1):
++  val=I();check(drv.cuFuncGetAttribute(C.byref(val),key,f));info.append(val.value)
++ active=I();check(drv.cuOccupancyMaxActiveBlocksPerMultiprocessor(C.byref(active),f,384,manifest['variants'][name]['smem']));info.append(active.value)
++ assert info==[168,0,0,1],info
++ resources[name]=info;mods.append(mod);funcs.append(f)
++print('resources [registers,local,static_shared,CTAs/SM]',resources,flush=True)
++def launch(v,a,b,m,n,t):
++ vals=[P(a.ptr.value if isinstance(a.ptr,P) else a.ptr),P(b.ptr.value if isinstance(b.ptr,P) else b.ptr),I(m),I(n),I(4096),I(128),P(t.ptr.value if isinstance(t.ptr,P) else t.ptr)]
++ pars=(P*len(vals))(*[C.cast(C.byref(x),P) for x in vals]);check(drv.cuLaunchKernel(funcs[v],(m+255)//256,(n+191)//192,1,384,1,1,manifest['variants'][names[v]]['smem'],None,pars,None))
++ref=C.CDLL(str(root/'artifacts/libpearl-rank.so'));ref.rank_fold.argtypes=[I,P,P,I,I,P,P]
++if args.mode=='validate':
++ rows=[]
++ for m,n in ((256,384),(256,400),(512,768),(512,800)):
++  for seed in (42,1234,9876):
++   rng=np.random.default_rng(seed);ah=rng.integers(-128,128,(m,4096),np.int8);bh=rng.integers(-128,128,(n,4096),np.int8)
++   a,b,t=cc.DBuf(ah.nbytes),cc.DBuf(bh.nbytes),cc.DBuf(m*n//256*64);a.from_host(ah);b.from_host(bh)
++   cc._chk(ref.rank_fold(128,a.ptr,b.ptr,m,n,t.ptr,None),'reference');expected=np.empty(m*n//256*16,np.uint32);t.to_host(expected)
++   for v,name in enumerate(names):
++    t.memset(0xa5);launch(v,a,b,m,n,t);got=np.empty_like(expected);t.to_host(got)
++    exp=expected if manifest['variants'][name]['correct'] else np.zeros_like(expected)
++    assert np.array_equal(got,exp),(name,m,n,seed,np.flatnonzero(got!=exp)[:8])
++    row=dict(name=name,m=m,n=n,seed=seed,expected_probe_semantics_pass=True,transcript_bit_exact=manifest['variants'][name]['correct']);rows.append(row);print(row,flush=True)
++   for buf in (a,b,t):buf.free()
++ (out/'validation.json').write_text(json.dumps(rows,indent=2)+'\n')
++else:
++ m=n=8192;a,b,t=cc.DBuf(m*4096),cc.DBuf(n*4096),cc.DBuf(m*n//256*64);rng=np.random.default_rng(42)
++ for buf in (a,b):buf.from_host(rng.integers(-128,128,(m,4096),np.int8))
++ if args.mode=='profile':
++  for _ in range(40):launch(args.variant,a,b,m,n,t);cc.sync()
++  sys.exit(0)
++ cc._chk(ref.rank_fold(128,a.ptr,b.ptr,m,n,t.ptr,None),'reference');expected=np.empty(m*n//256*16,np.uint32);t.to_host(expected)
++ for v in range(len(names)):
++  launch(v,a,b,m,n,t);got=np.empty_like(expected);t.to_host(got);assert np.array_equal(got,expected if manifest['variants'][names[v]]['correct'] else np.zeros_like(expected)),names[v]
++ runtime=C.CDLL('/usr/local/cuda-12.6/lib64/libcudart.so');runtime.cudaEventCreate.argtypes=[C.POINTER(P)];runtime.cudaEventRecord.argtypes=[P,P];runtime.cudaEventSynchronize.argtypes=[P];runtime.cudaEventElapsedTime.argtypes=[C.POINTER(C.c_float),P,P];runtime.cudaEventDestroy.argtypes=[P]
++ start,end=P(),P();cc._chk(runtime.cudaEventCreate(C.byref(start)),'event');cc._chk(runtime.cudaEventCreate(C.byref(end)),'event')
++ warm=time.perf_counter()
++ while time.perf_counter()-warm<3:
++  for _ in range(16):launch(0,a,b,m,n,t)
++  cc.sync()
++ rows=[]
++ for repeat in range(8):
++  for j in range(len(names)):
++   v=(repeat+j)%len(names)
++   for _ in range(100):launch(v,a,b,m,n,t)
++   cc.sync();values=[]
++   for _ in range(20):
++    cc._chk(runtime.cudaEventRecord(start,None),'event')
++    for _ in range(16):launch(v,a,b,m,n,t)
++    cc._chk(runtime.cudaEventRecord(end,None),'event');cc._chk(runtime.cudaEventSynchronize(end),'event');ms=C.c_float();cc._chk(runtime.cudaEventElapsedTime(C.byref(ms),start,end),'event');values.append(ms.value/16)
++   row=dict(name=names[v],variant=v,repeat=repeat,samples_ms=values,mean_ms=float(np.mean(values)),median_ms=float(np.median(values)),p95_ms=float(np.percentile(values,95)))
++   row['telemetry_end']=subprocess.check_output(['nvidia-smi','-i','0','--query-gpu=clocks.sm,clocks.mem,power.draw,temperature.gpu','--format=csv,noheader'],text=True).strip();rows.append(row);print(json.dumps({k:x for k,x in row.items() if k!='samples_ms'}),flush=True)
++ result=dict(resources=resources,measurements=rows,summaries={})
++ for name in names:
++  vals=np.array([x for r in rows if r['name']==name for x in r['samples_ms']]);result['summaries'][name]=dict(samples=len(vals),mean_ms=float(vals.mean()),median_ms=float(np.median(vals)),p95_ms=float(np.percentile(vals,95)))
++ (out/'events.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result['summaries'],indent=2),flush=True)
++ for x in (start,end):cc._chk(runtime.cudaEventDestroy(x),'event destroy')
++ for buf in (a,b,t):buf.free()
+diff --git a/tests/bench_fold_preamble_grids.py b/tests/bench_fold_preamble_grids.py
+new file mode 100644
+index 0000000..0cf896f
+--- /dev/null
++++ b/tests/bench_fold_preamble_grids.py
+@@ -0,0 +1,92 @@
++"""GPU0-only correct-arithmetic early-arrival diagnostic, never a mining backend."""
++import os
++os.environ['CUDA_VISIBLE_DEVICES']='0'
++from pathlib import Path
++import ctypes as C,json,subprocess,sys,argparse,time,hashlib
++import numpy as np
++root=Path(__file__).resolve().parents[1];out=root/'artifacts/fold-preamble';sys.path.insert(0,str(root/'python'))
++p=argparse.ArgumentParser();p.add_argument('mode',choices=['validate','grids']);p.add_argument('--variant',type=int,default=0,choices=range(4));p.add_argument('--allow-supervisor-pid',type=int,default=0);p.add_argument('--names',nargs='+');args=p.parse_args()
++sys.path.insert(0,str(root/'tools'))
++from check_gpu0_idle import check_gpu0_idle
++if args.mode!='profile':check_gpu0_idle(args.allow_supervisor_pid)
++import cuda_capi as cc
++P,I,U=C.c_void_p,C.c_int,C.c_uint
++# Force runtime primary-context creation before using the driver API.
++init=cc.DBuf(4)
++drv=C.CDLL('libcuda.so.1');drv.cuInit.argtypes=[U];drv.cuModuleLoad.argtypes=[C.POINTER(P),C.c_char_p];drv.cuModuleGetFunction.argtypes=[C.POINTER(P),P,C.c_char_p]
++drv.cuFuncSetAttribute.argtypes=[P,I,I];drv.cuFuncGetAttribute.argtypes=[C.POINTER(I),I,P];drv.cuOccupancyMaxActiveBlocksPerMultiprocessor.argtypes=[C.POINTER(I),P,I,C.c_size_t]
++drv.cuLaunchKernel.argtypes=[P,U,U,U,U,U,U,U,P,C.POINTER(P),P]
++def check(x):
++ if x:raise RuntimeError('CUDA driver status '+str(x))
++check(drv.cuInit(0));manifest=json.loads((out/'manifest.json').read_text());names=args.names or list(manifest['variants']);assert len(set(names))==len(names) and all(n in manifest['variants'] for n in names);mods=[];funcs=[];resources={}
++for name in names:
++ assert hashlib.sha256((out/(name+'.cubin')).read_bytes()).hexdigest()==manifest['variants'][name]['sha256']
++ path=out/(name+'.cubin')
++ mod,f=P(),P();check(drv.cuModuleLoad(C.byref(mod),str(path).encode()));check(drv.cuModuleGetFunction(C.byref(f),mod,manifest['variants'][name]['entry'].encode()))
++ check(drv.cuFuncSetAttribute(f,8,manifest['variants'][name]['smem']));check(drv.cuFuncSetAttribute(f,9,100))
++ info=[]
++ for key in (4,3,1):
++  val=I();check(drv.cuFuncGetAttribute(C.byref(val),key,f));info.append(val.value)
++ active=I();check(drv.cuOccupancyMaxActiveBlocksPerMultiprocessor(C.byref(active),f,384,manifest['variants'][name]['smem']));info.append(active.value)
++ assert info==[168,0,0,1],info
++ resources[name]=info;mods.append(mod);funcs.append(f)
++print('resources [registers,local,static_shared,CTAs/SM]',resources,flush=True)
++def launch(v,a,b,m,n,t):
++ vals=[P(a.ptr.value if isinstance(a.ptr,P) else a.ptr),P(b.ptr.value if isinstance(b.ptr,P) else b.ptr),I(m),I(n),I(4096),I(128),P(t.ptr.value if isinstance(t.ptr,P) else t.ptr)]
++ pars=(P*len(vals))(*[C.cast(C.byref(x),P) for x in vals]);check(drv.cuLaunchKernel(funcs[v],(m+255)//256,(n+191)//192,1,384,1,1,manifest['variants'][names[v]]['smem'],None,pars,None))
++ref=C.CDLL(str(root/'artifacts/libpearl-rank.so'));ref.rank_fold.argtypes=[I,P,P,I,I,P,P]
++
++import statistics,re
++lib=C.CDLL(str(root/'artifacts/libpearl-handoff-lean.so'))
++blake=getattr(lib,'_Z19launch_pearl_blake3PKjiiS0_S0_PhPiS2_P11CUstream_st')
++blake.argtypes=[P,I,I,P,P,P,P,P,P];blake.restype=None
++ref.rank_pow.argtypes=[I,P,P,I,I,P,P,P,P,P,P]
++def pow_call(v,a,b,m,n,key,target,t,d=None,f=None,c=None):
++ launch(v,a,b,m,n,t)
++ blake(cc._as(t),(m//16)*(n//16),n,cc._as(key),cc._as(target),cc._as(d),cc._as(f),cc._as(c),None)
++if args.mode=='validate':
++ results=[]
++ for m,n in ((256,48),(256,400),(8192,8192)):
++  for seed in (42,1234):
++   rng=np.random.default_rng(seed);a,b,t,d=cc.DBuf(m*4096),cc.DBuf(n*4096),cc.DBuf(m*n//256*64),cc.DBuf(m*n//256*32)
++   key,target=cc.DBuf(32),cc.DBuf(32);key.from_host(rng.integers(0,256,32,np.uint8));target.memset(0)
++   a.from_host(rng.integers(-128,128,(m,4096),np.int8));b.from_host(rng.integers(-128,128,(n,4096),np.int8))
++   cc._chk(ref.rank_pow(128,a.ptr,b.ptr,m,n,key.ptr,target.ptr,t.ptr,d.ptr,None,None),'reference pow')
++   et=np.empty(m*n//256*16,np.uint32);ed=np.empty(m*n//256*32,np.uint8);t.to_host(et);d.to_host(ed)
++   for v,name in enumerate(names):
++    t.memset(0xa5);d.memset(0xa5);pow_call(v,a,b,m,n,key,target,t,d)
++    at=np.empty_like(et);ad=np.empty_like(ed);t.to_host(at);d.to_host(ad);assert np.array_equal(at,et),(name,'transcript');assert np.array_equal(ad,ed),(name,'digest')
++    row=dict(name=name,m=m,n=n,seed=seed,transcript_pass=True,digest_pass=True);results.append(row);print(row,flush=True)
++   for buf in (a,b,t,d,key,target):buf.free()
++ (out/'pow-validation.json').write_text(json.dumps(results,indent=2)+'\n')
++else:
++ import miner_capi as miner
++ import pool_common
++ miner.PROOF_PROCESS=False;miner.R=pool_common.R=128
++ class Pool:
++  def check_newer_job(self,job):return None
++ class Scheduler:
++  mode='user'
++  def __init__(self):self.grids=0
++  def note(self,elapsed):pass
++  def maybe_switch(self):self.grids+=1;return self.grids>=12
++ original_setup=cc.setup_job;results=[]
++ for repeat in range(8):
++  for j in range(len(names)):
++   v=(repeat+j)%len(names);scheduler=Scheduler();times=[];bufs=miner.Bufs(8192)
++   cc.setup_job=lambda *a:original_setup(*a[:-1],202610100000+scheduler.grids)
++   cc.pearl_pow_split=lambda a,b,m,n,k,r,key,target,t,dig,found,coord,variant:pow_call(v,a,b,m,n,key,target,t,dig,found,coord)
++   def log(line):
++    match=re.search(r'grid wall: ([\d.]+) s',line)
++    if match:times.append(float(match[1])*1000)
++   miner.mine_job(Pool(),pool_common.real_config(),bytes(80),0,'offline',8192,0,scheduler,bufs,dict(user=0,dev=0),None,log)
++   values=times[2:];mean=statistics.mean(values)
++   row=dict(name=names[v],variant=v,repeat=repeat,samples_ms=values,mean_ms=mean,median_ms=statistics.median(values),p95_ms=float(np.percentile(values,95)),grids_sec=1000/mean,consensus_equivalent_ths=(2**46/1e12)*1000/mean)
++   row['telemetry_end']=subprocess.check_output(['nvidia-smi','-i','0','--query-gpu=clocks.sm,clocks.mem,power.draw,temperature.gpu','--format=csv,noheader'],text=True).strip()
++   results.append(row);print(json.dumps({k:x for k,x in row.items() if k!='samples_ms'}),flush=True)
++   for value in vars(bufs).values():
++    if isinstance(value,cc.DBuf):value.free()
++    elif isinstance(value,list):
++     for x in value:
++      if isinstance(x,cc.DBuf):x.free()
++ (out/'grids.json').write_text(json.dumps(dict(resources=resources,measurements=results),indent=2)+'\n')
+diff --git a/tools/report_fold_preamble.py b/tools/report_fold_preamble.py
+new file mode 100644
+index 0000000..669565d
+--- /dev/null
++++ b/tools/report_fold_preamble.py
+@@ -0,0 +1,36 @@
++from pathlib import Path
++import json,numpy as np
++p=Path(__file__).resolve().parents[1]/'artifacts/fold-preamble';e=json.loads((p/'events.json').read_text());g=json.loads((p/'grids.json').read_text());rows=g['measurements'];names=list(g['resources']);summary={}
++lines=['GPU0 current8+4 fold preamble simplification; no Nsight.',
++'Kernel8192x8192 region:160event samples/variant,16launches/sample,8rotating blocks.',
++'Full offline grids:80samples/variant,8rotating blocks,12grids/block discardfirst2.',
++'Clocks unlocked. Full grids include setup/noise/Merkle/transcript/PoW; no network/proof delivery.',
++'variant kernel_mean_ms grid_mean_ms grid_median_ms grid_p95_ms grids/sec equivalent_THs']
++for n in names:
++ v=np.array([x for r in rows if r['name']==n for x in r['samples_ms']]);mean=float(v.mean());x=dict(n=len(v),mean_ms=mean,median_ms=float(np.median(v)),p95_ms=float(np.percentile(v,95)),grids_sec=1000/mean,equivalent_ths=2**46/mean/1e9);summary[n]=x
++ lines.append(f'{n} {e["summaries"][n]["mean_ms"]:.6f} {mean:.3f} {x["median_ms"]:.3f} {x["p95_ms"]:.3f} {x["grids_sec"]:.5f} {x["equivalent_ths"]:.3f}')
++base={r['repeat']:r['mean_ms'] for r in rows if r['name']=='baseline'}
++for n in (n for n in names if n != "baseline"):
++ vals={r['repeat']:r['mean_ms'] for r in rows if r['name']==n};paired=[100*(vals[k]/base[k]-1) for k in sorted(vals)]
++ lines.append(f'{n}: time {100*(summary[n]["mean_ms"]/summary["baseline"]["mean_ms"]-1):+.3f}%; throughput {100*(summary["baseline"]["mean_ms"]/summary[n]["mean_ms"]-1):+.3f}%; paired time% '+', '.join(f'{x:+.3f}' for x in paired))
++lines += ['Same168registers,69632Bshared,384threads,1CTA/SM,0spill.',
++'All main-loop MMA,LDSM,copy and earlyhandoff instruction words unchanged.',
++'mod_nop removes3uniformALU operations but retains3NOP issue slots.',
++'mod_compact/both_compact bypass vacated slots; extra branch executed on second-half folds.',
++'Address bases and per-tile immediate offsets were already shared; no large repeated-address opportunity found.',
++'No new source recompilation, no production library changes.']
++(p/'grid-summary.json').write_text(json.dumps(summary,indent=2)+'\n');(p/'report.txt').write_text('\n'.join(lines)+'\n');print('\n'.join(lines))
++if (p/'grids-run2.json').exists():
++ combined={n:[] for n in ('baseline','both_compact')}
++ lines += ['', 'Independent confirmation:run name mean_ms median_ms p95_ms equivalent_THs']
++ for run in (1,2):
++  rr=json.loads((p/f'grids-run{run}.json').read_text())['measurements'];means={}
++  for n in combined:
++   vv=[v for r in rr if r['name']==n for v in r['samples_ms']];combined[n].extend(vv);mean=float(np.mean(vv));means[n]=mean
++   lines.append(f'{run} {n} {mean:.3f} {np.median(vv):.3f} {np.percentile(vv,95):.3f} {2**46/mean/1e9:.3f}')
++  lines.append(f'run{run} throughput gain {100*(means["baseline"]/means["both_compact"]-1):.3f}%')
++ lines.append('Combined160grids/variant:')
++ for n,vv in combined.items():
++  mean=float(np.mean(vv));lines.append(f'{n}: mean={mean:.3f}ms median={np.median(vv):.3f}ms p95={np.percentile(vv,95):.3f}ms equivTH/s={2**46/mean/1e9:.3f}')
++ lines.append('Unfixed-clock offline result; do not claim pool-income gain or fixed-cycle attribution.')
++ (p/'report.txt').write_text('\n'.join(lines)+'\n')

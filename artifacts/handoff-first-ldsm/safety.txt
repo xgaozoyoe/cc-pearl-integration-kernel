@@ -1,0 +1,24 @@
+Frozen fastest baseline: artifacts/fold-preamble/both_compact.cubin
+The experiment does NOT move shared reads before the named handoff.
+
+Data dependencies:
+* Current stage reads and future stage copies use distinct buffers.
+* Previous iteration's original handoff remains before bb0 prefix.
+* First A address R144 and first B address R148+UR5 are ready by dc0.
+* A load destination R144..147 and B destination R148..151 are untouched by copy preparation dd0..1080.
+* Earlier B retains write scoreboard2; first IMMA1120 retains wait mask4.
+* Earlier A has no write scoreboard in baseline; it precedes the B LDSM whose completion is waited on before first use, preserving the original ordering.
+* Copy S2R/write scoreboard1 and LDGSTS/read scoreboard1 do not reuse B's scoreboard2.
+* Copy commit remains before all later current-stage loads and the final cp.wait.
+* Conditional copy-skip branch now targets the post-copy predicates (original10a0), because moved loads already executed. Final K still executes exactly one A/B load.
+* All64 named handoffs, copies, LDSM, IMMA, transcript operations, CTA barriers and original control fields are retained. Only the copy-skip relative branch target changes.
+* No instructions added, no register allocation changes, no shared layout changes.
+
+Per-fragment audit:
+192 combinations =12warps *2operands *4fragments *2K halves.
+Every16x32 fragment consists of32 16-byte vectors from2 distinct producer warps.
+Thus own-warp cp.wait cannot certify an entire LDSM fragment before the handoff.
+This does NOT prove every possible alternate handoff protocol is impossible.
+
+Performance experiment isolates instruction relocation. It cannot by itself
+establish actual latency overlap or tensor utilization without hardware counters.

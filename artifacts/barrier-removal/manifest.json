@@ -1,0 +1,17 @@
+{
+  "warning": "Deliberately racy offline diagnostic. Remove main-loop named arrive/sync only; cp.async waits and initial/final CTA barriers retained. Never mine with this binary.",
+  "variants": {
+    "native": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "104c0c1b265260dea5c9ab0bb174ebbbe7ee9cceb0cf0acebf2a9d1dfa4d50aa",
+      "smem": 69632,
+      "correct": true
+    },
+    "no_named_barriers": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "f5be59b9d8767e50c489514c1d166573a933efe467c4102db3fff9013b197eb1",
+      "smem": 69632,
+      "correct": false
+    }
+  }
+}

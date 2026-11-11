@@ -1,0 +1,175 @@
+{
+  "rank": 128,
+  "k": 4096,
+  "updates": 32,
+  "transcript_words": 16,
+  "counterexample": {
+    "previous_vectors": [
+      [
+        0,
+        0
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "same_previous_xor": 0,
+    "next_delta": [
+      1,
+      0
+    ],
+    "next_xors": [
+      1,
+      3
+    ]
+  },
+  "partition_checks": [
+    {
+      "case": "seed42",
+      "output_tile": [
+        16,
+        8
+      ],
+      "max_live_scalar_accumulators": 128,
+      "transcript_exact": true
+    },
+    {
+      "case": "seed42",
+      "output_tile": [
+        8,
+        16
+      ],
+      "max_live_scalar_accumulators": 128,
+      "transcript_exact": true
+    },
+    {
+      "case": "seed42",
+      "output_tile": [
+        4,
+        4
+      ],
+      "max_live_scalar_accumulators": 16,
+      "transcript_exact": true
+    },
+    {
+      "case": "seed42",
+      "output_tile": [
+        1,
+        1
+      ],
+      "max_live_scalar_accumulators": 1,
+      "transcript_exact": true
+    },
+    {
+      "case": "seed1234",
+      "output_tile": [
+        16,
+        8
+      ],
+      "max_live_scalar_accumulators": 128,
+      "transcript_exact": true
+    },
+    {
+      "case": "seed1234",
+      "output_tile": [
+        8,
+        16
+      ],
+      "max_live_scalar_accumulators": 128,
+      "transcript_exact": true
+    },
+    {
+      "case": "seed1234",
+      "output_tile": [
+        4,
+        4
+      ],
+      "max_live_scalar_accumulators": 16,
+      "transcript_exact": true
+    },
+    {
+      "case": "seed1234",
+      "output_tile": [
+        1,
+        1
+      ],
+      "max_live_scalar_accumulators": 1,
+      "transcript_exact": true
+    },
+    {
+      "case": "all_negative128",
+      "output_tile": [
+        16,
+        8
+      ],
+      "max_live_scalar_accumulators": 128,
+      "transcript_exact": true
+    },
+    {
+      "case": "all_negative128",
+      "output_tile": [
+        8,
+        16
+      ],
+      "max_live_scalar_accumulators": 128,
+      "transcript_exact": true
+    },
+    {
+      "case": "all_negative128",
+      "output_tile": [
+        4,
+        4
+      ],
+      "max_live_scalar_accumulators": 16,
+      "transcript_exact": true
+    },
+    {
+      "case": "all_negative128",
+      "output_tile": [
+        1,
+        1
+      ],
+      "max_live_scalar_accumulators": 1,
+      "transcript_exact": true
+    },
+    {
+      "case": "mixed_extremes",
+      "output_tile": [
+        16,
+        8
+      ],
+      "max_live_scalar_accumulators": 128,
+      "transcript_exact": true
+    },
+    {
+      "case": "mixed_extremes",
+      "output_tile": [
+        8,
+        16
+      ],
+      "max_live_scalar_accumulators": 128,
+      "transcript_exact": true
+    },
+    {
+      "case": "mixed_extremes",
+      "output_tile": [
+        4,
+        4
+      ],
+      "max_live_scalar_accumulators": 16,
+      "transcript_exact": true
+    },
+    {
+      "case": "mixed_extremes",
+      "output_tile": [
+        1,
+        1
+      ],
+      "max_live_scalar_accumulators": 1,
+      "transcript_exact": true
+    }
+  ],
+  "lsb_factorization_pass": true,
+  "note": "CPU algebra checks only, no performance claim. Partitioning reduces live accumulators but changes operand reuse/data movement. No general lower bound on all possible Pearl algorithms is proved."
+}

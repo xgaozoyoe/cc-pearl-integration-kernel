@@ -1,0 +1,117 @@
+[
+  {
+    "function": "_ZN29rank128_fold_local_tail2_fast6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+    "instructions": 872,
+    "mma": 64,
+    "redux_after_imma": [
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64
+    ],
+    "early_xor": [
+      {
+        "after_mma": 56,
+        "instruction": "@P2 LOP3.LUT R98, R68, R69, R70, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 57,
+        "instruction": "@P2 LOP3.LUT R96, R112, R113, R114, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 57,
+        "instruction": "@P2 LOP3.LUT R99, R71, R64, R65, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 57,
+        "instruction": "@P2 LOP3.LUT R97, R115, R108, R109, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 57,
+        "instruction": "@P2 LOP3.LUT R98, R98, R66, R67, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 58,
+        "instruction": "@P2 LOP3.LUT R96, R96, R110, R111, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 58,
+        "instruction": "@P2 LOP3.LUT R158, R98, R99, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 58,
+        "instruction": "@P2 LOP3.LUT R159, R96, R97, RZ, 0x3c, !PT ;"
+      }
+    ],
+    "spills": 0
+  },
+  {
+    "function": "_ZN33rank128_fold_local_tail2_baseline6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+    "instructions": 880,
+    "mma": 64,
+    "redux_after_imma": [
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64
+    ],
+    "early_xor": [],
+    "spills": 0
+  }
+]

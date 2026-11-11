@@ -1,0 +1,22 @@
+Bounded loop-overhead experiment; all files isolated from production.
+Variants0baseline,1previous named overlap,2peeled,3toggle.
+
+peeled: move initial cp.async.wait_group0+CTA synchronization out of the K loop.
+It still follows the initial copy and precedes the first operand load.
+Every iteration retains publication, transcript and receive-barrier sequencing.
+
+toggle: peeled plus persistent receiving barrier ID, initial4+(thread>=192).
+Peer ID=own XOR1. After receive, own XOR2 selects the other barrier pair.
+Thus groups receive4/5 at even K and6/7 at odd K. The peer is always the
+other group. The two-pair reuse proof from handoff-named-design.txt still holds.
+No per-K group division, parity shift or addition is needed at source level.
+
+Fixed: GPU0,CTA256x192,warp64x64,K64,2stages,12warps,384threads,K4096,R128.
+All variants retain64staticIMMA and16LDSM. Baseline/previous named control
+SASS instruction text and PCs exactly match their preceding binaries.
+Resources:baseline168regs,named167,peeled167,toggle168;0local/0spill;
+shared69632 bytes;1CTA/SM throughout. No residency improvement claimed.
+
+Measurements must establish whether source simplification actually helps.
+No claim of dynamic instruction savings or Tensor density gain without counters.
+No V3/target/proof/live-mining modifications. No production library overwrite.

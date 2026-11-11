@@ -1,0 +1,19 @@
+--- native
++++ no_final
+@@ -675,7 +675,7 @@
+ 2a20 LOP3.LUT R161, R161, 0x2, RZ, 0x3c, !PT
+ 2a30 @!P2 CALL.REL.NOINC 0x2a50
+ 2a40 BRA 0xbb0
+-2a50 BAR.SYNC.DEFER_BLOCKING 0x0
++2a50 NOP
+ 2a60 ISETP.GT.AND P0, PT, R162, 0xbff, PT
+ 2a70 @P0 EXIT
+ 2a80 IMNMX R3, R162.reuse, 0xa80, !PT
+[
+  {
+    "pc": "0x2a50",
+    "original": "BAR.SYNC.DEFER_BLOCKING 0x0",
+    "replacement": "NOP",
+    "waits_and_static_stalls_preserved": true
+  }
+]

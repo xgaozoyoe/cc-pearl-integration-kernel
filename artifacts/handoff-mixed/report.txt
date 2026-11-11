@@ -1,0 +1,30 @@
+Frozen named-barrier membership test;GPU0 only;production unchanged.
+No mbarriers,shared polling,ATOMS.ARRIVE or added hot-loop instructions.
+Native fastest both_compact parent;masked_control identical8+4 membership via initialization trampoline.
+pair01 smallgroup W0,W1,W8,W9;pair02 smallgroup W0,W2,W8,W10. Complement is8warps;all384threads still participate in every named barrier.
+Original initial-group ID labels are swapped in size relative to8+4control;counts remain384. Each warp retains1peer early arrive and1own late sync eachKiteration.
+Only prologue at0xa60 redirected to3instruction initialization trampoline. Main loop and output bytes after0xa70 unchanged. Pair variants differ from matched control by2bytes in one mask immediate only.
+All168regs,0local/spill,69632Bshared,384threads,1CTA/SM. Original48/16MMA split around publication preserved.
+8192x8192 region,K4096,rank128. Two independent runs x120samples/variant,16launches/sample,6rotatingblocks,unlocked clocks. Regional CUDA events,not full-grid or pool throughput.
+
+Run variant mean_ms median_ms p95_ms delta_matched_pct
+1 native 1.021649 1.016512 1.048646 +0.543
+1 masked_control 1.016131 1.011579 1.049869 +0.000
+1 pair01 1.083163 1.080640 1.104195 +6.597
+1 pair02 1.087278 1.080352 1.112642 +7.002
+2 native 1.021167 1.014176 1.050357 +0.436
+2 masked_control 1.016732 1.011744 1.049534 +0.000
+2 pair01 1.080261 1.074297 1.110368 +6.248
+2 pair02 1.084757 1.080192 1.112526 +6.691
+
+Combined240samples:variant mean_ms median_ms p95_ms
+native 1.021408 1.016256 1.050258
+masked_control 1.016432 1.011678 1.049791
+pair01 1.081712 1.075680 1.106691
+pair02 1.086018 1.080192 1.112576
+
+Correctness:48transcript comparisons PASS over4shapes/3seeds/4variants. Candidate boundary512x800 seed9876 racecheck0errors/warnings. Full8192numerical output checked before timing in bothruns. No new PoW/live/full-grid validation because no promotable candidate.
+Observation:mixing two source-trace-late warps into the previously early4warp cohort regresses6-7%vs matched control with unchanged hot-loop instruction work. Not explained by newly added hot-loop instructions,spills or occupancy loss.
+Possible interpretation:mixing couples both cohort tails to slower warps and disrupts useful progress separation. This is a hypothesis,not per-warp native timing evidence;source trace used to select masks does not establish native ordering or ordering after membership changes.
+Keep native. Matched initialization control shows~0.5%regional difference,similar to prior membership experiment;not a new grouping gain or production promotion. No hardware counter measurements;unlocked clocks limit causal attribution.
+Production checksum baseline PASS. Sources:tools/build_handoff_mixed.py;tests/bench_handoff_mixed.py;pair01.diff/pair02.diff. No commits/destructive changes.

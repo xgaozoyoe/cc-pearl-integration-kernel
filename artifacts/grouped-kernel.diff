@@ -1,0 +1,22 @@
+diff --git a/tmp/fold_ops-before-grouped.cuh b/tests/fold_ops.cuh
+index 6870993..cc11aee 100644
+--- a/tmp/fold_ops-before-grouped.cuh
++++ b/tests/fold_ops.cuh
+@@ -28,6 +28,17 @@ cute_pearl_fold(int M, int N, int K, int R,
+ 
+     auto cta_tiler = make_shape(Int<bM>{}, Int<bN>{}, Int<bK>{});
+     int cta_m = blockIdx.x, cta_n = blockIdx.y;
++    if constexpr (PairStride < 0) {
++        // Grouped-M scheduling: consume a short band of A rows across N
++        // before advancing M. Bijective, including partial final bands.
++        constexpr int group = -PairStride;
++        int linear = blockIdx.x + gridDim.x * blockIdx.y;
++        int first_m = linear / (group * gridDim.y) * group;
++        int rows = min(group, int(gridDim.x)-first_m);
++        int offset = linear % (group * gridDim.y);
++        cta_m = first_m + offset % rows;
++        cta_n = offset / rows;
++    }
+     if constexpr (PairStride > 0) {
+         // Bijective wave pairing, including the final partial wave. Encourage
+         // concurrently resident CTAs to consume the same B slice through L1.

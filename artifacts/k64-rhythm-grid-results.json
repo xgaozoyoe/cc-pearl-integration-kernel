@@ -1,0 +1,246 @@
+{
+  "baseline": 89,
+  "warmup_per_block": 2,
+  "stable_grids_per_variant": 20,
+  "results": [
+    {
+      "variant": 0,
+      "name": "production",
+      "times": [
+        0.4281,
+        0.4215,
+        0.4283,
+        0.4267,
+        0.4297,
+        0.4309,
+        0.4281,
+        0.43,
+        0.4265,
+        0.4308,
+        0.4288,
+        0.4299
+      ],
+      "median_seconds_excluding_first": 0.4288,
+      "grids_per_second": 2.332089552238806,
+      "effective_THS": 164.1062131008955,
+      "reported_search_THS": [
+        170.9,
+        173.42,
+        170.47,
+        171.12,
+        169.94,
+        169.43,
+        170.7,
+        169.97,
+        171.26,
+        169.61,
+        170.39,
+        169.95
+      ],
+      "median_reported_search_THS": 170.39
+    },
+    {
+      "variant": 89,
+      "name": "B prefetch before group",
+      "times": [
+        0.3637,
+        0.3694,
+        0.3728,
+        0.3717,
+        0.37,
+        0.3694,
+        0.3749,
+        0.3717,
+        0.3711,
+        0.3718,
+        0.3726,
+        0.3708
+      ],
+      "median_seconds_excluding_first": 0.3717,
+      "grids_per_second": 2.690341673392521,
+      "effective_THS": 189.31596496546678,
+      "reported_search_THS": [
+        201.84,
+        198.88,
+        197.04,
+        197.61,
+        198.31,
+        198.74,
+        195.84,
+        197.67,
+        197.91,
+        197.58,
+        196.89,
+        197.95
+      ],
+      "median_reported_search_THS": 197.67
+    },
+    {
+      "variant": 99,
+      "name": "K64 rolling B / bulk A",
+      "times": [
+        0.3667,
+        0.3737,
+        0.377,
+        0.3741,
+        0.3738,
+        0.3771,
+        0.3758,
+        0.3764,
+        0.3745,
+        0.3762,
+        0.3743,
+        0.3747
+      ],
+      "median_seconds_excluding_first": 0.3747,
+      "grids_per_second": 2.6688017080330932,
+      "effective_THS": 187.80022465349347,
+      "reported_search_THS": [
+        200.0,
+        196.48,
+        194.59,
+        196.08,
+        196.38,
+        194.51,
+        195.34,
+        195.06,
+        195.87,
+        195.23,
+        196.19,
+        195.89
+      ],
+      "median_reported_search_THS": 195.87
+    },
+    {
+      "variant": 99,
+      "name": "K64 rolling B / bulk A",
+      "times": [
+        0.3683,
+        0.3758,
+        0.3747,
+        0.3768,
+        0.3757,
+        0.376,
+        0.3754,
+        0.3759,
+        0.3753,
+        0.3754,
+        0.376,
+        0.3757
+      ],
+      "median_seconds_excluding_first": 0.3757,
+      "grids_per_second": 2.6616981634282673,
+      "effective_THS": 187.30035714044186,
+      "reported_search_THS": [
+        199.09,
+        195.55,
+        195.92,
+        194.61,
+        195.24,
+        195.32,
+        195.58,
+        195.36,
+        195.61,
+        195.58,
+        195.29,
+        195.21
+      ],
+      "median_reported_search_THS": 195.36
+    },
+    {
+      "variant": 89,
+      "name": "B prefetch before group",
+      "times": [
+        0.3641,
+        0.3718,
+        0.3728,
+        0.3701,
+        0.3693,
+        0.3719,
+        0.3698,
+        0.3702,
+        0.371,
+        0.3703,
+        0.3697,
+        0.3702
+      ],
+      "median_seconds_excluding_first": 0.3702,
+      "grids_per_second": 2.7012425715829282,
+      "effective_THS": 190.08304748153432,
+      "reported_search_THS": [
+        201.61,
+        197.54,
+        197.01,
+        198.6,
+        199.07,
+        197.56,
+        198.6,
+        198.45,
+        198.02,
+        198.31,
+        198.52,
+        198.46
+      ],
+      "median_reported_search_THS": 198.45
+    },
+    {
+      "variant": 0,
+      "name": "production",
+      "times": [
+        0.4184,
+        0.4246,
+        0.4324,
+        0.4265,
+        0.4311,
+        0.4259,
+        0.4286,
+        0.4298,
+        0.4252,
+        0.4287,
+        0.4269,
+        0.4282
+      ],
+      "median_seconds_excluding_first": 0.4282,
+      "grids_per_second": 2.335357309668379,
+      "effective_THS": 164.3361610874918,
+      "reported_search_THS": [
+        174.44,
+        171.94,
+        168.91,
+        171.15,
+        169.4,
+        171.47,
+        170.31,
+        169.99,
+        171.87,
+        170.19,
+        171.21,
+        170.58
+      ],
+      "median_reported_search_THS": 170.58
+    }
+  ],
+  "summary": {
+    "0": {
+      "median_ms": 428.65,
+      "mean_ms": 428.65,
+      "p95_ms": 431.16499999999996,
+      "grids_per_second": 2.332905633967106,
+      "effective_THS": 164.16363974726235
+    },
+    "89": {
+      "median_ms": 370.9,
+      "mean_ms": 371.105,
+      "p95_ms": 372.905,
+      "grids_per_second": 2.6961445133459154,
+      "effective_THS": 189.72430352565115
+    },
+    "99": {
+      "median_ms": 375.7,
+      "mean_ms": 375.54,
+      "p95_ms": 377.005,
+      "grids_per_second": 2.6616981634282673,
+      "effective_THS": 187.30035714044186
+    }
+  }
+}

@@ -1,0 +1,122 @@
+[
+  {
+    "variant": 0,
+    "m": 256,
+    "n": 512,
+    "seed": 11,
+    "words": 8192,
+    "pass_bitexact": true
+  },
+  {
+    "variant": 1,
+    "m": 256,
+    "n": 512,
+    "seed": 11,
+    "words": 8192,
+    "pass_bitexact": true
+  },
+  {
+    "variant": 2,
+    "m": 256,
+    "n": 512,
+    "seed": 11,
+    "words": 8192,
+    "pass_bitexact": true
+  },
+  {
+    "variant": 0,
+    "m": 512,
+    "n": 256,
+    "seed": 23,
+    "words": 8192,
+    "pass_bitexact": true
+  },
+  {
+    "variant": 1,
+    "m": 512,
+    "n": 256,
+    "seed": 23,
+    "words": 8192,
+    "pass_bitexact": true
+  },
+  {
+    "variant": 2,
+    "m": 512,
+    "n": 256,
+    "seed": 23,
+    "words": 8192,
+    "pass_bitexact": true
+  },
+  {
+    "variant": 0,
+    "m": 4096,
+    "n": 4096,
+    "seed": 42,
+    "words": 1048576,
+    "pass_bitexact": true
+  },
+  {
+    "variant": 1,
+    "m": 4096,
+    "n": 4096,
+    "seed": 42,
+    "words": 1048576,
+    "pass_bitexact": true
+  },
+  {
+    "variant": 2,
+    "m": 4096,
+    "n": 4096,
+    "seed": 42,
+    "words": 1048576,
+    "pass_bitexact": true
+  },
+  {
+    "variant": 0,
+    "m": 256,
+    "n": 768,
+    "seed": 57,
+    "words": 12288,
+    "pass_bitexact": true
+  },
+  {
+    "variant": 1,
+    "m": 256,
+    "n": 768,
+    "seed": 57,
+    "words": 12288,
+    "pass_bitexact": true
+  },
+  {
+    "variant": 2,
+    "m": 256,
+    "n": 768,
+    "seed": 57,
+    "words": 12288,
+    "pass_bitexact": true
+  },
+  {
+    "variant": 0,
+    "m": 768,
+    "n": 512,
+    "seed": 101,
+    "words": 24576,
+    "pass_bitexact": true
+  },
+  {
+    "variant": 1,
+    "m": 768,
+    "n": 512,
+    "seed": 101,
+    "words": 24576,
+    "pass_bitexact": true
+  },
+  {
+    "variant": 2,
+    "m": 768,
+    "n": 512,
+    "seed": 101,
+    "words": 24576,
+    "pass_bitexact": true
+  }
+]

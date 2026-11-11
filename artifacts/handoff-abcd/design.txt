@@ -1,0 +1,21 @@
+Offline A/B/C0/C/D fixed-SASS diagnostic
+======================================
+A: original homogeneous baseline entry in the lean checkpoint.
+B: validated lean named-barrier toggle entry, current best checkpoint.
+C0: B with all 64 static IMMA B operand fields changed to RZ; original waits retained.
+C: C0 plus three first-half B LDSM scoreboard waits deferred until the first overwrite of that load's destination register range.
+D: B with three redundant main-loop copy-guard integer instructions replaced by NOP; ten always-true copy/address predicates made unconditional.
+
+Scope: per-K preparation, not one-time kernel initialization. C is only a partial B-dependency cut, not removal of all preparation dependencies. A operands, address chains, global copies, handoffs, remaining scoreboard waits, and accumulator dependencies stay intact. C/C0 deliberately compute incorrect Pearl arithmetic and can only run through the offline driver harness.
+
+The compiler cannot delete preparation: C/C0 are post-compilation binary patches. Disassembly verifies all preparation instructions unchanged, 64 static IMMA and 16 LDSM retained. Resource allocations are unchanged. C/C0 retain the original B reuse hint, but RZ substitution still changes operand sourcing. Compare C vs C0 for the three wait moves; C0 vs B alone is not a clean measure of initialization latency.
+
+C wait safety: producers 0x11d0, 0x1280, 0x1340 write scoreboard 1, R148..151. Wait mask 2 moves from 0x11e0/0x1290/0x1350 to 0x1220/0x12d0/0x1410. In each intervening range, no new scoreboard producer, branch or memory instruction exists, and after B substitution there is no access to R148..151. Waiting before the first overwrite preserves write-after-write safety. No barrier is removed.
+
+D proof: launch is exactly 384 threads; tid <=383 and tid+384 <=767 are always <1024. The third A-copy guard tid+768<1024 stays. Removed temporary R96 is overwritten unconditionally before use. P4/P2 carry redefinitions remain untouched. Useful A/B loads, arithmetic semantics, output ownership and synchronization stay identical. The instruction slots and fixed stalls remain: D isolates ALU work, not the potential benefit of compacted rescheduling. It reduces only three instructions per future-copy iteration and does not remove all initialization integer cost.
+
+All use CTA256x192, K64, 384 threads, shared69632B; K4096/rank128, same input tensors and event harness. Region benchmark8192x8192 is NOT full-grid wall throughput. Driver reports168 registers/thread,0 local bytes,1 CTA/SM,12 resident warps/SM. C/C0 zero-output checks are diagnostic expectations, not bit-exact Pearl correctness.
+
+Requested counters plus tensor_v2 are in tools/profile_handoff_abcd.sh. Deprecated tensor counter retained for request compatibility. ALU pipe count does not include every integer instruction on every execution pipe; inspect SASS and dynamic counters together.
+
+Timing caveat: two unlocked runs each200 samples completed. C/C0 sampled2700..2715MHz while B2460..2670MHz. These times cannot establish dependency-related speedup. Nsight script uses --clock-control base, records sm__cycles_elapsed.avg.per_second, and normalizes IMMA by SM cycles. Counter capture needs sudo; direct access returned ERR_NVGPUCTRPERM and sudo -n requires a password.

@@ -1,0 +1,23 @@
+{
+  "description": "Same fastest native cubin.3 local XOR before vs after cp.wait, scratch existing deadR165. Control shares branch/NOP overhead. Not a complete early REDUX experiment.",
+  "variants": {
+    "native": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "104c0c1b265260dea5c9ab0bb174ebbbe7ee9cceb0cf0acebf2a9d1dfa4d50aa",
+      "smem": 69632,
+      "correct": true
+    },
+    "after_wait": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "214a1a330d6e788bcbbf72ecde5471038879b8dff46de19b107dc62d94bfe517",
+      "smem": 69632,
+      "correct": true
+    },
+    "before_wait": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "767034d22d713eedd0397f49791ab33f15b180f8c7e9fb309d46ff5eeae1d036",
+      "smem": 69632,
+      "correct": true
+    }
+  }
+}

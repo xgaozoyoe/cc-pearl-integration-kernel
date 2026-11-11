@@ -1,0 +1,94 @@
+{
+  "addr32": {
+    "stats": [
+      {
+        "variant": 0,
+        "samples": 80,
+        "mean_ms": 331.85875,
+        "median_ms": 332.1,
+        "p95_ms": 333.6,
+        "grids_sec": 3.0133302195587732,
+        "effective_ths": 212.04426334295542
+      },
+      {
+        "variant": 1,
+        "samples": 80,
+        "mean_ms": 329.94875,
+        "median_ms": 330.1,
+        "p95_ms": 332.015,
+        "grids_sec": 3.0307737186456984,
+        "effective_ths": 213.2717404677666
+      }
+    ],
+    "throughput_gain_percent": 0.578877780261311
+  },
+  "addr32_afull": {
+    "stats": [
+      {
+        "variant": 0,
+        "samples": 80,
+        "mean_ms": 332.0925,
+        "median_ms": 332.05,
+        "p95_ms": 335.2,
+        "grids_sec": 3.01120922634507,
+        "effective_ths": 211.89501171409776
+      },
+      {
+        "variant": 1,
+        "samples": 80,
+        "mean_ms": 330.2125,
+        "median_ms": 329.7,
+        "p95_ms": 333.535,
+        "grids_sec": 3.0283529545368513,
+        "effective_ths": 213.10139433747665
+      }
+    ],
+    "throughput_gain_percent": 0.5693303554529239
+  },
+  "copywalk": {
+    "stats": [
+      {
+        "variant": 0,
+        "samples": 80,
+        "mean_ms": 333.38125,
+        "median_ms": 333.4,
+        "p95_ms": 334.705,
+        "grids_sec": 2.999568811983277,
+        "effective_ths": 211.07589037375078
+      },
+      {
+        "variant": 1,
+        "samples": 80,
+        "mean_ms": 327.64875,
+        "median_ms": 327.65,
+        "p95_ms": 329.705,
+        "grids_sec": 3.05204887856279,
+        "effective_ths": 214.7688467533113
+      }
+    ],
+    "throughput_gain_percent": 1.749587019636123
+  },
+  "copywalk_unroll": {
+    "stats": [
+      {
+        "variant": 0,
+        "samples": 80,
+        "mean_ms": 333.21,
+        "median_ms": 333.1,
+        "p95_ms": 335.325,
+        "grids_sec": 3.0011104108520152,
+        "effective_ths": 211.1843707501696
+      },
+      {
+        "variant": 1,
+        "samples": 80,
+        "mean_ms": 320.8425,
+        "median_ms": 320.79999999999995,
+        "p95_ms": 322.6,
+        "grids_sec": 3.116794065624099,
+        "effective_ths": 219.32488425836357
+      }
+    ],
+    "throughput_gain_percent": 3.8546950606606067
+  }
+}

@@ -1,0 +1,22 @@
+[
+  {
+    "function": "_ZN20rank128_reuse80_wide6kernelILi2ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+    "counts": {
+      "IMMA": 80,
+      "LDSM": 18,
+      "LDGSTS": 4,
+      "LDL": 0,
+      "STL": 0
+    }
+  },
+  {
+    "function": "_ZN24rank128_reuse80_baseline6kernelILi2ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+    "counts": {
+      "IMMA": 64,
+      "LDSM": 16,
+      "LDGSTS": 4,
+      "LDL": 0,
+      "STL": 0
+    }
+  }
+]

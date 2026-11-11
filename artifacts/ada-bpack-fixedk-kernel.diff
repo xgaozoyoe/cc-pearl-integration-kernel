@@ -1,0 +1,12 @@
+--- baseline/pearl-gemm-ada-v2.cu
++++ csrc/gemm/pearl-gemm-ada-v2.cu
+@@ -81,6 +81,9 @@
+ 
+ template<int Lead,int TileK=64,bool Planar=false,bool PackedB=false>
+ __global__ void __launch_bounds__(THREADS,1) kernel(const signed char* a,const signed char* b,int m,int n,int k,int r,unsigned* out) {
++    // Host launch rejects every K except4096. Retain dynamic-K code in
++    // unpacked controls, specialize only the packed-B experiment.
++    if constexpr(PackedB) k=4096;
+     extern __shared__ signed char shared[];
+     signed char* sa=shared;
+     signed char* sb=shared+2*BM*TileK;

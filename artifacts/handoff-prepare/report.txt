@@ -1,0 +1,22 @@
+Next-K address preparation: GPU0 offline results, no Nsight.
+200 region event samples/variant,16launches/sample;60full grids/variant,6rotating batches.
+Unfixed clocks; full grids include setup/noise/Merkle/transcript/PoW, not networking/proof delivery.
+variant event_mean_ms grid_mean_ms median_ms p95_ms grids/sec equivalent_THs regs/local/static_smem/CTAs_per_SM
+native8 1.027534 293.550 293.750 298.910 3.40657 239.716 [168, 0, 0, 1]
+late_pub 1.046448 299.435 299.400 304.805 3.33962 235.005 [168, 0, 0, 1]
+early_tail_pub 1.064916 302.258 302.100 307.200 3.30843 232.810 [168, 0, 0, 1]
+late_pub vs native8: time +2.005%; throughput -1.965%; paired time deltas% +2.172, +1.876, +1.793, +2.019, +1.996, +2.174
+early_tail_pub vs native8: time +2.967%; throughput -2.881%; paired time deltas% +3.128, +2.846, +2.847, +2.976, +2.919, +3.084
+native8 vs late_pub: time -1.965%; throughput +2.005%; paired time deltas% -2.125, -1.841, -1.761, -1.979, -1.957, -2.128
+early_tail_pub vs late_pub: time +0.943%; throughput -0.934%; paired time deltas% +0.936, +0.952, +1.036, +0.938, +0.905, +0.890
+
+Interpretation: judge net benefit against native8, then early_tail_pub against late_pub.
+SASS: both CopyPlan candidates have7IMMA after publication vs native8 16.
+Early preparation is real but source recompilation changed LDSM/MMA scheduling.
+No claim that isolated address arithmetic is the cause of the entire performance delta.
+early_wait rejected:40Bstack,36Bspillstores+36Bspillloads despite168register allocation.
+No production changes or deployment. Existing8+4 remains baseline unless a net winner is measured.
+See design.txt, compiled.sass, *_pub.sass, *.diff, validation and sanitizer logs.
+
+Outcome: no net gain. Keep native8. Early candidate time +2.967% vs native8, +0.943% vs late control, all6 paired batches slower.
+Validation:18 full transcript+PoW comparisons PASS including8192x8192; patched candidates24 edge transcript comparisons PASS; racecheck0errors0warnings.

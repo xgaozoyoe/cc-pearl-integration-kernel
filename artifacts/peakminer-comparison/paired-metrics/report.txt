@@ -1,0 +1,47 @@
+Simultaneous external GPU metrics: PeakMiner vs accepted Open-Pearl
+Capture:2026-10-08 15:52:35 Asia/Shanghai;source/tmp/pearl-miner-pair-metrics.ajdXXS
+
+Verified mapping:physicalGPU1 PCI22:00.0 -> Nsight3(PeakMiner);
+physicalGPU2 PCI41:00.0 -> Nsight0(Open-Pearl). BothRTX4090.
+No restarts,injection,clock/power changes. Diagnostic log reports60406events,
+no warnings/errors. Cropped both to identical1s..29s relative trace interval:
+Peak28000 samples,Open27999 samples at~1kHz. Full-window results similar.
+Percentages integer-quantized. Same tool,metric definitions,sampling period.
+
+Metric                            PeakMiner     Open-Pearl
+Tensor Active average              97.439%       63.832%
+Tensor Active median               98%           69%
+Tensor Active p05/p95               98/98%         3/72%
+SMs Active average                 99.563%       95.847%
+SM Issue average                   12.970%       22.667%
+Compute Warps in Flight             16.956%       26.220%
+DRAM Read Bandwidth                  6.646%        3.670%
+DRAM Write Bandwidth                 0.627%        1.736%
+Tensor Active with SMsActive>=95%    97.991%       66.052%
+
+Peak reported313-ishTH/s(before311.425,after312.914),not a measured capture-wide
+mean or pool average. Open logged60s effective wall rates209.08 at15:52:44 and
+207.56 at15:53:04 (rolling windows overlap capture). Thus throughput ratio~1.5;
+Tensor activity ratio1.5265. Their agreement supports Tensor duty-cycle gap
+as an important explanation, not a proof of equal useful work per active cycle.
+Before capture:Peak2445MHz,449.39W,70C;Open2475MHz,447.55W,68C.
+Bothmemory10501MHz. Cross-card and unlocked-clock limitations remain.
+
+Interpretation:
+1. Sustained Tensor activity is a real differentiator in this comparison, not
+merely GPU utilization. Peak nearly continuously active;Open main workload also
+has Tensor stalls/underuse even whenSMs are active. Host gaps alone do not explain it.
+2. Higher SM Issue/warps occupancy is not the optimization target:Open reports
+more of both while delivering less Tensor activity and throughput. SM Issue is
+issuing-cycle fraction,not useful arithmetic utilization or instruction/MMA count.
+3. Off-chip DRAM is not near peak on either GPU. This does NOT rule out L2/shared
+traffic or latency bottlenecks; those aren't measured in this capture.
+4. This does NOT identify Peak MMA type/shape,count,precision,sparsity,CTA mapping,
+register allocation or exact barrier scheme. No causal speedup claim can be made
+from the activity ratio alone, and no binary protection bypass is attempted.
+
+Next research:use sustained Tensor duty cycle as an acceptance metric alongside
+full-grid TH/s and correctness;analyze main-loop MMA/address/load/control issue
+budget,then design a materially different schedule. Stop prioritizing tiny
+bounds/slot rewrites and occupancy alone. No new production code changes this turn.
+Metric definitions:https://docs.nvidia.com/nsight-systems/UserGuide/index.html#gpu-metrics

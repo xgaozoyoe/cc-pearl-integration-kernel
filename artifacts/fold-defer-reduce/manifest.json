@@ -1,0 +1,41 @@
+{
+  "variants": {
+    "native": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "104c0c1b265260dea5c9ab0bb174ebbbe7ee9cceb0cf0acebf2a9d1dfa4d50aa",
+      "smem": 69632,
+      "correct": true
+    },
+    "source8": {
+      "entry": "_ZN18fold_defer_source86kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "1f17553286e2812c82b19beb13c7c092970fa3e94e4017e367cc8d5828a53e15",
+      "smem": 69632,
+      "correct": true
+    },
+    "defer2_copy": {
+      "entry": "_ZN22fold_defer_defer2_copy6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "1f17553286e2812c82b19beb13c7c092970fa3e94e4017e367cc8d5828a53e15",
+      "smem": 69632,
+      "correct": true
+    },
+    "defer2_mma": {
+      "entry": "_ZN21fold_defer_defer2_mma6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "1f17553286e2812c82b19beb13c7c092970fa3e94e4017e367cc8d5828a53e15",
+      "smem": 69632,
+      "correct": true
+    },
+    "defer4_mma": {
+      "entry": "_ZN21fold_defer_defer4_mma6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "1f17553286e2812c82b19beb13c7c092970fa3e94e4017e367cc8d5828a53e15",
+      "smem": 69632,
+      "correct": true
+    },
+    "defer1_mma": {
+      "entry": "_ZN21fold_defer_defer1_mma6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "bc24036d0574d4a4322cb506022e08dbe5418989d15e7f4c4ea091661eb3686e",
+      "smem": 69632,
+      "correct": true
+    }
+  },
+  "warning": "Isolated offline cross-K reduction experiment; never overwrite production."
+}

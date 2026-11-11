@@ -1,0 +1,1 @@
+Source tracing prototype not executed on GPU. Reject for fastest-baseline attribution: native48/16MMA around arrival; current trace56/8, sourcecontrol64/0. All168or167regs, zero spills, but instruction timing changes. Do not interpret its timings as the frozen baseline. Production unchanged.

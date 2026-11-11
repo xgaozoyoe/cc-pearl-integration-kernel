@@ -1,0 +1,26 @@
+[
+  {
+    "capture": "nonzero_b",
+    "total": 131770.0,
+    "main": 129968.0,
+    "main_pct": 98.63246565986188,
+    "prologue": 582.0,
+    "output": 1220.0
+  },
+  {
+    "capture": "a_half",
+    "total": 131857.0,
+    "main": 130008.0,
+    "main_pct": 98.59772329114116,
+    "prologue": 590.0,
+    "output": 1259.0
+  },
+  {
+    "capture": "c_cut",
+    "total": 132238.0,
+    "main": 130417.0,
+    "main_pct": 98.62293743099563,
+    "prologue": 583.0,
+    "output": 1238.0
+  }
+]

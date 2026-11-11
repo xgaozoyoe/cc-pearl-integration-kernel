@@ -1,0 +1,19 @@
+Capture:/tmp/pearl-copy-skew.DrJ2Z1
+Inputs hashes all verified. All12sampled launches executed67,633,152IMMA. NCU base-clock policy; prioritize cycle-normalized comparison.
+native: {"imma_per_SM_elapsed_cycle": 0.2087895185720614, "imma_per_SMSP_elapsed_cycle": 0.05219737964301535, "tensor_Ginst_sec": 59.41718377056409, "kernel_ms": 1.1382826666666666}
+equal_copy: {"imma_per_SM_elapsed_cycle": 0.21069414275362577, "imma_per_SMSP_elapsed_cycle": 0.05267353568840644, "tensor_Ginst_sec": 60.01559210805273, "kernel_ms": 1.1269333333333333}
+no_barrier: {"imma_per_SM_elapsed_cycle": 0.22221721932787947, "imma_per_SMSP_elapsed_cycle": 0.05555430483196987, "tensor_Ginst_sec": 63.21348141287764, "kernel_ms": 1.0699306666666668}
+both: {"imma_per_SM_elapsed_cycle": 0.22251132906714824, "imma_per_SMSP_elapsed_cycle": 0.05562783226678706, "tensor_Ginst_sec": 63.37213365255997, "kernel_ms": 1.0672426666666666}
+native->equal_copy:IMMA/SMcycle gain 0.91222%
+native->no_barrier:IMMA/SMcycle gain 6.43121%
+no_barrier->both:IMMA/SMcycle gain 0.13235%
+equal_copy->both:IMMA/SMcycle gain 5.60869%
+native->both:IMMA/SMcycle gain 6.57208%
+Main barrier samples129815->129598 when dropping the extra A copy; barrier warp stall14.2733->14.3733%, essentially unchanged.
+Dropping copy reduces L2 bytes2,533,966,411->2,178,884,939 (~14.01%). Both copy-equalized and original-copy cases retain substantial barrier-removal benefit.
+Cycle-cost interaction0.7798% of native: only a small overlap between these two ablations, not a causal attribution fraction.
+Conclusion: extra third A transfer /8+4copy-count skew is not supported as the dominant explanation for observed named-barrier cost. General synchronization-related opportunity remains.
+Unlocked3.07%copy-removal gain did not survive cycle normalization (throughput gain only0.9122%).
+Limits: these are wrong-arithmetic diagnostics; copy removal changes traffic and operand values, barrier removal introduces races. Not a safe optimized miner; not per-warp arrival timing.
+Do not invest in a copy-ownership redesign based on this result alone. Next controlled diagnostic can separate async-copy completion wait from named-barrier rendezvous while retaining original loop, with bounded offline execution.
+Production binaries unchanged.

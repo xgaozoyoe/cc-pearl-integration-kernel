@@ -1,0 +1,37 @@
+Next-K copy-address preparation experiment, GPU0 offline only.
+
+Reference native8: exact hash-preserved current best 8+4 cubin.
+Source variants use original CTA256x192,K64,2stages,12warps,MMA64/LDSM16.
+A/B generation, rank128 fold and PoW remain unchanged.
+
+source8: source recreation of 8+4 with publication written at final fragment load.
+Compiler sinks publication to end of MMA (confirmed SASS); this is not equivalent
+in scheduling to native8. It is retained only as a code-generation diagnostic.
+late: CopyPlan(4 unsigned values:global A/B offsets,shared A/B destinations)
+prepared at current iteration start before copy.
+early_wait: plan for following iteration computed before final bar.sync.
+Compiler spills36B stores+36B loads,40B stack; rejected as practical candidate.
+early_tail: plan for following iteration computed at MMA tail before transcript.
+PTXAS actually interleaves plan instructions with tail IMMA, no spill.
+Plan is initialized for iteration0 and then carried across iterations.
+Preparation never accesses shared memory or launches cp.async early.
+Actual copies remain AFTER the existing named-barrier handoff.
+Early versions perform one extra unused final preparation, outside useful next-K work.
+
+Source recompilation changes instruction scheduling. Therefore a second comparison
+restores early publication in the two no-spill CopyPlan variants using isolated
+SASS patches late_pub and early_tail_pub:
+- Peer-ID LOP3 moved to dead R165; prior explicit and implicit vector uses audited.
+- No extra register allocation or instruction. IMMA relative order unchanged.
+- cp.async completion and last LDSM completion wait both precede publication.
+- Both publish with7IMMA remaining. Original scoreboard controls retained.
+- Shared reuse barriers, phase IDs and8+4 cohorts unchanged.
+- native8 still has16IMMA after publication; cannot claim fully identical schedule.
+This comparison tests realizable implementations, not a pure causal ablation of
+one address dependency. New register lifetimes alter the compiler's LDSM/MMA layout.
+
+SASS confirms early_tail_pub performs next-K preparation before final bar.sync;
+late_pub does it in the next iteration. Both168registers,0local,1CTA/SM.
+Do not conclude all forms of lookahead are impossible from a negative result.
+No production source, library, V3 seed implementation or target logic changed.
+No Nsight collection and no live submission.

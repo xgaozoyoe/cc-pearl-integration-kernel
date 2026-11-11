@@ -1,0 +1,20 @@
+GPU0 offline frozen-SASS wait relocation. Fastest both_compact baseline preserved.
+Same384threads,168regs,0local,69632Bshared,1CTA/SM;instruction text/order identical.
+Only dependency control wait-mask fields changed;cp.async wait and named barriers retained.
+BAR.ARV16d0 retains waitmask6 (finalLDSM complete),read scoreboard1,ID registerR164.
+R164 unchanged and no scoreboard allocation between fold preamble and firstREDUX.
+prep_wait:17f0 wait2->0;1840 wait2 retained.
+redux_wait:17f0/1840 wait2->0;1940/2330 wait0->2 onbothfoldpaths.
+No-fold path unchanged. Scoreboard drained before reuse by REDUX in update path.
+Screen40samples suggested1.7-1.9%gain,confounded by slow native initial batch.
+Followup:10s warmup,200samples/variant,16launches/sample,10rotating blocks,unlocked clocks.
+8192x8192 region CUDA events,K4096/rank128,not fullgrid/pool rate.
+native:mean1.016696 median1.011387 p951.041792ms
+prep_wait:mean1.015991 median1.013376 p951.041670ms
+redux_wait:mean1.013559 median1.011033 p951.035610ms
+Mean reductionredux_wait~0.31%,median~0.035%;no robust material gain claimed.
+36transcript comparisons PASS. No fullgrid/PoW run:performance screen not compelling.
+Boundary racecheck log:racecheck.log. Production checksums bothOK.
+This targets BAR register-read scoreboard delay,not removalof required shared-memory named synchronization.
+No production replacement or live mining.
+Racecheck512x800seed9876 prep_wait/redux_wait:0hazards/errors/warnings.

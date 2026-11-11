@@ -1,0 +1,70 @@
+[
+  {
+    "experiment": "fragment-pipeline",
+    "variant": 0,
+    "samples": 80,
+    "mean_ms": 309.115,
+    "median_ms": 308.75,
+    "p95_ms": 314.305,
+    "ths": 227.64584111953155,
+    "grids_sec": 3.2350419746696213,
+    "resources": [
+      168,
+      384,
+      69632,
+      1,
+      0
+    ]
+  },
+  {
+    "experiment": "fragment-pipeline",
+    "variant": 1,
+    "samples": 80,
+    "mean_ms": 330.88875,
+    "median_ms": 330.40000000000003,
+    "p95_ms": 334.83,
+    "ths": 212.66587086343674,
+    "grids_sec": 3.02216379372221,
+    "resources": [
+      168,
+      384,
+      69632,
+      1,
+      0
+    ]
+  },
+  {
+    "experiment": "fragment-drain",
+    "variant": 0,
+    "samples": 80,
+    "mean_ms": 308.8325,
+    "median_ms": 308.55,
+    "p95_ms": 313.60999999999996,
+    "ths": 227.85407681401406,
+    "grids_sec": 3.2380011818704317,
+    "resources": [
+      168,
+      384,
+      69632,
+      1,
+      0
+    ]
+  },
+  {
+    "experiment": "fragment-drain",
+    "variant": 1,
+    "samples": 80,
+    "mean_ms": 318.87,
+    "median_ms": 318.04999999999995,
+    "p95_ms": 323.41,
+    "ths": 220.68160748161947,
+    "grids_sec": 3.13607426223853,
+    "resources": [
+      168,
+      384,
+      69632,
+      1,
+      0
+    ]
+  }
+]

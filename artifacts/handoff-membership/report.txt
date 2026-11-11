@@ -1,0 +1,22 @@
+GPU0 only.8192x8192 region,K4096,rank128. Unlocked clocks.
+Two runs,200samples/variant/run,16launches/sample,rotating blocks. CUDA event times,not grid/pool throughput.
+Run1
+variant mean_ms median_ms p95_ms delta_native_pct delta_matched_control_pct
+native           1.024227 1.017160 1.050932 +0.0000 +0.2957
+masked_control   1.021208 1.014401 1.042822 -0.2948 +0.0000
+middle4          1.031724 1.027546 1.060477 +0.7319 +1.0298
+rows6            1.081456 1.076101 1.108291 +5.5875 +5.8997
+Run2
+variant mean_ms median_ms p95_ms delta_native_pct delta_matched_control_pct
+native           1.028120 1.023833 1.051023 +0.0000 +0.2953
+masked_control   1.025092 1.020064 1.055886 -0.2945 +0.0000
+middle4          1.027417 1.022207 1.042438 -0.0683 +0.2268
+rows6            1.086327 1.082170 1.109024 +5.6615 +5.9735
+48transcript+24transcript/PoW comparisons PASS; racecheck0 hazards/errors/warnings.
+All168regs,0local,69632B dynamicshared,384threads,1CTA/SM.
+Main loop and output machine code byte-identical to native. Only prologue grouping is changed via a bounded initialization trampoline.
+masked_control:tid&256>0, same8+4 membership as native.
+middle4:tid&128>0, groups[0,1,2,3,8,9,10,11] and[4,5,6,7].
+rows6:tid&64>0, groups[0,1,4,5,8,9] and[2,3,6,7,10,11].
+Each warp still arrives once early to peer and syncs once late to own group. All384 participants retained; phase IDs unchanged.
+No new copies or operand duplication. No measured hardware-counter attribution. Production libraries unchanged.

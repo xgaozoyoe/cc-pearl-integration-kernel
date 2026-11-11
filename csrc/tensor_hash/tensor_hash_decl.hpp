@@ -20,4 +20,4 @@ void tensor_hash(
 void commitment_hash_from_merkle_roots(
     const uint8_t* A_merkle_root, const uint8_t* B_merkle_root,
     const uint8_t* key, uint8_t* A_commitment_hash, uint8_t* B_commitment_hash,
-    cudaDeviceProp& deviceProp, cudaStream_t stream);
+    cudaDeviceProp& deviceProp, cudaStream_t stream, uint32_t m = 0, uint32_t n = 0);

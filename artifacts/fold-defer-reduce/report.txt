@@ -1,0 +1,30 @@
+Cross-K local XOR snapshot + delayed reduction: GPU0 offline; no Nsight.
+60full grids/variant,6rotating batches,12/block discardfirst2. Unfixed clocks.
+Full grids include setup/noise/Merkle/GEMM/transcript/PoW; exclude network/proof delivery.
+variant mean_ms median_ms p95_ms grids/sec equivalent_THs resource_regs/local/static_smem/CTAs
+native 291.898 291.850 297.130 3.42585 241.073 [168, 0, 0, 1]
+source8 305.302 305.350 310.425 3.27545 230.489 [168, 0, 0, 1]
+defer2_copy 317.438 316.700 321.755 3.15022 221.677 [168, 0, 0, 1]
+defer2_mma 330.428 329.700 334.315 3.02637 212.962 [168, 24, 0, 1]
+defer4_mma 344.415 344.400 348.400 2.90347 204.314 [168, 40, 0, 1]
+defer1_mma 334.343 333.350 339.085 2.99094 210.469 [168, 48, 0, 1]
+source8 vs native: time +4.592%; paired changes% +4.517, +4.477, +4.535, +4.620, +4.593, +4.808
+defer2_copy vs native: time +8.750%; paired changes% +8.616, +8.700, +8.734, +8.873, +8.806, +8.767
+defer2_mma vs native: time +13.200%; paired changes% +13.095, +13.184, +13.163, +13.161, +13.348, +13.247
+defer4_mma vs native: time +17.991%; paired changes% +17.829, +17.966, +18.027, +18.014, +18.163, +17.949
+defer1_mma vs native: time +14.541%; paired changes% +14.531, +14.466, +14.479, +14.661, +14.499, +14.610
+native vs source8: time -4.390%; paired changes% -4.322, -4.285, -4.338, -4.416, -4.391, -4.588
+defer2_copy vs source8: time +3.975%; paired changes% +3.922, +4.042, +4.017, +4.066, +4.028, +3.777
+defer2_mma vs source8: time +8.230%; paired changes% +8.208, +8.334, +8.254, +8.164, +8.370, +8.051
+defer4_mma vs source8: time +12.811%; paired changes% +12.736, +12.911, +12.907, +12.802, +12.974, +12.538
+defer1_mma vs source8: time +9.512%; paired changes% +9.582, +9.561, +9.512, +9.598, +9.470, +9.352
+
+SASS confirms next-K IMMA followed by saved prior-K REDUX; local XOR computed before crossing boundary.
+Not merely a source-code reorder; see sass-audit.txt. No Nsight cycle-level overlap attribution.
+Source variants lose native early-publication tuning; use source8 comparison as well as native.
+Extra guards/address prep/control flow and compiler spills are present; no net-gain claim.
+Keep current production and native candidate unchanged. See design.txt for exact schedules and limits.
+
+Validation:72edge transcript comparisons across6variants PASS;36transcript+PoW comparisons including8192x8192 PASS.
+Representative defer2_copy/defer2_mma:racecheck0errors0warnings,synccheck0errors. Other variants have bit-exact checks, not sanitizer coverage in this run.
+No candidate beats native or source8. No deployment; no claim of a general impossibility of cross-K reduction.

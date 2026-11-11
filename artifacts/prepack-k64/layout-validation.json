@@ -1,0 +1,74 @@
+[
+  {
+    "rows": 16,
+    "height": 192,
+    "byte_exact": true,
+    "zero_padding": true
+  },
+  {
+    "rows": 192,
+    "height": 192,
+    "byte_exact": true,
+    "zero_padding": true
+  },
+  {
+    "rows": 256,
+    "height": 192,
+    "byte_exact": true,
+    "zero_padding": true
+  },
+  {
+    "rows": 400,
+    "height": 192,
+    "byte_exact": true,
+    "zero_padding": true
+  },
+  {
+    "rows": 800,
+    "height": 192,
+    "byte_exact": true,
+    "zero_padding": true
+  },
+  {
+    "rows": 8192,
+    "height": 192,
+    "byte_exact": true,
+    "zero_padding": true
+  },
+  {
+    "rows": 16,
+    "height": 256,
+    "byte_exact": true,
+    "zero_padding": true
+  },
+  {
+    "rows": 192,
+    "height": 256,
+    "byte_exact": true,
+    "zero_padding": true
+  },
+  {
+    "rows": 256,
+    "height": 256,
+    "byte_exact": true,
+    "zero_padding": true
+  },
+  {
+    "rows": 400,
+    "height": 256,
+    "byte_exact": true,
+    "zero_padding": true
+  },
+  {
+    "rows": 800,
+    "height": 256,
+    "byte_exact": true,
+    "zero_padding": true
+  },
+  {
+    "rows": 8192,
+    "height": 256,
+    "byte_exact": true,
+    "zero_padding": true
+  }
+]

@@ -1,0 +1,30 @@
+{
+  "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+  "source_sha256": "46fd8653295a23a2215aaad91dbfdf41c98fe87359af09201dfbcb21f1687bad",
+  "variants": {
+    "baseline": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "46fd8653295a23a2215aaad91dbfdf41c98fe87359af09201dfbcb21f1687bad",
+      "smem": 69632,
+      "correct": true,
+      "arrival_pc": "0x17d0",
+      "mma_after_arrival": 0
+    },
+    "tail5": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "cca95ad058560677172631ab0311df329aa4b1d1c747492dae6a85533df0877e",
+      "smem": 69632,
+      "correct": true,
+      "arrival_pc": "0x1780",
+      "mma_after_arrival": 5
+    },
+    "tail9": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "12bb54ea61e2a4b92c56d358e9970c2ec413e7e8525e0fc6180df0f2a2c41828",
+      "smem": 69632,
+      "correct": true,
+      "arrival_pc": "0x1740",
+      "mma_after_arrival": 9
+    }
+  }
+}

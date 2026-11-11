@@ -1,0 +1,75 @@
+--- current-baseline
++++ overlap
+@@ -108,6 +108,18 @@
+     asm volatile("cp.async.commit_group;");
+ }
+ 
++
++__device__ __forceinline__ void handoff_arrive(unsigned bar) {
++    asm volatile("cp.async.mbarrier.arrive.noinc.shared.b64 [%0];" :: "r"(bar) : "memory");
++    asm volatile("mbarrier.arrive.shared.b64 _, [%0];" :: "r"(bar) : "memory");
++}
++__device__ __forceinline__ void handoff_wait(unsigned bar,unsigned phase) {
++    unsigned done;
++    do {
++        asm volatile("{ .reg .pred p; mbarrier.test_wait.parity.shared.b64 p, [%1], %2; selp.u32 %0, 1, 0, p; }"
++                     : "=r"(done) : "r"(bar),"r"(phase) : "memory");
++    } while(!done);
++}
+ template<int Lead,int TileK=64,bool Planar=false,bool PackedB=false,bool UnrollCopy=false,bool FixedCopy=false,int Stages=2,bool Wide=false,int Layout=0>
+ __global__ void __launch_bounds__(Wide?256:THREADS,1) kernel(const signed char* a,const signed char* b,int m,int n,int k,int r,unsigned* out) {
+     constexpr int WarpN=Wide?96:64, Groups=WarpN/16, Threads=Wide?256:THREADS;
+@@ -126,18 +138,19 @@
+     int wm=warp%4,wn=warp/4;
+     // Native MMA lane ownership: row=lane/4 (+8 for c2,c3),
+     // column=2*(lane%4) (+1 for c1,c3). Two halves form a16x16 tile.
++    static_assert(Stages==2 && TileK==64 && !Wide);
++    unsigned handoff_bar=(unsigned)__cvta_generic_to_shared(shared+Stages*(BM+BN)*TileK+WORDS*sizeof(unsigned));
++    if(threadIdx.x==0) asm volatile("mbarrier.init.shared.b64 [%0], %1;" :: "r"(handoff_bar), "r"(2*Threads) : "memory");
+     unsigned c[4][Groups][2][4]={};
+     Fragment ar[4], br[Lead+1];
+     #pragma unroll
+     for(int p=0;p<Stages-1;++p)
+         stage_copy<TileK,Planar,UnrollCopy,FixedCopy,Layout>(a,b,sa+p*BM*TileK,sb+p*BN*TileK,cm,cn,p,m,n,k);
+     for(int kt=0;kt<(k+TileK-1)/TileK;++kt) {
+-        if constexpr(Stages==2) asm volatile("cp.async.wait_group 0;");
+-        else {
+-            if(kt+Stages-1<(k+TileK-1)/TileK) asm volatile("cp.async.wait_group 1;");
+-            else asm volatile("cp.async.wait_group 0;");
+-        }
+-        __syncthreads();
++        if(kt==0) {
++            asm volatile("cp.async.wait_group 0;" ::: "memory");
++            __syncthreads(); // also publishes mbarrier initialization
++        }
+         int current=kt%Stages,next=(kt+Stages-1)%Stages;
+         if(kt+Stages-1<(k+TileK-1)/TileK)
+             stage_copy<TileK,Planar,UnrollCopy,FixedCopy,Layout>(a,b,sa+next*BM*TileK,sb+next*BN*TileK,cm,cn,kt+Stages-1,m,n,k);
+@@ -210,6 +223,7 @@
+             }
+         }
+         }
++        handoff_arrive(handoff_bar);
+         if constexpr(TileK==64) {
+         if((kt+1)%2==0) {
+             int rb=(kt+1)/2-1;
+@@ -233,8 +247,10 @@
+             }
+         }
+         }
++        handoff_wait(handoff_bar,unsigned(kt&1));
+     }
+     __syncthreads();
++    if(threadIdx.x==0) asm volatile("mbarrier.inval.shared.b64 [%0];" :: "r"(handoff_bar) : "memory");
+     for(int i=threadIdx.x;i<WORDS;i+=Threads) {
+         int tile=i/16,gr=cm*(BM/16)+tile/(BN/16),gc=cn*(BN/16)+tile%(BN/16);
+         if(gr<m/16 && gc<n/16) out[((size_t)gr*(n/16)+gc)*16+i%16]=transcript[i];
+@@ -246,7 +262,7 @@
+     if(m<=0 || n<=0 || m%16 || n%16 || r!=128 || k!=4096)
+         return cudaErrorInvalidValue;
+     constexpr int Threads=Wide?256:THREADS;
+-    constexpr int smem=Stages*(BM+BN)*TileK+WORDS*sizeof(unsigned);
++    constexpr int smem=Stages*(BM+BN)*TileK+WORDS*sizeof(unsigned)+8;
+     static bool initialized=false; // Isolated benchmarks use device0 only.
+     cudaError_t err;
+     if(!initialized) {

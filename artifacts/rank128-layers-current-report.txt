@@ -1,0 +1,92 @@
+Current A-stream diagnostic layers, 2026-10-09
+
+Result: the current register-accumulator mapping can execute substantially
+faster when stage management, streaming transfers and transcript are absent.
+Repeated shared-memory operand loads add little in this synthetic control;
+per-iteration synchronization and the real streaming pipeline show larger
+measured differences. These are diagnostic differences, not independent
+instruction costs or an achieved mining optimization.
+
+Audit of previous roof: tests/ada_imma_roof.cu uses half-before-row order,
+three B fragments, and an earlier 352-CTA matched test. It does not match
+current A-stream source order, two B slots, or the8192-region CTA count.
+The new roof is derived from the current kernel and uses row-before-half.
+
+All new layers: GPU0 only, M=N8192,K4096, CTA256x192,384threads/12warps,
+1376CTAs/region,64K64 iterations,128INT32 accumulators/thread,
+64 static m16n8k32.s32.s8.s8 warp MMA sites/iteration.
+Executed warp MMA/region=67633152, useful equivalent=67108864 due N padding.
+Every layer:168registers/thread,69632shared bytes/CTA,one active CTA/SM,
+12 resident warps/SM,zero spills. Full-kernel SASS matches measured baseline.
+
+Layers:
+0 Register: copy first K64 once; load A first K32 and two B fragments once;
+  repeat register operands through the same64-MMA source order for64loops.
+  B repeats every32columns within each warp's64columns. This is synthetic.
+1 Shared: copy first K64 once; repeatedly load that same stage with original
+  LDSM/swizzle/MMA source schedule; no per-iteration barrier. Synthetic.
+2 Shared+sync: layer1 plus the per-iteration CTA barrier. Synthetic.
+3 Global: actual full A/B4096K, original two-stage cp.async/wait/barrier;
+  transcript disabled at runtime; all final accumulator words feed sink.
+4 Full: unchanged current fastest kernel with R128 transcript.
+
+Diagnostic layers0..3 use identical uint32 sum sinks over all128 per-lane
+accumulator words, avoiding XOR cancellation in repeated input. Original
+full output remains transcript. Runtime-gated transcript code remains in
+0..3 binaries to preserve allocator behavior, but is never executed.
+All64 MMA sites remain. The register layer has32 distinct C register bases
+(four INT32 each); no reduction of the accumulator count was observed.
+
+Correctness:20 comparisons PASS, seeds42/1234, shapes256x384 and512x400.
+Layers0..3 compared against CPU INT32 dot products for their exact input
+semantics and native MMA lane mapping; layer4 against accepted R128.
+All expected checksums have nonzero output words. Full8192 transcript also
+compared against accepted kernel before benchmarking. No live mining.
+
+Timing:3seconds initial warmup;10rotated blocks/layer;100warmup launches
+per block;20samples/block,each sample16launches.200samples/layer.
+CUDA events time whole8192-region kernel including prologue/sink/epilogue,
+not the internal main loop alone. Automatic clocks; no clock/power changes.
+
+Layer                  mean ms   median ms  p95 ms    useful TMAC/s equiv
+Register               0.817131  0.816953   0.818868  336.394
+Shared                 0.827871  0.828007   0.828995  332.030
+Shared+iteration sync  0.885983  0.885626   0.887616  310.252
+Real streaming         0.984191  0.981859   0.990865  279.293
+Full+transcript        1.081027  1.077792   1.104627  254.275
+
+Rates above are kernel-only work equivalents. They are NOT end-to-end
+miner or pool TH/s; synthetic layers do not execute the Pearl algorithm.
+
+Adjacent measured differences:0.010741,0.058112,0.098208,0.096835ms.
+Full/register time ratio1.322955; difference0.263896ms.
+Do not claim all that difference is recoverable in a correct miner.
+
+Important limitations:
+- Shared diagnostic repeatedly uses one fixed stage, simplifying pointer
+  computation and eliminating write/read overlap. Global alternates stages.
+- Register diagnostic reuses operand values; it is not a real GEMM result.
+- Source MMA update order is preserved; compiler machine scheduling changes.
+- Register and shared-sync telemetry mostly2715MHz; streaming2595..2715,
+  full2490..2715MHz. Block-end telemetry is not continuous or cycle-normalized.
+- No new Nsight counters collected. No measured Tensor-utilization claim.
+- The same source transformation can change code generation; even the
+  barrier-only control slightly changes the address setup SASS. The main
+  LDSM/IMMA instruction sequence of shared vs shared-sync is unchanged.
+- Deltas telescope numerically but are not an additive causal cost model.
+
+Decision: prioritize the real stage-management/transfer/synchronization
+path rather than another blind B-prefetch rewrite. A useful next control
+is read-only ping-pong shared stages, preserving stage-dependent addressing,
+which would separate fixed-stage address simplification from real cp.async
+and handoff costs. Do not yet infer that removing barriers safely is easy,
+or that the prior failed warp-specialization approach should be repeated.
+
+Build: .venv/bin/python tools/build_rank128_layers_current.py
+Validate: .venv/bin/python tests/bench_rank128_layers_current.py validate
+Benchmark: .venv/bin/python tests/bench_rank128_layers_current.py bench
+Analyze: .venv/bin/python tools/analyze_rank128_layers_current.py
+Library:artifacts/libpearl-rank128-layers-current.so (diagnostic only)
+Diffs:artifacts/rank128-layers-current-{registers,shared,shared_sync,global,full}.diff
+Artifacts:rank128-layers-current-{events,correctness,static,deltas}.json
+Production library hashes verified unchanged. No commit or deployment.

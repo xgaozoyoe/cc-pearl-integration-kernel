@@ -1,0 +1,42 @@
+Hypothesis test:which IMMA input dependency contributes to insufficient sustained Tensor work?
+Frozen fastest native binary:104c0c1b265260dea5c9ab0bb174ebbbe7ee9cceb0cf0acebf2a9d1dfa4d50aa.
+Direct operand-byte patches, no recompilation. No changes to prologue/register initialization,
+MMA destinations,64staticMMA sites,16LDSM sites,cp.async,loopcount,transcript branches,
+shared/global stores,barrier phases,register allocation or launch geometry.
+
+Seven variants:
+ native:valid Pearl reference.
+ a_zero:all64IMMA Ainputs=RZ;B,Candall encodedwaits unchanged.
+ b_zero:all64IMMA Binputs=RZ;A,Candall encodedwaits unchanged.
+ ab_zero:bothA,B=RZ;Candall waits unchanged.
+ b_release:b_zero plus3first-half Bwait relocations.
+ bc_zero:b_zero plus Cinput=RZ;alloriginalwaits unchanged.
+ bc_release:bc_zero plus same3Bwait relocations.
+
+IMMA shape m16n8k32.s32.s8.s8 retained. RZ is literalzero, NOT independent realBdata.
+All diagnostics output zero transcript; native compares bit-exact with acceptedR128.
+Constant-data hardware power and clocks can differ:current nonlocked measurements
+show native block-end2460..2655MHz versus many diagnostic blocks at2715MHz.
+These end samples are not average clocks; do not frequency-correct times using them.
+Use forthcoming fixed-base-clock counters and actual IMMA/SMelapsedcycle instead.
+
+Wait relocation retains asynchronous load write completion before ANY nonremoved
+read or overwrite of its R148..151 register group. Safe endpoints audited including
+implicit IMMA vector ranges:
+ LDSM11d0 ->wait11e0 movedto1220(SHFwritesR149)
+ LDSM1280 ->wait1290 movedto12d0(IADDwritesR148)
+ LDSM1340 ->wait1350 movedto1410(LOP3writesR148)
+There are no other scoreboard producers,branches or memory operations inside the
+moved spans. Only Bconsumer sources were removed. Other operand waits remain.
+
+Important distinction:
+- b_zero vsnative:changes Binput dataflow AND register-file read behavior, with
+  encoded load waits still present. Not total Bload latency cost.
+- b_release vsb_zero:isolates relocation of3now-unneeded first-use waits.
+- bc_zero vsb_zero andbc_release vsb_release:cuts old accumulator RAW dependency
+  conditional on B=0, keeping destinations and fixed stall fields. Not an ablation
+  of all accumulator/output hazards or scheduling delays.
+- ab_zero vsindividualcuts probes interaction; percentage gains cannot be summed.
+- All loads still execute and registers still overwritten safely; no DCE compiler.
+- Static unchanged MMA is audited; dynamic counts will be checked in Nsight.
+- No mining/proof validity claim for diagnostics; never load into live path.

@@ -1,0 +1,41 @@
+{
+  "entry": "_ZN24handoff_control_baseline6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+  "source_sha256": "3be626ab702bb0c460b09f0c34e32c671756465f3a950be111405152e6d8019c",
+  "variants": {
+    "baseline": {
+      "changed_bytes": 0,
+      "sha256": "3be626ab702bb0c460b09f0c34e32c671756465f3a950be111405152e6d8019c",
+      "operand_fields": []
+    },
+    "c_zero": {
+      "changed_bytes": 64,
+      "sha256": "cd4d0a27f4930378d2063720309ce1e4ad32c35a5e293ee107c7767942c249dc",
+      "operand_fields": [
+        8
+      ]
+    },
+    "a_zero": {
+      "changed_bytes": 64,
+      "sha256": "eeca21f049185cc2bc28ff140afd8dbd938329b82fbbb05f2a232ac4d6be60ef",
+      "operand_fields": [
+        3
+      ]
+    },
+    "b_zero": {
+      "changed_bytes": 64,
+      "sha256": "834f78c5b45ac899381cbfe163be3da9b7d4e25eb44deb9866e4d58f93a398dd",
+      "operand_fields": [
+        4
+      ]
+    },
+    "ab_zero": {
+      "changed_bytes": 128,
+      "sha256": "1be57066bcac886d4cf67bd88a65dac6e67aecf252f41c665b7ea2a1cbd4f536",
+      "operand_fields": [
+        3,
+        4
+      ]
+    }
+  },
+  "caveat": "Wrong arithmetic; all original wait/stall/reuse control bits remain. A/B input substitution does NOT remove encoded LDSM scoreboard waits."
+}

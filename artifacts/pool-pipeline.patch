@@ -1,0 +1,726 @@
+--- before/python/miner_capi.py
++++ after/python/miner_capi.py
+@@ -9,6 +9,7 @@
+ from __future__ import annotations
+ 
+ import argparse
++from collections import deque
+ import json
+ import os
+ import queue
+@@ -29,6 +30,11 @@
+ 
+ VARIANT = 1  # pearl_pow_split S=128 4x4 MINB4
+ 
++# Keep CPU extensions that hold the GIL out of the CUDA launch thread's process.
++# The old thread implementation remains available for comparison / frozen builds.
++PROOF_PROCESS = (hasattr(os, "memfd_create") and not getattr(sys, "frozen", False)
++                 and os.environ.get("PEARL_PROOF_PROCESS", "1") != "0")
++
+ # Regions launched back-to-back on the stream between host found-checks. Syncing
+ # the device every region (sync + D2H + pool poll) idled the GPU through the host
+ # round-trip and kept the laptop clock off boost (~28 -> ~20 TH/s). Hits are
+@@ -48,6 +54,8 @@
+ 
+     def __init__(self, region):
+         RS = region
++        self.work_rate = None
++        self.proof_snapshots = None
+         self.dA = cc.DBuf(M * K)
+         self.dB = cc.DBuf(K * N)
+         self.dEAL = cc.DBuf(M * R)
+@@ -71,11 +79,35 @@
+         self.dBpEB = [cc.DBuf(RS * K) for _ in range(N // RS)]
+ 
+ 
++class WorkRate:
++    """Rolling useful work / wall time, including partial grids and HIT pauses."""
++
++    def __init__(self):
++        now = time.monotonic()
++        self.points = deque([(now, 0)])
++        self.total = 0
++        self.last_log = now
++
++    def record(self, work, log):
++        now = time.monotonic()
++        self.total += work
++        self.points.append((now, self.total))
++        while len(self.points) > 2 and self.points[1][0] <= now - 60:
++            self.points.popleft()
++        if now - self.last_log >= 20:
++            start, previous = self.points[0]
++            rate = (self.total - previous) / (now - start) / 1e12
++            log(f"  effective wall: {rate:.2f} TH/s over {now - start:.1f} s (includes HIT/setup pauses)")
++            self.last_log = now
++
++
+ def _submit_share(pool, job_id, proof, mode, accepted, log):
+     """Submit one tile proof and account an accepted share to `mode`."""
+-    b64 = proof.to_base64()
++    b64 = proof if isinstance(proof, str) else proof.to_base64()
+     log(f"  submitting share ({len(b64)} B) for job {job_id}...")
++    submit_t0 = time.perf_counter()
+     resp = pool.submit(job_id, b64)
++    log(f"  share submit wall: {time.perf_counter() - submit_t0:.3f} s")
+     log(f"  POOL RESPONSE: {json.dumps(resp)[:300]}")
+     if resp and resp.get("result") is True:
+         accepted[mode] += 1
+@@ -90,12 +122,24 @@
+     and dev-fee mode so it stays correct across job/wallet changes."""
+     while True:
+         task = proof_q.get()
++        snapshot = None
+         try:
+             if task is None:
+                 return
+             pool, job_id, A, Bt, gr, gc, key, noise_rank, mode, header, verify = task
+-            proof = pearl_host.build_proof_bt(A, Bt, gr, gc, key, noise_rank)
+-            if verify:
++            build_t0 = time.perf_counter()
++            if Bt is None:
++                snapshot = A
++                result = snapshot.build(gr, gc, key, noise_rank, header, verify)
++                proof = result["proof"]
++                if verify:
++                    log(f"  local verify (informational): {result['verification']}")
++                snapshot.release()
++                snapshot = None
++            else:
++                proof = pearl_host.build_proof_bt(A, Bt, gr, gc, key, noise_rank)
++            log(f"  proof build wall: {time.perf_counter() - build_t0:.3f} s")
++            if verify and Bt is not None:
+                 try:
+                     v, vmsg = pearl_host.verify_proof_local(header, proof)
+                     log(f"  local verify (informational): {v} ({vmsg})")
+@@ -105,7 +149,11 @@
+         except Exception as e:
+             log(f"  proof/submit error: {e}")
+         finally:
++            if snapshot is not None:
++                snapshot.release()
+             proof_q.task_done()
++            # Do not retain the previous 1 GiB snapshot while waiting for a hit.
++            task = A = Bt = None
+ 
+ 
+ def mine_job(pool, cfg, header, target_int, job_id, region, max_regions,
+@@ -117,12 +165,17 @@
+     job arrives or it is time to switch wallets for the dev fee.
+ 
+     Returns ('NEWJOB', newjob) or ('SWITCH', None)."""
++    if PROOF_PROCESS and bufs.proof_snapshots is None:
++        from proof_process import SnapshotPool
++        bufs.proof_snapshots = SnapshotPool(M, N, K)
+     factor = cfg.hash_tile_h * cfg.hash_tile_w * cfg.rounded_common_dim
+     bound = pm.penalized_target_bound(target_int, cfg)
+     log(f"job {job_id} target=2^{target_int.bit_length()-1} "
+         f"factor={factor} bound=2^{bound.bit_length()-1}")
+ 
+     key = pearl_host.derive_key(header, cfg)
++    if bufs.work_rate is None:
++        bufs.work_rate = WorkRate()
+     bufs.dtgt.from_host(np.frombuffer(int(bound).to_bytes(32, "little"), np.uint8).copy())
+ 
+     RS = region
+@@ -181,15 +234,34 @@
+                         continue
+                     gr, gc = br0 + int(coord[2 * i]), bc0 + int(coord[2 * i + 1])
+                     log(f"  HIT tile (row={gr}, col={gc}) grid {grid}; proof async")
+-                    # Snapshot the winning grid's A and B^T to host (~160 ms D2H), then
+-                    # hand the expensive (~6s CPU) Merkle proof+submit to a worker thread
+-                    # so the GPU keeps mining the next grid instead of idling. B^T was
+-                    # already produced on the GPU by setup_job -> no host transpose.
+-                    A = np.empty((M, K), np.int8); bufs.dA.to_host(A)
+-                    Bt = np.empty((N, K), np.int8); bufs.dBt_full.to_host(Bt)
+-                    proof_q.put((pool, job_id, A, Bt, gr, gc, key, R, sched.mode, header, verify))
++                    # Snapshot before the next grid overwrites A/Bt. CPU proof
++                    # work runs in another process to avoid holding the launch
++                    # thread's GIL; only its small serialized result comes back.
++                    snapshot_t0 = time.perf_counter()
++                    if PROOF_PROCESS:
++                        A = bufs.proof_snapshots.acquire()
++                        try:
++                            bufs.dA.to_host(A.A)
++                            bufs.dBt_full.to_host(A.Bt)
++                        except BaseException:
++                            A.release()
++                            raise
++                        Bt = None
++                    else:
++                        A = np.empty((M, K), np.int8); bufs.dA.to_host(A)
++                        Bt = np.empty((N, K), np.int8); bufs.dBt_full.to_host(Bt)
++                    log(f"  share snapshot wall: {time.perf_counter() - snapshot_t0:.3f} s")
++                    queue_t0 = time.perf_counter()
++                    try:
++                        proof_q.put((pool, job_id, A, Bt, gr, gc, key, R, sched.mode, header, verify))
++                    except BaseException:
++                        if Bt is None:
++                            A.release()
++                        raise
++                    log(f"  proof queue wait: {time.perf_counter() - queue_t0:.3f} s")
+                     hits += 1
+             bufs.dfound.memset(0)
++            bufs.work_rate.record(len(batch) * tiles_per_region * 1048576, log)
+             batch.clear()
+ 
+         stop = False
+@@ -292,9 +364,9 @@
+     base = [] if getattr(sys, "frozen", False) else [os.path.abspath(sys.argv[0])]
+     ths, acc = {}, {}
+     lock = threading.Lock()
+-    # Track per-GPU rate from "grid N done" lines only (per-grid average), not the
+-    # mid-grid snapshots which start low each grid and read noisy.
+-    done_re = re.compile(r"grid \d+ done:.*\(([\d.]+) TH/s")
++    # Use cumulative wall-time work; latest-grid speed hides proof/setup pauses.
++    done_re = re.compile(r"grid \d+ done:.*\(([\d.]+) TH/s" if args.solo
++                         else r"effective wall: ([\d.]+) TH/s")
+ 
+     def pump(dev, proc):
+         for line in proc.stdout:
+@@ -428,8 +500,9 @@
+     bufs = Bufs(args.region)
+     accepted = {"user": 0, "dev": 0}
+     jobs = 0
+-    # Background proof builder/submitter: overlaps the ~6s host Merkle proof with
+-    # GPU mining of the next grid. Bounded so a slow CPU can't pile up 1 GB snapshots.
++    log(f"proof backend: {'CPU process, two reusable shared snapshots' if PROOF_PROCESS else 'legacy CPU thread'}")
++    # The submitter thread delegates CPU proof building to an isolated process.
++    # Two shared slots bound Linux snapshot memory to 2 GiB and provide backpressure.
+     proof_q: queue.Queue = queue.Queue(maxsize=3)
+     threading.Thread(target=_proof_worker, args=(proof_q, accepted, log),
+                      daemon=True).start()
+--- before/python/pool_common.py
++++ after/python/pool_common.py
+@@ -5,6 +5,7 @@
+ from __future__ import annotations
+ 
+ import json
++from collections import deque
+ import select
+ import socket
+ import threading
+@@ -40,6 +41,8 @@
+         # Serializes socket access between the mining loop (check_newer_job) and the
+         # background proof-submitter thread.
+         self.io_lock = threading.Lock()
++        self.pending_jobs = deque(maxlen=1)
++        self.submit_id = 99
+ 
+     def connect(self):
+         self.s = socket.create_connection((self.host, self.port), timeout=30)
+@@ -57,12 +60,16 @@
+             except socket.timeout:
+                 return None
+             if not d:
+-                return None
++                raise ConnectionError("pool closed the connection")
+             self.buf += d
+         line, self.buf = self.buf.split(b"\n", 1)
+         return json.loads(line) if line.strip() else None
+ 
+     def next_job(self, timeout=70):
++        try:
++            return self.pending_jobs.popleft()
++        except IndexError:
++            pass
+         end = time.time() + timeout
+         while time.time() < end:
+             msg = self._readline(timeout=end - time.time())
+@@ -77,23 +84,27 @@
+         return None
+ 
+     def check_newer_job(self, current_job_id):
++        # The submitter can publish a notify while it waits for the matching
++        # response. Atomic deque handoff lets mining switch jobs immediately.
++        try:
++            newer = self.pending_jobs.popleft()
++        except IndexError:
++            newer = None
++        if newer is not None and newer[2] == current_job_id:
++            newer = None
+         # Non-blocking on the socket lock: if the submitter thread is mid-submit,
+         # just skip this poll (the GPU keeps running; we catch the new job next time).
+         if not self.io_lock.acquire(blocking=False):
+-            return None
++            return newer
+         try:
+             while True:
+                 r, _, _ = select.select([self.s], [], [], 0)
+                 if not r:
+                     break
+-                try:
+-                    d = self.s.recv(65536)
+-                except OSError:
+-                    break
++                d = self.s.recv(65536)
+                 if not d:
+-                    break
++                    raise ConnectionError("pool closed the connection")
+                 self.buf += d
+-            newer = None
+             while b"\n" in self.buf:
+                 line, self.buf = self.buf.split(b"\n", 1)
+                 if not line.strip():
+@@ -114,18 +125,24 @@
+ 
+     def submit(self, job_id, plain_proof_b64):
+         with self.io_lock:
++            self.submit_id += 1
++            mid = self.submit_id
+             self._send("mining.submit",
+                        {"wallet": self.wallet, "worker": self.worker,
+-                        "job_id": job_id, "plain_proof": plain_proof_b64}, mid=99)
+-            for _ in range(40):
+-                msg = self._readline(timeout=10)
++                        "job_id": job_id, "plain_proof": plain_proof_b64}, mid=mid)
++            deadline = time.monotonic() + 10
++            while time.monotonic() < deadline:
++                msg = self._readline(timeout=max(0.001, deadline - time.monotonic()))
+                 if msg is None:
+                     return None
+-                if msg.get("id") == 99:
++                if msg.get("id") == mid:
+                     return msg
+                 if msg.get("method") == "mining.notify":
+-                    self.buf = (json.dumps(msg) + "\n").encode() + self.buf
+-                    return {"pending_job": True}
++                    p = msg["params"]
++                    self.pending_jobs.append((bytes.fromhex(p["header"]), int(p["target"], 16), p["job_id"]))
++                elif msg.get("method") == "mining.set_difficulty":
++                    self.difficulty = msg["params"]
++            return None
+ 
+ 
+ class DevFeeScheduler:
+--- /dev/null
++++ after/python/proof_process.py
+@@ -0,0 +1,105 @@
++"""Linux CPU proof isolation. Share snapshots by fd; never import CUDA here."""
++from __future__ import annotations
++
++import json
++import mmap
++import os
++import queue
++import subprocess
++import sys
++import time
++
++import numpy as np
++
++
++class Snapshot:
++    """Own immutable-after-copy A/Bt storage until its proof has completed."""
++
++    def __init__(self, m, n, k):
++        self.shape = (m, n, k)
++        self.fd = os.memfd_create("pearl-proof", os.MFD_CLOEXEC)
++        try:
++            os.ftruncate(self.fd, (m + n) * k)
++            self.mapping = mmap.mmap(self.fd, (m + n) * k)
++        except BaseException:
++            os.close(self.fd)
++            raise
++        self.A = np.ndarray((m, k), np.int8, buffer=self.mapping)
++        self.Bt = np.ndarray((n, k), np.int8, buffer=self.mapping, offset=m * k)
++
++    def close(self):
++        self.A = self.Bt = None
++        self.mapping.close()
++        os.close(self.fd)
++
++    def release(self):
++        if hasattr(self, "owner"):
++            self.owner.available.put_nowait(self)
++        else:
++            self.close()
++
++    def build(self, row, col, key, rank, header, verify):
++        request = dict(shape=self.shape, row=row, col=col, key=key.hex(),
++                       rank=rank, header=header.hex(), verify=verify)
++        result = subprocess.run(
++            [sys.executable, os.path.abspath(__file__), str(self.fd)],
++            input=json.dumps(request), text=True, capture_output=True,
++            pass_fds=(self.fd,), timeout=120,
++        )
++        if result.returncode:
++            raise RuntimeError(f"proof process failed: {result.stderr[-2000:]}")
++        return json.loads(result.stdout)
++
++
++class SnapshotPool:
++    """Two prefaulted buffers: bounded memory, no fresh 1 GiB allocation per hit."""
++
++    def __init__(self, m, n, k):
++        self.available = queue.Queue(maxsize=2)
++        self.buffers = []
++        try:
++            for _ in range(2):
++                snapshot = Snapshot(m, n, k)
++                self.buffers.append(snapshot)
++                snapshot.A.fill(0)
++                snapshot.Bt.fill(0)
++                snapshot.owner = self
++                self.available.put_nowait(snapshot)
++        except BaseException:
++            for snapshot in self.buffers:
++                snapshot.close()
++            raise
++
++    def acquire(self):
++        return self.available.get()
++
++    def close(self):
++        if self.available.qsize() != len(self.buffers):
++            raise RuntimeError("cannot close snapshots with proofs in flight")
++        for snapshot in self.buffers:
++            snapshot.close()
++        self.buffers.clear()
++
++
++def main():
++    import pearl_host
++
++    request = json.load(sys.stdin)
++    m, n, k = request["shape"]
++    with mmap.mmap(int(sys.argv[1]), (m + n) * k, access=mmap.ACCESS_READ) as memory:
++        A = np.ndarray((m, k), np.int8, buffer=memory)
++        Bt = np.ndarray((n, k), np.int8, buffer=memory, offset=m * k)
++        start = time.perf_counter()
++        proof = pearl_host.build_proof_bt(A, Bt, request["row"], request["col"],
++                                         bytes.fromhex(request["key"]), request["rank"])
++        verification = None
++        if request["verify"]:
++            verification = pearl_host.verify_proof_local(bytes.fromhex(request["header"]), proof)
++        result = dict(proof=proof.to_base64(), build_seconds=time.perf_counter() - start,
++                      verification=verification)
++        del A, Bt
++    print(json.dumps(result))
++
++
++if __name__ == "__main__":
++    main()
+--- /dev/null
++++ after/tests/test_pool_pipeline.py
+@@ -0,0 +1,139 @@
++"""Offline regression tests: real CPU proofs and a local fake Stratum socket."""
++import json
++import ast
++from collections import deque
++import os
++from pathlib import Path
++import socket
++import sys
++import threading
++import time
++import unittest
++from types import SimpleNamespace
++
++sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "python"))
++import numpy as np
++import pearl_host
++from proof_process import Snapshot, SnapshotPool
++from pool_common import LuckyPool
++
++
++class PipelineTests(unittest.TestCase):
++    def test_wall_rate_counts_pauses(self):
++        # Extract the pure accounting class without initializing CUDA in this
++        # CPU-only suite. Exercise irregular batches and a long idle interval.
++        path = Path(__file__).resolve().parents[1] / "python/miner_capi.py"
++        node = next(n for n in ast.parse(path.read_text()).body
++                    if isinstance(n, ast.ClassDef) and n.name == "WorkRate")
++        clock = [0.0]
++        scope = {"deque": deque, "time": SimpleNamespace(monotonic=lambda: clock[0])}
++        exec(compile(ast.Module(body=[node], type_ignores=[]), str(path), "exec"), scope)
++        rate = scope["WorkRate"]()
++        logs = []
++        for timestamp, work in [(10, 100e12), (20, 100e12), (40, 0), (80, 100e12)]:
++            clock[0] = timestamp
++            rate.record(work, logs.append)
++        for actual, expected in zip(logs, ["10.00 TH/s", "5.00 TH/s", "1.67 TH/s"]):
++            self.assertIn(expected, actual)
++        self.assertEqual(len(logs), 3)
++
++    def test_snapshot_pool_reuses_storage(self):
++        pool = SnapshotPool(16, 16, 256)
++        first, second = pool.acquire(), pool.acquire()
++        first.A.fill(42)
++        first.release()
++        again = pool.acquire()
++        self.assertIs(again, first)
++        self.assertTrue(np.all(again.A == 42))
++        again.release()
++        second.release()
++        pool.close()
++
++    def test_process_proof_is_bit_exact(self):
++        rng = np.random.default_rng(20261007)
++        snapshot = Snapshot(64, 80, 4096)
++        try:
++            snapshot.A[:] = rng.integers(-128, 128, snapshot.A.shape, dtype=np.int8)
++            snapshot.Bt[:] = rng.integers(-128, 128, snapshot.Bt.shape, dtype=np.int8)
++            key = bytes(range(32))
++            expected = pearl_host.build_proof_bt(snapshot.A, snapshot.Bt, 16, 48, key, 256).to_base64()
++            actual = snapshot.build(16, 48, key, 256, bytes(80), False)
++            self.assertEqual(actual["proof"], expected)
++        finally:
++            fd = snapshot.fd
++            snapshot.close()
++        with self.assertRaises(OSError):
++            os.fstat(fd)
++
++    def test_notify_before_reply_and_unique_request_ids(self):
++        client, server = socket.socketpair()
++        self.addCleanup(client.close)
++        self.addCleanup(server.close)
++        pool = LuckyPool("unused", 0, "public-wallet", "test")
++        pool.s = client
++        requests = []
++        errors = []
++
++        def peer():
++            try:
++                with server.makefile("rb") as stream:
++                    for i in range(2):
++                        request = json.loads(stream.readline())
++                        requests.append(request)
++                        messages = [
++                            {"id": request["id"] - 1, "result": False},
++                            {"method": "mining.notify", "params": {"header": "00" * 80,
++                             "target": "01", "job_id": f"new-{i}"}},
++                            {"method": "mining.set_difficulty", "params": 123},
++                            {"id": request["id"], "result": True, "error": None},
++                        ]
++                        server.sendall(b"".join(json.dumps(m).encode() + b"\n" for m in messages))
++            except BaseException as exc:
++                errors.append(exc)
++
++        thread = threading.Thread(target=peer, daemon=True)
++        thread.start()
++        for i in range(2):
++            self.assertTrue(pool.submit("old-job", "proof")["result"])
++            self.assertEqual(pool.check_newer_job("old-job")[2], f"new-{i}")
++            self.assertIsNone(pool.check_newer_job(f"new-{i}"))
++        thread.join(2)
++        self.assertFalse(thread.is_alive())
++        self.assertFalse(errors)
++        self.assertNotEqual(requests[0]["id"], requests[1]["id"])
++        self.assertEqual(pool.difficulty, 123)
++
++    def test_eof_is_not_a_job_timeout(self):
++        client, server = socket.socketpair()
++        self.addCleanup(client.close)
++        pool = LuckyPool("unused", 0, "wallet", "test")
++        pool.s = client
++        server.close()
++        with self.assertRaises(ConnectionError):
++            pool.next_job(timeout=1)
++
++    def test_new_job_visible_while_submission_waits(self):
++        client, server = socket.socketpair()
++        self.addCleanup(client.close)
++        self.addCleanup(server.close)
++        pool = LuckyPool("unused", 0, "wallet", "test")
++        pool.s = client
++        replies = []
++        worker = threading.Thread(target=lambda: replies.append(pool.submit("old", "proof")), daemon=True)
++        worker.start()
++        with server.makefile("rb") as stream:
++            request = json.loads(stream.readline())
++        server.sendall(json.dumps({"method": "mining.notify", "params": {
++            "header": "00" * 80, "target": "01", "job_id": "new"}}).encode() + b"\n")
++        deadline = time.monotonic() + 2
++        while not pool.pending_jobs and time.monotonic() < deadline:
++            time.sleep(0.001)
++        self.assertTrue(worker.is_alive())
++        self.assertEqual(pool.check_newer_job("old")[2], "new")
++        server.sendall(json.dumps({"id": request["id"], "result": True}).encode() + b"\n")
++        worker.join(2)
++        self.assertEqual(replies, [{"id": request["id"], "result": True}])
++
++
++if __name__ == "__main__":
++    unittest.main()
+--- /dev/null
++++ after/tests/bench_proof_isolation.py
+@@ -0,0 +1,64 @@
++"""Compare main-thread stalls with real full-size proofs; no GPU or pool use."""
++import json
++from pathlib import Path
++import sys
++import threading
++import time
++
++sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "python"))
++import pearl_host
++from proof_process import Snapshot
++
++
++def main():
++    snapshot = Snapshot(131072, 131072, 4096)
++    try:
++        snapshot.A.fill(17)
++        snapshot.Bt.fill(-23)
++        results = []
++        expected = None
++        for mode in ("thread", "process", "process", "thread"):
++            result = []
++            errors = []
++            done = threading.Event()
++
++            def build():
++                try:
++                    if mode == "thread":
++                        result.append(pearl_host.build_proof_bt(snapshot.A, snapshot.Bt,
++                                      16, 48, bytes(32), 256).to_base64())
++                    else:
++                        result.append(snapshot.build(16, 48, bytes(32), 256, bytes(80), False)["proof"])
++                except BaseException as exc:
++                    errors.append(exc)
++                finally:
++                    done.set()
++
++            gaps = []
++            start = last = time.perf_counter()
++            worker = threading.Thread(target=build)
++            worker.start()
++            while True:
++                finished = done.wait(0.005)
++                now = time.perf_counter()
++                gaps.append(now - last)
++                last = now
++                if finished:
++                    break
++            worker.join()
++            if errors:
++                raise errors[0]
++            if expected is None:
++                expected = result[0]
++            assert result[0] == expected, "full-size serialized proof differs"
++            row = dict(mode=mode, wall_seconds=last-start, main_max_gap_ms=max(gaps)*1000,
++                       heartbeat_count=len(gaps), bit_exact=True)
++            results.append(row)
++            print(json.dumps(row), flush=True)
++        Path("artifacts/proof-isolation-results.json").write_text(json.dumps(results, indent=2) + "\n")
++    finally:
++        snapshot.close()
++
++
++if __name__ == "__main__":
++    main()
+--- /dev/null
++++ after/tests/bench_pool_pipeline.py
+@@ -0,0 +1,111 @@
++"""GPU0 production kernel + deterministic injected hits; NEVER contacts a pool."""
++import os
++os.environ["CUDA_VISIBLE_DEVICES"] = "0"
++import json
++from pathlib import Path
++import queue
++import re
++import statistics
++import sys
++import threading
++import time
++sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "python"))
++import miner_capi as miner
++import cuda_capi as cc
++from pool_common import real_config
++
++
++class Pool:
++    def check_newer_job(self, job):
++        return None
++
++    def submit(self, job, proof):
++        assert len(proof) > 1000
++        return {"result": True, "offline_test": True}
++
++
++class Scheduler:
++    mode = "user"
++    def __init__(self):
++        self.grids = 0
++    def note(self, elapsed):
++        pass
++    def maybe_switch(self):
++        self.grids += 1
++        return self.grids >= 28
++
++
++def main():
++    original_read = cc.DBuf.to_host
++    original_setup = cc.setup_job
++    results = []
++    for repeat in range(2):
++        for mode in ((False, True) if repeat == 0 else (True, False)):
++            miner.PROOF_PROCESS = mode
++            bufs = miner.Bufs(4096)
++            scheduler = Scheduler()
++            injected = set()
++            times = []
++            snapshots = []
++            accepted = dict(user=0, dev=0)
++            q = queue.Queue(maxsize=3)
++
++            def read(buffer, host):
++                result = original_read(buffer, host)
++                grid = scheduler.grids + 1
++                if buffer is bufs.dfound and grid in (5, 13, 21) and grid not in injected:
++                    host[0] = 1
++                    injected.add(grid)
++                if buffer is bufs.dcoord:
++                    host[:] = 0
++                return result
++
++            def setup(*args):
++                return original_setup(*args[:-1], 202610070000 + scheduler.grids)
++
++            def log(line):
++                match = re.search(r"grid wall: ([\d.]+) s", line)
++                if match:
++                    times.append(float(match[1]))
++                match = re.search(r"share snapshot wall: ([\d.]+) s", line)
++                if match:
++                    snapshots.append(float(match[1]))
++                if any(s in line for s in ("HIT", "snapshot", "proof build", "error", "ACCEPTED")):
++                    print(line, flush=True)
++
++            cc.DBuf.to_host = read
++            cc.setup_job = setup
++            worker = threading.Thread(target=miner._proof_worker, args=(q, accepted, log), daemon=True)
++            worker.start()
++            try:
++                miner.mine_job(Pool(), real_config(), bytes(80), 0, "offline", 4096, 0,
++                               scheduler, bufs, accepted, q, log)
++                q.join()
++                assert accepted["user"] == 3, accepted
++                values = times[4:]
++                assert len(values) == 24
++                row = dict(repeat=repeat, mode="process" if mode else "thread",
++                           median_ms=statistics.median(values)*1000,
++                           mean_ms=statistics.mean(values)*1000, max_ms=max(values)*1000,
++                           equivalent_ths=(2**46 / 1e12) / statistics.mean(values),
++                           snapshot_seconds=snapshots, offline_proofs=accepted["user"])
++                results.append(row)
++                print(json.dumps(row), flush=True)
++            finally:
++                q.put(None)
++                q.join()
++                worker.join()
++                cc.DBuf.to_host = original_read
++                cc.setup_job = original_setup
++                if bufs.proof_snapshots is not None:
++                    bufs.proof_snapshots.close()
++                for value in vars(bufs).values():
++                    if isinstance(value, cc.DBuf): value.free()
++                    elif isinstance(value, list):
++                        for item in value:
++                            if isinstance(item, cc.DBuf): item.free()
++    Path("artifacts/pool-pipeline-results.json").write_text(json.dumps(results, indent=2) + "\n")
++
++
++if __name__ == "__main__":
++    main()

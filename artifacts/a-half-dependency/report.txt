@@ -1,0 +1,18 @@
+Fixed-SASS A dependency diagnostic; incorrect Pearl arithmetic except native.
+Half0 MMA uses the current nonzero B quartet for A; half1 keeps genuine A.
+All original A/B loads, 64 static MMA, C accumulation, registers and barriers retained.
+release moves A wait SB1 1130->11a0 and SB3 1140->11b0.
+SB3 covers both A136 and A96: wait remains before first real use of either.
+Only partial A dependency is removed. Source oracle independently verifies altered arithmetic.
+Input correlation/register bank access also changes; matched wait-only comparison is the strongest control.
+UNLOCKED times are region timings, not full grids or usable mining throughput.
+
+UNLOCKED region events:200samples/variant,16launches/sample,10rotating blocks. ms,notfullgrid.
+native {"samples": 200, "mean_ms": 1.0295149606466294, "median_ms": 1.029021978378296, "p95_ms": 1.0505023837089538}
+block-end SMclock min/max 2415/2670MHz;not timeaveraged.
+b_as_a_half {"samples": 200, "mean_ms": 1.0197660499811172, "median_ms": 1.0172479748725891, "p95_ms": 1.0354008436203004}
+block-end SMclock min/max 2415/2640MHz;not timeaveraged.
+b_as_a_half_release {"samples": 200, "mean_ms": 1.0174746680259705, "median_ms": 1.0165110230445862, "p95_ms": 1.0291719675064086}
+block-end SMclock min/max 2415/2610MHz;not timeaveraged.
+native->b_as_a_half:time -0.947%
+b_as_a_half->b_as_a_half_release:time -0.225%

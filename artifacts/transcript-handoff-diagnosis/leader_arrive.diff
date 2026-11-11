@@ -1,0 +1,29 @@
+--- cta192
++++ leader_arrive
+@@ -1,6 +1,6 @@
+ #include <cuda_runtime.h>
+ #include <cstdint>
+-namespace transcript_cta192_consumer {
++namespace handoff_diagnosis_leader_arrive {
+ constexpr int BM=192, BN=192, THREADS=288;
+ constexpr int WORDS=(BM/16)*(BN/16)*16;
+ struct Fragment { unsigned v[4]; };
+@@ -89,7 +89,8 @@
+  do { asm volatile("{ .reg .pred p; mbarrier.test_wait.parity.shared.b64 p,[%1],%2; selp.u32 %0,1,0,p; }" : "=r"(ok) : "r"(bar),"r"(phase) : "memory"); } while(!ok);
+ }
+ __device__ __forceinline__ void task_arrive(unsigned bar) {
+- asm volatile("mbarrier.arrive.shared.b64 _,[%0];" :: "r"(bar) : "memory");
++ __syncwarp();
++ if((threadIdx.x&31)==0) asm volatile("mbarrier.arrive.shared.b64 _,[%0];" :: "r"(bar) : "memory");
+ }
+ template<int Lead,int TileK=64,bool Planar=false,bool PackedB=false,bool UnrollCopy=false,bool FixedCopy=false,int Stages=2,bool Wide=false,int Layout=0>
+ __global__ void __launch_bounds__(320,1) kernel(const signed char* a,const signed char* b,int m,int n,int k,int r,unsigned* out) {
+@@ -114,7 +115,7 @@
+     unsigned barbase=(unsigned)__cvta_generic_to_shared(shared+58368+4608);
+     if(threadIdx.x<18) {
+         unsigned addr=barbase+8*threadIdx.x;
+-        asm volatile("mbarrier.init.shared.b64 [%0],32;" :: "r"(addr) : "memory");
++        asm volatile("mbarrier.init.shared.b64 [%0],1;" :: "r"(addr) : "memory");
+     }
+     __syncthreads();
+     if(warp==9) {

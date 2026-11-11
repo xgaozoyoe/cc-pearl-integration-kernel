@@ -1,0 +1,425 @@
+diff --git a/tests/ada_ws.cu b/tests/ada_ws.cu
+new file mode 100644
+index 0000000..48213a8
+--- /dev/null
++++ b/tests/ada_ws.cu
+@@ -0,0 +1,153 @@
++// Offline-only SM89 producer/consumer experiment. Original source is included
++// to share the exact operand mapping and MMA helpers without touching it.
++#include "../csrc/gemm/pearl-gemm-ada-v2.cu"
++namespace pearl_ada_ws {
++using namespace pearl_ada_v2;
++template<int Count>
++__device__ __forceinline__ void arrive(int id) {
++    asm volatile("bar.arrive %0, %1;" :: "r"(id),"n"(Count) : "memory");
++}
++template<int Count>
++__device__ __forceinline__ void wait(int id) {
++    asm volatile("bar.sync %0, %1;" :: "r"(id),"n"(Count) : "memory");
++}
++template<int Producers>
++__device__ __forceinline__ void produce(const int8_t* a,const int8_t* b,
++    int8_t* sa,int8_t* sb,int cm,int cn,int kt,int m,int n) {
++    int pt=threadIdx.x-384;
++    #pragma unroll 1
++    for(int i=pt;i<BM*64/16;i+=Producers*32) {
++        int logical=i^((i>>3)&3),row=logical/4,col=(logical%4)*16;
++        int gr=cm*BM+row,valid=gr<m?16:0;
++        auto src=a+(size_t)(gr<m?gr:0)*4096+kt*64+col;
++        unsigned dst=__cvta_generic_to_shared(sa+i*16);
++        asm volatile("cp.async.cg.shared.global [%0],[%1],16,%2;" :: "r"(dst),"l"(src),"r"(valid));
++    }
++    #pragma unroll 1
++    for(int i=pt;i<BN*64/16;i+=Producers*32) {
++        int logical=i^((i>>3)&3),row=logical/4,col=(logical%4)*16;
++        int gr=cn*BN+row,valid=gr<n?16:0;
++        auto src=b+(size_t)(gr<n?gr:0)*4096+kt*64+col;
++        unsigned dst=__cvta_generic_to_shared(sb+i*16);
++        asm volatile("cp.async.cg.shared.global [%0],[%1],16,%2;" :: "r"(dst),"l"(src),"r"(valid));
++    }
++    asm volatile("cp.async.commit_group;" ::: "memory");
++    asm volatile("cp.async.wait_group 0;" ::: "memory");
++}
++template<int Producers,int Stages=2>
++__global__ void __launch_bounds__(384+Producers*32,1)
++kernel(const int8_t* a,const int8_t* b,int m,int n,unsigned* out) {
++    constexpr int Threads=384+Producers*32;
++    constexpr int Lead=2,TileK=64,Layout=6,Groups=4,WarpN=64,k=4096;
++    constexpr bool Planar=false,PackedB=true;
++    extern __shared__ int8_t shared[];
++    int8_t* sa=shared;int8_t* sb=shared+Stages*BM*64;
++    unsigned* transcript=reinterpret_cast<unsigned*>(shared+Stages*(BM+BN)*64);
++    int linear=blockIdx.x+gridDim.x*blockIdx.y;
++    int first=linear/(8*gridDim.x)*8;
++    int cols=min(8,int(gridDim.y)-first),off=linear%(8*gridDim.x);
++    int cm=off/cols,cn=first+off%cols;
++    if(threadIdx.x>=384) {
++        for(int kt=0;kt<64;++kt) {
++            int stage=kt%Stages;
++            if(kt>=Stages) wait<Threads>(2+2*stage);
++            produce<Producers>(a,b,sa+stage*BM*64,sb+stage*BN*64,cm,cn,kt,m,n);
++            arrive<Threads>(1+2*stage);
++        }
++    } else {
++        int warp=threadIdx.x/32,lane=threadIdx.x%32;
++        int wm=warp%4,wn=warp/4;
++        unsigned c[4][4][2][4]={};
++        Fragment ar[4],br[3];
++        for(int kt=0;kt<64;++kt) {
++            int stage=kt%Stages;
++            wait<Threads>(1+2*stage);
++            int8_t* aa=sa+stage*BM*64;
++            int8_t* bb=sb+stage*BN*64;
++        #pragma unroll
++        for(int row=0;row<4;++row) ar[row]=load16x32<TileK,Planar,Layout>(aa,wm*64+row*16,0,lane,BM);
++        #pragma unroll
++        for(int p=0;p<Lead;++p) br[p]=loadB16x32<TileK,Planar,PackedB,Layout>(bb,wn*WarpN+p*16,0,lane,BN);
++        #pragma unroll
++        for(int g=0;g<Groups*(TileK/32);++g) {
++            constexpr int slots=Lead+1;
++            int slice=g/Groups,group=g%Groups,slot=g%slots;
++            #pragma unroll
++            for(int half=0;half<2;++half) {
++                #pragma unroll
++                for(int row=0;row<4;++row) {
++                    if(half==0 && row==2 && g+Lead<Groups*(TileK/32) && (TileK==64 || kt*TileK+((g+Lead)/Groups)*32<k))
++                        br[(g+Lead)%slots]=loadB16x32<TileK,Planar,PackedB,Layout>(bb,wn*WarpN+((g+Lead)%Groups)*16,((g+Lead)/Groups)*32,lane,BN);
++                    mma<PackedB>(c[row][group][half],ar[row],br[slot],half);
++                    if(slice+1<TileK/32 && (TileK==64 || kt*TileK+(slice+1)*32<k) && group==Groups-1 && half==1)
++                        ar[row]=load16x32<TileK,Planar,Layout>(aa,wm*64+row*16,(slice+1)*32,lane,BM);
++                }
++            }
++        }
++        if constexpr(TileK==64) {
++        if((kt+1)%4==0) {
++            int rb=(kt+1)/4-1;
++            #pragma unroll
++            for(int row=0;row<4;++row) {
++                #pragma unroll
++                for(int group=0;group<Groups;++group) {
++                    unsigned x=0;
++                    #pragma unroll
++                    for(int half=0;half<2;++half) {
++                        #pragma unroll
++                        for(int v=0;v<4;++v) x^=c[row][group][half][v];
++                    }
++                    x=__reduce_xor_sync(0xffffffffu,x);
++                    if(lane==0) transcript[((wm*4+row)*(BN/16)+wn*Groups+group)*16+rb]=x;
++                }
++            }
++        }
++        }
++            arrive<Threads>(2+2*stage);
++        }
++    }
++    __syncthreads();
++    for(int i=threadIdx.x;i<WORDS;i+=Threads) {
++        int tile=i/16,gr=cm*(BM/16)+tile/(BN/16),gc=cn*(BN/16)+tile%(BN/16);
++        if(gr<m/16 && gc<n/16) out[((size_t)gr*(n/16)+gc)*16+i%16]=transcript[i];
++    }
++}
++template<int Producers,int Stages=2>
++cudaError_t launch(const int8_t* a,const int8_t* b,int m,int n,unsigned* out,int* info) {
++    constexpr int Threads=384+Producers*32,smem=Stages*(BM+BN)*64+WORDS*4;
++    static bool initialized=false;
++    cudaError_t e;
++    if(!initialized) {
++        e=cudaFuncSetAttribute(kernel<Producers,Stages>,cudaFuncAttributeMaxDynamicSharedMemorySize,smem);
++        if(e!=cudaSuccess)return e;
++        e=cudaFuncSetAttribute(kernel<Producers,Stages>,cudaFuncAttributePreferredSharedMemoryCarveout,100);
++        if(e!=cudaSuccess)return e;
++        initialized=true;
++    }
++    if(info) {
++        cudaFuncAttributes attr;e=cudaFuncGetAttributes(&attr,kernel<Producers,Stages>);if(e!=cudaSuccess)return e;
++        int active;e=cudaOccupancyMaxActiveBlocksPerMultiprocessor(&active,kernel<Producers,Stages>,Threads,smem);
++        if(e!=cudaSuccess)return e;
++        info[0]=attr.numRegs;info[1]=Threads;info[2]=smem+attr.sharedSizeBytes;info[3]=active;info[4]=attr.localSizeBytes;
++        return cudaSuccess;
++    }
++    kernel<Producers,Stages><<<dim3((m+BM-1)/BM,(n+BN-1)/BN),Threads,smem>>>(a,b,m,n,out);
++    return cudaGetLastError();
++}
++}
++extern "C" int ws_run(int id,const int8_t* a,const int8_t* b,int m,int n,int k,int r,unsigned* out,int* info) {
++    if(m<=0 || n<=0 || m%16 || n%16 || k!=4096 || r!=256)return cudaErrorInvalidValue;
++    if(id==0)return pearl_ada_v2::launch<2,64,false,true,false,false,2,false,6>(a,b,m,n,k,r,out,info,nullptr);
++    if(id==1)return pearl_ada_ws::launch<1>(a,b,m,n,out,info);
++    if(id==2)return pearl_ada_ws::launch<2>(a,b,m,n,out,info);
++    return cudaErrorInvalidValue;
++}
++extern "C" int ws_bench(int id,const int8_t* a,const int8_t* b,int m,int n,int k,int r,unsigned* out,int iters,float* ms) {
++    cudaEvent_t start,end;auto e=cudaEventCreate(&start);if(e!=cudaSuccess)return e;
++    e=cudaEventCreate(&end);if(e!=cudaSuccess){cudaEventDestroy(start);return e;}
++    cudaEventRecord(start);
++    for(int i=0;i<iters;++i){e=(cudaError_t)ws_run(id,a,b,m,n,k,r,out,nullptr);if(e!=cudaSuccess)break;}
++    if(e==cudaSuccess){cudaEventRecord(end);e=cudaEventSynchronize(end);}
++    if(e==cudaSuccess){e=cudaEventElapsedTime(ms,start,end);*ms/=iters;}
++    cudaEventDestroy(start);cudaEventDestroy(end);return e;
++}
+diff --git a/tests/bench_ada_ws.py b/tests/bench_ada_ws.py
+new file mode 100644
+index 0000000..3219365
+--- /dev/null
++++ b/tests/bench_ada_ws.py
+@@ -0,0 +1,87 @@
++"""Isolated GPU0 warp-specialization experiment; no mining entry point."""
++import os
++os.environ["CUDA_VISIBLE_DEVICES"] = "0"
++import argparse, ctypes as C, json, time, subprocess, sys
++from pathlib import Path
++import numpy as np
++ROOT=Path(__file__).resolve().parents[1]
++sys.path.insert(0,str(ROOT/"python"))
++import cuda_capi as cc
++P=C.c_void_p; I=C.c_int
++lib=C.CDLL(os.environ.get("PEARL_WS_LIBRARY","/tmp/libpearl-ada-ws.so"))
++lib.ws_run.argtypes=[I,P,P,I,I,I,I,P,P]
++lib.ws_bench.argtypes=[I,P,P,I,I,I,I,P,I,P]
++parser=argparse.ArgumentParser()
++parser.add_argument("mode",choices=["validate","bench","profile","small"])
++parser.add_argument("--variant",type=int,default=0)
++parser.add_argument("--output",default="artifacts/ada-ws-results.json")
++args=parser.parse_args()
++def alloc(m,n,seed):
++    rng=np.random.default_rng(seed)
++    a=rng.integers(-128,128,(m,4096),dtype=np.int8)
++    b=rng.integers(-128,128,(n,4096),dtype=np.int8)
++    da,db,dt=cc.DBuf(a.nbytes),cc.DBuf(b.nbytes),cc.DBuf((m//16)*(n//16)*16*4)
++    da.from_host(a);db.from_host(b)
++    return da,db,dt
++def run(v,a,b,t,m,n,info=None):
++    cc._chk(lib.ws_run(v,a.ptr,b.ptr,m,n,4096,256,t.ptr,info),"ws_run")
++def bench(v,a,b,t,m,n,iters):
++    ms=C.c_float()
++    cc._chk(lib.ws_bench(v,a.ptr,b.ptr,m,n,4096,256,t.ptr,iters,C.byref(ms)),"ws_bench")
++    return ms.value
++def telemetry():
++    return subprocess.check_output(["nvidia-smi","-i","0","--query-gpu=uuid,clocks.sm,clocks.mem,temperature.gpu,power.draw,power.limit","--format=csv,noheader"],text=True).strip()
++resources={}
++for v in range(3):
++    info=np.zeros(5,dtype=np.int32)
++    cc._chk(lib.ws_run(v,None,None,256,192,4096,256,None,info.ctypes.data),"info")
++    resources[str(v)]=dict(zip(["registers","threads","shared_bytes","active_ctas","local_bytes"],map(int,info)))
++print("resources",json.dumps(resources),flush=True)
++if args.mode in ("validate","small"):
++    ref=C.CDLL("/tmp/libpearl-ada-linear-copy.so")
++    ref.trial_fold.argtypes=[I,P,P,I,I,I,I,P]
++    shapes=[(256,512,11),(512,256,23),(4096,4096,42),(256,768,57),(768,512,101)]
++    if args.mode=="small":shapes=[(256,192,11)]
++    results=[]
++    for m,n,seed in shapes:
++        a,b,t=alloc(m,n,seed)
++        expected=np.empty((m//16)*(n//16)*16,dtype=np.uint32)
++        cc._chk(ref.trial_fold(-1,a.ptr,b.ptr,m,n,4096,256,t.ptr),"DP4A")
++        cc.sync();t.to_host(expected)
++        for v in range(3):
++            t.memset(0xA5)
++            run(v,a,b,t,m,n);cc.sync()
++            actual=np.empty_like(expected);t.to_host(actual)
++            assert np.array_equal(actual,expected),(v,m,n,np.flatnonzero(actual!=expected)[:10].tolist())
++            print(f"PASS v{v} {m}x{n} full transcript",flush=True)
++            results.append(dict(variant=v,m=m,n=n,seed=seed,words=len(expected),pass_bitexact=True))
++        for x in (a,b,t):x.free()
++    if args.mode=="validate":
++        (ROOT/"artifacts/ada-ws-correctness.json").write_text(json.dumps(results,indent=2)+"\n")
++elif args.mode=="profile":
++    a,b,t=alloc(4096,4096,42)
++    for _ in range(40):run(args.variant,a,b,t,4096,4096);cc.sync()
++else:
++    m=n=4096
++    a,b,t=alloc(m,n,42)
++    for v in range(3):bench(v,a,b,t,m,n,2000)
++    measurements=[]
++    for repeat in range(2):
++        for sample in range(40):
++            # Rotate order to balance thermal drift; each sample averages 32 launches.
++            for v in [(sample+repeat+i)%3 for i in range(3)]:
++                start=time.perf_counter()
++                ms=bench(v,a,b,t,m,n,32)
++                wall_ms=(time.perf_counter()-start)*1000/32
++                measurements.append(dict(run=repeat,variant=v,sample=sample,kernel_ms=ms,wall_ms=wall_ms))
++            if sample%10==0:print(repeat,sample,telemetry(),flush=True)
++    summaries={}
++    for v in range(3):
++        x=np.array([s["kernel_ms"] for s in measurements if s["variant"]==v])
++        summaries[str(v)]=dict(median_ms=float(np.median(x)),mean_ms=float(np.mean(x)),p95_ms=float(np.percentile(x,95)),
++            region_per_sec=1000/float(np.mean(x)),equivalent_THs=m*n*4096/(float(np.mean(x))*1e9),
++            wall_mean_ms=float(np.mean([s["wall_ms"] for s in measurements if s["variant"]==v])))
++    result=dict(dimensions=[m,n,4096],samples_per_run=40,runs=2,kernels_per_sample=32,resources=resources,
++                summaries=summaries,measurements=measurements,telemetry_end=telemetry())
++    Path(args.output).write_text(json.dumps(result,indent=2)+"\n")
++    print(json.dumps(summaries,indent=2))
+diff --git a/tests/bench_ada_ws_grids.py b/tests/bench_ada_ws_grids.py
+new file mode 100644
+index 0000000..1b715fe
+--- /dev/null
++++ b/tests/bench_ada_ws_grids.py
+@@ -0,0 +1,73 @@
++"""Offline mainnet-sized WS test. Production generation; no jackpot or pool."""
++import os
++os.environ["CUDA_VISIBLE_DEVICES"]="0"
++import sys,ctypes as C,json,time,subprocess
++from pathlib import Path
++import numpy as np
++ROOT=Path(__file__).resolve().parents[1]
++sys.path.insert(0,str(ROOT/"python"))
++import cuda_capi as cc
++import miner_capi as miner
++from pool_common import M,N,K,R,real_config
++import pearl_host
++P=C.c_void_p; I=C.c_int
++lib=C.CDLL("/tmp/libpearl-ada-ws.so")
++lib.ws_run.argtypes=[I,P,P,I,I,I,I,P,P]
++rt=C.CDLL("libcudart.so.12")
++rt.cudaEventCreate.argtypes=[C.POINTER(P)]
++rt.cudaEventRecord.argtypes=[P,P]
++rt.cudaEventElapsedTime.argtypes=[C.POINTER(C.c_float),P,P]
++rt.cudaEventDestroy.argtypes=[P]
++def event():
++    e=P();cc._chk(rt.cudaEventCreate(C.byref(e)),"event create");return e
++events=[(event(),event()) for _ in range(1024)]
++buf=miner.Bufs(4096)
++key=pearl_host.derive_key(bytes(80),real_config())
++buf.dkeyjob.from_host(np.frombuffer(key,np.uint8).copy())
++def grid(v,seed):
++    start=time.perf_counter()
++    cc.setup_job(buf.dA,buf.dB,buf.dBt_full,buf.dkeyjob,buf.dnsA,buf.dnsB,M,N,K,R,seed)
++    cc.noise_gen(buf.dEAL,buf.dEAR,buf.dEBL,buf.dEBR,buf.dnsA,buf.dnsB,M,N,K,R)
++    cc.transpose_i8(buf.dEAR,buf.dEAR_t,R,K,K,0)
++    cc.sync()
++    idx=0
++    for r0 in range(0,M,4096):
++        cc.noise_gemm(buf.dEAL.offset(r0*R),buf.dEAR_t,buf.dA.offset(r0*K),buf.dApEA,4096,K,R)
++        for j,c0 in enumerate(range(0,N,4096)):
++            if r0==0:cc.noise_gemm(buf.dEBR.offset(c0*R),buf.dEBL,buf.dBt_full.offset(c0*K),buf.dBpEB[j],4096,K,R)
++            begin,end=events[idx];idx+=1
++            cc._chk(rt.cudaEventRecord(begin,None),"record")
++            cc._chk(lib.ws_run(v,buf.dApEA.ptr,buf.dBpEB[j].ptr,4096,4096,K,R,buf.dtb.ptr,None),"ws")
++            cc._chk(rt.cudaEventRecord(end,None),"record")
++    cc.sync()
++    wall_ms=1000*(time.perf_counter()-start)
++    kernel_ms=0
++    for begin,end in events:
++        ms=C.c_float();cc._chk(rt.cudaEventElapsedTime(C.byref(ms),begin,end),"elapsed");kernel_ms+=ms.value
++    return dict(kernel_ms=kernel_ms,wall_ms=wall_ms)
++for v in range(3):
++    for i in range(2):grid(v,0x504541524c000000+i)
++rows=[]
++for repeat in range(2):
++    for sample in range(40):
++        for v in [(sample+repeat+i)%3 for i in range(3)]:
++            result=grid(v,0x504541524c000100+repeat*40+sample)
++            rows.append(dict(run=repeat,sample=sample,variant=v,**result))
++        if sample%5==0:
++            status=subprocess.check_output(["nvidia-smi","-i","0","--query-gpu=clocks.sm,clocks.mem,temperature.gpu,power.draw,power.limit","--format=csv,noheader"],text=True).strip()
++            print(repeat,sample,status,rows[-3:],flush=True)
++summaries={}
++for v in range(3):
++    subset=[r for r in rows if r["variant"]==v]
++    def stats(key):
++        x=np.array([r[key] for r in subset])
++        return dict(median_ms=float(np.median(x)),mean_ms=float(np.mean(x)),p95_ms=float(np.percentile(x,95)),
++                    grids_per_second=1000/float(np.mean(x)),equivalent_THs=M*N*K/(float(np.mean(x))*1e9))
++    summaries[str(v)]=dict(kernel=stats("kernel_ms"),offline_grid_wall=stats("wall_ms"))
++result=dict(dimensions=[M,N,K],region=4096,runs=2,samples_per_run=40,
++            note="Full transcript and production A/B/V3/noise generation; PoW/jackpot/pool omitted in all variants. Kernel events summed over 1024 launches; wall includes setup/noise/dispatch.",
++            summaries=summaries,measurements=rows)
++(ROOT/"artifacts/ada-ws-grid-results.json").write_text(json.dumps(result,indent=2)+"\n")
++print(json.dumps(summaries,indent=2),flush=True)
++for pair in events:
++    for e in pair:rt.cudaEventDestroy(e)
+diff --git a/tools/build_ada_ws.sh b/tools/build_ada_ws.sh
+new file mode 100644
+index 0000000..609a8c3
+--- /dev/null
++++ b/tools/build_ada_ws.sh
+@@ -0,0 +1,8 @@
++#!/usr/bin/env bash
++set -euo pipefail
++cd "$(dirname "$0")/.."
++OUTPUT_LIBRARY="${OUTPUT_LIBRARY:-/tmp/libpearl-ada-ws.so}"
++/usr/local/cuda-12.6/bin/nvcc -std=c++20 -O3 -lineinfo \
++  -gencode arch=compute_89,code=sm_89 -Xcompiler -fPIC \
++  --ptxas-options=-v -shared tests/ada_ws.cu -o "$OUTPUT_LIBRARY"
++printf 'Built %s\n' "$OUTPUT_LIBRARY"
+diff --git a/tools/profile_ada_ws.sh b/tools/profile_ada_ws.sh
+new file mode 100644
+index 0000000..985ac42
+--- /dev/null
++++ b/tools/profile_ada_ws.sh
+@@ -0,0 +1,29 @@
++#!/usr/bin/env bash
++# Offline GPU0 only; production library is not replaced. Requires counter access.
++set -euo pipefail
++cd "$(dirname "$0")/.."
++export CUDA_VISIBLE_DEVICES=0
++export PEARL_WS_LIBRARY="${PEARL_WS_LIBRARY:-/tmp/libpearl-ada-ws.so}"
++PROFILE_OUT="${PROFILE_OUT:-/tmp/pearl-ada-ws-profile}"
++mkdir -p "$PROFILE_OUT"
++METRICS='gpu__time_duration.sum,dram__bytes.sum,lts__t_bytes.sum,sm__sass_data_bytes_mem_shared_op_ldsm.sum,lts__throughput.avg.pct_of_peak_sustained_elapsed,smsp__warp_issue_stalled_barrier_per_warp_active.pct,smsp__warp_issue_stalled_long_scoreboard_per_warp_active.pct,smsp__warp_issue_stalled_short_scoreboard_per_warp_active.pct,smsp__warp_issue_stalled_math_pipe_throttle_per_warp_active.pct,sm__pipe_tensor_op_imma_cycles_active_v2.avg.pct_of_peak_sustained_active'
++for VARIANT in 0 1 2; do
++  REPORT="$PROFILE_OUT/v$VARIANT"
++  if [[ ! -s "$REPORT.ncu-rep" ]]; then
++  /usr/local/cuda/bin/ncu --devices 0 --clock-control none \
++    --replay-mode application --cache-control none --kernel-name-base demangled \
++    --kernel-name 'regex:.*pearl_ada_(v2|ws)::kernel.*' \
++    --launch-skip 32 --launch-count 3 --metrics "$METRICS" \
++    --section SourceCounters --section SchedulerStats --section WarpStateStats \
++    --warp-sampling-interval auto --warp-sampling-max-passes 5 --import-source yes \
++    -o "$REPORT" .venv/bin/python tests/bench_ada_ws.py profile --variant "$VARIANT" \
++    > "$REPORT.log" 2>&1
++  else
++    printf 'Reusing existing report: %s\n' "$REPORT.ncu-rep"
++  fi
++  /usr/local/cuda/bin/ncu --import "$REPORT.ncu-rep" --page raw --print-units base --csv > "$REPORT.raw.csv"
++  /usr/local/cuda/bin/ncu --import "$REPORT.ncu-rep" --page source --print-source sass --csv > "$REPORT.sass.csv"
++done
++.venv/bin/python tools/analyze_instruction_stalls.py "$PROFILE_OUT"/v*.sass.csv --output "$PROFILE_OUT/pc-stalls.json"
++.venv/bin/python tools/analyze_ada_ws.py "$PROFILE_OUT"
++printf 'Reports: %s\n' "$PROFILE_OUT"
+diff --git a/tools/analyze_ada_ws.py b/tools/analyze_ada_ws.py
+new file mode 100644
+index 0000000..c3c7845
+--- /dev/null
++++ b/tools/analyze_ada_ws.py
+@@ -0,0 +1,39 @@
++"""Summarize Nsight base-unit raw CSVs. Never substitute theoretical L2 bytes."""
++import argparse,csv,json,statistics
++from pathlib import Path
++p=argparse.ArgumentParser();p.add_argument("directory",type=Path)
++p.add_argument("--variants",type=int,nargs="+",default=[0,1,2]);args=p.parse_args()
++metrics={
++"kernel_ns":"gpu__time_duration.sum",
++"tensor_pct":"sm__pipe_tensor_op_imma_cycles_active_v2.avg.pct_of_peak_sustained_active",
++"l2_util_pct":"lts__throughput.avg.pct_of_peak_sustained_elapsed",
++"l2_bytes":"lts__t_bytes.sum",
++"barrier_pct":"smsp__warp_issue_stalled_barrier_per_warp_active.pct",
++"long_scoreboard_pct":"smsp__warp_issue_stalled_long_scoreboard_per_warp_active.pct",
++"short_scoreboard_pct":"smsp__warp_issue_stalled_short_scoreboard_per_warp_active.pct",
++"math_throttle_pct":"smsp__warp_issue_stalled_math_pipe_throttle_per_warp_active.pct",
++"eligible_warps_per_scheduler":"smsp__warps_eligible.avg.per_cycle_active",
++"active_warps_per_scheduler":"smsp__warps_active.avg.per_cycle_active",
++"issued_warps_per_cycle":"smsp__issue_active.avg.per_cycle_active",
++}
++summary={}
++for v in args.variants:
++    path=args.directory/f"v{v}.raw.csv"
++    rows=list(csv.reader(path.open()))
++    header_index=next(i for i,row in enumerate(rows) if row and row[0]=="ID" and "Kernel Name" in row)
++    header=rows[header_index];units=dict(zip(header,rows[header_index+1]))
++    records=[dict(zip(header,row)) for row in rows[header_index+2:] if len(row)==len(header) and row[0].isdigit()]
++    assert records,f"No launches in {path}"
++    entry={"launches":len(records),"metrics":{},"missing":[]}
++    for label,metric in metrics.items():
++        if metric not in header:
++            entry["missing"].append(metric);continue
++        vals=[float(row[metric].replace(",","")) for row in records if row[metric]]
++        if not vals:entry["missing"].append(metric);continue
++        entry["metrics"][label]={"mean":statistics.mean(vals),"values":vals,"unit":units[metric]}
++    if "l2_bytes" in entry["metrics"]:
++        assert entry["metrics"]["l2_bytes"]["unit"]=="byte",units["lts__t_bytes.sum"]
++        entry["l2_bytes_per_useful_mma"]=entry["metrics"]["l2_bytes"]["mean"]/16777216
++    summary[str(v)]=entry
++(args.directory/"summary.json").write_text(json.dumps(summary,indent=2)+"\n")
++print(json.dumps(summary,indent=2))

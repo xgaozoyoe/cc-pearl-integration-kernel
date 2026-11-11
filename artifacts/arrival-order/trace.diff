@@ -1,0 +1,40 @@
+--- source_control
++++ trace
+@@ -1,6 +1,6 @@
+ #include <cuda_runtime.h>
+ #include <cstdint>
+-namespace transcript_tasks_source_control {
++namespace arrival_order_trace {
+ constexpr int BM=256, BN=192, THREADS=384;
+ constexpr int WORDS=(BM/16)*(BN/16)*16;
+ struct Fragment { unsigned v[4]; };
+@@ -110,6 +110,7 @@
+     asm volatile("cp.async.commit_group;");
+ }
+ 
++__device__ __forceinline__ unsigned tick() {unsigned t;asm volatile("mov.u32 %0, %%clock;" : "=r"(t) :: "memory");return t;}
+ template<int Lead,int TileK=64,bool Planar=false,bool PackedB=false,bool UnrollCopy=false,bool FixedCopy=false,int Stages=2,bool Wide=false,int Layout=0>
+ __global__ void __launch_bounds__(Wide?256:THREADS,1) kernel(const signed char* a,const signed char* b,int m,int n,int k,int r,unsigned* out) {
+     constexpr int WarpN=Wide?96:64, Groups=WarpN/16, Threads=Wide?256:THREADS;
+@@ -216,6 +217,8 @@
+         }
+         // Publish this group's completed future copies and old-stage reads.
+         asm volatile("cp.async.wait_group 0;" ::: "memory");
++        unsigned early=0,late=0;
++        if(kt==r)early=tick();
+         asm volatile("bar.arrive %0, 384;" :: "r"(peer_bar) : "memory");
+         if constexpr(TileK==64) {
+         if((kt+1)%2==0) {
+@@ -240,7 +243,12 @@
+             }
+         }
+         }
++        if(kt==r)late=tick();
+         asm volatile("bar.sync %0, 384;" :: "r"(own_bar) : "memory");
++        if(kt==r && lane==0) {
++            unsigned* dst=out+size_t(m)*n/256*16+(size_t(blockIdx.x)+size_t(gridDim.x)*blockIdx.y)*24+warp*2;
++            dst[0]=early;dst[1]=late;
++        }
+         own_bar^=2u;
+     }
+     __syncthreads();

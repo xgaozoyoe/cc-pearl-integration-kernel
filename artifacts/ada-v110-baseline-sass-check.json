@@ -1,0 +1,14 @@
+[
+  {
+    "library": "/tmp/pearl-ada-frozen-v110-sass.txt",
+    "symbol": "_ZN12pearl_ada_v26kernelILi2ELi64ELb0ELb1EEEvPKaS2_iiiiPj",
+    "hash": "f6e7a1054e00091c2fe8b960f9e8783dc4a0a72f224bb1342c0f1f3f97cd55c6",
+    "instructions": 760
+  },
+  {
+    "library": "/tmp/pearl-ada-wide96-sass.txt",
+    "symbol": "_ZN12pearl_ada_v26kernelILi2ELi64ELb0ELb1ELb0ELb0ELi2ELb0EEEvPKaS2_iiiiPj",
+    "hash": "f6e7a1054e00091c2fe8b960f9e8783dc4a0a72f224bb1342c0f1f3f97cd55c6",
+    "instructions": 760
+  }
+]

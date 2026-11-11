@@ -1,0 +1,23 @@
+{
+  "variants": {
+    "native": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "104c0c1b265260dea5c9ab0bb174ebbbe7ee9cceb0cf0acebf2a9d1dfa4d50aa",
+      "smem": 69632,
+      "correct": true
+    },
+    "drain_b0": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "fe211ef9e37c829f9bfd94fd99514576a2a0188673faadd36f13a1f8caed29ae",
+      "smem": 69632,
+      "correct": true
+    },
+    "drain_b1": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "d0581d6d2f3133b9f873a24744aa5db459493d7514601be20a737b616b90917b",
+      "smem": 69632,
+      "correct": true
+    }
+  },
+  "description": "Same instruction multiset; reorder23instructions before early publication. Both LDSM completion waits retained; fixed native baseline."
+}

@@ -1,0 +1,16 @@
+Capture: /tmp/pearl-a-half-dependency.cj3Xeq
+All captured input hashes match; all 9 launches executed 67,633,152 IMMA instructions.
+NCU base-clock capture, 3 warmed launches per variant; 8192x8192x4096 region, not full mining grids.
+native: {"imma_per_SM_elapsed_cycle": 0.20880257678217132, "imma_per_SMSP_elapsed_cycle": 0.05220064419554283, "tensor_Ginst_sec": 59.5035974928116, "kernel_ms": 1.1366293333333333}
+b_as_a_half: {"imma_per_SM_elapsed_cycle": 0.20864541827213776, "imma_per_SMSP_elapsed_cycle": 0.05216135456803444, "tensor_Ginst_sec": 59.51525413160425, "kernel_ms": 1.1364053333333333}
+b_as_a_half_release: {"imma_per_SM_elapsed_cycle": 0.20888036798492324, "imma_per_SMSP_elapsed_cycle": 0.05222009199623081, "tensor_Ginst_sec": 59.634255632484766, "kernel_ms": 1.1341333333333334}
+Matched release vs unchanged waits: kernel mean -0.19993%; IMMA/SM elapsed cycle +0.11261%.
+Release vs native: kernel mean -0.21960%; IMMA/SM elapsed cycle +0.03726%.
+Tensor utilization: 85.7833%, 85.7967%, 85.8233%; active warps/scheduler 3.0 in all variants.
+Short-scoreboard PC samples (3 launches total): control 1130+1140 = 271+695=966; release both zero.
+New wait PCs 11a0 and 11b0 have zero short-scoreboard samples in both control and release.
+Control total short-scoreboard samples 70811, release 70148. The removed sites represent 1.364% of control short-scoreboard samples, NOT runtime.
+Conclusion: these two initial A waits are a minor bottleneck; no substantial cycle-normalized Tensor throughput gain established.
+Only half of A operands were substituted and two waits deferred. This does not rule out other A dependencies.
+Next diagnostic recommendation: separate nonzero accumulator recurrence cut, retaining original A/B work and fixed SASS count, independently verified against altered-arithmetic oracle.
+No production library modified; diagnostic arithmetic is not valid for mining.

@@ -1,0 +1,48 @@
+--- validated-handoff_lean_toggle
++++ padded
+@@ -1,5 +1,6 @@
+ namespace handoff_lean_toggle {
+ constexpr int BM=256, BN=192, THREADS=384;
++constexpr int SharedBN=256;
+ constexpr int WORDS=(BM/16)*(BN/16)*16;
+ struct Fragment { unsigned v[4]; };
+ 
+@@ -117,7 +118,7 @@
+     extern __shared__ signed char shared[];
+     signed char* sa=shared;
+     signed char* sb=shared+Stages*BM*TileK;
+-    unsigned* transcript=reinterpret_cast<unsigned*>(shared+Stages*(BM+BN)*TileK);
++    unsigned* transcript=reinterpret_cast<unsigned*>(shared+Stages*(BM+SharedBN)*TileK);
+     int linear=blockIdx.x+gridDim.x*blockIdx.y;
+     int first=linear/(8*gridDim.x)*8;
+     int cols=min(8,int(gridDim.y)-first), offset=linear%(8*gridDim.x);
+@@ -130,7 +131,7 @@
+     Fragment ar[4], br[Lead+1];
+     #pragma unroll
+     for(int p=0;p<Stages-1;++p)
+-        stage_copy<TileK,Planar,UnrollCopy,FixedCopy,Layout>(a,b,sa+p*BM*TileK,sb+p*BN*TileK,cm,cn,p,m,n,k);
++        stage_copy<TileK,Planar,UnrollCopy,FixedCopy,Layout>(a,b,sa+p*BM*TileK,sb+p*SharedBN*TileK,cm,cn,p,m,n,k);
+     static_assert(Stages==2 && TileK==64 && !Wide);
+     // Initial stage publication is prologue-only, not a per-iteration branch.
+     asm volatile("cp.async.wait_group 0;" ::: "memory");
+@@ -142,9 +143,9 @@
+         const unsigned peer_bar=own_bar^1u;
+         int current=kt%Stages,next=(kt+Stages-1)%Stages;
+         if(kt+Stages-1<(k+TileK-1)/TileK)
+-            stage_copy<TileK,Planar,UnrollCopy,FixedCopy,Layout>(a,b,sa+next*BM*TileK,sb+next*BN*TileK,cm,cn,kt+Stages-1,m,n,k);
++            stage_copy<TileK,Planar,UnrollCopy,FixedCopy,Layout>(a,b,sa+next*BM*TileK,sb+next*SharedBN*TileK,cm,cn,kt+Stages-1,m,n,k);
+         signed char* aa=sa+current*BM*TileK;
+-        signed char* bb=sb+current*BN*TileK;
++        signed char* bb=sb+current*SharedBN*TileK;
+         if constexpr(Lead==0 || Lead==3) {
+             #pragma unroll
+             for(int slice=0;slice<2;++slice) {
+@@ -253,7 +254,7 @@
+     if(m<=0 || n<=0 || m%16 || n%16 || r!=128 || k!=4096)
+         return cudaErrorInvalidValue;
+     constexpr int Threads=Wide?256:THREADS;
+-    constexpr int smem=Stages*(BM+BN)*TileK+WORDS*sizeof(unsigned);
++    constexpr int smem=Stages*(BM+SharedBN)*TileK+WORDS*sizeof(unsigned);
+     static bool initialized=false; // Isolated benchmarks use device0 only.
+     cudaError_t err;
+     if(!initialized) {

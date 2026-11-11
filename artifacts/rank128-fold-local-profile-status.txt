@@ -1,0 +1,5 @@
+Prepared paired NsightCompute capture for current A-stream vs early-local-XOR late1. GPU0 only;32warmups,3profiled8192-region launches each. No clocks/power changes. Includes SourceCounters,SchedulerStats,WarpStateStats,IMMA utilization,L2 bytes/throughput,barrier/scoreboard/math metrics. Postprocessor joins PC samples to static XOR candidates and preserves all sampling columns.
+
+Static lead: candidate0x16d0 LOP3 writesR136 immediately after0x16c0 IMMA readsR136. This is a possible operand-reuse WAR dependency, not a proven stall cause. Need PC samples and scoreboard evidence.
+
+Capture attempt: sudo -n bash tools/profile_fold_local_stalls.sh returned sudo: a password is required. No new GPU profile was collected. User command: sudo bash tools/profile_fold_local_stalls.sh. Latest output pointer after launch:/tmp/pearl-fold-local-stalls-last.txt. No production changes.

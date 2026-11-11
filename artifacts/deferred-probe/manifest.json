@@ -1,0 +1,41 @@
+{
+  "variants": {
+    "native": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "104c0c1b265260dea5c9ab0bb174ebbbe7ee9cceb0cf0acebf2a9d1dfa4d50aa",
+      "smem": 69632,
+      "correct": true
+    },
+    "grow_only": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "08061c7bc2feda95743cd5ba80e45fb189c755ae0649d901b6295718f334d9ee",
+      "smem": 69632,
+      "correct": true
+    },
+    "loop_branch": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "10607a849c99608773d0e70403a139d661e0c2a0a927a1642cb4dce51e43054a",
+      "smem": 69632,
+      "correct": true
+    },
+    "move_bar_only": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "9e42f3fc4bd4fbf6fc0b9a391b88502e523875bed36d747e683842b09a06cdda",
+      "smem": 69632,
+      "correct": true
+    },
+    "guard_safe": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "9e9cac71a58418d6e9773f008beb297b163eda9369fd8ae3b073184373f640c9",
+      "smem": 69632,
+      "correct": true
+    },
+    "guard12": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "1560504468a8c01cce65686501a385619ed2bbb155905f4d29c36b5e1221fe1e",
+      "smem": 69632,
+      "correct": true
+    }
+  },
+  "warning": "Control-flow diagnostics only. No mining."
+}

@@ -1,0 +1,23 @@
+Deliberately racy offline diagnostic: remove 16d0 BAR.ARV and2a00 BAR.SYNC.
+Original64IMMA, A/B input, loop, copies, LDSM, cp.async wait, initial/final CTA barriers and transcript retained.
+Removed barrier producer annotations; original instruction slots, wait masks and static stalls retained.
+Registers168, shared69632, CTA384threads,1CTA/SM unchanged.
+Output invalid. Timing difference includes altered warp phasing and shared-memory races; not isolated barrier instruction latency or a safe optimization.
+UNLOCKED region timings are DVFS-confounded; fixed-clock counters needed.
+
+UNLOCKED region events:200samples/variant,16launches/sample,10rotating blocks. ms,notfullgrid.
+native {"samples": 200, "mean_ms": 1.02430350959301, "median_ms": 1.0228480100631714, "p95_ms": 1.048622912168503}
+block-end SMclock min/max 2415/2655MHz;not timeaveraged.
+no_named_barriers {"samples": 200, "mean_ms": 0.984844044148922, "median_ms": 0.9842000007629395, "p95_ms": 1.0180671989917753}
+block-end SMclock min/max 2325/2565MHz;not timeaveraged.
+native->no_named_barriers:time -3.852%
+
+Mean time reduction 3.85232%; reciprocal throughput increase 4.00667%.
+No code motion, branch alteration, operand substitution or compiler regeneration in timed cubins. Two BAR opcodes become NOP. Producer scoreboard annotations removed, static stalls/wait masks retained.
+Smoke test3launches per variant passed with CUDA synchronization. No correctness claim and no racecheck PASS expected.
+Each timed region8192x8192x4096;10rotating blocks,200samples per variant,16launches per sample. Not fullgrid or usable Pearl TH/s.
+All named-barrier contributions in the loop removed together. Keeping only one side would change barrier participation and risk deadlock.
+cp.async.wait_group completion remains, as do LDSM scoreboard waits and initial/final barriers. This is not an all-synchronization removal experiment.
+No inference that3.85%is fully recoverable in a correct kernel. Data races change operands/warp skew; clocks varied.
+Next: sudo bash tools/profile_barrier_removal.sh. GPU0 only,NCU base clocks,identical dynamicIMMA count verification and per-cycle throughput.
+Production library hashes verified unchanged.

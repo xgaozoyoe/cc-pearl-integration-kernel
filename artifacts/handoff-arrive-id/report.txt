@@ -1,0 +1,33 @@
+Early named-barrier publication: GPU0 offline controls
+Unmodified production library. Unlocked-clock event/grid timings; distinguish from optional fixed-clock counters.
+
+events-run1.json
+variant mean_ms median_ms p95_ms time_change_vs_tail9
+tail9 1.042150 1.035432 1.068158 +0.000%
+id_only9 1.037139 1.030971 1.068486 -0.481%
+id11 1.035873 1.027413 1.068864 -0.602%
+id16 1.035457 1.029440 1.067395 -0.642%
+events-run2.json
+variant mean_ms median_ms p95_ms time_change_vs_tail9
+tail9 1.042212 1.035136 1.073222 +0.000%
+id_only9 1.037081 1.028928 1.068570 -0.492%
+id11 1.034189 1.030768 1.058579 -0.770%
+id16 1.036569 1.031712 1.068042 -0.541%
+
+Full-grid wall times: includes setup/noise/Merkle/PoW, excludes network/proof delivery.
+variant n mean_ms median_ms p95_ms grids_per_sec consensus_equivalent_THs
+tail9 80 296.910 296.900 301.520 3.36802 237.004
+id_only9 80 296.962 296.950 301.400 3.36743 236.962
+id11 80 296.291 295.950 300.530 3.37506 237.499
+id16 80 296.079 296.050 301.100 3.37748 237.669
+id_only9 vs tail9: time +0.018%, throughput -0.018%
+Paired batch time changes: +0.162%, +0.189%, -0.125%, -0.269%, +0.017%, +0.148%, +0.037%, -0.017%
+id11 vs tail9: time -0.208%, throughput +0.209%
+Paired batch time changes: +0.017%, -0.290%, -0.145%, -0.360%, -0.232%, -0.276%, -0.178%, -0.202%
+id16 vs tail9: time -0.280%, throughput +0.281%
+Paired batch time changes: +0.017%, -0.212%, -0.394%, -0.387%, -0.424%, -0.222%, -0.414%, -0.202%
+
+All variants:168 registers/thread,69632B shared,384threads,1CTA/SM,0local;64 static IMMA,16LDSM.
+MMA order retained; peer-ID LOP3 moved into dead R164; id11/id16 arrive with11/16 IMMA left. id16 moves both final LDSM waits onto arrival.
+Transcript and PoW validation passed; racecheck,memcheck,synccheck0errors on edge suite.
+No claim of live-pool hashrate increase until mining deployment and acceptance; no deployment performed.

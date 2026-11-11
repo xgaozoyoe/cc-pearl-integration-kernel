@@ -1,0 +1,92 @@
+[
+  {
+    "experiment": "audit",
+    "variant": 0,
+    "samples": 240,
+    "mean_ms": 1.0831907669703165,
+    "median_ms": 1.080823004245758,
+    "p95_ms": 1.1067552387714386,
+    "resources": [
+      168,
+      384,
+      69632,
+      1,
+      0
+    ]
+  },
+  {
+    "experiment": "audit",
+    "variant": 1,
+    "samples": 240,
+    "mean_ms": 1.3185708964864413,
+    "median_ms": 1.3171849846839905,
+    "p95_ms": 1.3406125605106354,
+    "resources": [
+      167,
+      384,
+      69632,
+      1,
+      0
+    ]
+  },
+  {
+    "experiment": "audit",
+    "variant": 2,
+    "samples": 240,
+    "mean_ms": 1.319151110947132,
+    "median_ms": 1.315517008304596,
+    "p95_ms": 1.3429374635219573,
+    "resources": [
+      167,
+      384,
+      69632,
+      1,
+      0
+    ]
+  },
+  {
+    "experiment": "nonvolatile",
+    "variant": 0,
+    "samples": 240,
+    "mean_ms": 1.0889830668767293,
+    "median_ms": 1.087624967098236,
+    "p95_ms": 1.1068799495697021,
+    "resources": [
+      168,
+      384,
+      69632,
+      1,
+      0
+    ]
+  },
+  {
+    "experiment": "nonvolatile",
+    "variant": 1,
+    "samples": 240,
+    "mean_ms": 1.092964386443297,
+    "median_ms": 1.0889590382575989,
+    "p95_ms": 1.1182201027870178,
+    "resources": [
+      168,
+      384,
+      69632,
+      1,
+      0
+    ]
+  },
+  {
+    "experiment": "nonvolatile",
+    "variant": 2,
+    "samples": 240,
+    "mean_ms": 1.090708544353644,
+    "median_ms": 1.0874580144882202,
+    "p95_ms": 1.1136000156402588,
+    "resources": [
+      168,
+      384,
+      69632,
+      1,
+      0
+    ]
+  }
+]

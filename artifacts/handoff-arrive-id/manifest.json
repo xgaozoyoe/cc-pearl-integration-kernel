@@ -1,0 +1,38 @@
+{
+  "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+  "variants": {
+    "tail9": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "12bb54ea61e2a4b92c56d358e9970c2ec413e7e8525e0fc6180df0f2a2c41828",
+      "smem": 69632,
+      "correct": true,
+      "arrival_pc": "0x1740",
+      "mma_after_arrival": 9
+    },
+    "id_only9": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "809651e745c427df1297b0c3c5eb4220a7126afe365bd4b2bf752e971fd3f675",
+      "smem": 69632,
+      "correct": true,
+      "arrival_pc": "0x1740",
+      "mma_after_arrival": 9
+    },
+    "id11": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "62f21f389f4bf577800cea4fbcdcb7cf50a1e3939341c14cbbae95678457ecbb",
+      "smem": 69632,
+      "correct": true,
+      "arrival_pc": "0x1720",
+      "mma_after_arrival": 11
+    },
+    "id16": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "be6773d253260bf7fa596a74c5c419dea2b1af9a10d0d1922146fde408bbfe6c",
+      "smem": 69632,
+      "correct": true,
+      "arrival_pc": "0x16d0",
+      "mma_after_arrival": 16
+    }
+  },
+  "warning": "Offline correct-arithmetic binary experiment; do not overwrite production library."
+}

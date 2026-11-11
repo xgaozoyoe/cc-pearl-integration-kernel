@@ -1,0 +1,38 @@
+{
+  "fixed": {
+    "IMMA": 64,
+    "LDSM": 16,
+    "LDGSTS": 2,
+    "LDL": 0,
+    "STL": 0,
+    "BAR.SYNC": 3,
+    "DEPBAR": 1
+  },
+  "pingpong": {
+    "IMMA": 64,
+    "LDSM": 16,
+    "LDGSTS": 4,
+    "LDL": 0,
+    "STL": 0,
+    "BAR.SYNC": 3,
+    "DEPBAR": 1
+  },
+  "global": {
+    "IMMA": 64,
+    "LDSM": 16,
+    "LDGSTS": 4,
+    "LDL": 0,
+    "STL": 0,
+    "BAR.SYNC": 2,
+    "DEPBAR": 1
+  },
+  "full": {
+    "IMMA": 64,
+    "LDSM": 16,
+    "LDGSTS": 4,
+    "LDL": 0,
+    "STL": 0,
+    "BAR.SYNC": 2,
+    "DEPBAR": 1
+  }
+}

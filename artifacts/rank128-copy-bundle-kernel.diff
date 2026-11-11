@@ -1,0 +1,62 @@
+--- original-copy.cu
++++ bundled-copy.cu
+@@ -82,30 +82,38 @@
+         return;
+     }
+ 
++
+     static_assert(TileK==64 && Layout==6 && !Planar);
+-    // 384 is a multiple of128: the swizzled low7 chunk bits never change.
+     int logical=int(threadIdx.x)^(int(threadIdx.x>>3)&3);
+     int row=logical/4,col=(logical%4)*16;
+-    unsigned dstA=__cvta_generic_to_shared(sa+threadIdx.x*16);
+-    unsigned dstB=__cvta_generic_to_shared(sb+threadIdx.x*16);
+-    int grA=cm*BM+row,grB=cn*BN+row;
+-    unsigned offA=unsigned(grA)*unsigned(k)+unsigned(kt*64+col);
+-    unsigned offB=unsigned(grB)*unsigned(k)+unsigned(kt*64+col);
+-    #pragma unroll
+-    for(int j=0;j<3;++j) if(threadIdx.x+j*THREADS<BM*64/16) {
+-        bool valid=true;
+-        const signed char* src=a+offA;
+-        asm volatile("cp.async.cg.shared.global [%0],[%1],16,%2;" :: "r"(dstA),"l"(src),"r"(valid?16:0));
+-        grA+=THREADS/4;offA+=unsigned(THREADS/4)*unsigned(k);dstA+=THREADS*16;
+-    }
+-    #pragma unroll
+-    for(int j=0;j<2;++j) {
+-        bool valid=grB<n;
+-        const signed char* src=b+(valid?offB:0u);
+-        asm volatile("cp.async.cg.shared.global [%0],[%1],16,%2;" :: "r"(dstB),"l"(src),"r"(valid?16:0));
+-        grB+=THREADS/4;offB+=unsigned(THREADS/4)*unsigned(k);dstB+=THREADS*16;
+-    }
+-    asm volatile("cp.async.commit_group;");
++    unsigned da=__cvta_generic_to_shared(sa+threadIdx.x*16);
++    unsigned db=__cvta_generic_to_shared(sb+threadIdx.x*16);
++    unsigned oa=unsigned(cm*BM+row)*unsigned(k)+unsigned(kt*64+col);
++    unsigned ob=unsigned(cn*BN+row)*unsigned(k)+unsigned(kt*64+col);
++    // Fixed shared base+immediate offsets avoid incrementing its address
++    // between asynchronous copies. Scope entire copy/address block together.
++    asm volatile(
++        "{ .reg .pred ap,bp; .reg .b32 off,gr,sz; .reg .b64 p0,p1;\n"
++        "cvt.u64.u32 p0,%4; add.u64 p0,p0,%0;\n"
++        "add.u64 p1,p0,393216;\n"
++        "setp.lt.u32 ap,%8,256;\n"
++        "cp.async.cg.shared.global [%2],[p0],16;\n"
++        "cp.async.cg.shared.global [%2+6144],[p1],16;\n"
++        "add.u64 p0,p0,786432;\n"
++        "@ap cp.async.cg.shared.global [%2+12288],[p0],16;\n"
++        "setp.lt.u32 bp,%6,%7;\n"
++        "selp.u32 off,%5,0,bp; selp.u32 sz,16,0,bp;\n"
++        "cvt.u64.u32 p0,off; add.u64 p0,p0,%1;\n"
++        "cp.async.cg.shared.global [%3],[p0],16,sz;\n"
++        "add.u32 gr,%6,96; add.u32 off,%5,393216;\n"
++        "setp.lt.u32 bp,gr,%7;\n"
++        "selp.u32 off,off,0,bp; selp.u32 sz,16,0,bp;\n"
++        "cvt.u64.u32 p1,off; add.u64 p1,p1,%1;\n"
++        "cp.async.cg.shared.global [%3+6144],[p1],16,sz;\n"
++        "cp.async.commit_group; }\n"
++        :: "l"(a),"l"(b),"r"(da),"r"(db),"r"(oa),"r"(ob),
++           "r"(cn*BN+row),"r"(n),"r"(unsigned(threadIdx.x)) : "memory");
++
+ }
+ 
+ template<int Lead,int TileK=64,bool Planar=false,bool PackedB=false,bool UnrollCopy=false,bool FixedCopy=false,int Stages=2,bool Wide=false,int Layout=0>

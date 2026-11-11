@@ -1,0 +1,15 @@
+--- source8
++++ source_control
+@@ -1,4 +1,4 @@
+-namespace fold_defer_source8 {
++namespace three_handoff_source_control {
+ constexpr int BM=256, BN=192, THREADS=384;
+ constexpr int WORDS=(BM/16)*(BN/16)*16;
+ struct Fragment { unsigned v[4]; };
+@@ -273,3 +273,6 @@
+     kernel<Lead,TileK,Planar,PackedB,UnrollCopy,FixedCopy,Stages,Wide,Layout><<<dim3((m+BM-1)/BM,(n+BN-1)/BN),Threads,smem,stream>>>(a,b,m,n,k,r,t);
+     return cudaGetLastError();
+ }
++
++template __global__ void kernel<1,64,false,true,false,false,2,false,6>(const signed char*,const signed char*,int,int,int,int,unsigned*);
++}

@@ -1,0 +1,75 @@
+R128 fold ablation — 2026-10-07 measurements, recovered 2026-10-08
+
+Frozen source: artifacts/ada-rank-frozen-source.cu from the accepted R128 library.
+No changes to either production CUDA library or live GPU2 miner.
+GPU0 only; K4096, region8192, CTA256x192, warp64x64, K64,2 stages,12warps/CTA.
+Both variants:168registers/thread,69632shared bytes/CTA,1CTA/SM,0local memory.
+Both issue the same64static IMMA and16LDSM instructions in the main-loop body.
+Pure mode removes all transcript work and final transcript barrier/output,
+consuming every accumulator in one final uint32 XOR sink per lane/CTA.
+Pure mode is benchmark-only and cannot mine valid Pearl shares.
+
+Correctness: full transcript matches frozen accepted R128 kernel for two seeds;
+pure sink XOR matches independent CPU final GEMM accumulator XOR for both seeds.
+SASS:64IMMA,16LDSM,4LDGSTS in each variant; noLDL/STL. Full32REDUX/2BAR static
+sites vs pure0REDUX/1BAR. Static counts are not dynamic stall attribution.
+
+Full-grid comparison: identical random seed sequence, setup/V3/noise/region loop.
+Both controls omit PoW BLAKE3 and jackpot checks, isolating transcript effects.
+Two reversed-order repetitions,4warmup+40measured grids per variant per run.
+Full means325.8125/326.3800ms,medians325.9/326.4ms,p95 327.11/327.105ms.
+Pure means301.9325/302.3300ms,medians302.1/302.25ms,p95 303.51/303.93ms.
+Across run means:326.09625 vs302.13125ms;23.965ms overhead,7.349% of full time;
+full/pure ratio1.07932. Equivalent full215.6-216.0,pure232.8-233.1TH/s.
+These controls are NOT real mining/end-to-end reward measurements.
+
+CUDA-event timing: warmed repeated8192region (16launches/sample,40samples/run).
+Full mean1.165512ms vs pure1.084093ms;overhead0.081419ms/region,6.986% of full,
+full/pure ratio1.07510. Fixed-region reuse differs from full-grid cache traffic;
+do not treat region timing multiplied by256 as measured grid kernel time.
+Clocks not locked; the full event runs varied1.1517-1.1794ms, so grid A/B is the
+stronger sustained result. Grid repetitions agree closely.
+
+Conclusion: transcript integration has measurable but insufficient headroom.
+Even with transcript and PoW removed this mapping reaches only~233TH/s.
+300TH/s requires~234.56ms/full grid,67.57ms below the pure-grid control.
+Do not select a specific mapping rewrite based only on utilization assumptions.
+Next evidence needed: main-loop counter/PC stalls (wait,BAR,LDSM,IMMA),
+L2bytes/usefulMMA and tensor utilization for both R128 variants.
+
+Counter attempt failed with ERR_NVGPUCTRPERM. Driver restricts counters to admin.
+Run:sudo bash tools/profile_rank128_ablation.sh
+GPU0 only, no pool, no clock changes, outputs /tmp/pearl-rank128-ablation-profile.
+Then compare PC attribution and choose one mapping/scheduling experiment.
+
+
+Completed counter/PC analysis — 2026-10-08
+Three profiled8192-region launches/variant; all requested aggregate metrics present.
+Full vs pure:
+Kernel1.120608 vs1.029717ms (8.11% lower,full/pure1.0883).
+Tensor72.02 vs77.67%;L2util42.87 vs45.99%;L2B/usefulMMA37.7612 vs37.5390.
+Barrier14.943 vs14.06%;longSB2.707 vs2.907%;shortSB6.753 vs5.00%;
+math throttle40.157 vs46.317%. Eligible warps/scheduler0.36 vs0.30;
+issued warps/cycle0.25 vs0.19. Active warps/scheduler~3 for both.
+These percentages are not additive wall-time savings.
+
+PC attribution:
+Full98.76% of barrier not-issued samples at0xe10,following main-loop BAR0xdf0;
+only1.24% at0x2cc0 following epilogue BAR0x2ca0.
+Pure100% at0xea0 following main-loop BAR0xe80.
+Deferred-blocking barrier sampling lands on later BRA/EXIT; attributing it to
+branch logic instead of the preceding BAR would be misleading.
+Math hot PCs are IMMA; short scoreboard hot PCs include IMMA operand consumers.
+No new evidence for L2 bandwidth saturation (43-46% vs historic~91% on oldmapping).
+Pure gets faster despite increased math throttle and lower eligible/issued counts;
+removing non-MMA work changes instruction mix and denominator.
+
+Recommended next controlled experiment: R128 dual-resident-CTA mapping,keeping
+all warps as consumers and accumulators in registers. Compare against current
+singleCTA256x192. Candidate128x192,8warps,warp32x96 aims for2CTAs/SM; this is a
+hypothesis, not measured here. The prior R256 prototype's resource numbers do
+not establish R128 occupancy/performance. Confirm zero spill and actual occupancy,
+then bit-exact tests and sustained wall benchmark. SmallerCTA increases operand
+traffic, so report L2B/MMA alongside any barrier improvement; discard if slower.
+Do not repeat dedicated-producer warp specialization without a new rationale.
+No mapping redesign was performed in this measurement task.

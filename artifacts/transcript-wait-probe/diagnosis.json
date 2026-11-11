@@ -1,0 +1,148 @@
+{
+  "resources": {
+    "control": [
+      168,
+      48,
+      0,
+      1
+    ],
+    "timed": [
+      168,
+      48,
+      0,
+      1
+    ]
+  },
+  "records": [
+    {
+      "name": "control",
+      "repeat": 0,
+      "launch_wall_ms": 3.8898251950740814
+    },
+    {
+      "name": "control",
+      "repeat": 1,
+      "launch_wall_ms": 3.881756216287613
+    },
+    {
+      "name": "control",
+      "repeat": 2,
+      "launch_wall_ms": 3.880554810166359
+    },
+    {
+      "name": "control",
+      "repeat": 3,
+      "launch_wall_ms": 3.8810372352600098
+    },
+    {
+      "name": "control",
+      "repeat": 4,
+      "launch_wall_ms": 3.8878507912158966
+    },
+    {
+      "name": "timed",
+      "repeat": 0,
+      "launch_wall_ms": 3.9913635700941086,
+      "producer": {
+        "total_cycles_mean": 698088.0954269575,
+        "wait_fraction": 0.5710693631170181,
+        "process_fraction": 0.0,
+        "stagebar_fraction": 0.0038896791097818243,
+        "partial_mask_count": 0.0,
+        "task_count": 0.0
+      },
+      "consumer": {
+        "total_cycles_mean": 702853.9783666848,
+        "wait_fraction": 0.27123136018305327,
+        "process_fraction": 0.5254781900934926,
+        "stagebar_fraction": 0.0,
+        "partial_mask_count": 0.0,
+        "task_count": 2130048.0
+      }
+    },
+    {
+      "name": "timed",
+      "repeat": 1,
+      "launch_wall_ms": 3.9930064231157303,
+      "producer": {
+        "total_cycles_mean": 698101.6324139175,
+        "wait_fraction": 0.5710292864323852,
+        "process_fraction": 0.0,
+        "stagebar_fraction": 0.003889829213894374,
+        "partial_mask_count": 0.0,
+        "task_count": 0.0
+      },
+      "consumer": {
+        "total_cycles_mean": 702867.5548945375,
+        "wait_fraction": 0.27120588567773707,
+        "process_fraction": 0.5255056384338324,
+        "stagebar_fraction": 0.0,
+        "partial_mask_count": 0.0,
+        "task_count": 2130048.0
+      }
+    },
+    {
+      "name": "timed",
+      "repeat": 2,
+      "launch_wall_ms": 3.997545689344406,
+      "producer": {
+        "total_cycles_mean": 698113.5572982393,
+        "wait_fraction": 0.5710565977349987,
+        "process_fraction": 0.0,
+        "stagebar_fraction": 0.0038895239017189267,
+        "partial_mask_count": 0.0,
+        "task_count": 0.0
+      },
+      "consumer": {
+        "total_cycles_mean": 702878.5429962141,
+        "wait_fraction": 0.2712514026747027,
+        "process_fraction": 0.5254649645450178,
+        "stagebar_fraction": 0.0,
+        "partial_mask_count": 0.0,
+        "task_count": 2130048.0
+      }
+    },
+    {
+      "name": "timed",
+      "repeat": 3,
+      "launch_wall_ms": 3.9976462721824646,
+      "producer": {
+        "total_cycles_mean": 698135.6853554473,
+        "wait_fraction": 0.5710273213215482,
+        "process_fraction": 0.0,
+        "stagebar_fraction": 0.003889366189361966,
+        "partial_mask_count": 0.0,
+        "task_count": 0.0
+      },
+      "consumer": {
+        "total_cycles_mean": 702901.4288804759,
+        "wait_fraction": 0.27121955809739123,
+        "process_fraction": 0.5255114445506748,
+        "stagebar_fraction": 0.0,
+        "partial_mask_count": 0.0,
+        "task_count": 2130048.0
+      }
+    },
+    {
+      "name": "timed",
+      "repeat": 4,
+      "launch_wall_ms": 3.9964932948350906,
+      "producer": {
+        "total_cycles_mean": 698029.6030887567,
+        "wait_fraction": 0.5710818590255812,
+        "process_fraction": 0.0,
+        "stagebar_fraction": 0.003889883235047704,
+        "partial_mask_count": 0.0,
+        "task_count": 0.0
+      },
+      "consumer": {
+        "total_cycles_mean": 702795.2174148188,
+        "wait_fraction": 0.27118427478569224,
+        "process_fraction": 0.5255066360957953,
+        "stagebar_fraction": 0.0,
+        "partial_mask_count": 0.0,
+        "task_count": 2130048.0
+      }
+    }
+  ]
+}

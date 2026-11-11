@@ -1,0 +1,102 @@
+{
+  "state-register": [
+    {
+      "variant": 0,
+      "samples": 60,
+      "mean_ms": 308.67333333333335,
+      "median_ms": 308.25,
+      "p95_ms": 312.71999999999997,
+      "ths": 227.9715692241982,
+      "resources": [
+        168,
+        384,
+        69632,
+        1,
+        0
+      ],
+      "throughput_change_pct": 0.0
+    },
+    {
+      "variant": 1,
+      "samples": 60,
+      "mean_ms": 321.48833333333334,
+      "median_ms": 320.85,
+      "p95_ms": 326.505,
+      "ths": 218.88428562259077,
+      "resources": [
+        167,
+        384,
+        69632,
+        1,
+        0
+      ],
+      "throughput_change_pct": -3.986147760675607
+    },
+    {
+      "variant": 2,
+      "samples": 60,
+      "mean_ms": 323.39500000000004,
+      "median_ms": 322.95000000000005,
+      "p95_ms": 327.715,
+      "ths": 217.5937914243077,
+      "resources": [
+        168,
+        384,
+        69632,
+        1,
+        0
+      ],
+      "throughput_change_pct": -4.552224575725261
+    }
+  ],
+  "state-register-select": [
+    {
+      "variant": 0,
+      "samples": 60,
+      "mean_ms": 308.7666666666667,
+      "median_ms": 308.5,
+      "p95_ms": 313.135,
+      "ths": 227.90265846161282,
+      "resources": [
+        168,
+        384,
+        69632,
+        1,
+        0
+      ],
+      "throughput_change_pct": 0.0
+    },
+    {
+      "variant": 1,
+      "samples": 60,
+      "mean_ms": 321.68000000000006,
+      "median_ms": 320.8,
+      "p95_ms": 326.02,
+      "ths": 218.75386774951502,
+      "resources": [
+        167,
+        384,
+        69632,
+        1,
+        0
+      ],
+      "throughput_change_pct": -4.014341374450803
+    },
+    {
+      "variant": 2,
+      "samples": 60,
+      "mean_ms": 324.5833333333333,
+      "median_ms": 323.6,
+      "p95_ms": 328.22999999999996,
+      "ths": 216.79715792861825,
+      "resources": [
+        168,
+        384,
+        69632,
+        1,
+        0
+      ],
+      "throughput_change_pct": -4.8729139922978
+    }
+  ]
+}

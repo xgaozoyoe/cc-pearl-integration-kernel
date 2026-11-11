@@ -1,0 +1,32 @@
+{
+  "baseline": {
+    "mma": 64,
+    "ldsm": 16,
+    "sleep": []
+  },
+  "spin": {
+    "mma": 64,
+    "ldsm": 16,
+    "sleep": []
+  },
+  "sleep32": {
+    "mma": 64,
+    "ldsm": 16,
+    "sleep": [
+      [
+        "2b60",
+        "NANOSLEEP 0x20"
+      ]
+    ]
+  },
+  "sleep128": {
+    "mma": 64,
+    "ldsm": 16,
+    "sleep": [
+      [
+        "2b60",
+        "NANOSLEEP 0x80"
+      ]
+    ]
+  }
+}

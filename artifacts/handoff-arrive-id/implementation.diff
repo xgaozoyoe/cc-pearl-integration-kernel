@@ -1,0 +1,348 @@
+diff --git a/tools/build_handoff_arrive_id.py b/tools/build_handoff_arrive_id.py
+new file mode 100644
+index 0000000..e524e26
+--- /dev/null
++++ b/tools/build_handoff_arrive_id.py
+@@ -0,0 +1,60 @@
++"""Offline fixed-SASS free-register ID preparation and earlier arrival.
++R164 is dead after original0x1610 until unconditional definition at0xcd0 next K.
++"""
++from pathlib import Path
++import re,struct,json,hashlib,subprocess,difflib,collections
++root=Path(__file__).resolve().parents[1];out=root/'artifacts/handoff-arrive-id';out.mkdir(exist_ok=True)
++src=root/'artifacts/handoff-arrive-tail';meta=json.loads((src/'manifest.json').read_text());entry=meta['entry']
++base=(src/'baseline.cubin').read_bytes();assert hashlib.sha256(base).hexdigest()==meta['variants']['baseline']['sha256']
++shoff=struct.unpack_from('<Q',base,40)[0];sz,n,st=struct.unpack_from('<HHH',base,58);hs=[struct.unpack_from('<IIQQQQIIQQ',base,shoff+i*sz) for i in range(n)];h=hs[st];names=base[h[4]:h[4]+h[5]];off=next(h[4] for h in hs if names[h[0]:].split(b'\0')[0].decode()=='.text.'+entry)
++def rows(s):return {int(pc,16):x for pc,x in re.findall(r'/\*([0-9a-f]+)\*/\s+(.*?)\s*;',s.split('Function : '+entry)[1].split('Function : ')[0])}
++r=rows((src/'baseline.sass').read_text());ref=rows((src/'tail9.sass').read_text())
++def word(pc):return base[off+pc:off+pc+16]
++def ctrl(pc):return int.from_bytes(word(pc),'little')>>105&0x1ffff
++assert r[0x1610]=='LOP3.LUT R153, R164, 0x30, R153, 0x78, !PT'
++assert r[0xcd0]=='IMAD R164, R96, 0x40, R99'
++assert not any(re.search(r'\bR164\b',x) for pc,x in r.items() if pc>0x1610 or pc<0xcd0)
++# Audit implicit MMA register vectors as well as explicit scalar uses.
++for pc,x in r.items():
++ if pc>=0x1620 and x.startswith('IMMA.'):
++  regs=list(map(int,re.findall(r'\bR(\d+)',x)))
++  assert not any(v<=164<v+width for v,width in zip(regs,[4,4,2,4]))
++assert r[0x1720]=='LOP3.LUT R96, R161, 0x1, RZ, 0x3c, !PT'
++assert r[0x17d0]=='BAR.ARV R96, 0x180'
++assert ((ctrl(0x1650)>>5)&7)==1 and ((ctrl(0x16a0)>>5)&7)==2
++assert ctrl(0x16c0)>>11==2 and ctrl(0x1700)>>11==4
++assert r[0x16b0]=='DEPBAR.LE SB0, 0x0'
++assert all(not ('LDSM' in x or 'LDGSTS' in x) for pc,x in r.items() if 0x16b0<=pc<0x17e0)
++manifest=dict(entry=entry,variants={},warning='Offline correct-arithmetic binary experiment; do not overwrite production library.')
++for name,before in [('tail9',None),('id_only9',0x1740),('id11',0x1710),('id16',0x16c0)]:
++ if before is None:
++  data=bytearray((src/'tail9.cubin').read_bytes());expected=dict(ref)
++ else:
++  data=bytearray(base);ids=[pc for pc in range(0x1620,0x17e0,16) if pc not in (0x1720,0x17d0)]
++  ids.insert(0,0x1720);ids.insert(ids.index(before),0x17d0)
++  expected=dict(r);new_pcs={old:0x1620+16*i for i,old in enumerate(ids)}
++  assert new_pcs[0x16b0]<new_pcs[0x17d0]
++  assert new_pcs[0x1720]<new_pcs[0x16a0]
++  assert sum(ctrl(pc)&15 for pc in ids[:ids.index(0x17d0)])>=9
++  for i,old in enumerate(ids):
++   new=0x1620+16*i;w=bytearray(word(old));ins=r[old]
++   if old==0x1720:
++    assert w[2]==96;w[2]=164;ins=ins.replace('R96,','R164,',1)
++   if old==0x17d0:
++    assert w[4]==96;w[4]=164;ins=ins.replace('R96,','R164,',1)
++   if name=='id16' and old in (0x17d0,0x16c0,0x1700):
++    # Consume both pending LDSM completions on arrival, then remove the
++    # old waits so they do not spuriously wait on arrival's new read-SB1.
++    bits=int.from_bytes(w,'little');mask=6 if old==0x17d0 else 0
++    w=bytearray(((bits&~(63<<116))|(mask<<116)).to_bytes(16,'little'))
++   data[off+new:off+new+16]=w;expected[new]=ins
++  assert data[:off+0x1620]==base[:off+0x1620] and data[off+0x17e0:]==base[off+0x17e0:]
++ path=out/(name+'.cubin');path.write_bytes(data)
++ dump=subprocess.check_output(['/usr/local/cuda-12.6/bin/cuobjdump','--dump-sass',str(path)],text=True);(out/(name+'.sass')).write_text(dump);rr=rows(dump);assert rr==expected
++ assert sum(x.startswith('IMMA.') for x in rr.values())==64
++ assert [x for x in rr.values() if x.startswith('IMMA.')]==[x for x in r.values() if x.startswith('IMMA.')]
++ assert len(rr)==len(r)
++ (out/(name+'.diff')).write_text(''.join(difflib.unified_diff([f'{pc:04x} {x}\n' for pc,x in ref.items()],[f'{pc:04x} {x}\n' for pc,x in rr.items()],fromfile='validated-tail9',tofile=name)))
++ apc=next(pc for pc,x in rr.items() if x.startswith('BAR.ARV'))
++ manifest['variants'][name]=dict(entry=entry,sha256=hashlib.sha256(data).hexdigest(),smem=69632,correct=True,arrival_pc=hex(apc),mma_after_arrival=sum(x.startswith('IMMA.') for pc,x in rr.items() if apc<pc<0x17e0))
++(out/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n');print(json.dumps(manifest,indent=2))
+diff --git a/tests/bench_handoff_arrive_id.py b/tests/bench_handoff_arrive_id.py
+new file mode 100644
+index 0000000..bb38857
+--- /dev/null
++++ b/tests/bench_handoff_arrive_id.py
+@@ -0,0 +1,84 @@
++"""GPU0-only correct-arithmetic early-arrival diagnostic, never a mining backend."""
++import os
++os.environ['CUDA_VISIBLE_DEVICES']='0'
++from pathlib import Path
++import ctypes as C,json,subprocess,sys,argparse,time,hashlib
++import numpy as np
++root=Path(__file__).resolve().parents[1];out=root/'artifacts/handoff-arrive-id';sys.path.insert(0,str(root/'python'))
++p=argparse.ArgumentParser();p.add_argument('mode',choices=['validate','bench','profile']);p.add_argument('--variant',type=int,default=0,choices=range(4));p.add_argument('--allow-supervisor-pid',type=int,default=0);args=p.parse_args()
++sys.path.insert(0,str(root/'tools'))
++from check_gpu0_idle import check_gpu0_idle
++if args.mode!='profile':check_gpu0_idle(args.allow_supervisor_pid)
++import cuda_capi as cc
++P,I,U=C.c_void_p,C.c_int,C.c_uint
++# Force runtime primary-context creation before using the driver API.
++init=cc.DBuf(4)
++drv=C.CDLL('libcuda.so.1');drv.cuInit.argtypes=[U];drv.cuModuleLoad.argtypes=[C.POINTER(P),C.c_char_p];drv.cuModuleGetFunction.argtypes=[C.POINTER(P),P,C.c_char_p]
++drv.cuFuncSetAttribute.argtypes=[P,I,I];drv.cuFuncGetAttribute.argtypes=[C.POINTER(I),I,P];drv.cuOccupancyMaxActiveBlocksPerMultiprocessor.argtypes=[C.POINTER(I),P,I,C.c_size_t]
++drv.cuLaunchKernel.argtypes=[P,U,U,U,U,U,U,U,P,C.POINTER(P),P]
++def check(x):
++ if x:raise RuntimeError('CUDA driver status '+str(x))
++check(drv.cuInit(0));manifest=json.loads((out/'manifest.json').read_text());names=list(manifest['variants']);mods=[];funcs=[];resources={}
++for name in names:
++ assert hashlib.sha256((out/(name+'.cubin')).read_bytes()).hexdigest()==manifest['variants'][name]['sha256']
++ path=out/(name+'.cubin')
++ mod,f=P(),P();check(drv.cuModuleLoad(C.byref(mod),str(path).encode()));check(drv.cuModuleGetFunction(C.byref(f),mod,manifest['variants'][name]['entry'].encode()))
++ check(drv.cuFuncSetAttribute(f,8,manifest['variants'][name]['smem']));check(drv.cuFuncSetAttribute(f,9,100))
++ info=[]
++ for key in (4,3,1):
++  val=I();check(drv.cuFuncGetAttribute(C.byref(val),key,f));info.append(val.value)
++ active=I();check(drv.cuOccupancyMaxActiveBlocksPerMultiprocessor(C.byref(active),f,384,manifest['variants'][name]['smem']));info.append(active.value)
++ assert info==[168,0,0,1],info
++ resources[name]=info;mods.append(mod);funcs.append(f)
++print('resources [registers,local,static_shared,CTAs/SM]',resources,flush=True)
++def launch(v,a,b,m,n,t):
++ vals=[P(a.ptr.value if isinstance(a.ptr,P) else a.ptr),P(b.ptr.value if isinstance(b.ptr,P) else b.ptr),I(m),I(n),I(4096),I(128),P(t.ptr.value if isinstance(t.ptr,P) else t.ptr)]
++ pars=(P*len(vals))(*[C.cast(C.byref(x),P) for x in vals]);check(drv.cuLaunchKernel(funcs[v],(m+255)//256,(n+191)//192,1,384,1,1,manifest['variants'][names[v]]['smem'],None,pars,None))
++ref=C.CDLL(str(root/'artifacts/libpearl-rank.so'));ref.rank_fold.argtypes=[I,P,P,I,I,P,P]
++if args.mode=='validate':
++ rows=[]
++ for m,n in ((256,384),(256,400),(512,768),(512,800)):
++  for seed in (42,1234,9876):
++   rng=np.random.default_rng(seed);ah=rng.integers(-128,128,(m,4096),np.int8);bh=rng.integers(-128,128,(n,4096),np.int8)
++   a,b,t=cc.DBuf(ah.nbytes),cc.DBuf(bh.nbytes),cc.DBuf(m*n//256*64);a.from_host(ah);b.from_host(bh)
++   cc._chk(ref.rank_fold(128,a.ptr,b.ptr,m,n,t.ptr,None),'reference');expected=np.empty(m*n//256*16,np.uint32);t.to_host(expected)
++   for v,name in enumerate(names):
++    t.memset(0xa5);launch(v,a,b,m,n,t);got=np.empty_like(expected);t.to_host(got)
++    exp=expected if manifest['variants'][name]['correct'] else np.zeros_like(expected)
++    assert np.array_equal(got,exp),(name,m,n,seed,np.flatnonzero(got!=exp)[:8])
++    row=dict(name=name,m=m,n=n,seed=seed,expected_probe_semantics_pass=True,transcript_bit_exact=manifest['variants'][name]['correct']);rows.append(row);print(row,flush=True)
++   for buf in (a,b,t):buf.free()
++ (out/'validation.json').write_text(json.dumps(rows,indent=2)+'\n')
++else:
++ m=n=8192;a,b,t=cc.DBuf(m*4096),cc.DBuf(n*4096),cc.DBuf(m*n//256*64);rng=np.random.default_rng(42)
++ for buf in (a,b):buf.from_host(rng.integers(-128,128,(m,4096),np.int8))
++ if args.mode=='profile':
++  for _ in range(40):launch(args.variant,a,b,m,n,t);cc.sync()
++  sys.exit(0)
++ cc._chk(ref.rank_fold(128,a.ptr,b.ptr,m,n,t.ptr,None),'reference');expected=np.empty(m*n//256*16,np.uint32);t.to_host(expected)
++ for v in range(len(names)):
++  launch(v,a,b,m,n,t);got=np.empty_like(expected);t.to_host(got);assert np.array_equal(got,expected if manifest['variants'][names[v]]['correct'] else np.zeros_like(expected)),names[v]
++ runtime=C.CDLL('/usr/local/cuda-12.6/lib64/libcudart.so');runtime.cudaEventCreate.argtypes=[C.POINTER(P)];runtime.cudaEventRecord.argtypes=[P,P];runtime.cudaEventSynchronize.argtypes=[P];runtime.cudaEventElapsedTime.argtypes=[C.POINTER(C.c_float),P,P];runtime.cudaEventDestroy.argtypes=[P]
++ start,end=P(),P();cc._chk(runtime.cudaEventCreate(C.byref(start)),'event');cc._chk(runtime.cudaEventCreate(C.byref(end)),'event')
++ warm=time.perf_counter()
++ while time.perf_counter()-warm<3:
++  for _ in range(16):launch(0,a,b,m,n,t)
++  cc.sync()
++ rows=[]
++ for repeat in range(10):
++  for j in range(len(names)):
++   v=(repeat+j)%len(names)
++   for _ in range(100):launch(v,a,b,m,n,t)
++   cc.sync();values=[]
++   for _ in range(20):
++    cc._chk(runtime.cudaEventRecord(start,None),'event')
++    for _ in range(16):launch(v,a,b,m,n,t)
++    cc._chk(runtime.cudaEventRecord(end,None),'event');cc._chk(runtime.cudaEventSynchronize(end),'event');ms=C.c_float();cc._chk(runtime.cudaEventElapsedTime(C.byref(ms),start,end),'event');values.append(ms.value/16)
++   row=dict(name=names[v],variant=v,repeat=repeat,samples_ms=values,mean_ms=float(np.mean(values)),median_ms=float(np.median(values)),p95_ms=float(np.percentile(values,95)))
++   row['telemetry_end']=subprocess.check_output(['nvidia-smi','-i','0','--query-gpu=clocks.sm,clocks.mem,power.draw,temperature.gpu','--format=csv,noheader'],text=True).strip();rows.append(row);print(json.dumps({k:x for k,x in row.items() if k!='samples_ms'}),flush=True)
++ result=dict(resources=resources,measurements=rows,summaries={})
++ for name in names:
++  vals=np.array([x for r in rows if r['name']==name for x in r['samples_ms']]);result['summaries'][name]=dict(samples=len(vals),mean_ms=float(vals.mean()),median_ms=float(np.median(vals)),p95_ms=float(np.percentile(vals,95)))
++ (out/'events.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result['summaries'],indent=2),flush=True)
++ for x in (start,end):cc._chk(runtime.cudaEventDestroy(x),'event destroy')
++ for buf in (a,b,t):buf.free()
+diff --git a/tests/bench_handoff_arrive_id_grids.py b/tests/bench_handoff_arrive_id_grids.py
+new file mode 100644
+index 0000000..2a3dab4
+--- /dev/null
++++ b/tests/bench_handoff_arrive_id_grids.py
+@@ -0,0 +1,92 @@
++"""GPU0-only correct-arithmetic early-arrival diagnostic, never a mining backend."""
++import os
++os.environ['CUDA_VISIBLE_DEVICES']='0'
++from pathlib import Path
++import ctypes as C,json,subprocess,sys,argparse,time,hashlib
++import numpy as np
++root=Path(__file__).resolve().parents[1];out=root/'artifacts/handoff-arrive-id';sys.path.insert(0,str(root/'python'))
++p=argparse.ArgumentParser();p.add_argument('mode',choices=['validate','grids']);p.add_argument('--variant',type=int,default=0,choices=range(4));p.add_argument('--allow-supervisor-pid',type=int,default=0);args=p.parse_args()
++sys.path.insert(0,str(root/'tools'))
++from check_gpu0_idle import check_gpu0_idle
++if args.mode!='profile':check_gpu0_idle(args.allow_supervisor_pid)
++import cuda_capi as cc
++P,I,U=C.c_void_p,C.c_int,C.c_uint
++# Force runtime primary-context creation before using the driver API.
++init=cc.DBuf(4)
++drv=C.CDLL('libcuda.so.1');drv.cuInit.argtypes=[U];drv.cuModuleLoad.argtypes=[C.POINTER(P),C.c_char_p];drv.cuModuleGetFunction.argtypes=[C.POINTER(P),P,C.c_char_p]
++drv.cuFuncSetAttribute.argtypes=[P,I,I];drv.cuFuncGetAttribute.argtypes=[C.POINTER(I),I,P];drv.cuOccupancyMaxActiveBlocksPerMultiprocessor.argtypes=[C.POINTER(I),P,I,C.c_size_t]
++drv.cuLaunchKernel.argtypes=[P,U,U,U,U,U,U,U,P,C.POINTER(P),P]
++def check(x):
++ if x:raise RuntimeError('CUDA driver status '+str(x))
++check(drv.cuInit(0));manifest=json.loads((out/'manifest.json').read_text());names=list(manifest['variants']);mods=[];funcs=[];resources={}
++for name in names:
++ assert hashlib.sha256((out/(name+'.cubin')).read_bytes()).hexdigest()==manifest['variants'][name]['sha256']
++ path=out/(name+'.cubin')
++ mod,f=P(),P();check(drv.cuModuleLoad(C.byref(mod),str(path).encode()));check(drv.cuModuleGetFunction(C.byref(f),mod,manifest['variants'][name]['entry'].encode()))
++ check(drv.cuFuncSetAttribute(f,8,manifest['variants'][name]['smem']));check(drv.cuFuncSetAttribute(f,9,100))
++ info=[]
++ for key in (4,3,1):
++  val=I();check(drv.cuFuncGetAttribute(C.byref(val),key,f));info.append(val.value)
++ active=I();check(drv.cuOccupancyMaxActiveBlocksPerMultiprocessor(C.byref(active),f,384,manifest['variants'][name]['smem']));info.append(active.value)
++ assert info==[168,0,0,1],info
++ resources[name]=info;mods.append(mod);funcs.append(f)
++print('resources [registers,local,static_shared,CTAs/SM]',resources,flush=True)
++def launch(v,a,b,m,n,t):
++ vals=[P(a.ptr.value if isinstance(a.ptr,P) else a.ptr),P(b.ptr.value if isinstance(b.ptr,P) else b.ptr),I(m),I(n),I(4096),I(128),P(t.ptr.value if isinstance(t.ptr,P) else t.ptr)]
++ pars=(P*len(vals))(*[C.cast(C.byref(x),P) for x in vals]);check(drv.cuLaunchKernel(funcs[v],(m+255)//256,(n+191)//192,1,384,1,1,manifest['variants'][names[v]]['smem'],None,pars,None))
++ref=C.CDLL(str(root/'artifacts/libpearl-rank.so'));ref.rank_fold.argtypes=[I,P,P,I,I,P,P]
++
++import statistics,re
++lib=C.CDLL(str(root/'artifacts/libpearl-handoff-lean.so'))
++blake=getattr(lib,'_Z19launch_pearl_blake3PKjiiS0_S0_PhPiS2_P11CUstream_st')
++blake.argtypes=[P,I,I,P,P,P,P,P,P];blake.restype=None
++ref.rank_pow.argtypes=[I,P,P,I,I,P,P,P,P,P,P]
++def pow_call(v,a,b,m,n,key,target,t,d=None,f=None,c=None):
++ launch(v,a,b,m,n,t)
++ blake(cc._as(t),(m//16)*(n//16),n,cc._as(key),cc._as(target),cc._as(d),cc._as(f),cc._as(c),None)
++if args.mode=='validate':
++ results=[]
++ for m,n in ((256,48),(256,400),(8192,8192)):
++  for seed in (42,1234):
++   rng=np.random.default_rng(seed);a,b,t,d=cc.DBuf(m*4096),cc.DBuf(n*4096),cc.DBuf(m*n//256*64),cc.DBuf(m*n//256*32)
++   key,target=cc.DBuf(32),cc.DBuf(32);key.from_host(rng.integers(0,256,32,np.uint8));target.memset(0)
++   a.from_host(rng.integers(-128,128,(m,4096),np.int8));b.from_host(rng.integers(-128,128,(n,4096),np.int8))
++   cc._chk(ref.rank_pow(128,a.ptr,b.ptr,m,n,key.ptr,target.ptr,t.ptr,d.ptr,None,None),'reference pow')
++   et=np.empty(m*n//256*16,np.uint32);ed=np.empty(m*n//256*32,np.uint8);t.to_host(et);d.to_host(ed)
++   for v,name in enumerate(names):
++    t.memset(0xa5);d.memset(0xa5);pow_call(v,a,b,m,n,key,target,t,d)
++    at=np.empty_like(et);ad=np.empty_like(ed);t.to_host(at);d.to_host(ad);assert np.array_equal(at,et),(name,'transcript');assert np.array_equal(ad,ed),(name,'digest')
++    row=dict(name=name,m=m,n=n,seed=seed,transcript_pass=True,digest_pass=True);results.append(row);print(row,flush=True)
++   for buf in (a,b,t,d,key,target):buf.free()
++ (out/'pow-validation.json').write_text(json.dumps(results,indent=2)+'\n')
++else:
++ import miner_capi as miner
++ import pool_common
++ miner.PROOF_PROCESS=False;miner.R=pool_common.R=128
++ class Pool:
++  def check_newer_job(self,job):return None
++ class Scheduler:
++  mode='user'
++  def __init__(self):self.grids=0
++  def note(self,elapsed):pass
++  def maybe_switch(self):self.grids+=1;return self.grids>=12
++ original_setup=cc.setup_job;results=[]
++ for repeat in range(8):
++  for j in range(len(names)):
++   v=(repeat+j)%len(names);scheduler=Scheduler();times=[];bufs=miner.Bufs(8192)
++   cc.setup_job=lambda *a:original_setup(*a[:-1],202610100000+scheduler.grids)
++   cc.pearl_pow_split=lambda a,b,m,n,k,r,key,target,t,dig,found,coord,variant:pow_call(v,a,b,m,n,key,target,t,dig,found,coord)
++   def log(line):
++    match=re.search(r'grid wall: ([\d.]+) s',line)
++    if match:times.append(float(match[1])*1000)
++   miner.mine_job(Pool(),pool_common.real_config(),bytes(80),0,'offline',8192,0,scheduler,bufs,dict(user=0,dev=0),None,log)
++   values=times[2:];mean=statistics.mean(values)
++   row=dict(name=names[v],variant=v,repeat=repeat,samples_ms=values,mean_ms=mean,median_ms=statistics.median(values),p95_ms=float(np.percentile(values,95)),grids_sec=1000/mean,consensus_equivalent_ths=(2**46/1e12)*1000/mean)
++   row['telemetry_end']=subprocess.check_output(['nvidia-smi','-i','0','--query-gpu=clocks.sm,clocks.mem,power.draw,temperature.gpu','--format=csv,noheader'],text=True).strip()
++   results.append(row);print(json.dumps({k:x for k,x in row.items() if k!='samples_ms'}),flush=True)
++   for value in vars(bufs).values():
++    if isinstance(value,cc.DBuf):value.free()
++    elif isinstance(value,list):
++     for x in value:
++      if isinstance(x,cc.DBuf):x.free()
++ (out/'grids.json').write_text(json.dumps(dict(resources=resources,measurements=results),indent=2)+'\n')
+diff --git a/tools/report_handoff_arrive_id.py b/tools/report_handoff_arrive_id.py
+new file mode 100644
+index 0000000..032c7a5
+--- /dev/null
++++ b/tools/report_handoff_arrive_id.py
+@@ -0,0 +1,31 @@
++"""Offline grid and event results; optional fixed-clock Nsight capture."""
++from pathlib import Path
++import json,argparse,csv,statistics
++import numpy as np
++p=argparse.ArgumentParser();p.add_argument('--capture',type=Path);args=p.parse_args()
++root=Path(__file__).resolve().parents[1];out=root/'artifacts/handoff-arrive-id';names=['tail9','id_only9','id11','id16'];lines=['Early named-barrier publication: GPU0 offline controls','Unmodified production library. Unlocked-clock event/grid timings; distinguish from optional fixed-clock counters.','']
++for path in sorted(out.glob('events-run*.json')) or [out/'events.json']:
++ data=json.loads(path.read_text());summaries=data['summaries'];base=summaries['tail9']['mean_ms'];lines+=[path.name,'variant mean_ms median_ms p95_ms time_change_vs_tail9']
++ for n in names:
++  s=summaries[n];lines.append(f"{n} {s['mean_ms']:.6f} {s['median_ms']:.6f} {s['p95_ms']:.6f} {(s['mean_ms']/base-1)*100:+.3f}%")
++if (out/'grids.json').exists():
++ data=json.loads((out/'grids.json').read_text());sums={};lines+=['','Full-grid wall times: includes setup/noise/Merkle/PoW, excludes network/proof delivery.','variant n mean_ms median_ms p95_ms grids_per_sec consensus_equivalent_THs']
++ for n in names:
++  vals=np.array([v for r in data['measurements'] if r['name']==n for v in r['samples_ms']]);mean=float(vals.mean());sums[n]=dict(samples=len(vals),mean_ms=mean,median_ms=float(np.median(vals)),p95_ms=float(np.percentile(vals,95)),grids_per_sec=1000/mean,consensus_equivalent_ths=2**46/mean/1e9)
++  s=sums[n];lines.append(f"{n} {len(vals)} {mean:.3f} {s['median_ms']:.3f} {s['p95_ms']:.3f} {s['grids_per_sec']:.5f} {s['consensus_equivalent_ths']:.3f}")
++ for n in names[1:]:
++  lines.append(f"{n} vs tail9: time {(sums[n]['mean_ms']/sums['tail9']['mean_ms']-1)*100:+.3f}%, throughput {(sums['tail9']['mean_ms']/sums[n]['mean_ms']-1)*100:+.3f}%")
++  pairs=[]
++  for repeat in sorted({r['repeat'] for r in data['measurements']}):
++   rows={r['name']:r for r in data['measurements'] if r['repeat']==repeat};pairs.append((rows[n]['mean_ms']/rows['tail9']['mean_ms']-1)*100)
++  lines.append('Paired batch time changes: '+', '.join(f'{x:+.3f}%' for x in pairs))
++ (out/'grid-summary.json').write_text(json.dumps(sums,indent=2)+'\n')
++if args.capture:
++ result={};metrics=['gpu__time_duration.sum','sm__cycles_elapsed.avg.per_second','smsp__inst_executed_pipe_alu.sum','smsp__inst_executed_pipe_tensor_v2.sum','sm__cycles_elapsed.sum','sm__pipe_tensor_op_imma_cycles_active_v2.avg.pct_of_peak_sustained_active','smsp__warps_eligible.avg.per_cycle_active','smsp__warp_issue_stalled_barrier_per_warp_active.pct','smsp__warp_issue_stalled_math_pipe_throttle_per_warp_active.pct','smsp__warp_issue_stalled_short_scoreboard_per_warp_active.pct']
++ for v,n in enumerate(names):
++  rows=list(csv.reader((args.capture/f'v{v}.raw.csv').open()));i=next(i for i,r in enumerate(rows) if 'ID' in r and 'Kernel Name' in r);h=rows[i];ds=[dict(zip(h,r)) for r in rows[i+1:] if len(r)==len(h) and r[h.index('ID')].strip().isdigit()];assert ds
++  result[n]={m:statistics.mean(float(d[m].replace(',','')) for d in ds) for m in metrics}
++  result[n]['imma_per_sm_cycle']=statistics.mean(float(d['smsp__inst_executed_pipe_tensor_v2.sum'].replace(',',''))/float(d['sm__cycles_elapsed.sum'].replace(',','')) for d in ds)
++ (out/'counters.json').write_text(json.dumps(result,indent=2)+'\n');lines+=['','Fixed-clock capture: '+str(args.capture),json.dumps(result,indent=2)]
++lines+=['','All variants:168 registers/thread,69632B shared,384threads,1CTA/SM,0local;64 static IMMA,16LDSM.','MMA order retained; peer-ID LOP3 moved into dead R164; id11/id16 arrive with11/16 IMMA left. id16 moves both final LDSM waits onto arrival.','Transcript and PoW validation passed; racecheck,memcheck,synccheck0errors on edge suite.','No claim of live-pool hashrate increase until mining deployment and acceptance; no deployment performed.']
++text='\n'.join(lines)+'\n';(out/'report.txt').write_text(text);print(text)
+diff --git a/tools/profile_handoff_arrive_id.sh b/tools/profile_handoff_arrive_id.sh
+new file mode 100644
+index 0000000..3b1f6ae
+--- /dev/null
++++ b/tools/profile_handoff_arrive_id.sh
+@@ -0,0 +1,51 @@
++#!/usr/bin/env bash
++# Offline GPU0 only: correct-arithmetic early BAR.ARV controls.
++# Requires counter access. Validated for Nsight Compute2024.3.2 CLI.
++set -euo pipefail
++cd "$(dirname "$0")/.."
++if [[ $EUID -ne 0 ]]; then
++ echo 'Hardware counters require root: sudo bash tools/profile_handoff_arrive_id.sh' >&2
++ exit 1
++fi
++.venv/bin/python tools/check_gpu0_idle.py --allow-supervisor-pid "${1:-0}"
++export CUDA_VISIBLE_DEVICES=0
++
++PROFILE_OUT="${PROFILE_OUT:-$(mktemp -d /tmp/pearl-handoff-arrive-id.XXXXXX)}"
++printf '%s\n' "$PROFILE_OUT" > /tmp/pearl-handoff-arrive-id-last.txt
++chmod 644 /tmp/pearl-handoff-arrive-id-last.txt
++mkdir -p "$PROFILE_OUT"
++# Preserve readable captures even when a later report generator fails.
++trap 'chmod -R a+rX "$PROFILE_OUT"' EXIT
++if compgen -G "$PROFILE_OUT/v*.ncu-rep" > /dev/null; then
++ echo 'Use a fresh PROFILE_OUT directory; existing reports must not mix with changed binaries.' >&2
++ exit 1
++fi
++sha256sum artifacts/handoff-arrive-id/manifest.json artifacts/handoff-arrive-id/*.cubin > "$PROFILE_OUT/inputs.sha256"
++nvidia-smi -i 0 --query-gpu=uuid,name,driver_version,clocks.sm,clocks.mem,power.limit,temperature.gpu --format=csv > "$PROFILE_OUT/gpu-before.csv"
++/usr/local/cuda/bin/ncu --version > "$PROFILE_OUT/ncu-version.txt"
++METRICS='sm__cycles_elapsed.avg.per_second,smsp__inst_executed_pipe_alu.sum,smsp__inst_executed_pipe_tensor.sum,smsp__warps_eligible.avg.per_cycle_active,sm__cycles_elapsed.sum,smsp__cycles_elapsed.sum,smsp__inst_executed_pipe_tensor_v2.sum,smsp__inst_executed_pipe_tensor_v2.avg.per_cycle_elapsed,gpu__time_duration.sum,dram__bytes.sum,lts__t_bytes.sum,sm__sass_data_bytes_mem_shared_op_ldsm.sum,lts__throughput.avg.pct_of_peak_sustained_elapsed,smsp__warp_issue_stalled_barrier_per_warp_active.pct,smsp__warp_issue_stalled_long_scoreboard_per_warp_active.pct,smsp__warp_issue_stalled_short_scoreboard_per_warp_active.pct,smsp__warp_issue_stalled_math_pipe_throttle_per_warp_active.pct,sm__pipe_tensor_op_imma_cycles_active_v2.avg.pct_of_peak_sustained_active'
++for VARIANT in 0 1 2 3; do
++  REPORT="$PROFILE_OUT/v$VARIANT"
++  if [[ ! -s "$REPORT.ncu-rep" ]]; then
++  /usr/local/cuda/bin/ncu --devices 0 --clock-control base \
++    --replay-mode application --cache-control none --kernel-name-base demangled \
++    --kernel-name 'regex:.*handoff_lean_.*::kernel.*' \
++    --launch-skip 32 --launch-count 3 --metrics "$METRICS" \
++    --section SourceCounters --section SchedulerStats --section WarpStateStats \
++    --warp-sampling-interval auto --warp-sampling-max-passes 5 --import-source yes \
++    -o "$REPORT" "$PWD/.venv/bin/python" tests/bench_handoff_arrive_id.py profile --variant "$VARIANT" \
++    > "$REPORT.log" 2>&1
++  else
++    printf 'Reusing existing report: %s\n' "$REPORT.ncu-rep"
++  fi
++  /usr/local/cuda/bin/ncu --import "$REPORT.ncu-rep" --page raw --print-units base --csv > "$REPORT.raw.csv"
++  /usr/local/cuda/bin/ncu --import "$REPORT.ncu-rep" --page source --print-source sass --csv > "$REPORT.sass.csv"
++done
++"$PWD/.venv/bin/python" tools/analyze_instruction_stalls.py "$PROFILE_OUT"/v*.sass.csv --output "$PROFILE_OUT/pc-stalls.json"
++"$PWD/.venv/bin/python" tools/analyze_ada_ws.py "$PROFILE_OUT" --variants 0 1 2 3 --useful-mma 67108864
++nvidia-smi -i 0 --query-gpu=uuid,name,driver_version,clocks.sm,clocks.mem,power.limit,temperature.gpu --format=csv > "$PROFILE_OUT/gpu-after.csv"
++"$PWD/.venv/bin/python" tools/analyze_imma_issue.py "$PROFILE_OUT" --variants 0 1 2 3
++
++"$PWD/.venv/bin/python" tools/report_handoff_arrive_id.py --capture "$PROFILE_OUT"
++chmod -R a+rX "$PROFILE_OUT"
++printf 'Reports: %s\n' "$PROFILE_OUT"

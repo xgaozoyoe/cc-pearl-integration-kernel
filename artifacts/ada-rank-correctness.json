@@ -1,0 +1,66 @@
+[
+  {
+    "rank": 256,
+    "seed": 42,
+    "m": 32,
+    "n": 48,
+    "pass_cpu": true,
+    "pass_digest": true
+  },
+  {
+    "rank": 256,
+    "seed": 42,
+    "m": 256,
+    "n": 384,
+    "pass_cpu": true,
+    "pass_digest": true
+  },
+  {
+    "rank": 256,
+    "seed": 1234,
+    "m": 32,
+    "n": 48,
+    "pass_cpu": true,
+    "pass_digest": true
+  },
+  {
+    "rank": 256,
+    "seed": 1234,
+    "m": 256,
+    "n": 384,
+    "pass_cpu": true,
+    "pass_digest": true
+  },
+  {
+    "rank": 128,
+    "seed": 42,
+    "m": 32,
+    "n": 48,
+    "pass_cpu": true,
+    "pass_digest": true
+  },
+  {
+    "rank": 128,
+    "seed": 42,
+    "m": 256,
+    "n": 384,
+    "pass_cpu": true,
+    "pass_digest": true
+  },
+  {
+    "rank": 128,
+    "seed": 1234,
+    "m": 32,
+    "n": 48,
+    "pass_cpu": true,
+    "pass_digest": true
+  },
+  {
+    "rank": 128,
+    "seed": 1234,
+    "m": 256,
+    "n": 384,
+    "pass_cpu": true,
+    "pass_digest": true
+  }
+]

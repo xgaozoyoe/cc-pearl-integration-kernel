@@ -1,0 +1,41 @@
+{
+  "baseline": {
+    "gpu__time_duration.sum": 1213845.3333333333,
+    "sm__cycles_elapsed.avg.per_second": 2228875680.85,
+    "smsp__inst_executed_pipe_alu.sum": 121569664.0,
+    "smsp__inst_executed_pipe_tensor_v2.sum": 67633152.0,
+    "sm__cycles_elapsed.sum": 346303854.0,
+    "sm__pipe_tensor_op_imma_cycles_active_v2.avg.pct_of_peak_sustained_active": 80.17666666666666,
+    "smsp__warps_eligible.avg.per_cycle_active": 0.36,
+    "smsp__warp_issue_stalled_barrier_per_warp_active.pct": 10.123333333333333,
+    "smsp__warp_issue_stalled_math_pipe_throttle_per_warp_active.pct": 49.10333333333333,
+    "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.pct": 6.2,
+    "imma_per_sm_cycle": 0.19530006377320372
+  },
+  "tail5": {
+    "gpu__time_duration.sum": 1182517.3333333333,
+    "sm__cycles_elapsed.avg.per_second": 2228942030.9166665,
+    "smsp__inst_executed_pipe_alu.sum": 121569664.0,
+    "smsp__inst_executed_pipe_tensor_v2.sum": 67633152.0,
+    "sm__cycles_elapsed.sum": 337375406.0,
+    "sm__pipe_tensor_op_imma_cycles_active_v2.avg.pct_of_peak_sustained_active": 82.35666666666667,
+    "smsp__warps_eligible.avg.per_cycle_active": 0.36,
+    "smsp__warp_issue_stalled_barrier_per_warp_active.pct": 10.58,
+    "smsp__warp_issue_stalled_math_pipe_throttle_per_warp_active.pct": 48.75333333333333,
+    "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.pct": 6.583333333333333,
+    "imma_per_sm_cycle": 0.20046855735472954
+  },
+  "tail9": {
+    "gpu__time_duration.sum": 1170730.6666666667,
+    "sm__cycles_elapsed.avg.per_second": 2227808139.5933332,
+    "smsp__inst_executed_pipe_alu.sum": 121569664.0,
+    "smsp__inst_executed_pipe_tensor_v2.sum": 67633152.0,
+    "sm__cycles_elapsed.sum": 333842966.0,
+    "sm__pipe_tensor_op_imma_cycles_active_v2.avg.pct_of_peak_sustained_active": 83.25666666666666,
+    "smsp__warps_eligible.avg.per_cycle_active": 0.36,
+    "smsp__warp_issue_stalled_barrier_per_warp_active.pct": 10.4,
+    "smsp__warp_issue_stalled_math_pipe_throttle_per_warp_active.pct": 48.96,
+    "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.pct": 6.486666666666667,
+    "imma_per_sm_cycle": 0.2025897711743942
+  }
+}

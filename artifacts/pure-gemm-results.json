@@ -1,0 +1,336 @@
+{
+  "resources": {
+    "20": {
+      "registers_per_thread": 228,
+      "threads_per_CTA": 256,
+      "shared_bytes_per_CTA": 73728,
+      "resident_CTAs_per_SM": 1,
+      "local_bytes_per_thread": 0,
+      "warps_per_CTA": 8,
+      "theoretical_warp_occupancy_pct": 16.666666666666668
+    },
+    "48": {
+      "registers_per_thread": 180,
+      "threads_per_CTA": 256,
+      "shared_bytes_per_CTA": 73728,
+      "resident_CTAs_per_SM": 1,
+      "local_bytes_per_thread": 0,
+      "warps_per_CTA": 8,
+      "theoretical_warp_occupancy_pct": 16.666666666666668
+    }
+  },
+  "device": [
+    128,
+    48,
+    32,
+    65536
+  ],
+  "measurements": {
+    "wall": {
+      "wall": {
+        "20": {
+          "samples_ms": [
+            382.79999999999995,
+            383.5,
+            382.1,
+            382.90000000000003,
+            381.5,
+            382.40000000000003,
+            383.0,
+            381.90000000000003,
+            384.40000000000003,
+            382.6,
+            382.29999999999995,
+            383.40000000000003,
+            382.90000000000003,
+            383.5,
+            383.2,
+            383.79999999999995,
+            382.40000000000003,
+            383.1,
+            383.2,
+            382.6
+          ],
+          "median_ms": 382.90000000000003,
+          "mean_ms": 382.87500000000006,
+          "p95_ms": 383.83,
+          "grids_per_second": 2.611647949856359,
+          "equivalent_THS": 183.7783864655628
+        },
+        "48": {
+          "samples_ms": [
+            381.90000000000003,
+            381.7,
+            382.7,
+            379.7,
+            380.59999999999997,
+            382.5,
+            382.2,
+            382.1,
+            382.40000000000003,
+            382.29999999999995,
+            381.79999999999995,
+            382.7,
+            382.40000000000003,
+            383.2,
+            382.0,
+            382.29999999999995,
+            381.7,
+            382.1,
+            381.90000000000003,
+            382.29999999999995
+          ],
+          "median_ms": 382.15,
+          "mean_ms": 382.025,
+          "p95_ms": 382.72499999999997,
+          "grids_per_second": 2.6167735182519953,
+          "equivalent_THS": 184.13906627676045
+        }
+      }
+    },
+    "events": {
+      "wall": {
+        "20": {
+          "samples_ms": [
+            400.2,
+            400.6,
+            400.1,
+            400.5,
+            401.9,
+            400.5,
+            401.3,
+            398.4,
+            399.5,
+            401.8,
+            399.4,
+            399.2,
+            402.7,
+            399.5,
+            398.6,
+            396.6,
+            397.6,
+            400.2,
+            399.9,
+            400.7
+          ],
+          "median_ms": 400.15,
+          "mean_ms": 399.96,
+          "p95_ms": 401.94,
+          "grids_per_second": 2.499062851430714,
+          "equivalent_THS": 175.85591447623142
+        },
+        "48": {
+          "samples_ms": [
+            403.6,
+            399.3,
+            402.2,
+            402.2,
+            402.1,
+            402.4,
+            401.6,
+            402.3,
+            399.7,
+            401.1,
+            401.8,
+            402.2,
+            402.0,
+            402.1,
+            399.0,
+            401.5,
+            401.2,
+            401.1,
+            402.8,
+            404.0
+          ],
+          "median_ms": 402.05,
+          "mean_ms": 401.71000000000004,
+          "p95_ms": 403.62,
+          "grids_per_second": 2.4872528292500933,
+          "equivalent_THS": 175.0248580466708
+        }
+      },
+      "kernel": {
+        "20": {
+          "samples_ms": [
+            360.02862548828125,
+            361.057373046875,
+            361.0032043457031,
+            360.1723937988281,
+            363.7231750488281,
+            361.0738830566406,
+            360.7062683105469,
+            360.1072692871094,
+            360.3382568359375,
+            361.4667663574219,
+            358.8222961425781,
+            360.3981018066406,
+            364.52679443359375,
+            359.4019470214844,
+            359.738037109375,
+            358.8070373535156,
+            360.05072021484375,
+            359.5305480957031,
+            360.6915588378906,
+            362.0594177246094
+          ],
+          "median_ms": 360.36817932128906,
+          "mean_ms": 360.6851837158203,
+          "p95_ms": 363.7633560180664,
+          "grids_per_second": 2.7749397904204027,
+          "equivalent_THS": 195.2690282205139
+        },
+        "48": {
+          "samples_ms": [
+            366.0909729003906,
+            360.5882568359375,
+            361.88519287109375,
+            362.433349609375,
+            361.1872863769531,
+            363.5628356933594,
+            360.9735107421875,
+            361.2922058105469,
+            361.0791015625,
+            360.9100341796875,
+            361.4512023925781,
+            362.7470703125,
+            362.2890930175781,
+            362.04632568359375,
+            360.131103515625,
+            360.7890625,
+            361.936767578125,
+            361.18145751953125,
+            361.13134765625,
+            365.2586975097656
+          ],
+          "median_ms": 361.3717041015625,
+          "mean_ms": 361.94824371337893,
+          "p95_ms": 365.30031127929686,
+          "grids_per_second": 2.767233816732239,
+          "equivalent_THS": 194.72676852941166
+        }
+      }
+    }
+  },
+  "blocks": [
+    {
+      "phase": "wall",
+      "variant": 20,
+      "start_unix": 1791294043.3142953,
+      "end_unix": 1791294048.6744087
+    },
+    {
+      "phase": "wall",
+      "variant": 48,
+      "start_unix": 1791294048.6744118,
+      "end_unix": 1791294054.0212102
+    },
+    {
+      "phase": "wall",
+      "variant": 48,
+      "start_unix": 1791294054.021212,
+      "end_unix": 1791294059.371898
+    },
+    {
+      "phase": "wall",
+      "variant": 20,
+      "start_unix": 1791294059.3718994,
+      "end_unix": 1791294064.7327857
+    },
+    {
+      "phase": "events",
+      "variant": 20,
+      "start_unix": 1791294064.7425635,
+      "end_unix": 1791294070.3358855
+    },
+    {
+      "phase": "events",
+      "variant": 48,
+      "start_unix": 1791294070.3358874,
+      "end_unix": 1791294075.9488356
+    },
+    {
+      "phase": "events",
+      "variant": 48,
+      "start_unix": 1791294075.948837,
+      "end_unix": 1791294081.581338
+    },
+    {
+      "phase": "events",
+      "variant": 20,
+      "start_unix": 1791294081.5813394,
+      "end_unix": 1791294087.1832023
+    }
+  ],
+  "warmup_grids_per_block": 4,
+  "stable_grids_per_mode_per_phase": 20,
+  "matrix_generation": "unchanged GPU setup_job, identical deterministic seeds across modes",
+  "comparison": "both omit PoW BLAKE3/jackpot checks; full retains all transcript operations",
+  "wall_comparison": {
+    "overhead_ms": 0.7500000000000568,
+    "overhead_pct_of_full": 0.19587359623924178,
+    "slowdown_ratio": 1.001962580138689,
+    "slowdown_pct_vs_pure": 0.19625801386891073
+  },
+  "kernel_comparison": {
+    "overhead_ms": -1.0035247802734375,
+    "overhead_pct_of_full": -0.27847208434536536,
+    "slowdown_ratio": 0.9972230122920985,
+    "slowdown_pct_vs_pure": -0.2776987707901468
+  },
+  "clock_conditions": {
+    "wall-20": {
+      "core_MHz_median": 2715.0,
+      "core_MHz_min": 2685.0,
+      "core_MHz_max": 2715.0,
+      "memory_MHz_values": [
+        10501.0
+      ],
+      "power_limit_W_values": [
+        450.0
+      ],
+      "mean_power_W": 444.8529411764706
+    },
+    "wall-48": {
+      "core_MHz_median": 2715.0,
+      "core_MHz_min": 2715.0,
+      "core_MHz_max": 2715.0,
+      "memory_MHz_values": [
+        10501.0
+      ],
+      "power_limit_W_values": [
+        450.0
+      ],
+      "mean_power_W": 435.1835294117647
+    },
+    "events-20": {
+      "core_MHz_median": 2715.0,
+      "core_MHz_min": 2715.0,
+      "core_MHz_max": 2715.0,
+      "memory_MHz_values": [
+        10501.0
+      ],
+      "power_limit_W_values": [
+        450.0
+      ],
+      "mean_power_W": 434.3765714285714
+    },
+    "events-48": {
+      "core_MHz_median": 2715.0,
+      "core_MHz_min": 2715.0,
+      "core_MHz_max": 2715.0,
+      "memory_MHz_values": [
+        10501.0
+      ],
+      "power_limit_W_values": [
+        450.0
+      ],
+      "mean_power_W": 417.42777777777775
+    }
+  },
+  "measurement_notes": [
+    "Kernel timing: sum of 1024 event brackets per grid, prebuilt graph each contains only start event, unchanged kernel, end event.",
+    "Main wall timing: original kernel launches with no graph/events.",
+    "Both modes omit PoW BLAKE3 and jackpot checks; all original setup and noise work retained.",
+    "Identical power policy, no administrator clock locks applied; sampled kernel-event clocks match exactly. Wall-stage full sometimes boosts 2685-2715 versus pure 2715 MHz. Subpercent differences are not an exact intrinsic instruction-cost attribution."
+  ]
+}

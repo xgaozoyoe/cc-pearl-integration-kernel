@@ -1,0 +1,7 @@
+{
+  "/home/xgao/pearl-4090/libp40cuda.so": "dd21041b17312d177aac619875bbad5d32703da7827d042185a7a783f8531ce6",
+  "/tmp/libpearl-ada-linear-copy.so": "d502d16187e953510303275f9a3ebf62010eba8f6fc277708282389ed36c9e66",
+  "/tmp/libpearl-ada-ws.so": "b4f76dda10ea4041cef56b84f23b442f358d1be229286fa2e808428b3a31d218",
+  "/home/xgao/pearl-4090/tests/ada_ws.cu": "a13e7e9d0f7e713da1a186ee86246ba453dd529d89a815960f8e67eba3520c2c",
+  "/home/xgao/pearl-4090/csrc/gemm/pearl-gemm-ada-v2.cu": "a3ffac35f19f080906d418b45537a17ac4f19192225bba9a6e2a9d23e3effbf8"
+}

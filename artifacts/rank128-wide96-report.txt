@@ -1,0 +1,34 @@
+Current R128/Layout6 wide-warp comparison — 2026-10-08
+GPU0 only; independent experimental library; live GPU1/2 miners unchanged.
+
+Reason to revisit:older wide96 result was R256/earlier producer layout,not the
+accepted R128/Layout6 path. Recent Peak comparison motivates testing useful work
+per operand load while preserving global reuse. No inference of Peak CTA shape.
+
+Baseline:CTA256x192,warp64x64,12warps,168regs/thread.
+Candidate:sameCTA,warp64x96,8warps,248regs/thread.
+BothK64,2stages,Lead2,Layout6,K4096,R128,69632Bshared,1CTA/SM,zero stack/spills.
+Accumulator words/thread128->192;all remain register resident.
+MMA/warp/K64:64->96,perCTA768unchanged.
+LDSM/warp/K64:16->20,perCTA192->160(-16.667%).
+Global copy bytes,output area,grid geometry,padded work unchanged.
+SASS1136 vs928instructions perkernel;these counts aren't dynamic issue totals.
+16 transcript/digest comparisons bit-exact against accepted library:
+2seeds x4shapes(32x48,256x384,256x400,8192x8192) x2variants.
+V3,target,proof untouched. No live candidate mining.
+
+Fullgrid131072^2x4096,region8192,realsetup/V3/noise/fold/PoW,target0(no proofs).
+4warmup+40measured pervariant twice with reversedorder;80samples each.
+No clocks/power changes,clocks unlocked;0.1ms wall-log resolution.
+
+{"variant": 0, "samples": 80, "mean_ms": 331.23625, "median_ms": 331.35, "p95_ms": 333.205, "grids_sec": 3.0189932412288814, "ths": 212.44276306613182}
+{"variant": 1, "samples": 80, "mean_ms": 347.005, "median_ms": 346.9, "p95_ms": 348.21, "grids_sec": 2.88180285586663, "ths": 202.78884793494043}
+
+Candidate time +4.761%; throughput -4.544%.
+Reject candidate. Both run orders regress. The actual LDSM reduction is
+insufficient;reducing ready warps and changed register/instruction scheduling are
+possible offsets,not causally separated by these timings. No new counter profile
+was collected for this rejected build. Avoid more wide-tile variants without a
+specific plan to preserve operand readiness. Peak low-warps/high-Tensor behavior
+cannot be reconstructed from occupancy percentage alone.
+Production/accepted library hashes unchanged;no commits or promotion.

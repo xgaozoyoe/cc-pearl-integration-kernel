@@ -1,0 +1,47 @@
+Complete-output-fragment then immediate-XOR experiment, GPU0 only,2026-10-08.
+
+Purpose: directly implement the proposed loop fusion at Tensor-Core fragment
+rather than scalar granularity. Preserve current R128 consensus boundaries:
+32K128chunks across K4096;NOT the historical R256/16K256-boundary workload.
+
+Variant0: validated A-stream,CTA256x192,warp64x64,12warps,K64,two stages.
+Variant1: same CTA/warp/MMA shape,but one full K128chunk shared buffer.
+ For each of16output16x16fragments perwarp,complete all4K32slices before
+ moving to next fragment. After all16 complete,fold their cumulative states.
+Variant2: identical fragment-first arithmetic/copy organization tovariant1,
+ but immediately fold each16x16after its4slices,then visit next fragment.
+Thus1vs2 tests full fragment-level loop fusion under matched workload/layout;
+0vs1/2 also includes loading,pipeline,and instruction-loop changes.
+
+All variants retain C in registers across chunks;no product materialization
+or accumulator state spill to shared/global. IMMA16x8x32.s32.s8.s8;each16x16
+uses2halfN8MMAs perK32. Perwarp/perK128:128useful IMMA in everyvariant.
+Original32LDSM vs new128LDSM perK128 (4x shared-to-register load instructions),
+because fragment-first visits reload A/B rather than share operands across
+multiple output fragments. Actual hardware byte/counter metrics not sampled.
+Global CTA operand footprint perK128 is unchanged,actualL2traffic not measured.
+
+K128single buffer is required here to hold the full current chunk. Double
+buffer atthisgeometry would exceed SM89shared capacity. OneK128+transcript
+uses69632B,identical total to originaltwoK64+transcript. This prototype loses
+next-stage copy/compute overlap. Before overwrite:CTAbarrier,then copy/commit,
+wait_group0,CTAbarrier,compute. Finalbarrier before transcript output.
+
+Initial fully unrolled copy/K32slice loops spilled128/176Bstack. Do not use.
+Final version keeps copy loops and4slice inner loop rolled,while16output
+fragments are unrolled. Registers:original168,delayed166,fused155;allzero spill,
+1CTA/SM,12residentwarps,384threads. Same grid order and useful MMA count.
+Static IMMA32andLDSM32 in new kernels each execute4times perinnerloop,
+versus original64IMMA/16LDSM perK64. Do not compare these unnormalized counts.
+SASS confirms fusedREDUX after each two-static-IMMA slice loop completes,
+where delayedREDUX is after all16fragment loops;staticREDUX duplicates arise
+from control paths,not different mathematical fold counts.
+
+Correctness:24full transcript/digest comparisons against acceptedR128,
+2seeds x4shapes x3variants;includes8192x8192 and partialNtails.
+Performance:real offline mine_job,131072x131072,K4096,R128,region8192;
+includes generation/noise/Merkle/V3/transcript/PoW;zero target/no pool.
+6rotating-order batches,2warmups+10measurements=60grids/variant. Identical seed
+sequence. Clocks/power not modified or locked;batch-end telemetry saved.
+Log resolution0.1ms;no hardware stall-counter capture in this experiment.
+All code/libraries isolated;production GPU1/GPU2 and accepted hashes preserved.

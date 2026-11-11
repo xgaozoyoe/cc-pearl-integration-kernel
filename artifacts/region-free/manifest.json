@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "native": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "104c0c1b265260dea5c9ab0bb174ebbbe7ee9cceb0cf0acebf2a9d1dfa4d50aa",
+      "smem": 69632,
+      "correct": true
+    },
+    "source_control": {
+      "entry": "_ZN25ready_free_source_control6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "ec85d362f3e64de787433af230672d321228c087853ff26714bc5c7a70bd47df",
+      "smem": 69632,
+      "correct": true
+    },
+    "region_early_wait": {
+      "entry": "_ZN29region_free_region_early_wait6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "22b5e4c066c7e8142d40d06e6cbd5935a398a30295b6d5238033d347cd4a6e1e",
+      "smem": 69760,
+      "correct": true
+    },
+    "region_deferred": {
+      "entry": "_ZN27region_free_region_deferred6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "5cb1f40237bec5f056f4bee6af6c01d8a25d5f86f1824d66149c11f7ae080e54",
+      "smem": 69760,
+      "correct": true
+    }
+  }
+}

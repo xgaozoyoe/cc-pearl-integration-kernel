@@ -1,0 +1,40 @@
+{
+  "copyimm": {
+    "stats": [
+      {
+        "variant": 0,
+        "samples": 80,
+        "mean_ms": 313.10375,
+        "median_ms": 313.1,
+        "effective_ths": 224.74577253598528
+      },
+      {
+        "variant": 1,
+        "samples": 80,
+        "mean_ms": 314.42625,
+        "median_ms": 314.25,
+        "effective_ths": 223.80047523915067
+      }
+    ],
+    "gain_percent": -0.4206073761335083
+  },
+  "copybothimm": {
+    "stats": [
+      {
+        "variant": 0,
+        "samples": 80,
+        "mean_ms": 313.86625,
+        "median_ms": 313.8,
+        "effective_ths": 224.19977993066792
+      },
+      {
+        "variant": 1,
+        "samples": 80,
+        "mean_ms": 315.7475,
+        "median_ms": 315.8,
+        "effective_ths": 222.8639788997981
+      }
+    ],
+    "gain_percent": -0.5958083595277941
+  }
+}

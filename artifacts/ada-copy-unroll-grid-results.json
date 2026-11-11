@@ -1,0 +1,248 @@
+{
+  "baseline": 110,
+  "baseline_library": "/tmp/libpearl-ada-bpack-fixedk.so",
+  "candidate_library": "/tmp/libpearl-ada-copy-unroll.so",
+  "warmup_per_block": 2,
+  "stable_grids_per_variant": 20,
+  "results": [
+    {
+      "variant": 0,
+      "name": "production",
+      "times": [
+        0.4295,
+        0.4227,
+        0.4226,
+        0.4287,
+        0.4266,
+        0.4322,
+        0.4261,
+        0.4335,
+        0.4279,
+        0.4301,
+        0.4314,
+        0.4278
+      ],
+      "median_seconds_excluding_first": 0.4279,
+      "grids_per_second": 2.3369946249123625,
+      "effective_THS": 164.45137690503387,
+      "reported_search_THS": [
+        170.31,
+        172.66,
+        172.8,
+        170.26,
+        171.27,
+        169.05,
+        171.38,
+        168.55,
+        170.76,
+        169.75,
+        169.32,
+        170.84
+      ],
+      "median_reported_search_THS": 170.76
+    },
+    {
+      "variant": 110,
+      "name": "MMA-packed B x4",
+      "times": [
+        0.3448,
+        0.3502,
+        0.3531,
+        0.3531,
+        0.3509,
+        0.3527,
+        0.3523,
+        0.3521,
+        0.3521,
+        0.3529,
+        0.3523,
+        0.3515
+      ],
+      "median_seconds_excluding_first": 0.3523,
+      "grids_per_second": 2.838489923360772,
+      "effective_THS": 199.74097126785125,
+      "reported_search_THS": [
+        213.34,
+        210.33,
+        208.51,
+        208.48,
+        209.93,
+        208.76,
+        209.09,
+        209.16,
+        208.96,
+        208.61,
+        209.03,
+        209.45
+      ],
+      "median_reported_search_THS": 209.03
+    },
+    {
+      "variant": 111,
+      "name": "unrolled async copies",
+      "times": [
+        0.3445,
+        0.3516,
+        0.355,
+        0.3527,
+        0.351,
+        0.3525,
+        0.3541,
+        0.3521,
+        0.354,
+        0.3542,
+        0.3516,
+        0.3537
+      ],
+      "median_seconds_excluding_first": 0.3527,
+      "grids_per_second": 2.835270768358378,
+      "effective_THS": 199.51444337301956,
+      "reported_search_THS": [
+        213.6,
+        209.27,
+        207.28,
+        208.78,
+        209.66,
+        208.62,
+        207.98,
+        209.09,
+        207.99,
+        207.87,
+        209.5,
+        208.22
+      ],
+      "median_reported_search_THS": 208.62
+    },
+    {
+      "variant": 111,
+      "name": "unrolled async copies",
+      "times": [
+        0.3445,
+        0.3506,
+        0.3547,
+        0.3524,
+        0.3509,
+        0.3541,
+        0.3528,
+        0.3514,
+        0.3538,
+        0.3535,
+        0.3519,
+        0.3525
+      ],
+      "median_seconds_excluding_first": 0.3525,
+      "grids_per_second": 2.8368794326241136,
+      "effective_THS": 199.62764305720285,
+      "reported_search_THS": [
+        213.48,
+        210.08,
+        207.26,
+        209.07,
+        209.62,
+        207.9,
+        208.71,
+        209.65,
+        208.19,
+        208.32,
+        209.37,
+        208.99
+      ],
+      "median_reported_search_THS": 208.99
+    },
+    {
+      "variant": 110,
+      "name": "MMA-packed B x4",
+      "times": [
+        0.3446,
+        0.3503,
+        0.3547,
+        0.3524,
+        0.3512,
+        0.35,
+        0.3537,
+        0.3518,
+        0.3523,
+        0.3512,
+        0.3507,
+        0.3518
+      ],
+      "median_seconds_excluding_first": 0.3518,
+      "grids_per_second": 2.8425241614553722,
+      "effective_THS": 200.02485553628196,
+      "reported_search_THS": [
+        213.43,
+        210.25,
+        207.58,
+        208.81,
+        209.69,
+        210.5,
+        208.27,
+        209.43,
+        209.15,
+        209.69,
+        210.21,
+        209.3
+      ],
+      "median_reported_search_THS": 209.43
+    },
+    {
+      "variant": 0,
+      "name": "production",
+      "times": [
+        0.4214,
+        0.4268,
+        0.4333,
+        0.4269,
+        0.4324,
+        0.4289,
+        0.431,
+        0.4304,
+        0.4302,
+        0.4325,
+        0.4252,
+        0.4301
+      ],
+      "median_seconds_excluding_first": 0.4302,
+      "grids_per_second": 2.3245002324500232,
+      "effective_THS": 163.57216219819617,
+      "reported_search_THS": [
+        173.12,
+        171.06,
+        168.5,
+        171.15,
+        168.74,
+        170.42,
+        169.53,
+        169.76,
+        169.82,
+        168.89,
+        171.77,
+        169.88
+      ],
+      "median_reported_search_THS": 169.82
+    }
+  ],
+  "summary": {
+    "0": {
+      "median_ms": 430.09999999999997,
+      "mean_ms": 429.39,
+      "p95_ms": 433.31,
+      "grids_per_second": 2.325040688212044,
+      "effective_THS": 163.61019339145315
+    },
+    "110": {
+      "median_ms": 352.20000000000005,
+      "mean_ms": 352.14,
+      "p95_ms": 353.75,
+      "grids_per_second": 2.839295854628052,
+      "effective_THS": 199.79768363902323
+    },
+    "111": {
+      "median_ms": 352.75,
+      "mean_ms": 352.945,
+      "p95_ms": 354.715,
+      "grids_per_second": 2.8348688873139616,
+      "effective_THS": 199.48616350861516
+    }
+  }
+}

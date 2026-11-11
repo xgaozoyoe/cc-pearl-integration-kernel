@@ -1,0 +1,32 @@
+Capture: /tmp/pearl-copy-bypass.z0NSso
+Input hashes match. All12 launches execute 67,633,152 IMMA. LDSM measured zero in all diagnostics.
+
+variant      kernel_ms   Tensor%  barrier%  longSB%   math%   IMMA/SMcycle effectiveGHz
+baseline     1.040907    78.753   12.790    2.890    45.380   0.191703370   2.647945
+no_ab        0.975904    81.533   12.240    4.743    52.187   0.198620976   2.725947
+no_copy      0.932096    85.110   11.630    0.000    56.950   0.207285834   2.734761
+no_copy_bar  0.836299    94.857   1.153    0.000    64.233   0.230958966   2.735605
+
+Cycle-normalized throughput changes:
+baseline -> no_ab: +3.608%; time reduction 6.245%
+no_ab -> no_copy: +4.363%; time reduction 4.489%
+no_copy -> no_copy_bar: +11.421%; time reduction 10.278%
+no_ab -> no_copy_bar: +16.281%; time reduction 14.305%
+baseline -> no_copy_bar: +20.477%; time reduction 19.657%
+
+Barrier-only pair (no_copy -> no_copy_bar) retains identical data work and instruction count/slots except one BAR replaced with NOP.
+Effective clock ~2.73476 ->2.73561GHz: this is not primarily a boost-clock gain.
+Main-loop barrier-attributed PC0xd90 samples105722 ->0. Final barrier-attributed PC0x29f0 samples1929 ->9709.
+PCs are sampled attribution locations; source barrier instructions are at0xc60 and0x29d0 respectively.
+Remaining barrier percentage1.153% comes from final transcript synchronization. It is intentionally retained.
+Eligible warps/scheduler0.38 ->0.41; issued warps/cycle0.23 ->0.26. Math throttle56.95% ->64.23% despite faster execution.
+Higher math throttle alone is not evidence of worse performance or a larger end-to-end bottleneck.
+L2 B/useful MMA37.758 ->0.258 after removing copies; this traffic reduction is deliberate, not an operand-reuse improvement.
+
+Conclusion: stage handoff has a substantial conditional cost in this diagnostic. Same mapping can reach94.857% Tensor active-cycle utilization with operand supply constraints removed.
+This does not prove synchronized warp bursts are the cause; changing a barrier changes scheduling and phase relationships as well as waiting.
+Nor is the gain transferable directly to production: real operands require readiness and safe stage reuse.
+Barriers and dependency effects are non-additive; the measured11.42% per-cycle gain is conditional on no copies/LDSM and zero MMA operands.
+Production and PeakMiner are not benchmarked head-to-head here; this does not explain their entire throughput gap.
+Next production-oriented investigation: distinguish buffer readiness from buffer-reuse synchronization, and find independent work that can execute before the required handoff.
+Keep final transcript synchronization. Do not deploy these incorrect-arithmetic diagnostics.

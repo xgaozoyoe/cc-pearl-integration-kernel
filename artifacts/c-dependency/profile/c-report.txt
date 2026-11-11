@@ -1,0 +1,18 @@
+Fixed-SASS nonzero C dependency diagnostic; incorrect Pearl arithmetic except native.
+All 64 IMMA C inputs use the current A quartet as INT32 bit patterns.
+Original A/B loads, MMA destinations, loop, transcript instructions, scheduling controls, registers and barriers retained.
+No compiler runs on timed binary; independent source oracle checks altered arithmetic.
+C recurrence removed, but destination WAW hazards and transcript consumers remain.
+A/C register aliasing and numeric switching activity change too; this is not an implementable mining optimization.
+UNLOCKED events are region timings, not full grids. Fixed-clock counters required.
+
+UNLOCKED region events:200samples/variant,16launches/sample,10rotating blocks. ms,notfullgrid.
+native {"samples": 200, "mean_ms": 1.023391758799553, "median_ms": 1.0169260501861572, "p95_ms": 1.0501937508583068}
+block-end SMclock min/max 2415/2505MHz;not timeaveraged.
+a_as_c {"samples": 200, "mean_ms": 1.010023568868637, "median_ms": 1.0046080350875854, "p95_ms": 1.0319744169712066}
+block-end SMclock min/max 2460/2610MHz;not timeaveraged.
+native->a_as_c:time -1.306%
+native fixed-clock {"imma_per_SM_elapsed_cycle": 0.2088335898395732, "imma_per_SMSP_elapsed_cycle": 0.0522083974598933, "tensor_Ginst_sec": 59.614053769813225, "kernel_ms": 1.1345173333333334}
+{"kernel_ns": 1134517.3333333333, "tensor_pct": 85.77333333333333, "l2_util_pct": 49.00666666666667, "l2_bytes": 2533978698.6666665, "barrier_pct": 14.28, "long_scoreboard_pct": 2.83, "short_scoreboard_pct": 7.68, "math_throttle_pct": 40.92666666666666, "eligible_warps_per_scheduler": 0.36, "active_warps_per_scheduler": 3.0, "issued_warps_per_cycle": 0.24}
+a_as_c fixed-clock {"imma_per_SM_elapsed_cycle": 0.20872791326218224, "imma_per_SMSP_elapsed_cycle": 0.05218197831554556, "tensor_Ginst_sec": 59.405497103594705, "kernel_ms": 1.1385066666666666}
+{"kernel_ns": 1138506.6666666667, "tensor_pct": 85.8, "l2_util_pct": 48.86333333333334, "l2_bytes": 2533966613.3333335, "barrier_pct": 14.266666666666666, "long_scoreboard_pct": 2.8166666666666664, "short_scoreboard_pct": 7.6866666666666665, "math_throttle_pct": 40.92666666666667, "eligible_warps_per_scheduler": 0.36, "active_warps_per_scheduler": 3.0, "issued_warps_per_cycle": 0.24}

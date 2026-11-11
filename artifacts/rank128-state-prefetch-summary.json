@@ -1,0 +1,102 @@
+{
+  "state-prefetch": [
+    {
+      "variant": 0,
+      "samples": 60,
+      "mean_ms": 307.81499999999994,
+      "median_ms": 307.3,
+      "p95_ms": 311.72499999999997,
+      "ths": 228.6072614319121,
+      "resources": [
+        168,
+        384,
+        69632,
+        1,
+        0
+      ],
+      "throughput_change_pct": 0.0
+    },
+    {
+      "variant": 1,
+      "samples": 60,
+      "mean_ms": 314.24833333333333,
+      "median_ms": 313.85,
+      "p95_ms": 319.505,
+      "ths": 223.92718341968612,
+      "resources": [
+        167,
+        384,
+        69632,
+        1,
+        0
+      ],
+      "throughput_change_pct": -2.047213191265951
+    },
+    {
+      "variant": 2,
+      "samples": 60,
+      "mean_ms": 315.1333333333334,
+      "median_ms": 314.40000000000003,
+      "p95_ms": 320.40500000000003,
+      "ths": 223.29832085148294,
+      "resources": [
+        168,
+        384,
+        69632,
+        1,
+        0
+      ],
+      "throughput_change_pct": -2.3222974402369756
+    }
+  ],
+  "state-prefetch-pred": [
+    {
+      "variant": 0,
+      "samples": 60,
+      "mean_ms": 308.4783333333334,
+      "median_ms": 307.65,
+      "p95_ms": 313.805,
+      "ths": 228.11567806814304,
+      "resources": [
+        168,
+        384,
+        69632,
+        1,
+        0
+      ],
+      "throughput_change_pct": 0.0
+    },
+    {
+      "variant": 1,
+      "samples": 60,
+      "mean_ms": 311.18,
+      "median_ms": 310.65,
+      "p95_ms": 316.235,
+      "ths": 226.13517635344175,
+      "resources": [
+        167,
+        384,
+        69632,
+        1,
+        0
+      ],
+      "throughput_change_pct": -0.8682006127214481
+    },
+    {
+      "variant": 2,
+      "samples": 60,
+      "mean_ms": 311.70833333333326,
+      "median_ms": 311.15,
+      "p95_ms": 316.40000000000003,
+      "ths": 225.75188614676333,
+      "resources": [
+        168,
+        384,
+        69632,
+        1,
+        0
+      ],
+      "throughput_change_pct": -1.0362251035957226
+    }
+  ]
+}

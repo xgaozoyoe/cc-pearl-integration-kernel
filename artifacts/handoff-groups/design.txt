@@ -1,0 +1,19 @@
+Hypothesis: expand benefit of early stage publication by changing warp cohorts,
+without changing compute ownership, operand reuse, hot-loop instructions, registers,
+shared storage, arrival point, or occupancy.
+
+Controls: validated tail9 and latest id16, both6+6 warps.
+Candidates: id16 with4+8,8+4,3+9,9+3 contiguous warp cohorts.
+All group boundaries are warp-aligned. No divergent named barrier within a warp.
+Only prologue ISETP threshold changes. Disassembled main loop is byte-identical to id16.
+Barrier count remains384 for both groups: N warps arrive on peer barrier and
+12-N warps sync on that same barrier; the opposite barrier has reversed roles.
+Each barrier therefore still covers all384 threads. IDs alternate4/5 then6/7.
+Publication still waits for copy completion and all shared reads. A group may
+proceed only after all other threads have published. Next publication cannot
+complete until the slower group reaches its corresponding next sync.
+This preserves stage reuse safety for unequal groups as for6+6.
+
+Not a dedicated-producer design: all12 warps still do their identical IMMA work.
+No added main-loop overhead. Candidate differences are scheduling/handoff grouping.
+Offline only; production and known-good cubins are unchanged.

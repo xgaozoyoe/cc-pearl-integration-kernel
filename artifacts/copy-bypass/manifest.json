@@ -1,0 +1,282 @@
+{
+  "entry": "_ZN24handoff_control_baseline6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+  "variants": {
+    "baseline": {
+      "sha256": "3be626ab702bb0c460b09f0c34e32c671756465f3a950be111405152e6d8019c",
+      "changes": []
+    },
+    "no_ab": {
+      "sha256": "ca0927a683db378f2d5dbead4198d88628190e4dde4000c2e0c794f1766455af",
+      "changes": []
+    },
+    "no_copy": {
+      "sha256": "928b705fd06baf2bca12a7f847cbea099c28db171ed98c109a119eeb042ee9e9",
+      "changes": [
+        {
+          "pc": "0x930",
+          "original": "@!P0 LDGSTS.E.BYPASS.128 [R13], [R2.64]",
+          "removed": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0x990",
+          "original": "@!P2 LDGSTS.E.BYPASS.128 [R15], [R4.64]",
+          "removed": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0x9f0",
+          "original": "IADD3 R2, P4, R6, c[0x0][0x168], RZ",
+          "removed": false,
+          "cleared_wait_mask": 2
+        },
+        {
+          "pc": "0xa30",
+          "original": "@!P2 IADD3 R15, R15, 0x1800, RZ",
+          "removed": false,
+          "cleared_wait_mask": 4
+        },
+        {
+          "pc": "0xa70",
+          "original": "@!P3 LDGSTS.E.BYPASS.128 [R15], [R8.64]",
+          "removed": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0xa80",
+          "original": "LDGSTS.E.BYPASS.128 [R13+0x8000], [R2.64], !P1",
+          "removed": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0xa90",
+          "original": "LDGSTS.E.BYPASS.128 [R13+0x9800], [R10.64], !P0",
+          "removed": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0xab0",
+          "original": "LDGDEPBAR",
+          "removed": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0xac0",
+          "original": "CS2R R8, SRZ",
+          "removed": false,
+          "cleared_wait_mask": 2
+        },
+        {
+          "pc": "0xae0",
+          "original": "IMAD.SHL.U32 R3, R0, 0x40, RZ",
+          "removed": false,
+          "cleared_wait_mask": 4
+        },
+        {
+          "pc": "0xb00",
+          "original": "CS2R R10, SRZ",
+          "removed": false,
+          "cleared_wait_mask": 8
+        },
+        {
+          "pc": "0xc30",
+          "original": "DEPBAR.LE SB0, 0x0",
+          "removed": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0xf20",
+          "original": "@!P4 LDGSTS.E.BYPASS.128 [R137], [R98.64]",
+          "removed": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0xf50",
+          "original": "IMAD R98, R157, 0x1000, R143",
+          "removed": false,
+          "cleared_wait_mask": 2
+        },
+        {
+          "pc": "0xf90",
+          "original": "@!P2 LDGSTS.E.BYPASS.128 [R137], [R138.64]",
+          "removed": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0xfd0",
+          "original": "@!P2 IADD3 R137, R137, 0x1800, RZ",
+          "removed": false,
+          "cleared_wait_mask": 2
+        },
+        {
+          "pc": "0xff0",
+          "original": "@!P3 LDGSTS.E.BYPASS.128 [R137], [R140.64]",
+          "removed": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0x1030",
+          "original": "LDGSTS.E.BYPASS.128 [R97+0x8000], [R98.64], !P1",
+          "removed": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0x1040",
+          "original": "LDGSTS.E.BYPASS.128 [R97+0x9800], [R138.64], !P0",
+          "removed": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0x1050",
+          "original": "LDGDEPBAR",
+          "removed": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0x10b0",
+          "original": "NOP",
+          "removed": false,
+          "cleared_wait_mask": 2
+        }
+      ]
+    },
+    "no_copy_bar": {
+      "sha256": "912256c7c5bffe14b152551baa2f70e5e43c3f95996592bac74893bc947b432f",
+      "changes": [
+        {
+          "pc": "0x930",
+          "original": "@!P0 LDGSTS.E.BYPASS.128 [R13], [R2.64]",
+          "removed": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0x990",
+          "original": "@!P2 LDGSTS.E.BYPASS.128 [R15], [R4.64]",
+          "removed": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0x9f0",
+          "original": "IADD3 R2, P4, R6, c[0x0][0x168], RZ",
+          "removed": false,
+          "cleared_wait_mask": 2
+        },
+        {
+          "pc": "0xa30",
+          "original": "@!P2 IADD3 R15, R15, 0x1800, RZ",
+          "removed": false,
+          "cleared_wait_mask": 4
+        },
+        {
+          "pc": "0xa70",
+          "original": "@!P3 LDGSTS.E.BYPASS.128 [R15], [R8.64]",
+          "removed": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0xa80",
+          "original": "LDGSTS.E.BYPASS.128 [R13+0x8000], [R2.64], !P1",
+          "removed": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0xa90",
+          "original": "LDGSTS.E.BYPASS.128 [R13+0x9800], [R10.64], !P0",
+          "removed": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0xab0",
+          "original": "LDGDEPBAR",
+          "removed": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0xac0",
+          "original": "CS2R R8, SRZ",
+          "removed": false,
+          "cleared_wait_mask": 2
+        },
+        {
+          "pc": "0xae0",
+          "original": "IMAD.SHL.U32 R3, R0, 0x40, RZ",
+          "removed": false,
+          "cleared_wait_mask": 4
+        },
+        {
+          "pc": "0xb00",
+          "original": "CS2R R10, SRZ",
+          "removed": false,
+          "cleared_wait_mask": 8
+        },
+        {
+          "pc": "0xc30",
+          "original": "DEPBAR.LE SB0, 0x0",
+          "removed": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0xc60",
+          "original": "BAR.SYNC.DEFER_BLOCKING 0x0",
+          "removed": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0xf20",
+          "original": "@!P4 LDGSTS.E.BYPASS.128 [R137], [R98.64]",
+          "removed": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0xf50",
+          "original": "IMAD R98, R157, 0x1000, R143",
+          "removed": false,
+          "cleared_wait_mask": 2
+        },
+        {
+          "pc": "0xf90",
+          "original": "@!P2 LDGSTS.E.BYPASS.128 [R137], [R138.64]",
+          "removed": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0xfd0",
+          "original": "@!P2 IADD3 R137, R137, 0x1800, RZ",
+          "removed": false,
+          "cleared_wait_mask": 2
+        },
+        {
+          "pc": "0xff0",
+          "original": "@!P3 LDGSTS.E.BYPASS.128 [R137], [R140.64]",
+          "removed": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0x1030",
+          "original": "LDGSTS.E.BYPASS.128 [R97+0x8000], [R98.64], !P1",
+          "removed": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0x1040",
+          "original": "LDGSTS.E.BYPASS.128 [R97+0x9800], [R138.64], !P0",
+          "removed": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0x1050",
+          "original": "LDGDEPBAR",
+          "removed": true,
+          "cleared_wait_mask": 0
+        },
+        {
+          "pc": "0x10b0",
+          "original": "NOP",
+          "removed": false,
+          "cleared_wait_mask": 2
+        }
+      ]
+    }
+  },
+  "caveat": "Wrong arithmetic. Copy address arithmetic, NOP slots and fixed stall counts remain. Final transcript barrier retained. Loop-header waits retained for other predecessors."
+}

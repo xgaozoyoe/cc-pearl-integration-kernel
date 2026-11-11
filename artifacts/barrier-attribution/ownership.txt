@@ -1,0 +1,40 @@
+Static dependency audit, not a GPU performance measurement.
+Baseline SHA256: 104c0c1b265260dea5c9ab0bb174ebbbe7ee9cceb0cf0acebf2a9d1dfa4d50aa
+CTA256x192, warp64x64, K64, 12warps; padded physical stages unchanged.
+P=producer warps needed before reads; R=reader warps needed before overwrite.
+warp 0: P=[0, 1, 2, 3, 4, 5, 6, 7] R=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11]
+warp 1: P=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] R=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11]
+warp 2: P=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] R=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11]
+warp 3: P=[0, 1, 2, 3, 4, 5, 6, 7] R=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11]
+warp 4: P=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] R=[0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11]
+warp 5: P=[0, 1, 2, 3, 8, 9, 10, 11] R=[0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11]
+warp 6: P=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] R=[0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11]
+warp 7: P=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] R=[0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 11]
+warp 8: P=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] R=[1, 2, 4, 5, 6, 7, 8, 9, 10, 11]
+warp 9: P=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] R=[1, 2, 4, 5, 6, 7, 8, 9, 10, 11]
+warp10: P=[4, 5, 6, 7, 8, 9, 10, 11] R=[1, 2, 4, 5, 6, 7, 8, 9, 10, 11]
+warp11: P=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] R=[1, 2, 4, 5, 6, 7, 8, 9, 10, 11]
+
+Logical reuse: each A64x64 block has3 reader warps (same wm); each B64x64 block has4 (same wn).
+Current linear copy assignment distributes those blocks across other warps.
+Thus local cp.async.wait cannot replace cross-warp publication or reader completion.
+Current peer early-arrive + own late-sync also waits for own-group late arrivals.
+That late rendezvous is stronger than all-warp copy/read completion; removing it safely still requires a completion protocol.
+Earlier mbarrier polling was tested and slower; this audit does not establish a cheaper protocol.
+
+Current unique copy bytes/K64/CTA: 28672
+Private warp operands (no cross-warp reuse): 98304 bytes
+Private current8+4 groups: 45056 bytes
+Minimum private2-group bytes over2047 partitions: (36864, [0], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
+Minimum private6+6-group bytes: (40960, [0, 1, 4, 5, 8, 9], [2, 3, 6, 7, 10, 11])
+These are logical cp.async bytes, NOT measured L2 bytes; caches and transaction effects are not modeled.
+
+Candidate requiring further design: reassign copy ownership to A-row/B-column reuse cohorts.
+This can preserve28672 copy bytes and remove unrelated producer dependencies, but requires both ready and reuse handoffs.
+3-warp A cohorts and4-warp B cohorts overlap: local barriers can indirectly propagate waits; no gain is assumed.
+Simple double-buffer K128 batching requires114688 operand bytes alone, exceeding SM89 per-block99KiB.
+Therefore halving barrier frequency that way does not fit the current CTA, even without transcript storage.
+
+Previous full-CTA replacement: offline full-grid wall means, unlocked clocks.
+native: n=60,mean=292.083333ms,median=292.100000ms,equivalent=240.920094TH/s
+cta_sync: n=60,mean=315.711667ms,median=315.450000ms,equivalent=222.889274TH/s

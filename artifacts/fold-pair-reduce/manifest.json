@@ -1,0 +1,29 @@
+{
+  "variants": {
+    "native": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "104c0c1b265260dea5c9ab0bb174ebbbe7ee9cceb0cf0acebf2a9d1dfa4d50aa",
+      "smem": 69632,
+      "correct": true
+    },
+    "source8": {
+      "entry": "_ZN17fold_pair_source86kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "92234afb092b46aa77c3972186ad48436ebab3e657d37088e344217edd2e19a2",
+      "smem": 69632,
+      "correct": true
+    },
+    "defer2_copy": {
+      "entry": "_ZN21fold_pair_defer2_copy6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "b96968410d5352e58f49a6987bd0924f3baac86ad9515915c813e40a4938be9b",
+      "smem": 69632,
+      "correct": true
+    },
+    "defer2_mma": {
+      "entry": "_ZN20fold_pair_defer2_mma6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "5241aa3f47180b338b966c445b3fb1bc99eb97092bd6773956603f4382b55345",
+      "smem": 69632,
+      "correct": true
+    }
+  },
+  "warning": "Offline only. Paired K64 loops; not a production backend."
+}

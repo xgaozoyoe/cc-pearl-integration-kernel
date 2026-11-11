@@ -1,0 +1,429 @@
+[
+  {
+    "function": "_ZN19tile_complete_trial6kernelILb1EEEvPKaS2_iiPj",
+    "instructions": 920,
+    "static_imma": 32,
+    "static_ldsm": 32,
+    "redux": [
+      {
+        "pc": "0x0f40",
+        "static_mma_before": 2,
+        "source": "REDUX.XOR UR4, R136 ;"
+      },
+      {
+        "pc": "0x1120",
+        "static_mma_before": 4,
+        "source": "REDUX.XOR UR4, R136 ;"
+      },
+      {
+        "pc": "0x1300",
+        "static_mma_before": 6,
+        "source": "REDUX.XOR UR4, R136 ;"
+      },
+      {
+        "pc": "0x14e0",
+        "static_mma_before": 8,
+        "source": "REDUX.XOR UR4, R136 ;"
+      },
+      {
+        "pc": "0x16c0",
+        "static_mma_before": 10,
+        "source": "REDUX.XOR UR4, R136 ;"
+      },
+      {
+        "pc": "0x18a0",
+        "static_mma_before": 12,
+        "source": "REDUX.XOR UR4, R136 ;"
+      },
+      {
+        "pc": "0x1a80",
+        "static_mma_before": 14,
+        "source": "REDUX.XOR UR4, R136 ;"
+      },
+      {
+        "pc": "0x1c60",
+        "static_mma_before": 16,
+        "source": "REDUX.XOR UR4, R136 ;"
+      },
+      {
+        "pc": "0x1e40",
+        "static_mma_before": 18,
+        "source": "REDUX.XOR UR4, R136 ;"
+      },
+      {
+        "pc": "0x2020",
+        "static_mma_before": 20,
+        "source": "REDUX.XOR UR4, R136 ;"
+      },
+      {
+        "pc": "0x2200",
+        "static_mma_before": 22,
+        "source": "REDUX.XOR UR4, R136 ;"
+      },
+      {
+        "pc": "0x23e0",
+        "static_mma_before": 24,
+        "source": "REDUX.XOR UR4, R136 ;"
+      },
+      {
+        "pc": "0x25c0",
+        "static_mma_before": 26,
+        "source": "REDUX.XOR UR4, R136 ;"
+      },
+      {
+        "pc": "0x27a0",
+        "static_mma_before": 28,
+        "source": "REDUX.XOR UR4, R136 ;"
+      },
+      {
+        "pc": "0x2980",
+        "static_mma_before": 30,
+        "source": "REDUX.XOR UR4, R136 ;"
+      },
+      {
+        "pc": "0x2b60",
+        "static_mma_before": 32,
+        "source": "REDUX.XOR UR4, R136 ;"
+      }
+    ],
+    "spill_instructions": 0
+  },
+  {
+    "function": "_ZN19tile_complete_trial6kernelILb0EEEvPKaS2_iiPj",
+    "instructions": 960,
+    "static_imma": 32,
+    "static_ldsm": 32,
+    "redux": [
+      {
+        "pc": "0x1d70",
+        "static_mma_before": 32,
+        "source": "REDUX.XOR UR4, R139 ;"
+      },
+      {
+        "pc": "0x1e20",
+        "static_mma_before": 32,
+        "source": "REDUX.XOR UR6, R138 ;"
+      },
+      {
+        "pc": "0x1e70",
+        "static_mma_before": 32,
+        "source": "REDUX.XOR UR5, R136 ;"
+      },
+      {
+        "pc": "0x1ec0",
+        "static_mma_before": 32,
+        "source": "REDUX.XOR UR7, R140 ;"
+      },
+      {
+        "pc": "0x1f90",
+        "static_mma_before": 32,
+        "source": "REDUX.XOR UR11, R136 ;"
+      },
+      {
+        "pc": "0x1fe0",
+        "static_mma_before": 32,
+        "source": "REDUX.XOR UR12, R138 ;"
+      },
+      {
+        "pc": "0x2030",
+        "static_mma_before": 32,
+        "source": "REDUX.XOR UR13, R140 ;"
+      },
+      {
+        "pc": "0x2080",
+        "static_mma_before": 32,
+        "source": "REDUX.XOR UR14, R136 ;"
+      },
+      {
+        "pc": "0x20d0",
+        "static_mma_before": 32,
+        "source": "REDUX.XOR UR15, R138 ;"
+      },
+      {
+        "pc": "0x2120",
+        "static_mma_before": 32,
+        "source": "REDUX.XOR UR16, R140 ;"
+      },
+      {
+        "pc": "0x2180",
+        "static_mma_before": 32,
+        "source": "REDUX.XOR UR10, R142 ;"
+      },
+      {
+        "pc": "0x21e0",
+        "static_mma_before": 32,
+        "source": "REDUX.XOR UR17, R139 ;"
+      },
+      {
+        "pc": "0x2240",
+        "static_mma_before": 32,
+        "source": "REDUX.XOR UR18, R142 ;"
+      },
+      {
+        "pc": "0x2290",
+        "static_mma_before": 32,
+        "source": "REDUX.XOR UR19, R140 ;"
+      },
+      {
+        "pc": "0x22b0",
+        "static_mma_before": 32,
+        "source": "REDUX.XOR UR4, R154 ;"
+      },
+      {
+        "pc": "0x2330",
+        "static_mma_before": 32,
+        "source": "REDUX.XOR UR20, R152 ;"
+      },
+      {
+        "pc": "0x2760",
+        "static_mma_before": 32,
+        "source": "REDUX.XOR UR4, R139 ;"
+      },
+      {
+        "pc": "0x2810",
+        "static_mma_before": 32,
+        "source": "REDUX.XOR UR6, R138 ;"
+      },
+      {
+        "pc": "0x2860",
+        "static_mma_before": 32,
+        "source": "REDUX.XOR UR5, R136 ;"
+      },
+      {
+        "pc": "0x28b0",
+        "static_mma_before": 32,
+        "source": "REDUX.XOR UR7, R140 ;"
+      },
+      {
+        "pc": "0x2900",
+        "static_mma_before": 32,
+        "source": "REDUX.XOR UR10, R142 ;"
+      },
+      {
+        "pc": "0x29a0",
+        "static_mma_before": 32,
+        "source": "REDUX.XOR UR11, R136 ;"
+      },
+      {
+        "pc": "0x2a00",
+        "static_mma_before": 32,
+        "source": "REDUX.XOR UR12, R138 ;"
+      },
+      {
+        "pc": "0x2a60",
+        "static_mma_before": 32,
+        "source": "REDUX.XOR UR13, R140 ;"
+      },
+      {
+        "pc": "0x2ac0",
+        "static_mma_before": 32,
+        "source": "REDUX.XOR UR14, R136 ;"
+      },
+      {
+        "pc": "0x2b20",
+        "static_mma_before": 32,
+        "source": "REDUX.XOR UR15, R138 ;"
+      },
+      {
+        "pc": "0x2b60",
+        "static_mma_before": 32,
+        "source": "REDUX.XOR UR16, R140 ;"
+      },
+      {
+        "pc": "0x2bb0",
+        "static_mma_before": 32,
+        "source": "REDUX.XOR UR17, R136 ;"
+      },
+      {
+        "pc": "0x2c10",
+        "static_mma_before": 32,
+        "source": "REDUX.XOR UR18, R138 ;"
+      },
+      {
+        "pc": "0x2c90",
+        "static_mma_before": 32,
+        "source": "REDUX.XOR UR19, R140 ;"
+      },
+      {
+        "pc": "0x2d10",
+        "static_mma_before": 32,
+        "source": "REDUX.XOR UR20, R136 ;"
+      },
+      {
+        "pc": "0x2d80",
+        "static_mma_before": 32,
+        "source": "REDUX.XOR UR4, R138 ;"
+      }
+    ],
+    "spill_instructions": 0
+  },
+  {
+    "function": "_ZN22tile_complete_original6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+    "instructions": 880,
+    "static_imma": 64,
+    "static_ldsm": 16,
+    "redux": [
+      {
+        "pc": "0x18e0",
+        "static_mma_before": 64,
+        "source": "REDUX.XOR UR5, R137 ;"
+      },
+      {
+        "pc": "0x1960",
+        "static_mma_before": 64,
+        "source": "REDUX.XOR UR6, R98 ;"
+      },
+      {
+        "pc": "0x19d0",
+        "static_mma_before": 64,
+        "source": "REDUX.XOR UR7, R136 ;"
+      },
+      {
+        "pc": "0x1a20",
+        "static_mma_before": 64,
+        "source": "REDUX.XOR UR8, R138 ;"
+      },
+      {
+        "pc": "0x1a80",
+        "static_mma_before": 64,
+        "source": "REDUX.XOR UR9, R140 ;"
+      },
+      {
+        "pc": "0x1ae0",
+        "static_mma_before": 64,
+        "source": "REDUX.XOR UR10, R98 ;"
+      },
+      {
+        "pc": "0x1b40",
+        "static_mma_before": 64,
+        "source": "REDUX.XOR UR11, R136 ;"
+      },
+      {
+        "pc": "0x1ba0",
+        "static_mma_before": 64,
+        "source": "REDUX.XOR UR12, R138 ;"
+      },
+      {
+        "pc": "0x1c10",
+        "static_mma_before": 64,
+        "source": "REDUX.XOR UR13, R98 ;"
+      },
+      {
+        "pc": "0x1c80",
+        "static_mma_before": 64,
+        "source": "REDUX.XOR UR14, R136 ;"
+      },
+      {
+        "pc": "0x1ce0",
+        "static_mma_before": 64,
+        "source": "REDUX.XOR UR15, R138 ;"
+      },
+      {
+        "pc": "0x1d50",
+        "static_mma_before": 64,
+        "source": "REDUX.XOR UR16, R97 ;"
+      },
+      {
+        "pc": "0x1dc0",
+        "static_mma_before": 64,
+        "source": "REDUX.XOR UR17, R136 ;"
+      },
+      {
+        "pc": "0x1e10",
+        "static_mma_before": 64,
+        "source": "REDUX.XOR UR18, R99 ;"
+      },
+      {
+        "pc": "0x1e70",
+        "static_mma_before": 64,
+        "source": "REDUX.XOR UR19, R144 ;"
+      },
+      {
+        "pc": "0x1ec0",
+        "static_mma_before": 64,
+        "source": "REDUX.XOR UR5, R146 ;"
+      },
+      {
+        "pc": "0x22d0",
+        "static_mma_before": 64,
+        "source": "REDUX.XOR UR5, R137 ;"
+      },
+      {
+        "pc": "0x2350",
+        "static_mma_before": 64,
+        "source": "REDUX.XOR UR6, R98 ;"
+      },
+      {
+        "pc": "0x23b0",
+        "static_mma_before": 64,
+        "source": "REDUX.XOR UR7, R136 ;"
+      },
+      {
+        "pc": "0x2400",
+        "static_mma_before": 64,
+        "source": "REDUX.XOR UR8, R138 ;"
+      },
+      {
+        "pc": "0x2460",
+        "static_mma_before": 64,
+        "source": "REDUX.XOR UR9, R140 ;"
+      },
+      {
+        "pc": "0x24a0",
+        "static_mma_before": 64,
+        "source": "REDUX.XOR UR10, R98 ;"
+      },
+      {
+        "pc": "0x2500",
+        "static_mma_before": 64,
+        "source": "REDUX.XOR UR11, R136 ;"
+      },
+      {
+        "pc": "0x2580",
+        "static_mma_before": 64,
+        "source": "REDUX.XOR UR12, R138 ;"
+      },
+      {
+        "pc": "0x2600",
+        "static_mma_before": 64,
+        "source": "REDUX.XOR UR13, R98 ;"
+      },
+      {
+        "pc": "0x2660",
+        "static_mma_before": 64,
+        "source": "REDUX.XOR UR14, R136 ;"
+      },
+      {
+        "pc": "0x26c0",
+        "static_mma_before": 64,
+        "source": "REDUX.XOR UR15, R138 ;"
+      },
+      {
+        "pc": "0x2730",
+        "static_mma_before": 64,
+        "source": "REDUX.XOR UR16, R98 ;"
+      },
+      {
+        "pc": "0x27a0",
+        "static_mma_before": 64,
+        "source": "REDUX.XOR UR17, R136 ;"
+      },
+      {
+        "pc": "0x2810",
+        "static_mma_before": 64,
+        "source": "REDUX.XOR UR18, R138 ;"
+      },
+      {
+        "pc": "0x2880",
+        "static_mma_before": 64,
+        "source": "REDUX.XOR UR19, R98 ;"
+      },
+      {
+        "pc": "0x28f0",
+        "static_mma_before": 64,
+        "source": "REDUX.XOR UR5, R136 ;"
+      }
+    ],
+    "spill_instructions": 0
+  }
+]

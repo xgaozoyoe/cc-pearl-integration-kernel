@@ -1,0 +1,24 @@
+Fastest-native fixed-SASS nonzero diagnostic. Incorrect Pearl arithmetic except native.
+B input uses currentlyrequired A fragment:half0=Aregisters0,1;half1=Aregisters2,3.
+B data is derived from real random matrix data, not constantzero. No new instructions/registers/initialization.
+Original Bglobalcopy/LDSM traffic and all64MMA sites preserved; Caccumulation remains real and nonzero.
+Only a_as_b_release moves3Bwaits after independent IMMA; completion still enforced before reuse.
+Source oracle compiled independently with equivalent A-derived Bsemantics; oracle is NOT timed.
+This removes additional Bload dependency conditional on Aready. It also changes operand correlation/register-file reads.
+Does not model a real prefetchedB optimization. Fixed clock counters still needed to isolate DVFS.
+
+UNLOCKED region events:200samples/variant,16launches/sample,10rotating blocks. ms,notfullgrid.
+native {"samples": 200, "mean_ms": 1.022291318178177, "median_ms": 1.0169600248336792, "p95_ms": 1.054860270023346}
+block-end SMclock min/max 2415/2625MHz;not timeaveraged.
+a_as_b {"samples": 200, "mean_ms": 1.0170053297281265, "median_ms": 1.0116530060768127, "p95_ms": 1.0350170195102693}
+block-end SMclock min/max 2400/2550MHz;not timeaveraged.
+a_as_b_release {"samples": 200, "mean_ms": 1.0103500792384148, "median_ms": 1.0084800124168396, "p95_ms": 1.0399334847927093}
+block-end SMclock min/max 2385/2670MHz;not timeaveraged.
+native->a_as_b:time -0.517%
+a_as_b->a_as_b_release:time -0.654%
+native fixed-clock {"imma_per_SM_elapsed_cycle": 0.20880922055022633, "imma_per_SMSP_elapsed_cycle": 0.05220230513755658, "tensor_Ginst_sec": 59.42094414158469, "kernel_ms": 1.1382079999999999}
+{"kernel_ns": 1138208.0, "tensor_pct": 85.78666666666666, "l2_util_pct": 48.88333333333333, "l2_bytes": 2533967242.6666665, "barrier_pct": 14.276666666666666, "long_scoreboard_pct": 2.82, "short_scoreboard_pct": 7.68, "math_throttle_pct": 40.92, "eligible_warps_per_scheduler": 0.36, "active_warps_per_scheduler": 3.0, "issued_warps_per_cycle": 0.24}
+a_as_b fixed-clock {"imma_per_SM_elapsed_cycle": 0.20867714508359947, "imma_per_SMSP_elapsed_cycle": 0.05216928627089987, "tensor_Ginst_sec": 59.38270016971519, "kernel_ms": 1.138944}
+{"kernel_ns": 1138944.0, "tensor_pct": 85.76666666666667, "l2_util_pct": 48.85333333333333, "l2_bytes": 2533937642.6666665, "barrier_pct": 14.246666666666666, "long_scoreboard_pct": 2.8433333333333333, "short_scoreboard_pct": 7.7, "math_throttle_pct": 40.92666666666666, "eligible_warps_per_scheduler": 0.36, "active_warps_per_scheduler": 3.0, "issued_warps_per_cycle": 0.24}
+a_as_b_release fixed-clock {"imma_per_SM_elapsed_cycle": 0.21313887445366372, "imma_per_SMSP_elapsed_cycle": 0.05328471861341593, "tensor_Ginst_sec": 60.80660576629049, "kernel_ms": 1.1122666666666667}
+{"kernel_ns": 1112266.6666666667, "tensor_pct": 87.55333333333333, "l2_util_pct": 49.986666666666665, "l2_bytes": 2533948757.3333335, "barrier_pct": 14.993333333333334, "long_scoreboard_pct": 2.9533333333333336, "short_scoreboard_pct": 5.17, "math_throttle_pct": 41.67333333333333, "eligible_warps_per_scheduler": 0.37, "active_warps_per_scheduler": 3.0, "issued_warps_per_cycle": 0.24}

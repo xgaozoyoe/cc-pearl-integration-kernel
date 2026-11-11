@@ -1,0 +1,54 @@
+--- source8
++++ three_groups
+@@ -1,4 +1,4 @@
+-namespace fold_defer_source8 {
++namespace three_handoff_three_groups {
+ constexpr int BM=256, BN=192, THREADS=384;
+ constexpr int WORDS=(BM/16)*(BN/16)*16;
+ struct Fragment { unsigned v[4]; };
+@@ -135,11 +135,16 @@
+     // Initial stage publication is prologue-only, not a per-iteration branch.
+     asm volatile("cp.async.wait_group 0;" ::: "memory");
+     __syncthreads();
+-    unsigned own_bar=4u+unsigned(threadIdx.x>=256);
++    const unsigned group=threadIdx.x/128;
++    unsigned own_bar=4u+group;
++    unsigned peer0=4u+(group==2u?0u:group+1u);
++    unsigned peer1=4u+(group==0u?2u:group-1u);
++    // IDs4/5/6 alternate with8/9/10. ID0 is prologue/epilogue.
++    // Every warp publishes to both other groups after copies and reads.
++    // Its own late sync completes the384-participant barrier for its group.
+     for(int kt=0;kt<(k+TileK-1)/TileK;++kt) {
+-        // IDs4/5 and6/7 alternate. Same two-group protocol; no division,
+-        // parity shift or add is needed to select the barriers each iteration.
+-        const unsigned peer_bar=own_bar^1u;
++        // Three receiving groups; two phase-specific ID sets.
++
+         int current=kt%Stages,next=(kt+Stages-1)%Stages;
+         if(kt+Stages-1<(k+TileK-1)/TileK)
+             stage_copy<TileK,Planar,UnrollCopy,FixedCopy,Layout>(a,b,sa+next*BM*TileK,sb+next*BN*TileK,cm,cn,kt+Stages-1,m,n,k);
+@@ -214,7 +219,7 @@
+         }
+         // Publish this group's completed future copies and old-stage reads.
+         asm volatile("cp.async.wait_group 0;" ::: "memory");
+-        asm volatile("bar.arrive %0, 384;" :: "r"(peer_bar) : "memory");
++        asm volatile("bar.arrive %0, 384; bar.arrive %1, 384;" :: "r"(peer0), "r"(peer1) : "memory");
+         if constexpr(TileK==64) {
+         if((kt+1)%2==0) {
+             unsigned rb=unsigned((kt+1)/2-1);
+@@ -239,7 +244,7 @@
+         }
+         }
+         asm volatile("bar.sync %0, 384;" :: "r"(own_bar) : "memory");
+-        own_bar^=2u;
++        own_bar^=12u; peer0^=12u; peer1^=12u;
+     }
+     __syncthreads();
+     for(int i=threadIdx.x;i<WORDS;i+=Threads) {
+@@ -273,3 +278,6 @@
+     kernel<Lead,TileK,Planar,PackedB,UnrollCopy,FixedCopy,Stages,Wide,Layout><<<dim3((m+BM-1)/BM,(n+BN-1)/BN),Threads,smem,stream>>>(a,b,m,n,k,r,t);
+     return cudaGetLastError();
+ }
++
++template __global__ void kernel<1,64,false,true,false,false,2,false,6>(const signed char*,const signed char*,int,int,int,int,unsigned*);
++}

@@ -1,0 +1,116 @@
+{
+  "control": [
+    {
+      "consumer_pc": "0x11e0",
+      "instruction": "IMMA.16832.S8.S8 R108, R144.ROW, R148.reuse.COL, R108",
+      "operands": [
+        {
+          "register": 144,
+          "prior_ldsm_pc": "0x1090",
+          "instructions_between": 20,
+          "IMMA_between": 8
+        },
+        {
+          "register": 148,
+          "prior_ldsm_pc": "0x11d0",
+          "instructions_between": 0,
+          "IMMA_between": 0
+        }
+      ]
+    },
+    {
+      "consumer_pc": "0x1350",
+      "instruction": "IMMA.16832.S8.S8 R44, R136.reuse.ROW, R148.COL, R44",
+      "operands": [
+        {
+          "register": 136,
+          "prior_ldsm_pc": "0x10f0",
+          "instructions_between": 37,
+          "IMMA_between": 24
+        },
+        {
+          "register": 148,
+          "prior_ldsm_pc": "0x1340",
+          "instructions_between": 0,
+          "IMMA_between": 0
+        }
+      ]
+    }
+  ],
+  "hoist": [
+    {
+      "consumer_pc": "0x12b0",
+      "instruction": "IMMA.16832.S8.S8 R88, R144.ROW, R148.reuse.COL, R88",
+      "operands": [
+        {
+          "register": 144,
+          "prior_ldsm_pc": "0x1240",
+          "instructions_between": 6,
+          "IMMA_between": 0
+        },
+        {
+          "register": 148,
+          "prior_ldsm_pc": "0x1260",
+          "instructions_between": 4,
+          "IMMA_between": 0
+        }
+      ]
+    },
+    {
+      "consumer_pc": "0x1360",
+      "instruction": "IMMA.16832.S8.S8 R112, R144.ROW, R148.reuse.COL, R112",
+      "operands": [
+        {
+          "register": 144,
+          "prior_ldsm_pc": "0x1240",
+          "instructions_between": 17,
+          "IMMA_between": 8
+        },
+        {
+          "register": 148,
+          "prior_ldsm_pc": "0x1350",
+          "instructions_between": 0,
+          "IMMA_between": 0
+        }
+      ]
+    }
+  ],
+  "induction": [
+    {
+      "consumer_pc": "0x1270",
+      "instruction": "IMMA.16832.S8.S8 R112, R144.ROW, R148.reuse.COL, R112",
+      "operands": [
+        {
+          "register": 144,
+          "prior_ldsm_pc": "0x1140",
+          "instructions_between": 18,
+          "IMMA_between": 8
+        },
+        {
+          "register": 148,
+          "prior_ldsm_pc": "0x1260",
+          "instructions_between": 0,
+          "IMMA_between": 0
+        }
+      ]
+    },
+    {
+      "consumer_pc": "0x11c0",
+      "instruction": "IMMA.16832.S8.S8 R88, R144.ROW, R148.reuse.COL, R88",
+      "operands": [
+        {
+          "register": 144,
+          "prior_ldsm_pc": "0x1140",
+          "instructions_between": 7,
+          "IMMA_between": 0
+        },
+        {
+          "register": 148,
+          "prior_ldsm_pc": "0x1170",
+          "instructions_between": 4,
+          "IMMA_between": 0
+        }
+      ]
+    }
+  ]
+}

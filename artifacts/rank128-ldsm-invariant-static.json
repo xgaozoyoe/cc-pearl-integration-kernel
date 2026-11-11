@@ -1,0 +1,293 @@
+{
+  "_ZN17ldsm_invariant_ab6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj": {
+    "instructions": 840,
+    "mma": 64,
+    "ldsm": 16,
+    "wait_to_first_mma_static_instructions": 66,
+    "wait_to_first_mma_ops": {
+      "DEPBAR.LE": 1,
+      "IMAD.SHL.U32": 3,
+      "LOP3.LUT": 8,
+      "IADD3": 13,
+      "BAR.SYNC.DEFER_BLOCKING": 1,
+      "ISETP.GT.U32.AND": 4,
+      "IMAD": 7,
+      "SHF.R.U32.HI": 2,
+      "BRA": 1,
+      "S2R": 1,
+      "ULDC.64": 1,
+      "IMAD.IADD": 1,
+      "IMAD.X": 5,
+      "LDS": 3,
+      "LDGSTS.E.BYPASS.128": 5,
+      "SEL": 2,
+      "LDGDEPBAR": 1,
+      "LDSM.16.M88.4": 5,
+      "ISETP.NE.AND": 2
+    },
+    "ldsm_addresses": [
+      [
+        "0f60",
+        "LDSM.16.M88.4 R144, [R160+0x8000]"
+      ],
+      [
+        "0f90",
+        "LDSM.16.M88.4 R148, [R162]"
+      ],
+      [
+        "0fa0",
+        "LDSM.16.M88.4 R140, [R160+0x8400]"
+      ],
+      [
+        "0fb0",
+        "LDSM.16.M88.4 R136, [R160+0x8800]"
+      ],
+      [
+        "0fc0",
+        "LDSM.16.M88.4 R96, [R160+0x8c00]"
+      ],
+      [
+        "1050",
+        "LDSM.16.M88.4 R148, [R162+0x400]"
+      ],
+      [
+        "10e0",
+        "LDSM.16.M88.4 R148, [R162+0x800]"
+      ],
+      [
+        "1170",
+        "LDSM.16.M88.4 R148, [R162+0xc00]"
+      ],
+      [
+        "11f0",
+        "LDSM.16.M88.4 R144, [R161+0x8000]"
+      ],
+      [
+        "1220",
+        "LDSM.16.M88.4 R140, [R161+0x8400]"
+      ],
+      [
+        "1250",
+        "LDSM.16.M88.4 R136, [R161+0x8800]"
+      ],
+      [
+        "1270",
+        "LDSM.16.M88.4 R148, [R160]"
+      ],
+      [
+        "1280",
+        "LDSM.16.M88.4 R100, [R161+0x8c00]"
+      ],
+      [
+        "1310",
+        "LDSM.16.M88.4 R148, [R160+0x400]"
+      ],
+      [
+        "13a0",
+        "LDSM.16.M88.4 R148, [R160+0x800]"
+      ],
+      [
+        "1430",
+        "LDSM.16.M88.4 R148, [R160+0xc00]"
+      ]
+    ]
+  },
+  "_ZN16ldsm_invariant_a6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj": {
+    "instructions": 864,
+    "mma": 64,
+    "ldsm": 16,
+    "wait_to_first_mma_static_instructions": 70,
+    "wait_to_first_mma_ops": {
+      "DEPBAR.LE": 1,
+      "BAR.SYNC.DEFER_BLOCKING": 1,
+      "PLOP3.LUT": 1,
+      "IMAD": 7,
+      "IADD3": 15,
+      "UIMAD": 1,
+      "SHF.R.U32.HI": 3,
+      "LOP3.LUT": 4,
+      "BRA": 1,
+      "S2R": 1,
+      "IMAD.U32": 2,
+      "USHF.L.U32": 1,
+      "ULDC.64": 1,
+      "ULOP3.LUT": 2,
+      "ISETP.GT.U32.AND": 3,
+      "IMAD.SHL.U32": 1,
+      "IMAD.X": 5,
+      "LDS": 3,
+      "LDGSTS.E.BYPASS.128": 5,
+      "SEL": 2,
+      "LDGDEPBAR": 1,
+      "LDSM.16.M88.4": 6,
+      "UISETP.NE.AND": 1,
+      "ISETP.NE.AND": 1,
+      "UMOV": 1
+    },
+    "ldsm_addresses": [
+      [
+        "0fd0",
+        "LDSM.16.M88.4 R148, [R165]"
+      ],
+      [
+        "1010",
+        "LDSM.16.M88.4 R144, [R165+0x400]"
+      ],
+      [
+        "1050",
+        "LDSM.16.M88.4 R136, [R165+0x800]"
+      ],
+      [
+        "1070",
+        "LDSM.16.M88.4 R96, [R165+0xc00]"
+      ],
+      [
+        "1080",
+        "LDSM.16.M88.4 R152, [R153+UR5]"
+      ],
+      [
+        "1090",
+        "LDSM.16.M88.4 R140, [R140+UR5]"
+      ],
+      [
+        "11b0",
+        "LDSM.16.M88.4 R140, [R141+UR5]"
+      ],
+      [
+        "1200",
+        "LDSM.16.M88.4 R152, [R153+UR5]"
+      ],
+      [
+        "1330",
+        "LDSM.16.M88.4 R136, [R163+0x800]"
+      ],
+      [
+        "1350",
+        "LDSM.16.M88.4 R148, [R148+UR5]"
+      ],
+      [
+        "1390",
+        "LDSM.16.M88.4 R140, [R163+0x400]"
+      ],
+      [
+        "13b0",
+        "LDSM.16.M88.4 R144, [R163]"
+      ],
+      [
+        "13d0",
+        "LDSM.16.M88.4 R100, [R163+0xc00]"
+      ],
+      [
+        "13e0",
+        "LDSM.16.M88.4 R152, [R152+UR5]"
+      ],
+      [
+        "14e0",
+        "LDSM.16.M88.4 R152, [R0+UR5]"
+      ],
+      [
+        "1520",
+        "LDSM.16.M88.4 R148, [R149+UR5]"
+      ]
+    ]
+  },
+  "_ZN23ldsm_invariant_baseline6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj": {
+    "instructions": 880,
+    "mma": 64,
+    "ldsm": 16,
+    "wait_to_first_mma_static_instructions": 75,
+    "wait_to_first_mma_ops": {
+      "DEPBAR.LE": 1,
+      "LOP3.LUT": 9,
+      "IMAD.U32": 3,
+      "BAR.SYNC.DEFER_BLOCKING": 1,
+      "PLOP3.LUT": 1,
+      "UIMAD": 1,
+      "IMAD": 9,
+      "IADD3": 15,
+      "SHF.R.U32.HI": 1,
+      "BRA": 1,
+      "S2R": 1,
+      "USHF.L.U32": 1,
+      "ULDC.64": 1,
+      "ULOP3.LUT": 2,
+      "ISETP.GT.U32.AND": 3,
+      "IMAD.SHL.U32": 1,
+      "IMAD.X": 5,
+      "LDS": 3,
+      "LDGSTS.E.BYPASS.128": 5,
+      "SEL": 2,
+      "LDGDEPBAR": 1,
+      "LDSM.16.M88.4": 5,
+      "ISETP.NE.AND": 1,
+      "UISETP.NE.AND": 1,
+      "UMOV": 1
+    },
+    "ldsm_addresses": [
+      [
+        "1060",
+        "LDSM.16.M88.4 R144, [R144]"
+      ],
+      [
+        "1090",
+        "LDSM.16.M88.4 R148, [R148+UR5]"
+      ],
+      [
+        "10b0",
+        "LDSM.16.M88.4 R140, [R142]"
+      ],
+      [
+        "10c0",
+        "LDSM.16.M88.4 R136, [R136]"
+      ],
+      [
+        "10d0",
+        "LDSM.16.M88.4 R96, [R96]"
+      ],
+      [
+        "1190",
+        "LDSM.16.M88.4 R148, [R152+UR5]"
+      ],
+      [
+        "1240",
+        "LDSM.16.M88.4 R148, [R149+UR5]"
+      ],
+      [
+        "1300",
+        "LDSM.16.M88.4 R148, [R148+UR5]"
+      ],
+      [
+        "1480",
+        "LDSM.16.M88.4 R136, [R136]"
+      ],
+      [
+        "1490",
+        "LDSM.16.M88.4 R144, [R144]"
+      ],
+      [
+        "14c0",
+        "LDSM.16.M88.4 R100, [R164]"
+      ],
+      [
+        "14d0",
+        "LDSM.16.M88.4 R140, [R140]"
+      ],
+      [
+        "14e0",
+        "LDSM.16.M88.4 R148, [R149+UR5]"
+      ],
+      [
+        "14f0",
+        "LDSM.16.M88.4 R152, [R152+UR5]"
+      ],
+      [
+        "1620",
+        "LDSM.16.M88.4 R152, [R152+UR5]"
+      ],
+      [
+        "1670",
+        "LDSM.16.M88.4 R148, [R148+UR5]"
+      ]
+    ]
+  }
+}

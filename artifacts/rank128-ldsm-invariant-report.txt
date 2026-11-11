@@ -1,0 +1,98 @@
+LDSM address invariant experiment, GPU0,completed2026-10-09.
+The daemon restart interrupted before GPU validation; state/process checks showed
+GPU0 idle and no partial validation run. GPU1 PeakMiner/GPU2 accepted miner untouched.
+
+Scope: preserve all matrix dimensions,CTA256x192,warp64x64,12warps,K64,two stages,
+A-stream operand order,MMA count,V3,target and transcript semantics. Hoist per-lane
+swizzled shared offset out of the K loop. For K64/Layout6,adding row16 changes
+address by1024 and moving K32 slice toggles bit32 of relative offset. Verified
+6144 CPU address identities across warp/lane/row/slice/A-B combinations.
+v0baseline,v1Aonly,v2A+B. Earlier smem32 experiment changed pointer representation;
+this experiment factors the swizzle component and fixed tile offsets explicitly.
+
+Compiled source has168/168/165regs,zero stack/spills,69632sharedbytes,384threads,
+1CTA/SM. Static kernel slots880/864/840.64IMMA and16LDSM sites in every variant.
+Static DEPBAR-to-first-IMMA span75/70/66instructions. Not a measured cycle count;
+compiler may move work elsewhere and alter scheduling. No dynamic-counter claim.
+
+Correctness24 full transcript+digest comparisons against acceptedR128 PASS,
+2seeds,4shapes including8192square and partialN. Additional full transcript
+comparison for event runs PASS. Small-case compute-sanitizer memcheck passed.
+Actual output and memory addresses remain bit-exact; no new production code path.
+
+Full-grid:60samples/variant,six rotated batches,2warmups+10measured/batch,
+M=N131072,K4096,R128,region8192,actual setup/noise/Merkle/V3/fold/PoW,zero target.
+Kernel events:240samples/variant,each16launches,six rotated blocks,100warmups/block.
+Clocks/power not locked or changed. Temperatures/frequencies differ from prior
+sessions and vary within this run; endpoint telemetry recorded. The event tails
+are noisy (p95~1.24ms for baseline/AB). Avoid sub-percent benefit claims or pooling
+this capture with previous~307ms grid data. No live-pool TH/s claim.
+
+{
+  "grids": [
+    {
+      "variant": 0,
+      "samples": 60,
+      "mean_ms": 313.71999999999997,
+      "median_ms": 313.15,
+      "p95_ms": 319.545,
+      "ths": 224.30429739150836,
+      "rate_change_pct": 0.0
+    },
+    {
+      "variant": 1,
+      "samples": 60,
+      "mean_ms": 315.185,
+      "median_ms": 315.04999999999995,
+      "p95_ms": 318.925,
+      "ths": 223.26171669865,
+      "rate_change_pct": -0.46480638355252957
+    },
+    {
+      "variant": 2,
+      "samples": 60,
+      "mean_ms": 313.455,
+      "median_ms": 313.65,
+      "p95_ms": 317.83500000000004,
+      "ths": 224.49392792478665,
+      "rate_change_pct": 0.08454164074587212
+    }
+  ],
+  "events": [
+    {
+      "variant": 0,
+      "samples": 240,
+      "mean_ms": 1.1239247828722,
+      "median_ms": 1.1203160285949707,
+      "p95_ms": 1.2430729031562806,
+      "rate_change_pct": 0.0
+    },
+    {
+      "variant": 1,
+      "samples": 240,
+      "mean_ms": 1.1316500887274743,
+      "median_ms": 1.1330560445785522,
+      "p95_ms": 1.1614121735095977,
+      "rate_change_pct": -0.682658529542568
+    },
+    {
+      "variant": 2,
+      "samples": 240,
+      "mean_ms": 1.1285753826300302,
+      "median_ms": 1.117119014263153,
+      "p95_ms": 1.2405721962451934,
+      "rate_change_pct": -0.41207701580309175
+    }
+  ]
+}
+
+
+Conclusion:A+B has+0.085%full-grid equivalent throughput but-0.412%kernel-event
+throughput;medians and tails also differ. No demonstrated speedup. Retain baseline.
+Lower static instruction count and lower register usage alone are insufficient.
+No evidence yet identifies whether remaining loss is operand dependencies,copy
+address reuse,IMMA scheduling or noise. Exact SM-cycle/tensor issue capture remains
+pending via the already prepared tools/profile_imma_issue.sh;do not present the
+old GPC-cycle estimate as an exact new measured SM-cycle rate.
+Production/A-stream SHA256 unchanged. No commits,deployment,or live-mining change.
+Review diffs:rank128-ldsm-invariant-a.diff and rank128-ldsm-invariant-ab.diff.

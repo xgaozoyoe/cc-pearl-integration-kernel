@@ -1,0 +1,35 @@
+GPU0-only source-level named-barrier loop-overhead controls. Production unchanged.
+0baseline,1previous named overlap,2initial wait/barrier moved into prologue,3prologue+XOR barrier-ID state.
+Each variant same CTA256x192,K64,2stages,384threads,12warps,K4096,R128,64staticIMMA/16LDSM.
+Registers baseline168,named167,peeled167,toggle168;69632Bshared,0local/spill,1CTA/SM.
+Baseline and previous named control instruction text and PCs exactly match previous binaries.
+No clocks/power configuration changed; DVFS is not locked. Performance mechanism needs cycle-normalized profiling.
+Event samples average16 launches;240samples/variant/run in rotated blocks after warmup.
+
+run1
+baseline   n=240 mean=1.087492 median=1.087098 p95=1.106880 ms
+named      n=240 mean=1.090484 median=1.089017 p95=1.115328 ms
+peeled     n=240 mean=1.088442 median=1.089437 p95=1.104875 ms
+toggle     n=240 mean=1.072580 median=1.073344 p95=1.089821 ms
+Toggle time reduction vs baseline=1.371%;vs named=1.642%.
+run2
+baseline   n=240 mean=1.086851 median=1.087040 p95=1.100416 ms
+named      n=240 mean=1.087626 median=1.088649 p95=1.109223 ms
+peeled     n=240 mean=1.087430 median=1.084128 p95=1.107785 ms
+toggle     n=240 mean=1.072962 median=1.073183 p95=1.087807 ms
+Toggle time reduction vs baseline=1.278%;vs named=1.348%.
+
+Full offline grids: includes setup/noise/Merkle/GEMM/PoW;60measured/variant after per-block warmup,rotated blocks,same deterministic seeds.
+baseline   n=60 mean=307.555 median=307.200 p95=311.900 ms grids/s=3.251451 TH/s=228.801
+named      n=60 mean=308.345 median=308.350 p95=312.030 ms grids/s=3.243121 TH/s=228.214
+toggle     n=60 mean=304.140 median=303.700 p95=308.310 ms grids/s=3.287959 TH/s=231.370
+Toggle full-grid time reduction vs baseline=1.110%;throughput increase=1.123%.
+
+Correctness:32 complete transcript+PoW digest comparisons including8192x8192 passed.
+ComputeSanitizer2025.2.1:racecheck24 small/edge comparisons 0hazards;memcheck full sizes 0errors;synccheck24 small/edge comparisons 0errors.
+No V3 seed/target/proof modifications; no production library change; no live mining.
+Only small performance changes are expected here; no claim of closing the full PeakMiner gap.
+Next evidence: compare dynamic executed instructions,IMMA/SMcycle,Tensor%,barrier/math-PC stalls under matching Nsight conditions.
+Capture: sudo bash tools/profile_handoff_lean.sh 2270585
+Capture variants0baseline,1previous named overlap,3new toggle. Do not confuse with previous script variant3.
+No production promotion before reviewing the measurements.

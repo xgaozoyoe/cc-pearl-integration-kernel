@@ -1,0 +1,50 @@
+Isolated accumulator shared-memory experiment (not production).
+
+Both controls use CTA128x64, 128threads/4warps, warp32x64, K128,
+2 operand stages, IMMA16x8x32, signed INT8 to INT32. K4096,R128.
+Each warp has 8 output16x16 tiles. Both variants issue the same useful MMAs
+and load A/B with the same copy and operand schedule.
+
+Register control holds 64 INT32 accumulators/lane across 32 K128 steps.
+Shared variant holds one16x16 tile (8 INT32 values/lane) in registers,
+reads previous cumulative state from shared at each K128 boundary,
+updates with four K32 slices, folds the boundary into transcript,
+and writes state for the next boundary. First read and last write omitted.
+State layout [warp][row][group][half][element][lane] ensures consecutive
+lanes access consecutive words. Each lane exclusively owns its state:
+no new cross-warp state barriers required. Existing operand-stage barriers
+remain. Volatile shared accesses prevent removal of the intended experiment.
+
+32768B additional state/CTA,2031616B additional state transfers/CTA
+(31 reads and31 writes).32 candidates/CTA ->63488B/candidate.
+Register control:126regs,51200Bshared,1CTA/SM,4activewarps,zero spills.
+Shared state:68regs,83968Bshared,1CTA/SM,4activewarps,zero spills.
+Thus register reduction does not increase occupancy in this experiment.
+
+CTA reduction was necessary to fit shared state. It reduces operand reuse
+relative to the optimized256x192 candidate. Comparisons between the two
+small-CTA variants isolate explicit state storage under this schedule;
+comparisons with the optimized candidate include mapping/scheduling changes.
+Do not interpret this as ruling out every possible partial-state design.
+No current live-mining paths or accepted libraries are modified.
+
+Measured results (GPU0 only, no clock locks):
+
+rank128-smem-state-kernel-results.json
+variant0: n=80,mean=3.388696ms,median=3.302400ms,p95=3.529698ms
+variant1: n=80,mean=4.074753ms,median=4.075520ms,p95=4.080656ms
+variant2: n=80,mean=1.070796ms,median=1.089536ms,p95=1.092608ms
+variant0=matched register control;variant1=shared state;variant2=current optimized candidate (kernel-only reference).
+
+rank128-smem_state-results.json
+variant0: n=80,mean=877.062500ms,median=877.200000ms,p95=878.505000ms, full-grid TH/s=80.232303
+variant1: n=80,mean=1075.320000ms,median=1075.400000ms,p95=1076.000000ms, full-grid TH/s=65.439817
+variant0=matched register control;variant1=shared state;variant2=current optimized candidate (kernel-only reference).
+
+Kernel CUDA-event measurements:8192x8192,K4096,30warmups+40samples, two reversed-order runs. Full grid:131072x131072,K4096,R128,region8192;4warmups+40samples,two reversed-order runs,actual generation/noise/Merkle/V3/PoW,zero target/offline. Full-grid times have0.1ms log precision.
+
+Transcript and digest:16 bit-exact comparisons against accepted R128, shapes32x48,256x384,256x400,8192x8192;two seeds. Racecheck on small cases passed. Generated SASS confirms64 extra scalar shared loads and64 extra shared stores in static K-loop body;64IMMA and64LDSM in both variants;no LDL/STL. No hardware stall-counter collection this round.
+
+Conclusion: this simple shared-state version fails to improve throughput. Register count falls but occupancy does not rise; state traffic and reduced CTA reuse dominate. No production deployment. Not a proof that every hybrid/partial-state scheme is unworkable.
+
+Memcheck small cases:0errors. Accepted production and current optimized candidate SHA256 checks passed. No commits. Review additions in rank128-smem-state-build.diff and rank128-smem-state-test.diff.

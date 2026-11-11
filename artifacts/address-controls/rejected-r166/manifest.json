@@ -1,0 +1,89 @@
+{
+  "variants": {
+    "native": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "104c0c1b265260dea5c9ab0bb174ebbbe7ee9cceb0cf0acebf2a9d1dfa4d50aa",
+      "smem": 69632,
+      "correct": true,
+      "wait_changes": []
+    },
+    "ld_rename": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "e48fde2e9e79cd5e6dd8fd9f58dc94bfddf6e5ba3641558f2da7d1a1a04a7f9a",
+      "smem": 69632,
+      "correct": true,
+      "wait_changes": []
+    },
+    "ld_release": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "da0663d4fefddbeba8131426f8dd282be957f01977bd9f5d4dee6bdc244d5b97",
+      "smem": 69632,
+      "correct": true,
+      "wait_changes": [
+        {
+          "pc": "0x1110",
+          "old_wait": 16,
+          "new_wait": 0
+        },
+        {
+          "pc": "0x1150",
+          "old_wait": 0,
+          "new_wait": 16
+        }
+      ]
+    },
+    "cp_rename": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "37c0a7dc02f1173e61b0b046818267f5145dac2026dace1595607d9b7be0d1df",
+      "smem": 69632,
+      "correct": true,
+      "wait_changes": []
+    },
+    "cp_release": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "165556d4ba684437e33251dfe1b3deba0a0a9c15161097ce8fae581ee547185b",
+      "smem": 69632,
+      "correct": true,
+      "wait_changes": [
+        {
+          "pc": "0xf60",
+          "old_wait": 2,
+          "new_wait": 0
+        },
+        {
+          "pc": "0xf70",
+          "old_wait": 0,
+          "new_wait": 2
+        }
+      ]
+    },
+    "both_release": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "252e1e8e2982fdcff8fda15e79b1591bffe3ecf481952a28f04dc815d297a724",
+      "smem": 69632,
+      "correct": true,
+      "wait_changes": [
+        {
+          "pc": "0xf60",
+          "old_wait": 2,
+          "new_wait": 0
+        },
+        {
+          "pc": "0xf70",
+          "old_wait": 0,
+          "new_wait": 2
+        },
+        {
+          "pc": "0x1110",
+          "old_wait": 16,
+          "new_wait": 0
+        },
+        {
+          "pc": "0x1150",
+          "old_wait": 0,
+          "new_wait": 16
+        }
+      ]
+    }
+  }
+}

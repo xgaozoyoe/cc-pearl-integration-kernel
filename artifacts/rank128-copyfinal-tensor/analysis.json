@@ -1,0 +1,62 @@
+{
+  "baseline": [
+    {
+      "physical_gpu": 1,
+      "samples": 20000,
+      "tensor_mean": 97.32185,
+      "tensor_median": 98.0,
+      "tensor_p05": 98.0,
+      "tensor_p95": 98.0,
+      "tensor_when_sm_ge95": 97.96574299634592,
+      "sm_ge95_fraction": 0.9852,
+      "tensor_below10_fraction": 0.00205
+    },
+    {
+      "physical_gpu": 0,
+      "samples": 20000,
+      "tensor_mean": 64.14705,
+      "tensor_median": 69.0,
+      "tensor_p05": 14.0,
+      "tensor_p95": 72.0,
+      "tensor_when_sm_ge95": 66.01799769125826,
+      "sm_ge95_fraction": 0.9529,
+      "tensor_below10_fraction": 0.0493
+    }
+  ],
+  "baseline_middle60_grids": {
+    "mean_ms": 336.235,
+    "median_ms": 336.29999999999995,
+    "effective_ths": 209.284411728892,
+    "note": "Log indices20:80, not exactly aligned with Nsight10..30s window"
+  },
+  "candidate": [
+    {
+      "physical_gpu": 1,
+      "samples": 20000,
+      "tensor_mean": 97.4674,
+      "tensor_median": 98.0,
+      "tensor_p05": 98.0,
+      "tensor_p95": 98.0,
+      "tensor_when_sm_ge95": 97.99047474286873,
+      "sm_ge95_fraction": 0.98685,
+      "tensor_below10_fraction": 0.0003
+    },
+    {
+      "physical_gpu": 0,
+      "samples": 20000,
+      "tensor_mean": 68.29695,
+      "tensor_median": 74.0,
+      "tensor_p05": 1.0,
+      "tensor_p95": 77.0,
+      "tensor_when_sm_ge95": 70.329050454403,
+      "sm_ge95_fraction": 0.9573,
+      "tensor_below10_fraction": 0.0531
+    }
+  ],
+  "candidate_middle60_grids": {
+    "mean_ms": 318.09,
+    "median_ms": 318.09999999999997,
+    "effective_ths": 221.22274883732277,
+    "note": "Log indices20:80, not exactly aligned with Nsight10..30s window"
+  }
+}

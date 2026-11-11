@@ -1,0 +1,23 @@
+{
+  "warning": "Deliberately racy,offline only;no production entrypoint. Results NOT valid Pearl outputs.",
+  "variants": {
+    "native": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "104c0c1b265260dea5c9ab0bb174ebbbe7ee9cceb0cf0acebf2a9d1dfa4d50aa",
+      "smem": 69632,
+      "correct": true
+    },
+    "arrive_only": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "0b55f00b0eeeba0962243ccfb14c196482fc9d7f747b8b4d0b2c5f7609e667e9",
+      "smem": 69632,
+      "correct": false
+    },
+    "no_named": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "f5be59b9d8767e50c489514c1d166573a933efe467c4102db3fff9013b197eb1",
+      "smem": 69632,
+      "correct": false
+    }
+  }
+}

@@ -1,0 +1,54 @@
+Operand-substitution profile interpretation,2026-10-09
+Capture:/tmp/pearl-dependency-ablation.NXFthO,16:40..16:42.
+Raw data preserved under artifacts/dependency-ablation/profile.
+Manifest and all5cubin hashes verified against captured inputs.
+All15launches executed67633152IMMA,matching baseline geometry.
+Captured SASS confirms the expected RZ substitutions at the same PCs.
+
+Variant    kernel ms  IMMA/SM-cycle  cycle throughput change  Tensor active%
+baseline   1.038048   0.19171077      --                       78.7600
+c_zero     1.019872   0.19194588      +0.1226%                 78.8033
+a_zero     1.004992   0.19238133      +0.3498%                 78.9733
+b_zero     1.007115   0.19199758      +0.1496%                 78.8233
+ab_zero    0.998229   0.19362883      +1.0005%                 79.5067
+
+Aggregate effective SM frequencies derived from elapsed SM cycles/time,
+128SMs:2.6551,2.6991,2.7329,2.7326,2.7337GHz respectively.
+These are aggregate effective rates,not continuous physical clock traces.
+In this capture,ab_zero time improves~3.84%;its throughput gain~3.99%
+combines~1.00%more IMMA/SM-cycle with~2.96%higher effective frequency.
+Do not apply this exact split retroactively to the separate200-sample
+CUDA-event benchmark,which ran under different thermal/DVFS conditions.
+
+Stall metrics baseline/Czero/Azero/Bzero/ABzero:
+short scoreboard:7.34/7.16/7.2233/6.93/7.2033%
+long scoreboard:2.89/2.89/2.8967/2.90/2.8867%
+barrier:12.79/12.8933/12.8467/12.8067/12.77%
+math throttle:45.3933/45.6367/45.64/46.0167/45.8567%
+
+Important observation:at PC0x11a0 the ABzero instruction reads RZ.ROW and
+RZ.COL,but short-scoreboard samples remain at this PC and other original
+B-consumption hotspots. Original wait masks are bit-identical by construction.
+This is consistent with waiting imposed by the preserved machine schedule;
+it does not establish an arithmetic need to wait for zero operands.
+
+Conclusions:
+- Substituting C alone gives little cycle-throughput benefit under the
+  current schedule.It does not support a large immediately exposed C RAW
+  latency bottleneck,but retained fixed stalls prevent absolute exclusion.
+- A/B substitution alone also does not substantially raise Tensor density.
+- This does NOT falsify the load-dependency hypothesis:the experiment did
+  not remove explicit scoreboard waits or compiler-inserted stall counts.
+- The prior5-6%wall-time gains cannot be advertised as dependency-removal
+  gains or a usable correct-mining optimization.
+
+Next experimental requirement:decode producer write/read barriers and
+consumer wait masks;only remove/relocate waits rendered unnecessary by
+operand substitution while preserving outstanding RAW/WAR/WAW constraints
+on later instructions,pointer reuse and shared-memory lifetime. Blindly
+zeroing all wait masks or deleting synchronization is not a valid control.
+No such scheduling-bit edits were made in this round.
+
+Reproduce analysis:tools/analyze_dependency_capture.py
+Machine-readable results:profile/interpretation.json
+Hardware counter capture complete;no new kernel or production changes.

@@ -1,0 +1,98 @@
+[
+  {
+    "name": "native",
+    "m": 256,
+    "n": 48,
+    "seed": 42,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "name": "cta_sync",
+    "m": 256,
+    "n": 48,
+    "seed": 42,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "name": "native",
+    "m": 256,
+    "n": 48,
+    "seed": 1234,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "name": "cta_sync",
+    "m": 256,
+    "n": 48,
+    "seed": 1234,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "name": "native",
+    "m": 256,
+    "n": 400,
+    "seed": 42,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "name": "cta_sync",
+    "m": 256,
+    "n": 400,
+    "seed": 42,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "name": "native",
+    "m": 256,
+    "n": 400,
+    "seed": 1234,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "name": "cta_sync",
+    "m": 256,
+    "n": 400,
+    "seed": 1234,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "name": "native",
+    "m": 8192,
+    "n": 8192,
+    "seed": 42,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "name": "cta_sync",
+    "m": 8192,
+    "n": 8192,
+    "seed": 42,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "name": "native",
+    "m": 8192,
+    "n": 8192,
+    "seed": 1234,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "name": "cta_sync",
+    "m": 8192,
+    "n": 8192,
+    "seed": 1234,
+    "transcript_pass": true,
+    "digest_pass": true
+  }
+]

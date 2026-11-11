@@ -1,0 +1,50 @@
+--- A-stream baseline
++++ ab
+@@ -41,6 +41,13 @@
+             : "=r"(x.v[0]),"=r"(x.v[1]),"=r"(x.v[2]),"=r"(x.v[3]) : "r"(addr));
+         return x;
+     }
++}
++
++__device__ __forceinline__ Fragment load_address(unsigned addr) {
++ Fragment x;
++ asm volatile("ldmatrix.sync.aligned.m8n8.x4.shared.b16 {%0,%1,%2,%3},[%4];"
++ : "=r"(x.v[0]),"=r"(x.v[1]),"=r"(x.v[2]),"=r"(x.v[3]) : "r"(addr));
++ return x;
+ }
+ template<bool Packed=false>
+ __device__ __forceinline__ void mma(unsigned* c,const Fragment& a,const Fragment& b,int half) {
+@@ -126,6 +133,9 @@
+     int wm=warp%4,wn=warp/4;
+     // Native MMA lane ownership: row=lane/4 (+8 for c2,c3),
+     // column=2*(lane%4) (+1 for c1,c3). Two halves form a16x16 tile.
++    static_assert(TileK==64 && !Planar && PackedB && Layout==6);
++    unsigned a_lane_offset=rank128_astream_candidate_fast::offset<64,false,6>(wm*64+(lane&15),(lane>>4)*16,BM);
++    unsigned b_lane_offset=rank128_astream_candidate_fast::offset<64,false,6>(wn*64+(lane&7)+(lane>>4)*8,((lane>>3)&1)*16,BN);
+     unsigned c[4][Groups][2][4]={};
+     Fragment ar[4], br[Lead+1];
+     #pragma unroll
+@@ -164,9 +174,9 @@
+             }
+         } else {
+         #pragma unroll
+-        for(int row=0;row<4;++row) ar[row]=load16x32<TileK,Planar,Layout>(aa,wm*64+row*16,0,lane,BM);
+-        #pragma unroll
+-        for(int p=0;p<Lead;++p) br[p]=loadB16x32<TileK,Planar,PackedB,Layout>(bb,wn*WarpN+p*16,0,lane,BN);
++        for(int row=0;row<4;++row) ar[row]=load_address(__cvta_generic_to_shared(aa)+a_lane_offset+row*1024);
++        #pragma unroll
++        for(int p=0;p<Lead;++p) br[p]=load_address(__cvta_generic_to_shared(bb)+b_lane_offset+p*1024);
+         #pragma unroll
+         for(int g=0;g<Groups*(TileK/32);++g) {
+             constexpr int slots=Lead+1;
+@@ -178,8 +188,8 @@
+                 #pragma unroll
+                 for(int half=0;half<2;++half) {
+                     if(half==0 && row==1 && g+Lead<Groups*(TileK/32) && (TileK==64 || kt*TileK+((g+Lead)/Groups)*32<k))
+-                        br[(g+Lead)%slots]=loadB16x32<TileK,Planar,PackedB,Layout>(bb,wn*WarpN+((g+Lead)%Groups)*16,((g+Lead)/Groups)*32,lane,BN);
+-                    if(half==0 && slice+1<TileK/32 && (TileK==64 || kt*TileK+(slice+1)*32<k) && group==Groups-1) nextA=load16x32<TileK,Planar,Layout>(aa,wm*64+row*16,(slice+1)*32,lane,BM);
++                        br[(g+Lead)%slots]=load_address(__cvta_generic_to_shared(bb)+(b_lane_offset^(((g+Lead)/Groups)*32))+((g+Lead)%Groups)*1024);
++                    if(half==0 && slice+1<TileK/32 && (TileK==64 || kt*TileK+(slice+1)*32<k) && group==Groups-1) nextA=load_address(__cvta_generic_to_shared(aa)+(a_lane_offset^((slice+1)*32))+row*1024);
+                     mma<PackedB>(c[row][group][half],ar[row],br[slot],half);
+                     if(slice+1<TileK/32 && (TileK==64 || kt*TileK+(slice+1)*32<k) && group==Groups-1 && half==1)
+                         ar[row]=nextA;

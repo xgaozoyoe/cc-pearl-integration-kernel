@@ -1,0 +1,25 @@
+{
+  "variants": {
+    "native": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "104c0c1b265260dea5c9ab0bb174ebbbe7ee9cceb0cf0acebf2a9d1dfa4d50aa",
+      "smem": 69632,
+      "correct": true,
+      "threads": 384
+    },
+    "prep_wait": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "4a96a03fe65664fd66d1718c44025b19bf626ed35bb1afdde3ccbb010563e43e",
+      "smem": 69632,
+      "correct": true,
+      "threads": 384
+    },
+    "redux_wait": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "59991a26cfaedcf1254187521312adf19afc9fe518b1d5e1a0af7aaf02392b4f",
+      "smem": 69632,
+      "correct": true,
+      "threads": 384
+    }
+  }
+}

@@ -1,0 +1,1093 @@
+{
+  "baseline": {
+    "kernel_ms": 1.0337066666666668,
+    "imma_per_SM_cycle": 0.1916673000260322,
+    "effective_SM_GHz": 2.6668885530958497,
+    "l2_bytes_per_useful_mma": 37.75863806406657,
+    "tensor_pct": 78.75,
+    "l2_util_pct": 46.65,
+    "barrier_pct": 12.79,
+    "short_scoreboard_pct": 7.333333333333333,
+    "long_scoreboard_pct": 2.8933333333333335,
+    "math_throttle_pct": 45.38666666666667,
+    "eligible_warps_per_scheduler": 0.32,
+    "issued_warps_per_cycle": 0.22,
+    "pc_samples": {
+      "stall_barrier": {
+        "top": [
+          {
+            "pc": "0xd90",
+            "instruction": "@P2   BRA 0x70e3a7267f60",
+            "samples": 126163.0
+          },
+          {
+            "pc": "0x29f0",
+            "instruction": "@P0   EXIT",
+            "samples": 2130.0
+          },
+          {
+            "pc": "0x0",
+            "instruction": "IMAD.MOV.U32 R1, RZ, RZ, c[0x0][0x28]",
+            "samples": 0.0
+          },
+          {
+            "pc": "0x10",
+            "instruction": "IMAD.MOV.U32 R0, RZ, RZ, c[0x0][0xc]",
+            "samples": 0.0
+          },
+          {
+            "pc": "0x20",
+            "instruction": "S2UR UR4, SR_CTAID.X",
+            "samples": 0.0
+          }
+        ],
+        "total": 128293.0
+      },
+      "stall_short_sb": {
+        "top": [
+          {
+            "pc": "0x1500",
+            "instruction": "IMMA.16832.S8.S8 R120, R144.ROW, R148.COL, R120",
+            "samples": 14897.0
+          },
+          {
+            "pc": "0x11a0",
+            "instruction": "IMMA.16832.S8.S8 R112, R144.ROW, R148.COL, R112",
+            "samples": 11692.0
+          },
+          {
+            "pc": "0x1250",
+            "instruction": "IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32",
+            "samples": 9477.0
+          },
+          {
+            "pc": "0x10e0",
+            "instruction": "IMMA.16832.S8.S8 R120, R144.ROW, R148.COL, R120",
+            "samples": 9211.0
+          },
+          {
+            "pc": "0x1310",
+            "instruction": "IMMA.16832.S8.S8 R44, R136.ROW, R148.COL, R44",
+            "samples": 6782.0
+          }
+        ],
+        "total": 74059.0
+      },
+      "stall_long_sb": {
+        "top": [
+          {
+            "pc": "0xfd0",
+            "instruction": "@!P2  IADD3 R137, R137, 0x1800, RZ",
+            "samples": 13291.0
+          },
+          {
+            "pc": "0xf50",
+            "instruction": "IMAD R98, R157, 0x1000, R143",
+            "samples": 9970.0
+          },
+          {
+            "pc": "0xc40",
+            "instruction": "LOP3.LUT R96, R97, 0x8, R96, 0xf8, !PT",
+            "samples": 3541.0
+          },
+          {
+            "pc": "0x10b0",
+            "instruction": "LDSM.16.M88.4 R140, [R142]",
+            "samples": 1472.0
+          },
+          {
+            "pc": "0xae0",
+            "instruction": "IMAD.SHL.U32 R3, R0, 0x40, RZ",
+            "samples": 144.0
+          }
+        ],
+        "total": 28773.0
+      },
+      "stall_math": {
+        "top": [
+          {
+            "pc": "0x1210",
+            "instruction": "IMMA.16832.S8.S8 R64, R140.ROW, R150.COL, R64",
+            "samples": 81525.0
+          },
+          {
+            "pc": "0x1500",
+            "instruction": "IMMA.16832.S8.S8 R120, R144.ROW, R148.COL, R120",
+            "samples": 75796.0
+          },
+          {
+            "pc": "0x1580",
+            "instruction": "IMMA.16832.S8.S8 R28, R140.ROW, R152.COL, R28",
+            "samples": 58959.0
+          },
+          {
+            "pc": "0x15f0",
+            "instruction": "IMMA.16832.S8.S8 R12, R140.ROW, R154.COL, R12",
+            "samples": 28408.0
+          },
+          {
+            "pc": "0x10e0",
+            "instruction": "IMMA.16832.S8.S8 R120, R144.ROW, R148.COL, R120",
+            "samples": 12414.0
+          }
+        ],
+        "total": 455996.0
+      },
+      "stall_wait": {
+        "top": [
+          {
+            "pc": "0x29b0",
+            "instruction": "@!P2  CALL.REL.NOINC 0x70e3a72698d0",
+            "samples": 3156.0
+          },
+          {
+            "pc": "0x1650",
+            "instruction": "IMMA.16832.S8.S8 R68, R136.ROW, R150.COL, R68",
+            "samples": 2069.0
+          },
+          {
+            "pc": "0x1640",
+            "instruction": "IMMA.16832.S8.S8 R84, R140.ROW, R150.COL, R84",
+            "samples": 2058.0
+          },
+          {
+            "pc": "0x1600",
+            "instruction": "IMMA.16832.S8.S8 R8, R136.ROW, R154.COL, R8",
+            "samples": 2044.0
+          },
+          {
+            "pc": "0x1610",
+            "instruction": "IMMA.16832.S8.S8 R4, R100.ROW, R154.COL, R4",
+            "samples": 2013.0
+          }
+        ],
+        "total": 149094.0
+      },
+      "stall_membar": {
+        "top": [
+          {
+            "pc": "0x0",
+            "instruction": "IMAD.MOV.U32 R1, RZ, RZ, c[0x0][0x28]",
+            "samples": 0.0
+          },
+          {
+            "pc": "0x10",
+            "instruction": "IMAD.MOV.U32 R0, RZ, RZ, c[0x0][0xc]",
+            "samples": 0.0
+          },
+          {
+            "pc": "0x20",
+            "instruction": "S2UR UR4, SR_CTAID.X",
+            "samples": 0.0
+          },
+          {
+            "pc": "0x30",
+            "instruction": "ULDC UR6, c[0x0][0xc]",
+            "samples": 0.0
+          },
+          {
+            "pc": "0x40",
+            "instruction": "S2R R162, SR_TID.X",
+            "samples": 0.0
+          }
+        ],
+        "total": 0.0
+      }
+    },
+    "math_samples_on_IMMA_pct": 98.38682795463119,
+    "dynamic_instructions": 298571136,
+    "instructions_by_opcode": {
+      "IMAD.MOV.U32": 165120.0,
+      "S2UR": 33024.0,
+      "ULDC": 16512.0,
+      "S2R": 1585152.0,
+      "IMAD.SHL.U32": 3781248.0,
+      "CS2R": 1056768.0,
+      "I2F.U32.RP": 16512.0,
+      "IMAD.MOV": 115584.0,
+      "ISETP.NE.U32.AND": 16512.0,
+      "MUFU.RCP": 33024.0,
+      "LOP3.LUT": 66905599.999999985,
+      "UIMAD": 1073280.0,
+      "IADD3": 24635904.0,
+      "F2I.FTZ.U32.TRUNC.NTZ": 33024.0,
+      "IMAD": 15056895.999999993,
+      "IMAD.HI.U32": 66048.0,
+      "ISETP.GE.U32.AND": 66048.0,
+      "IMAD.IADD": 311680.0,
+      "IMNMX": 33024.0,
+      "ULDC.64": 1089792.0,
+      "IABS": 49536.0,
+      "I2F.RP": 16512.0,
+      "SHF.R.U32.HI": 11261184.0,
+      "ISETP.GT.U32.AND": 3186816.0,
+      "ISETP.NE.AND": 1601664.0,
+      "ISETP.GE.AND": 214656.0,
+      "SHF.R.S32.HI": 822527.9999999995,
+      "LEA.HI": 297216.0,
+      "IMAD.X": 5283840.0,
+      "LDGSTS.E.BYPASS.128": 5283840.0,
+      "SEL": 2113536.0,
+      "UMOV": 2130048.0,
+      "LDGDEPBAR": 1056768.0,
+      "UIADD3": 1585152.0,
+      "UISETP.GT.U32.AND": 1056768.0,
+      "ULOP3.LUT": 3665664.0,
+      "DEPBAR.LE": 1056768.0,
+      "IMAD.U32": 11591424.0,
+      "BAR.SYNC.DEFER_BLOCKING": 1073280.0,
+      "PLOP3.LUT": 2641920.0,
+      "BRA": 4392192.0,
+      "USHF.L.U32": 1040256.0,
+      "LDS": 7478912.000000002,
+      "LDSM.16.M88.4": 16908288.0,
+      "UISETP.NE.AND": 1056768.0,
+      "IMMA.16832.S8.S8": 67633152.0,
+      "ULEA.HI": 1089792.0,
+      "BSSY": 676992.0,
+      "UISETP.GE.U32.AND": 528384.0,
+      "USHF.R.S32.HI": 610944.0,
+      "LEA": 807039.9999999997,
+      "REDUX.XOR": 8454144.0,
+      "SHF.L.W.U32.HI": 4227072.0,
+      "STS": 8454144.0,
+      "BSYNC": 941184.0,
+      "CALL.REL.NOINC": 1056768.0,
+      "ISETP.GT.AND": 16512.0,
+      "EXIT": 49536.0,
+      "IMAD.WIDE.U32": 147584.0,
+      "IMAD.HI": 264192.0,
+      "LEA.HI.SX32": 132096.0,
+      "ISETP.GE.OR": 132096.0,
+      "LEA.HI.X": 262143.99999999988,
+      "STG.E": 131072.0,
+      "NOP": 0.0
+    },
+    "instructions_by_region": {
+      "prologue": 3005184.0,
+      "header/copy": 92269056.0,
+      "MMA/operand": 112017408.0,
+      "fold/tail": 86374272.0,
+      "output": 4905216.000000007
+    }
+  },
+  "control": {
+    "kernel_ms": 1.0224746666666666,
+    "imma_per_SM_cycle": 0.1951338652289106,
+    "effective_SM_GHz": 2.648328776905384,
+    "l2_bytes_per_useful_mma": 37.75937350591024,
+    "tensor_pct": 80.16333333333333,
+    "l2_util_pct": 47.35333333333333,
+    "barrier_pct": 10.123333333333333,
+    "short_scoreboard_pct": 6.2,
+    "long_scoreboard_pct": 2.82,
+    "math_throttle_pct": 49.09,
+    "eligible_warps_per_scheduler": 0.36,
+    "issued_warps_per_cycle": 0.22,
+    "pc_samples": {
+      "stall_barrier": {
+        "top": [
+          {
+            "pc": "0x2a30",
+            "instruction": "@!P2  CALL.REL.NOINC 0x7b18f3265950",
+            "samples": 98924.0
+          },
+          {
+            "pc": "0x2a70",
+            "instruction": "@P0   EXIT",
+            "samples": 758.0
+          },
+          {
+            "pc": "0xc60",
+            "instruction": "UMOV UR5, 0x3000",
+            "samples": 678.0
+          },
+          {
+            "pc": "0x0",
+            "instruction": "IMAD.MOV.U32 R1, RZ, RZ, c[0x0][0x28]",
+            "samples": 0.0
+          },
+          {
+            "pc": "0x10",
+            "instruction": "IMAD.MOV.U32 R0, RZ, RZ, c[0x0][0xc]",
+            "samples": 0.0
+          }
+        ],
+        "total": 100360.0
+      },
+      "stall_short_sb": {
+        "top": [
+          {
+            "pc": "0x11e0",
+            "instruction": "IMMA.16832.S8.S8 R108, R144.ROW, R148.COL, R108",
+            "samples": 9300.0
+          },
+          {
+            "pc": "0x1350",
+            "instruction": "IMMA.16832.S8.S8 R44, R136.ROW, R148.COL, R44",
+            "samples": 8911.0
+          },
+          {
+            "pc": "0x1110",
+            "instruction": "IADD3 R152, R164, 0x420, RZ",
+            "samples": 8037.0
+          },
+          {
+            "pc": "0x1290",
+            "instruction": "IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32",
+            "samples": 7292.0
+          },
+          {
+            "pc": "0x1530",
+            "instruction": "IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32",
+            "samples": 6908.0
+          }
+        ],
+        "total": 61101.0
+      },
+      "stall_long_sb": {
+        "top": [
+          {
+            "pc": "0x1000",
+            "instruction": "@!P2  IADD3 R141, R141, 0x1800, RZ",
+            "samples": 9880.0
+          },
+          {
+            "pc": "0xf60",
+            "instruction": "IMAD R96, R157, 0x1000, R142",
+            "samples": 9657.0
+          },
+          {
+            "pc": "0xba0",
+            "instruction": "BAR.SYNC.DEFER_BLOCKING 0x0",
+            "samples": 3579.0
+          },
+          {
+            "pc": "0x2a20",
+            "instruction": "LOP3.LUT R161, R161, 0x2, RZ, 0x3c, !PT",
+            "samples": 2419.0
+          },
+          {
+            "pc": "0x10e0",
+            "instruction": "LDSM.16.M88.4 R140, [R140]",
+            "samples": 1308.0
+          }
+        ],
+        "total": 27531.0
+      },
+      "stall_math": {
+        "top": [
+          {
+            "pc": "0x1620",
+            "instruction": "IMMA.16832.S8.S8 R12, R140.ROW, R150.COL, R12",
+            "samples": 60440.0
+          },
+          {
+            "pc": "0x16c0",
+            "instruction": "IMMA.16832.S8.S8 R128, R100.ROW, R148.COL, R128",
+            "samples": 58016.0
+          },
+          {
+            "pc": "0x1530",
+            "instruction": "IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32",
+            "samples": 51763.0
+          },
+          {
+            "pc": "0x1250",
+            "instruction": "IMMA.16832.S8.S8 R72, R140.ROW, R150.COL, R72",
+            "samples": 50668.0
+          },
+          {
+            "pc": "0x1400",
+            "instruction": "IMMA.16832.S8.S8 R132, R96.ROW, R148.COL, R132",
+            "samples": 47626.0
+          }
+        ],
+        "total": 485174.0
+      },
+      "stall_wait": {
+        "top": [
+          {
+            "pc": "0x1710",
+            "instruction": "IMMA.16832.S8.S8 R100, R100.ROW, R154.COL, R96",
+            "samples": 2027.0
+          },
+          {
+            "pc": "0x1780",
+            "instruction": "IMMA.16832.S8.S8 R56, R140.ROW, R152.COL, R56",
+            "samples": 1969.0
+          },
+          {
+            "pc": "0x1760",
+            "instruction": "IMMA.16832.S8.S8 R76, R144.ROW, R154.COL, R76",
+            "samples": 1959.0
+          },
+          {
+            "pc": "0x1540",
+            "instruction": "IMMA.16832.S8.S8 R28, R140.ROW, R148.COL, R28",
+            "samples": 1952.0
+          },
+          {
+            "pc": "0x17c0",
+            "instruction": "IMMA.16832.S8.S8 R40, R136.ROW, R154.COL, R40",
+            "samples": 1947.0
+          }
+        ],
+        "total": 151595.0
+      },
+      "stall_membar": {
+        "top": [
+          {
+            "pc": "0x0",
+            "instruction": "IMAD.MOV.U32 R1, RZ, RZ, c[0x0][0x28]",
+            "samples": 0.0
+          },
+          {
+            "pc": "0x10",
+            "instruction": "IMAD.MOV.U32 R0, RZ, RZ, c[0x0][0xc]",
+            "samples": 0.0
+          },
+          {
+            "pc": "0x20",
+            "instruction": "S2UR UR4, SR_CTAID.X",
+            "samples": 0.0
+          },
+          {
+            "pc": "0x30",
+            "instruction": "ULDC UR6, c[0x0][0xc]",
+            "samples": 0.0
+          },
+          {
+            "pc": "0x40",
+            "instruction": "S2R R162, SR_TID.X",
+            "samples": 0.0
+          }
+        ],
+        "total": 0.0
+      }
+    },
+    "math_samples_on_IMMA_pct": 97.61570075890299,
+    "dynamic_instructions": 301824000,
+    "instructions_by_opcode": {
+      "IMAD.MOV.U32": 181632.0,
+      "S2UR": 33024.0,
+      "ULDC": 16512.0,
+      "S2R": 1585152.0,
+      "IMAD.SHL.U32": 3781248.0,
+      "CS2R": 1056768.0,
+      "I2F.U32.RP": 16512.0,
+      "IMAD.MOV": 115584.0,
+      "ISETP.NE.U32.AND": 16512.0,
+      "MUFU.RCP": 33024.0,
+      "LOP3.LUT": 69019136.00000001,
+      "UIMAD": 1073280.0,
+      "IADD3": 24635904.0,
+      "F2I.FTZ.U32.TRUNC.NTZ": 33024.0,
+      "IMAD": 15056895.999999993,
+      "IMAD.HI.U32": 66048.0,
+      "ISETP.GE.U32.AND": 66048.0,
+      "IMAD.IADD": 311680.0,
+      "IMNMX": 33024.0,
+      "ULDC.64": 1089792.0,
+      "IABS": 49536.0,
+      "I2F.RP": 16512.0,
+      "SHF.R.U32.HI": 11261184.0,
+      "ISETP.GT.U32.AND": 3203328.0,
+      "ISETP.NE.AND": 1601664.0,
+      "ISETP.GE.AND": 214656.0,
+      "SHF.R.S32.HI": 822527.9999999995,
+      "LEA.HI": 297216.0,
+      "IMAD.X": 5283840.0,
+      "LDGSTS.E.BYPASS.128": 5283840.0,
+      "SEL": 2130048.0,
+      "UMOV": 2130048.0,
+      "LDGDEPBAR": 1056768.0,
+      "DEPBAR.LE": 1073280.0,
+      "BAR.SYNC.DEFER_BLOCKING": 1089792.0,
+      "UIADD3": 1585152.0,
+      "UISETP.GT.U32.AND": 1056768.0,
+      "ULOP3.LUT": 3665664.0,
+      "IMAD.U32": 11591424.0,
+      "PLOP3.LUT": 2641920.0,
+      "BRA": 4392192.0,
+      "USHF.L.U32": 1040256.0,
+      "LDS": 7478912.000000002,
+      "LDSM.16.M88.4": 16908288.0,
+      "UISETP.NE.AND": 1056768.0,
+      "IMMA.16832.S8.S8": 67633152.0,
+      "BAR.ARV": 1056768.0,
+      "ULEA.HI": 1089792.0,
+      "BSSY": 676992.0,
+      "UISETP.GE.U32.AND": 528384.0,
+      "USHF.R.S32.HI": 610944.0,
+      "LEA": 807039.9999999997,
+      "REDUX.XOR": 8454144.0,
+      "SHF.L.W.U32.HI": 4227072.0,
+      "STS": 8454144.0,
+      "BSYNC": 941184.0,
+      "CALL.REL.NOINC": 1056768.0,
+      "ISETP.GT.AND": 16512.0,
+      "EXIT": 49536.0,
+      "IMAD.WIDE.U32": 147584.0,
+      "IMAD.HI": 264192.0,
+      "LEA.HI.SX32": 132096.0,
+      "ISETP.GE.OR": 132096.0,
+      "LEA.HI.X": 262143.99999999988,
+      "STG.E": 131072.0,
+      "NOP": 0.0
+    },
+    "instructions_by_region": {
+      "prologue": 3087744.0,
+      "header/copy": 91212288.0,
+      "MMA/operand": 113074176.0,
+      "fold/tail": 89544576.0,
+      "output": 4905216.000000007
+    }
+  },
+  "hoist": {
+    "kernel_ms": 1.0445973333333334,
+    "imma_per_SM_cycle": 0.18871255343574422,
+    "effective_SM_GHz": 2.6804053791231457,
+    "l2_bytes_per_useful_mma": 37.759132067362465,
+    "tensor_pct": 77.58333333333333,
+    "l2_util_pct": 46.03333333333333,
+    "barrier_pct": 7.713333333333333,
+    "short_scoreboard_pct": 8.03,
+    "long_scoreboard_pct": 3.0566666666666666,
+    "math_throttle_pct": 49.61666666666667,
+    "eligible_warps_per_scheduler": 0.35,
+    "issued_warps_per_cycle": 0.21,
+    "pc_samples": {
+      "stall_barrier": {
+        "top": [
+          {
+            "pc": "0x2ad0",
+            "instruction": "UMOV UR4, UR6",
+            "samples": 77692.0
+          },
+          {
+            "pc": "0xd90",
+            "instruction": "UMOV UR5, 0x3000",
+            "samples": 672.0
+          },
+          {
+            "pc": "0x2b30",
+            "instruction": "@P0   EXIT",
+            "samples": 340.0
+          },
+          {
+            "pc": "0x0",
+            "instruction": "IMAD.MOV.U32 R1, RZ, RZ, c[0x0][0x28]",
+            "samples": 0.0
+          },
+          {
+            "pc": "0x10",
+            "instruction": "IMAD.MOV.U32 R0, RZ, RZ, c[0x0][0xc]",
+            "samples": 0.0
+          }
+        ],
+        "total": 78704.0
+      },
+      "stall_short_sb": {
+        "top": [
+          {
+            "pc": "0x12b0",
+            "instruction": "IMMA.16832.S8.S8 R88, R144.ROW, R148.COL, R88",
+            "samples": 10852.0
+          },
+          {
+            "pc": "0x1360",
+            "instruction": "IMMA.16832.S8.S8 R112, R144.ROW, R148.COL, R112",
+            "samples": 10160.0
+          },
+          {
+            "pc": "0x15f0",
+            "instruction": "IMMA.16832.S8.S8 R88, R144.ROW, R148.COL, R88",
+            "samples": 7770.0
+          },
+          {
+            "pc": "0x13f0",
+            "instruction": "IMMA.16832.S8.S8 R104, R144.ROW, R148.COL, R104",
+            "samples": 7613.0
+          },
+          {
+            "pc": "0x1480",
+            "instruction": "IMMA.16832.S8.S8 R132, R96.ROW, R148.COL, R132",
+            "samples": 6914.0
+          }
+        ],
+        "total": 82317.0
+      },
+      "stall_long_sb": {
+        "top": [
+          {
+            "pc": "0x10b0",
+            "instruction": "@!P2  IADD3 R147, R147, 0x1800, RZ",
+            "samples": 9720.0
+          },
+          {
+            "pc": "0x1240",
+            "instruction": "LDSM.16.M88.4 R144, [R144]",
+            "samples": 9052.0
+          },
+          {
+            "pc": "0x1130",
+            "instruction": "@!P0  IADD3 R147, R147, 0x1800, RZ",
+            "samples": 8101.0
+          },
+          {
+            "pc": "0xd10",
+            "instruction": "BAR.SYNC.DEFER_BLOCKING 0x0",
+            "samples": 3402.0
+          },
+          {
+            "pc": "0xcd0",
+            "instruction": "CS2R R18, SRZ",
+            "samples": 166.0
+          }
+        ],
+        "total": 30914.0
+      },
+      "stall_math": {
+        "top": [
+          {
+            "pc": "0x15f0",
+            "instruction": "IMMA.16832.S8.S8 R88, R144.ROW, R148.COL, R88",
+            "samples": 84135.0
+          },
+          {
+            "pc": "0x1780",
+            "instruction": "IMMA.16832.S8.S8 R64, R140.ROW, R150.COL, R64",
+            "samples": 48188.0
+          },
+          {
+            "pc": "0x1320",
+            "instruction": "IMMA.16832.S8.S8 R56, R140.ROW, R150.COL, R56",
+            "samples": 41190.0
+          },
+          {
+            "pc": "0x12b0",
+            "instruction": "IMMA.16832.S8.S8 R88, R144.ROW, R148.COL, R88",
+            "samples": 24726.0
+          },
+          {
+            "pc": "0x17e0",
+            "instruction": "IMMA.16832.S8.S8 R132, R100.ROW, R148.COL, R132",
+            "samples": 22304.0
+          }
+        ],
+        "total": 507365.0
+      },
+      "stall_wait": {
+        "top": [
+          {
+            "pc": "0x2af0",
+            "instruction": "@!P0  CALL.REL.NOINC 0x7cf70b261910",
+            "samples": 2588.0
+          },
+          {
+            "pc": "0x1840",
+            "instruction": "IMMA.16832.S8.S8 R20, R140.ROW, R150.COL, R20",
+            "samples": 1944.0
+          },
+          {
+            "pc": "0x17f0",
+            "instruction": "IMMA.16832.S8.S8 R100, R100.ROW, R150.COL, R96",
+            "samples": 1943.0
+          },
+          {
+            "pc": "0x1820",
+            "instruction": "IMMA.16832.S8.S8 R52, R144.ROW, R150.COL, R52",
+            "samples": 1927.0
+          },
+          {
+            "pc": "0x1860",
+            "instruction": "IMMA.16832.S8.S8 R4, R136.ROW, R150.COL, R4",
+            "samples": 1923.0
+          }
+        ],
+        "total": 159606.0
+      },
+      "stall_membar": {
+        "top": [
+          {
+            "pc": "0x0",
+            "instruction": "IMAD.MOV.U32 R1, RZ, RZ, c[0x0][0x28]",
+            "samples": 0.0
+          },
+          {
+            "pc": "0x10",
+            "instruction": "IMAD.MOV.U32 R0, RZ, RZ, c[0x0][0xc]",
+            "samples": 0.0
+          },
+          {
+            "pc": "0x20",
+            "instruction": "S2UR UR4, SR_CTAID.X",
+            "samples": 0.0
+          },
+          {
+            "pc": "0x30",
+            "instruction": "ULDC UR6, c[0x0][0xc]",
+            "samples": 0.0
+          },
+          {
+            "pc": "0x40",
+            "instruction": "S2R R163, SR_TID.X",
+            "samples": 0.0
+          }
+        ],
+        "total": 0.0
+      }
+    },
+    "math_samples_on_IMMA_pct": 97.38078109447834,
+    "dynamic_instructions": 290348160,
+    "instructions_by_opcode": {
+      "IMAD.MOV.U32": 181632.0,
+      "S2UR": 33024.0,
+      "ULDC": 16512.0,
+      "S2R": 1585152.0,
+      "IMAD.SHL.U32": 3797760.0,
+      "CS2R": 1056768.0,
+      "I2F.U32.RP": 16512.0,
+      "IMAD.MOV": 115584.0,
+      "ISETP.NE.U32.AND": 16512.0,
+      "MUFU.RCP": 33024.0,
+      "LOP3.LUT": 54389503.999999985,
+      "ISETP.GT.U32.AND": 3203328.0,
+      "UIMAD": 1073280.0,
+      "IADD3": 23628672.0,
+      "F2I.FTZ.U32.TRUNC.NTZ": 33024.0,
+      "IMAD": 17137408.000000007,
+      "IMAD.HI.U32": 66048.0,
+      "ISETP.GE.U32.AND": 66048.0,
+      "IMAD.IADD": 295168.0,
+      "IMNMX": 33024.0,
+      "ULDC.64": 1089792.0,
+      "IABS": 49536.0,
+      "I2F.RP": 16512.0,
+      "ISETP.GE.AND": 2295168.0,
+      "ISETP.NE.AND": 544896.0,
+      "SHF.R.U32.HI": 7116672.0,
+      "IMAD.X": 5283840.0,
+      "LDGSTS.E.BYPASS.128": 5283840.0,
+      "SEL": 2130048.0,
+      "UMOV": 2130048.0,
+      "LDGDEPBAR": 1056768.0,
+      "DEPBAR.LE": 1073280.0,
+      "BAR.SYNC.DEFER_BLOCKING": 1089792.0,
+      "UIADD3": 2641920.0,
+      "ULOP3.LUT": 5762688.0,
+      "UISETP.GT.U32.AND": 1056768.0,
+      "IMAD.U32": 11591424.0,
+      "PLOP3.LUT": 3698688.0,
+      "BRA": 4392192.0,
+      "USHF.L.U32": 1040256.0,
+      "LEA": 1847296.000000001,
+      "LDS": 7478912.000000002,
+      "LDSM.16.M88.4": 16908288.0,
+      "IMMA.16832.S8.S8": 67633152.0,
+      "BAR.ARV": 1056768.0,
+      "ULEA.HI": 1089792.0,
+      "BSSY": 676992.0,
+      "UISETP.GE.U32.AND": 528384.0,
+      "USHF.R.S32.HI": 610944.0,
+      "REDUX.XOR": 8454144.0,
+      "SHF.L.W.U32.HI": 4227072.0,
+      "STS": 8454144.0,
+      "BSYNC": 941184.0,
+      "UISETP.NE.AND": 1056768.0,
+      "CALL.REL.NOINC": 1056768.0,
+      "ISETP.GT.AND": 16512.0,
+      "EXIT": 49536.0,
+      "IMAD.WIDE.U32": 147584.0,
+      "LEA.HI": 280704.0,
+      "SHF.R.S32.HI": 789503.9999999997,
+      "IMAD.HI": 264192.0,
+      "LEA.HI.SX32": 132096.0,
+      "ISETP.GE.OR": 132096.0,
+      "LEA.HI.X": 262143.99999999988,
+      "STG.E": 131072.0,
+      "NOP": 0.0
+    },
+    "instructions_by_region": {
+      "prologue": 3467520.0,
+      "header/copy": 93094656.0,
+      "MMA/operand": 97222656.0,
+      "fold/tail": 91658112.0,
+      "output": 4905216.000000007
+    }
+  },
+  "induction": {
+    "kernel_ms": 1.044064,
+    "imma_per_SM_cycle": 0.18886629143537348,
+    "effective_SM_GHz": 2.679603798662773,
+    "l2_bytes_per_useful_mma": 37.75871181488037,
+    "tensor_pct": 77.62,
+    "l2_util_pct": 46.01,
+    "barrier_pct": 6.806666666666667,
+    "short_scoreboard_pct": 8.093333333333334,
+    "long_scoreboard_pct": 2.8,
+    "math_throttle_pct": 50.77666666666667,
+    "eligible_warps_per_scheduler": 0.35,
+    "issued_warps_per_cycle": 0.21,
+    "pc_samples": {
+      "stall_barrier": {
+        "top": [
+          {
+            "pc": "0x2a60",
+            "instruction": "@!P0  CALL.REL.NOINC 0x71b8a325d780",
+            "samples": 68420.0
+          },
+          {
+            "pc": "0xd30",
+            "instruction": "UMOV UR5, 0x3000",
+            "samples": 606.0
+          },
+          {
+            "pc": "0x2aa0",
+            "instruction": "@P0   EXIT",
+            "samples": 431.0
+          },
+          {
+            "pc": "0x0",
+            "instruction": "IMAD.MOV.U32 R1, RZ, RZ, c[0x0][0x28]",
+            "samples": 0.0
+          },
+          {
+            "pc": "0x10",
+            "instruction": "IMAD.MOV.U32 R0, RZ, RZ, c[0x0][0xc]",
+            "samples": 0.0
+          }
+        ],
+        "total": 69457.0
+      },
+      "stall_short_sb": {
+        "top": [
+          {
+            "pc": "0x1270",
+            "instruction": "IMMA.16832.S8.S8 R112, R144.ROW, R148.COL, R112",
+            "samples": 10221.0
+          },
+          {
+            "pc": "0x11c0",
+            "instruction": "IMMA.16832.S8.S8 R88, R144.ROW, R148.COL, R88",
+            "samples": 8859.0
+          },
+          {
+            "pc": "0x1520",
+            "instruction": "IMMA.16832.S8.S8 R88, R144.ROW, R148.COL, R88",
+            "samples": 7839.0
+          },
+          {
+            "pc": "0x1300",
+            "instruction": "IMMA.16832.S8.S8 R104, R144.ROW, R148.COL, R104",
+            "samples": 7326.0
+          },
+          {
+            "pc": "0x13c0",
+            "instruction": "IMMA.16832.S8.S8 R132, R96.ROW, R148.COL, R132",
+            "samples": 6879.0
+          }
+        ],
+        "total": 82448.0
+      },
+      "stall_long_sb": {
+        "top": [
+          {
+            "pc": "0x1050",
+            "instruction": "@!P0  IADD3 R139, R139, 0x1800, RZ",
+            "samples": 9196.0
+          },
+          {
+            "pc": "0xfd0",
+            "instruction": "@!P3  IADD3 R139, R139, 0x1800, RZ",
+            "samples": 6614.0
+          },
+          {
+            "pc": "0x10b0",
+            "instruction": "IADD3 R96, R161, 0x60040, RZ",
+            "samples": 6539.0
+          },
+          {
+            "pc": "0xcb0",
+            "instruction": "BAR.SYNC.DEFER_BLOCKING 0x0",
+            "samples": 3568.0
+          },
+          {
+            "pc": "0x2a50",
+            "instruction": "LOP3.LUT R160, R160, 0x2, RZ, 0x3c, !PT",
+            "samples": 1162.0
+          }
+        ],
+        "total": 28251.0
+      },
+      "stall_math": {
+        "top": [
+          {
+            "pc": "0x1430",
+            "instruction": "IMMA.16832.S8.S8 R52, R144.ROW, R150.COL, R52",
+            "samples": 66184.0
+          },
+          {
+            "pc": "0x15d0",
+            "instruction": "IMMA.16832.S8.S8 R24, R136.ROW, R150.COL, R24",
+            "samples": 51009.0
+          },
+          {
+            "pc": "0x1700",
+            "instruction": "IMMA.16832.S8.S8 R64, R140.ROW, R150.COL, R64",
+            "samples": 46900.0
+          },
+          {
+            "pc": "0x1230",
+            "instruction": "IMMA.16832.S8.S8 R56, R140.ROW, R150.COL, R56",
+            "samples": 38235.0
+          },
+          {
+            "pc": "0x1520",
+            "instruction": "IMMA.16832.S8.S8 R88, R144.ROW, R148.COL, R88",
+            "samples": 37070.0
+          }
+        ],
+        "total": 519266.0
+      },
+      "stall_wait": {
+        "top": [
+          {
+            "pc": "0x17c0",
+            "instruction": "IMMA.16832.S8.S8 R16, R136.ROW, R148.COL, R16",
+            "samples": 2036.0
+          },
+          {
+            "pc": "0x17a0",
+            "instruction": "IMMA.16832.S8.S8 R48, R140.ROW, R148.COL, R48",
+            "samples": 2021.0
+          },
+          {
+            "pc": "0x17b0",
+            "instruction": "IMMA.16832.S8.S8 R20, R140.ROW, R150.COL, R20",
+            "samples": 1994.0
+          },
+          {
+            "pc": "0xfb0",
+            "instruction": "@!P0  IADD3 R136, P2, R141, c[0x0][0x160], RZ",
+            "samples": 1978.0
+          },
+          {
+            "pc": "0x1760",
+            "instruction": "IMMA.16832.S8.S8 R100, R100.ROW, R150.COL, R96",
+            "samples": 1950.0
+          }
+        ],
+        "total": 152443.0
+      },
+      "stall_membar": {
+        "top": [
+          {
+            "pc": "0x0",
+            "instruction": "IMAD.MOV.U32 R1, RZ, RZ, c[0x0][0x28]",
+            "samples": 0.0
+          },
+          {
+            "pc": "0x10",
+            "instruction": "IMAD.MOV.U32 R0, RZ, RZ, c[0x0][0xc]",
+            "samples": 0.0
+          },
+          {
+            "pc": "0x20",
+            "instruction": "S2UR UR4, SR_CTAID.X",
+            "samples": 0.0
+          },
+          {
+            "pc": "0x30",
+            "instruction": "ULDC UR6, c[0x0][0xc]",
+            "samples": 0.0
+          },
+          {
+            "pc": "0x40",
+            "instruction": "S2R R163, SR_TID.X",
+            "samples": 0.0
+          }
+        ],
+        "total": 0.0
+      }
+    },
+    "math_samples_on_IMMA_pct": 97.37802975738832,
+    "dynamic_instructions": 287243904,
+    "instructions_by_opcode": {
+      "IMAD.MOV.U32": 1238400.0,
+      "S2UR": 33024.0,
+      "ULDC": 16512.0,
+      "S2R": 1585152.0,
+      "IMAD.SHL.U32": 2757504.0,
+      "CS2R": 1056768.0,
+      "I2F.U32.RP": 16512.0,
+      "IMAD.MOV": 115584.0,
+      "ISETP.NE.U32.AND": 16512.0,
+      "MUFU.RCP": 33024.0,
+      "LOP3.LUT": 56470015.999999985,
+      "ISETP.GT.U32.AND": 3203328.0,
+      "UIMAD": 1073280.0,
+      "IADD3": 27822720.0,
+      "F2I.FTZ.U32.TRUNC.NTZ": 33024.0,
+      "IMAD": 11936127.999999996,
+      "IMAD.HI.U32": 66048.0,
+      "ISETP.GE.U32.AND": 66048.0,
+      "IMAD.IADD": 295168.0,
+      "IMNMX": 33024.0,
+      "ULDC.64": 1089792.0,
+      "IABS": 49536.0,
+      "I2F.RP": 16512.0,
+      "ISETP.NE.AND": 1601664.0,
+      "ISETP.GE.AND": 2295168.0,
+      "SHF.R.U32.HI": 8156928.0,
+      "IMAD.X": 5283840.0,
+      "LDGSTS.E.BYPASS.128": 5283840.0,
+      "SEL": 2130048.0,
+      "UMOV": 2130048.0,
+      "LDGDEPBAR": 1056768.0,
+      "DEPBAR.LE": 1073280.0,
+      "BAR.SYNC.DEFER_BLOCKING": 1089792.0,
+      "UIADD3": 1585152.0,
+      "ULOP3.LUT": 3665664.0,
+      "UISETP.GT.U32.AND": 1056768.0,
+      "IMAD.U32": 10551168.0,
+      "PLOP3.LUT": 2641920.0,
+      "BRA": 4392192.0,
+      "USHF.L.U32": 1040256.0,
+      "LDS": 7478912.000000002,
+      "LDSM.16.M88.4": 16908288.0,
+      "UISETP.NE.AND": 1056768.0,
+      "IMMA.16832.S8.S8": 67633152.0,
+      "BAR.ARV": 1056768.0,
+      "ULEA.HI": 1089792.0,
+      "BSSY": 676992.0,
+      "UISETP.GE.U32.AND": 528384.0,
+      "USHF.R.S32.HI": 610944.0,
+      "LEA": 807039.9999999997,
+      "REDUX.XOR": 8454144.0,
+      "SHF.L.W.U32.HI": 4227072.0,
+      "STS": 8454144.0,
+      "BSYNC": 941184.0,
+      "CALL.REL.NOINC": 1056768.0,
+      "ISETP.GT.AND": 16512.0,
+      "EXIT": 49536.0,
+      "IMAD.WIDE.U32": 147584.0,
+      "LEA.HI": 280704.0,
+      "SHF.R.S32.HI": 789503.9999999997,
+      "IMAD.HI": 264192.0,
+      "LEA.HI.SX32": 132096.0,
+      "ISETP.GE.OR": 132096.0,
+      "LEA.HI.X": 262143.99999999988,
+      "STG.E": 131072.0,
+      "NOP": 0.0
+    },
+    "instructions_by_region": {
+      "prologue": 3368448.0,
+      "header/copy": 83748864.0,
+      "MMA/operand": 103563264.0,
+      "fold/tail": 91658112.0,
+      "output": 4905216.000000007
+    }
+  }
+}

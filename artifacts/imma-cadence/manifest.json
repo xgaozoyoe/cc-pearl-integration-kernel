@@ -1,0 +1,89 @@
+{
+  "entry": "_ZN24handoff_control_baseline6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+  "variants": {
+    "baseline": {
+      "sha256": "3be626ab702bb0c460b09f0c34e32c671756465f3a950be111405152e6d8019c",
+      "stall": 8,
+      "changed_bytes": 0
+    },
+    "tail4": {
+      "sha256": "aa39a1618bb31edf0f7563e537bcaeebfaec6b47e8ad854e7d798f726f3f421e",
+      "stall": 4,
+      "changed_bytes": 11
+    },
+    "tail1": {
+      "sha256": "70ffead05dd062a1c416fac2c776e9fe0c182d1129d1a3fa17e97f3b7fe12349",
+      "stall": 1,
+      "changed_bytes": 11
+    }
+  },
+  "audit": [
+    {
+      "pc": "0x1680",
+      "instruction": "IMMA.16832.S8.S8 R36, R100.reuse.ROW, R152.COL, R36",
+      "wait_mask": 2,
+      "original_stall": 8
+    },
+    {
+      "pc": "0x1690",
+      "instruction": "IMMA.16832.S8.S8 R92, R100.ROW, R154.COL, R92",
+      "wait_mask": 0,
+      "original_stall": 8
+    },
+    {
+      "pc": "0x16a0",
+      "instruction": "IMMA.16832.S8.S8 R112, R144.reuse.ROW, R152.COL, R112",
+      "wait_mask": 0,
+      "original_stall": 8
+    },
+    {
+      "pc": "0x16b0",
+      "instruction": "IMMA.16832.S8.S8 R108, R144.ROW, R154.COL, R108",
+      "wait_mask": 0,
+      "original_stall": 8
+    },
+    {
+      "pc": "0x16c0",
+      "instruction": "IMMA.16832.S8.S8 R132, R100.ROW, R148.reuse.COL, R132",
+      "wait_mask": 4,
+      "original_stall": 8
+    },
+    {
+      "pc": "0x16d0",
+      "instruction": "IMMA.16832.S8.S8 R104, R144.reuse.ROW, R148.COL, R104",
+      "wait_mask": 0,
+      "original_stall": 8
+    },
+    {
+      "pc": "0x16e0",
+      "instruction": "IMMA.16832.S8.S8 R80, R144.ROW, R150.COL, R80",
+      "wait_mask": 0,
+      "original_stall": 8
+    },
+    {
+      "pc": "0x16f0",
+      "instruction": "IMMA.16832.S8.S8 R76, R140.reuse.ROW, R152.COL, R76",
+      "wait_mask": 0,
+      "original_stall": 8
+    },
+    {
+      "pc": "0x1700",
+      "instruction": "IMMA.16832.S8.S8 R64, R140.reuse.ROW, R154.COL, R64",
+      "wait_mask": 0,
+      "original_stall": 8
+    },
+    {
+      "pc": "0x1710",
+      "instruction": "IMMA.16832.S8.S8 R60, R140.reuse.ROW, R148.COL, R60",
+      "wait_mask": 0,
+      "original_stall": 8
+    },
+    {
+      "pc": "0x1720",
+      "instruction": "IMMA.16832.S8.S8 R56, R140.ROW, R150.COL, R56",
+      "wait_mask": 0,
+      "original_stall": 8
+    }
+  ],
+  "caveat": "Experimental scheduling; not deployed. Static in-window independence is not a proof of all machine latency constraints."
+}

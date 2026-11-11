@@ -1,0 +1,25 @@
+GPU0 frozen fastest binary diagnosis;deliberately racy,never mining backend.
+Compare only main-loop blocking vs removing both main-loop named instructions.
+native:16d0 BAR.ARV R164,384;2a00 BAR.SYNC.DEFER_BLOCKING R161,384.
+arrive_only:only2a00 opcode becomesBAR.ARV R161,384;original control fields retained.
+no_named:16d0/2a00NOP,as previous barrier-removal experiment.
+arrive_only retains arrival accounting but removesblocking;phase reuse/data safety NOT guaranteed.
+cp.async wait,initial/final CTAbarriers,all64staticIMMA/16LDSM,copies,transcript retained.
+All168regs,0local,69632Bshared,384threads,1CTA/SM. No source recompilation.
+8192x8192 region,K4096/rank128;200samples/variant,16launches/sample,10rotatingblocks,10s warmup.
+Clocks unlocked;no new hardware counters. Timing effects are not isolated opcode latency.
+name mean_ms median_ms p95_ms mean_time_reduction_pct
+native 1.016829 1.010601 1.048150 0.000
+arrive_only 0.975493 0.971008 0.989315 4.065
+no_named 0.978127 0.969437 1.003008 3.806
+Conclusion:removingblocking at2a00 reproduces roughlyall of paired-removal benefit in this run.
+Cannot interpret arrive_only/no_named subpercent differences causally with unlocked clocks/racy data.
+Primary next target:which producer/copy-read cohort determines completion at2a00.
+Cannot remove16d0alone while keeping sync count384:missingarrivals would invalidate experiment/deadlock.
+Earlier separate diagnostics (not rerun):initialba0~0.34%,final2a50~0.89%;fold/nonfold paired removal~0.77/1.32%unlocked.
+Those earlier numbers are not additive or direct comparisons with this session.
+Source correspondence:artifacts/fold-defer-reduce/source.cu:219-220 publication,244blockinghandoff.
+Native cohorts8+4:evenK IDs4/5;foldoddK IDs6/7. Eachbarrier includes peer earlyarrivals+own latearrivals.
+Thus own latewarps and peer shared readiness can both determine completion;this experiment doesnot isolate them.
+Deferred blocking means PC sampledstall may appear atfollowing2a30branch rather than2a00opcode.
+No performance-candidate correctness/racecheck claim. No live mining/fullgrid measurement/production changes.

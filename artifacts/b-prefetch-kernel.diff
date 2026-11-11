@@ -1,0 +1,45 @@
+diff --git a/tmp/fold-before-b-prefetch.cuh b/tests/fold_ops.cuh
+index ff9100f..dd97a20 100644
+--- a/tmp/fold-before-b-prefetch.cuh
++++ b/tests/fold_ops.cuh
+@@ -162,7 +162,39 @@ cute_pearl_fold(int M, int N, int K, int R,
+             if (knext < k_tiles) stage_copy(knext,ww);
+             cp_async_fence();
+         }
+-        if constexpr (Schedule == 9) {
++        if constexpr (Schedule >= 12 && Schedule <= 14) {
++            static_assert(decltype(size<1>(tXrB))::value*2 == decltype(size<2>(tCrC))::value);
++            CUTE_UNROLL
++            for(int kk=0; kk<size<2>(tCrA); ++kk) {
++                copy(s2r_A,tXsA(_,_,kk,wr),tXrA(_,_,kk));
++                copy(s2r_B,tXsB(_,0,kk,wr),tXrB(_,0,kk));
++                CUTE_UNROLL
++                for(int bn=0; bn<size<1>(tXrB); ++bn) {
++                    if constexpr (Schedule == 12) {
++                        if (bn+1<size<1>(tXrB))
++                            copy(s2r_B,tXsB(_,bn+1,kk,wr),tXrB(_,bn+1,kk));
++                    }
++                    CUTE_UNROLL
++                    for(int half=0; half<2; ++half) {
++                        int tn=2*bn+half;
++                        CUTE_UNROLL
++                        for(int tm=0; tm<size<1>(tCrC); ++tm) {
++                            if constexpr (Schedule == 14) {
++                                if (half==0 && tm==2 && bn+1<size<1>(tXrB))
++                                    copy(s2r_B,tXsB(_,bn+1,kk,wr),tXrB(_,bn+1,kk));
++                            }
++                            gemm(tiled_mma,tCrC(_,tm,tn),tCrA(_,tm,kk),tCrB(_,tn,kk),tCrC(_,tm,tn));
++                        }
++                        if constexpr (Schedule == 13) {
++                            // Half0 is now dead: overlap next B group with
++                            // half1 MMAs while limiting extra live operands.
++                            if (half==0 && bn+1<size<1>(tXrB))
++                                copy(s2r_B,tXsB(_,bn+1,kk,wr),tXrB(_,bn+1,kk));
++                        }
++                    }
++                }
++            }
++        } else if constexpr (Schedule == 9) {
+             static_assert(decltype(size<1>(tXrB))::value*2 == decltype(size<2>(tCrC))::value);
+             // Hold one K32 A slice; consume each B atom across all row groups.
+             CUTE_UNROLL

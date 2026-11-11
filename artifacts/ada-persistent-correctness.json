@@ -1,0 +1,50 @@
+[
+  {
+    "seed": 42,
+    "variant": 0,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "seed": 42,
+    "variant": 3,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "seed": 42,
+    "variant": 1,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "seed": 42,
+    "variant": 2,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "seed": 1234,
+    "variant": 0,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "seed": 1234,
+    "variant": 3,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "seed": 1234,
+    "variant": 1,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "seed": 1234,
+    "variant": 2,
+    "transcript_pass": true,
+    "digest_pass": true
+  }
+]

@@ -1,0 +1,101 @@
+{
+  "variants": {
+    "native": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "104c0c1b265260dea5c9ab0bb174ebbbe7ee9cceb0cf0acebf2a9d1dfa4d50aa",
+      "smem": 69632,
+      "correct": true,
+      "groups": [
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        [
+          8,
+          9,
+          10,
+          11
+        ]
+      ]
+    },
+    "masked_control": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "d03029fa3e9bb97d1e7fca0454478182dbf9b7f89fd6bd54af1654990c7694c4",
+      "smem": 69632,
+      "correct": true,
+      "groups": [
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        [
+          8,
+          9,
+          10,
+          11
+        ]
+      ]
+    },
+    "pair01": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "c9f0288a205d9767f7537b3a476700cfbfceb5cf4d735411d34dd6fd68d89a8b",
+      "smem": 69632,
+      "correct": true,
+      "groups": [
+        [
+          0,
+          1,
+          8,
+          9
+        ],
+        [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          10,
+          11
+        ]
+      ]
+    },
+    "pair02": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "1c0d04e57e0245a8077f6104f4333c8569abc8cd3e7656dbfd832c26fecd71ff",
+      "smem": 69632,
+      "correct": true,
+      "groups": [
+        [
+          0,
+          2,
+          8,
+          10
+        ],
+        [
+          1,
+          3,
+          4,
+          5,
+          6,
+          7,
+          9,
+          11
+        ]
+      ]
+    }
+  },
+  "description": "Same frozen hot-loop bytes. Change only initialization grouping; masked_control keeps original8+4."
+}

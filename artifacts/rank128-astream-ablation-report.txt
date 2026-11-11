@@ -1,0 +1,124 @@
+Current A-stream transcript ablation, GPU0,2026-10-08.
+
+Purpose: remeasure the old ~7% transcript cost on the current candidate,without
+production changes. Same CTA256x192,12warps,warp64x64,K64,two stages,R128,K4096.
+All cases use64 static IMMA/16 LDSM sites in the K loop. Dynamic shared allocation
+remains69632 bytes and one CTA/SM. Full/pure control168registers;local/redux167.
+All tested variants have zero stack/spills. GPU clocks/power not changed or locked.
+
+v0: unmodified A-stream full transcript.
+v1: same compiled kernel as v4,enable_fold=0; skip all boundary transcript work
+and final transcript output; consume all final C registers in one checksum/lane.
+v4: same compiled kernel as v1,enable_fold=1; exact full transcript output.
+v2: local per-lane eight-word XOR at all boundaries,checksum sink instead of state.
+v3: local XOR plus warp REDUX at all boundaries,checksum sink instead of state.
+The v2/v3 sink rotates and XORs each observation into a lane register. This adds a
+serial dependency and is NOT equivalent to simply removing later transcript work.
+
+The first compiled-out pure variant spilled44 bytes (48byte stack) and was NOT
+benchmarked. A shorter final sink also spilled. The final runtime-gated control
+avoids that spill and uses an identical machine kernel in v1/v4. The gate is at
+SASS0x10a0 (enabled parameter c[0x0][0x188]);0x1790 skips fold;0x29e0 selects output.
+This is an execution ablation,not a claim that transcript instructions disappear
+from the binary. Final checksum overhead and mode branches remain in v1.
+
+Correctness: both seeds42/1234 at256x384; all diagnostic outputs checked against
+CPU int32 accumulation at each128K boundary and explicit lane ownership. v0/v4
+transcripts match the accepted library. Both full variants additionally match all
+transcript words at8192x8192. No real mining by diagnostic modes.
+
+Events:8192x8192,200 samples/variant,each averages16 launches,five rotated blocks,
+100warmups/block. Full-grid:131072x131072,region8192,actual setup/noise/Merkle/V3,
+PoW DISABLED for ALL cases;6rotated blocks,2warmups+10samples/block=60/variant.
+No network/proofs. Grid log precision0.1ms. Equivalent TH/s is work normalization,
+not usable mining throughput for the no-transcript experiment.
+
+{
+  "events": {
+    "0": {
+      "samples": 200,
+      "mean_ms": 1.0916308951377869,
+      "median_ms": 1.0936319828033447,
+      "p95_ms": 1.1070719957351685
+    },
+    "1": {
+      "samples": 200,
+      "mean_ms": 1.0070146402716638,
+      "median_ms": 1.009732961654663,
+      "p95_ms": 1.0220624446868896
+    },
+    "2": {
+      "samples": 200,
+      "mean_ms": 1.1015162897109985,
+      "median_ms": 1.1002240180969238,
+      "p95_ms": 1.1130956888198853
+    },
+    "3": {
+      "samples": 200,
+      "mean_ms": 1.1183004587888719,
+      "median_ms": 1.1204479932785034,
+      "p95_ms": 1.1273599863052368
+    },
+    "4": {
+      "samples": 200,
+      "mean_ms": 1.0990423113107681,
+      "median_ms": 1.0998730063438416,
+      "p95_ms": 1.1155359983444213
+    }
+  },
+  "grids": {
+    "0": {
+      "samples": 60,
+      "mean_ms": 305.54833333333335,
+      "median_ms": 305.54999999999995,
+      "p95_ms": 310.255,
+      "grids_sec": 3.272804629927616,
+      "equivalent_ths": 230.30315174685074
+    },
+    "1": {
+      "samples": 60,
+      "mean_ms": 283.32666666666665,
+      "median_ms": 282.95,
+      "p95_ms": 287.92499999999995,
+      "grids_sec": 3.529494811642627,
+      "equivalent_ths": 248.3661174768724
+    },
+    "4": {
+      "samples": 60,
+      "mean_ms": 307.3433333333333,
+      "median_ms": 307.1,
+      "p95_ms": 312.09999999999997,
+      "grids_sec": 3.253690226999122,
+      "equivalent_ths": 228.9580952170667
+    }
+  },
+  "delta": {
+    "events": {
+      "ms": 0.09202767103910436,
+      "fraction_full": 0.08373442049683051,
+      "ratio": 1.0913866267269738
+    },
+    "grids": {
+      "ms": 24.01666666666665,
+      "fraction_full": 0.07814279361842887,
+      "ratio": 1.0847667003929504
+    }
+  }
+}
+
+Finding: identical-kernel on/off delta0.09203ms/region=8.373% of enabled time;
+full-grid delta24.0167ms=7.814%. Unmodified v0 vs disabled v1 gives7.751% kernel
+and7.273% full-grid reduction,with the caveat those kernels differ. v4 costs about
+0.68% more kernel time than v0,so the gate control itself is small but nonzero.
+
+The ~7% opportunity persists. However,local/redux proxy cases are slower than full:
+extra sink dependency and compiled scheduling prevent a clean additive split.
+Do NOT call v2-v1 the intrinsic XOR cost or v3-v2 the intrinsic REDUX cost.
+Hardware-counter attribution remains pending. Prepared tools/profile_astream_ablation.sh
+profiles v0/v1/v4 with SourceCounters and active/stall/traffic metrics,GPU0 only.
+Counter capture needs sudo;sudo -n failed with password required. User action:
+  sudo bash tools/profile_astream_ablation.sh
+This will not modify production libraries or useGPU1/2.
+
+Production baseline and A-stream candidate SHA256 checks PASS. No commits or live
+path updates. Generated per-variant source diffs are rank128-astream-ablation-*.diff.

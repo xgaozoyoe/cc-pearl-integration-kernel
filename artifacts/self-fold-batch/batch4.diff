@@ -1,0 +1,46 @@
+--- source_control
++++ batch4
+@@ -1,6 +1,6 @@
+ #include <cuda_runtime.h>
+ #include <cstdint>
+-namespace transcript_tasks_source_control {
++namespace self_fold_batch4 {
+ constexpr int BM=256, BN=192, THREADS=384;
+ constexpr int WORDS=(BM/16)*(BN/16)*16;
+ struct Fragment { unsigned v[4]; };
+@@ -223,18 +223,25 @@
+             #pragma unroll
+             for(int row=0;row<4;++row) {
+                 #pragma unroll
+-                for(int group=0;group<Groups;++group) {
+-                    unsigned x=0;
++                for(int first=0;first<Groups;first+=4) {
++                    unsigned values[4];
+                     #pragma unroll
+-                    for(int half=0;half<2;++half) {
+-                        #pragma unroll
+-                        for(int v=0;v<4;++v) x^=c[row][group][half][v];
+-                    }
+-                    x=__reduce_xor_sync(0xffffffffu,x);
++                    for(int j=0;j<4;++j) {
++                        unsigned x=0;
++                        #pragma unroll
++                        for(int half=0;half<2;++half) {
++                            #pragma unroll
++                            for(int v=0;v<4;++v)x^=c[row][first+j][half][v];
++                        }
++                        values[j]=__reduce_xor_sync(0xffffffffu,x);
++                    }
+                     if(lane==0) {
+-                        int idx=((wm*4+row)*(BN/16)+wn*Groups+group)*16+(rb&15u);
+-                        if(rb<16) transcript[idx]=x;
+-                        else { unsigned prev=transcript[idx]; transcript[idx]=((prev<<13)|(prev>>19))^x; }
++                        #pragma unroll
++                        for(int j=0;j<4;++j) {
++                            int idx=((wm*4+row)*(BN/16)+wn*Groups+first+j)*16+(rb&15u);
++                            if(rb<16)transcript[idx]=values[j];
++                            else {unsigned prev=transcript[idx];transcript[idx]=((prev<<13)|(prev>>19))^values[j];}
++                        }
+                     }
+                 }
+             }

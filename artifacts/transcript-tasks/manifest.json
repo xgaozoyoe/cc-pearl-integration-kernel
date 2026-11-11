@@ -1,0 +1,33 @@
+{
+  "description": "12MMA warps+1independent transcript consumer. Each task4tiles,per-producer ready/free objects,count32. Offline only.",
+  "variants": {
+    "native": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "104c0c1b265260dea5c9ab0bb174ebbbe7ee9cceb0cf0acebf2a9d1dfa4d50aa",
+      "smem": 69632,
+      "correct": true,
+      "threads": 384
+    },
+    "source_control": {
+      "entry": "_ZN31transcript_tasks_source_control6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "8f11e09b1c49bd24bde7440fcb7a4ab4bafbf0931c9f5572d6df7572c2c8623d",
+      "threads": 384,
+      "smem": 69632,
+      "correct": true
+    },
+    "consumer_late": {
+      "entry": "_ZN30transcript_tasks_consumer_late6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "a5557ce6618c5421951c2bfd939f032d19cfd202fba65a019cf0ff91d106c651",
+      "threads": 416,
+      "smem": 75968,
+      "correct": true
+    },
+    "consumer_fine": {
+      "entry": "_ZN30transcript_tasks_consumer_fine6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "9c5fe58d66413a9b4d52294beb021ce6f3b4d88242456314902e978d19f60f9b",
+      "threads": 416,
+      "smem": 75968,
+      "correct": true
+    }
+  }
+}

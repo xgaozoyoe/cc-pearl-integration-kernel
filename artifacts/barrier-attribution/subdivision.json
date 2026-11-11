@@ -1,0 +1,194 @@
+{
+  "blocks": [
+    {
+      "operand": "A",
+      "block": 0,
+      "producers": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "consumers": [
+        0,
+        4,
+        8
+      ]
+    },
+    {
+      "operand": "A",
+      "block": 1,
+      "producers": [
+        0,
+        1,
+        2,
+        3,
+        8,
+        9,
+        10,
+        11
+      ],
+      "consumers": [
+        1,
+        5,
+        9
+      ]
+    },
+    {
+      "operand": "A",
+      "block": 2,
+      "producers": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "consumers": [
+        2,
+        6,
+        10
+      ]
+    },
+    {
+      "operand": "A",
+      "block": 3,
+      "producers": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "consumers": [
+        3,
+        7,
+        11
+      ]
+    },
+    {
+      "operand": "B",
+      "block": 0,
+      "producers": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "consumers": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "operand": "B",
+      "block": 1,
+      "producers": [
+        0,
+        1,
+        2,
+        3,
+        8,
+        9,
+        10,
+        11
+      ],
+      "consumers": [
+        4,
+        5,
+        6,
+        7
+      ]
+    },
+    {
+      "operand": "B",
+      "block": 2,
+      "producers": [
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "consumers": [
+        8,
+        9,
+        10,
+        11
+      ]
+    }
+  ],
+  "models": [
+    {
+      "sizes": [
+        8,
+        4
+      ],
+      "ids": 4,
+      "warp_barrier_instructions_per_iteration": 24,
+      "late_peer_pairs": 68
+    },
+    {
+      "sizes": [
+        6,
+        6
+      ],
+      "ids": 4,
+      "warp_barrier_instructions_per_iteration": 24,
+      "late_peer_pairs": 60
+    },
+    {
+      "sizes": [
+        4,
+        4,
+        4
+      ],
+      "ids": 6,
+      "warp_barrier_instructions_per_iteration": 36,
+      "late_peer_pairs": 36
+    },
+    {
+      "sizes": [
+        3,
+        3,
+        3,
+        3
+      ],
+      "ids": 8,
+      "warp_barrier_instructions_per_iteration": 48,
+      "late_peer_pairs": 24
+    },
+    {
+      "sizes": [
+        2,
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "ids": 12,
+      "warp_barrier_instructions_per_iteration": 72,
+      "late_peer_pairs": 12
+    }
+  ]
+}

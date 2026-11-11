@@ -1,0 +1,28 @@
+Three-group early-publication experiment; offline only.
+Groups:0=warps0..3,1=4..7,2=8..11.
+Even K IDs4,5,6; odd K IDs8,9,10. XOR12 alternates each register.
+Each warp contributes once to each of the three barriers per iteration:
+  early arrive to both OTHER groups after its future copies and old-stage reads complete;
+  late sync to OWN group after its tail MMA and fold.
+All three barriers count384 threads; do not change their counts to128.
+
+Safety argument at each completed own barrier:
+  own-group late arrivals imply all own-group old reads and future copies completed;
+  other-group early arrivals establish the same conditions for other groups;
+  consequently the next-stage buffer is ready and the old buffer may be reused.
+Early arrivals are nonblocking, so there is no wait cycle between groups.
+A warp cannot finish iteration k+1's handoff until every group has published
+iteration k+1, which requires passing its own iteration k handoff. Therefore
+reusing the same barrier IDs at k+2 cannot mix arrivals with an unfinished k phase.
+Final CTA barrier remains before cross-warp transcript output reads.
+
+Compiled source_control is the8+4 source protocol, not the frozen optimized SASS.
+Compiled three_groups publishes after64 MMA; three_early rotates its two arrivals
+before the last16 MMA. First arrival explicitly waits for both last LDSM write
+scoreboards. Remaining tail instruction order is unchanged. No new copy/reuse
+mapping; same inputs and useful MMA workload. Register allocation/instruction
+scheduling differ from native; comparisons cannot isolate barrier cost alone.
+
+Per CTA/K64: baseline12 early arrivals+12 late syncs; three groups24+12.
+ptxas reports16 barrier resources for dynamic IDs for BOTH source kernels;
+this is allocation metadata, not16 distinct IDs executed each iteration.

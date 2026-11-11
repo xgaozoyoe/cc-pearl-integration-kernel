@@ -1,0 +1,63 @@
+{
+  "warning": "C and C0 have intentionally wrong arithmetic; never use for mining. C relocates only three B scoreboard waits. D keeps NOP slots and fixed stalls.",
+  "source_sha256": "46fd8653295a23a2215aaad91dbfdf41c98fe87359af09201dfbcb21f1687bad",
+  "variants": {
+    "A": {
+      "entry": "_ZN21handoff_lean_baseline6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "46fd8653295a23a2215aaad91dbfdf41c98fe87359af09201dfbcb21f1687bad",
+      "smem": 69632,
+      "correct": true,
+      "static_imma": 64,
+      "static_ldsm": 16
+    },
+    "B": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "46fd8653295a23a2215aaad91dbfdf41c98fe87359af09201dfbcb21f1687bad",
+      "smem": 69632,
+      "correct": true,
+      "static_imma": 64,
+      "static_ldsm": 16
+    },
+    "C0": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "624d5cbfccb3fb269ef34b4665c8740905c33f20ccf90eead3bbf6c6cc3e0cd8",
+      "smem": 69632,
+      "correct": false,
+      "static_imma": 64,
+      "static_ldsm": 16
+    },
+    "C": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "3ac7191a1c0ceb9a309e93b561c60e628415a115cbe9e3f32214343ea23db960",
+      "smem": 69632,
+      "correct": false,
+      "static_imma": 64,
+      "static_ldsm": 16
+    },
+    "D": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "7078bfb099d5c70f5e7b5443df78d33f5e927376c39e7fd548be807278b55fde",
+      "smem": 69632,
+      "correct": true,
+      "static_imma": 64,
+      "static_ldsm": 16
+    }
+  },
+  "wait_moves": [
+    [
+      4560,
+      4576,
+      4640
+    ],
+    [
+      4736,
+      4752,
+      4816
+    ],
+    [
+      4928,
+      4944,
+      5136
+    ]
+  ]
+}

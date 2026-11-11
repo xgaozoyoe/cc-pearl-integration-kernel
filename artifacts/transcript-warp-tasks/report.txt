@@ -1,0 +1,35 @@
+Frozen fastest binary SHA256:104c0c1b265260dea5c9ab0bb174ebbbe7ee9cceb0cf0acebf2a9d1dfa4d50aa
+12producer warps ->12 transcript tasks. Each task contains16tiles;CTA total192tiles.
+Each warp owns64x64 output region,128accumulator INT32 values/lane (4096/warp).
+Transcript R128,K4096 has32fold boundaries;each tile has16stored state words,updated by its same warp on folds16..31.
+warp producer->consumer CTA_rows CTA_cols transcript_tile_rows transcript_tile_cols owned_state_words
+ 0 W0->T0(W0) [0, 63] [0, 63] [0,3] [0,3] 256
+ 1 W1->T1(W1) [64, 127] [0, 63] [4,7] [0,3] 256
+ 2 W2->T2(W2) [128, 191] [0, 63] [8,11] [0,3] 256
+ 3 W3->T3(W3) [192, 255] [0, 63] [12,15] [0,3] 256
+ 4 W4->T4(W4) [0, 63] [64, 127] [0,3] [4,7] 256
+ 5 W5->T5(W5) [64, 127] [64, 127] [4,7] [4,7] 256
+ 6 W6->T6(W6) [128, 191] [64, 127] [8,11] [4,7] 256
+ 7 W7->T7(W7) [192, 255] [64, 127] [12,15] [4,7] 256
+ 8 W8->T8(W8) [0, 63] [128, 191] [0,3] [8,11] 256
+ 9 W9->T9(W9) [64, 127] [128, 191] [4,7] [8,11] 256
+10 W10->T10(W10) [128, 191] [128, 191] [8,11] [8,11] 256
+11 W11->T11(W11) [192, 255] [128, 191] [12,15] [8,11] 256
+
+Exact SASS dependency boundary:
+0x16c0 cp.async wait:own thread pending copies,NOT other warp transcript completion.
+0x16d0 nonblocking peer named arrival:scoreboard mask6 waits own final LDSM. It publishes to peers;does not wait for their arrivals.
+0x16e0..17d0 remaining16MMA within same warp.
+0x17e0 fold guard;0x1870 local XOR;0x1940/0x2320 REDUX paths. REDUX is within this warp.
+0x2a00 own-group blocking named sync occurs AFTER this warp transcript stores.
+0x2a50 final CTA barrier precedes cross-warp collective global output copy.
+
+Finding:current T_i arithmetic has no barrier dependency on a different producer warp W_j final accumulator/transcript result.
+All3072shared transcript words have exactly one owning warp;producer=consumer for every tile and both write/update passes.
+Cross-warp A/B readiness is a real operand dependency earlier in GEMM. Late handoff can indirectly delay the NEXT iteration and its future transcript,not the already-ready current T_i.
+Adding a new per-T_i named barrier does not remove a current cross-warp dependency;it would add a rendezvous unless ownership or execution architecture changes.
+Independent consumer warp T_i is a distinct redesign:register values are warp-private and require explicit transport. Not implemented or timed by this audit.
+
+Boundaries:static ownership/control-flow proof,not measurement of exact start cycles or scheduler utilization. No speedup claimed.
+No GPU runs,register changes,barrier changes,production writes or live mining.
+Source references:first namespace fold_defer_source8 lines128-132 and221-245;frozen SASS is authority for actual publication placement.

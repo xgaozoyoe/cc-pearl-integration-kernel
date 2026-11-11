@@ -1,0 +1,116 @@
+--- whole_stage_split_deferred
++++ region_deferred
+@@ -1,6 +1,6 @@
+ #include <cuda_runtime.h>
+ #include <cstdint>
+-namespace ready_free_split_deferred {
++namespace region_free_region_deferred {
+ constexpr int BM=256, BN=192, THREADS=384;
+ constexpr int WORDS=(BM/16)*(BN/16)*16;
+ struct Fragment { unsigned v[4]; };
+@@ -53,9 +53,25 @@
+         : "r"(a.v[0]),"r"(a.v[1]),"r"(a.v[2]),"r"(a.v[3]),
+           "r"(b.v[Packed?2*half:half]),"r"(b.v[Packed?2*half+1:half+2]));
+ }
++__device__ __forceinline__ void rf_wait(unsigned bar,unsigned parity) {
++ unsigned done;
++ do {
++  asm volatile("{ .reg .pred p; mbarrier.test_wait.parity.shared.b64 p,[%1],%2; selp.u32 %0,1,0,p; }" : "=r"(done) : "r"(bar),"r"(parity) : "memory");
++ } while(!done);
++}
++__device__ __forceinline__ void rf_ready(unsigned bar) {
++ // One asynchronous arrival per thread, count384; no extra normal arrival.
++ asm volatile("cp.async.mbarrier.arrive.noinc.shared.b64 [%0];" :: "r"(bar) : "memory");
++}
++__device__ __forceinline__ void rf_free(unsigned bar) {
++ asm volatile("mbarrier.arrive.shared.b64 _,[%0];" :: "r"(bar) : "memory");
++}
++__device__ __forceinline__ void region_wait(unsigned bars,int kt,int row,bool b) {
++ if(kt>=2) rf_wait(bars+16+56*(kt&1)+8*((b?4:0)+row/64),unsigned((kt-2)/2)&1u);
++}
+ template<int TileK,bool Planar,bool UnrollCopy=false,bool FixedCopy=false,int Layout=0>
+ __device__ __forceinline__ void stage_copy(const signed char* a,const signed char* b,
+-        signed char* sa,signed char* sb,int cm,int cn,int kt,int m,int n,int k) {
++        signed char* sa,signed char* sb,int cm,int cn,int kt,int m,int n,int k,unsigned bars=0) {
+     if constexpr(FixedCopy) {
+         static_assert(TileK==64 && !Planar);
+         // Exact 384-thread assignment: A has 2 full rounds plus 256 lanes;
+@@ -95,6 +111,7 @@
+     unsigned offB=unsigned(grB)*unsigned(k)+unsigned(kt*64+col);
+     #pragma unroll
+     for(int j=0;j<3;++j) if(threadIdx.x+j*THREADS<BM*64/16) {
++        region_wait(bars,kt,(threadIdx.x+j*THREADS)/4,false);
+         bool valid=true;
+         const signed char* src=a+offA;
+         asm volatile("cp.async.cg.shared.global [%0],[%1],16,%2;" :: "r"(dstA),"l"(src),"r"(valid?16:0));
+@@ -102,6 +119,7 @@
+     }
+     #pragma unroll
+     for(int j=0;j<2;++j) {
++        region_wait(bars,kt,(threadIdx.x+j*THREADS)/4,true);
+         bool valid=grB<n;
+         const signed char* src=b+(valid?offB:0u);
+         asm volatile("cp.async.cg.shared.global [%0],[%1],16,%2;" :: "r"(dstB),"l"(src),"r"(valid?16:0));
+@@ -111,19 +129,6 @@
+ }
+ 
+ 
+-__device__ __forceinline__ void rf_wait(unsigned bar,unsigned parity) {
+- unsigned done;
+- do {
+-  asm volatile("{ .reg .pred p; mbarrier.test_wait.parity.shared.b64 p,[%1],%2; selp.u32 %0,1,0,p; }" : "=r"(done) : "r"(bar),"r"(parity) : "memory");
+- } while(!done);
+-}
+-__device__ __forceinline__ void rf_ready(unsigned bar) {
+- // One asynchronous arrival per thread, count384; no extra normal arrival.
+- asm volatile("cp.async.mbarrier.arrive.noinc.shared.b64 [%0];" :: "r"(bar) : "memory");
+-}
+-__device__ __forceinline__ void rf_free(unsigned bar) {
+- asm volatile("mbarrier.arrive.shared.b64 _,[%0];" :: "r"(bar) : "memory");
+-}
+ template<int Lead,int TileK=64,bool Planar=false,bool PackedB=false,bool UnrollCopy=false,bool FixedCopy=false,int Stages=2,bool Wide=false,int Layout=0>
+ __global__ void __launch_bounds__(Wide?256:THREADS,1) kernel(const signed char* a,const signed char* b,int m,int n,int k,int r,unsigned* out) {
+     constexpr int WarpN=Wide?96:64, Groups=WarpN/16, Threads=Wide?256:THREADS;
+@@ -143,9 +148,10 @@
+     // Native MMA lane ownership: row=lane/4 (+8 for c2,c3),
+     // column=2*(lane%4) (+1 for c1,c3). Two halves form a16x16 tile.
+     unsigned bars=(unsigned)__cvta_generic_to_shared(shared+Stages*(BM+BN)*TileK+WORDS*sizeof(unsigned));
+-    if(threadIdx.x<4) {
++    if(threadIdx.x<16) {
+         unsigned addr=bars+8*threadIdx.x;
+-        asm volatile("mbarrier.init.shared.b64 [%0],384;" :: "r"(addr) : "memory");
++        unsigned count=threadIdx.x<2?384:((threadIdx.x-2)%7<4?96:128);
++        asm volatile("mbarrier.init.shared.b64 [%0],%1;" :: "r"(addr),"r"(count) : "memory");
+     }
+     __syncthreads();
+     unsigned c[4][Groups][2][4]={};
+@@ -163,8 +169,8 @@
+         int current=kt%Stages,next=(kt+Stages-1)%Stages;
+         if(kt+1<k/64) {
+             // Slot(next) previously held K(kt-1), except pristine slot1 at kt0.
+-            if(kt>0) rf_wait(bars+16+8*next,unsigned((kt-1)/2)&1u);
+-            stage_copy<TileK,Planar,UnrollCopy,FixedCopy,Layout>(a,b,sa+next*BM*TileK,sb+next*BN*TileK,cm,cn,kt+1,m,n,k);
++
++            stage_copy<TileK,Planar,UnrollCopy,FixedCopy,Layout>(a,b,sa+next*BM*TileK,sb+next*BN*TileK,cm,cn,kt+1,m,n,k,bars);
+             rf_ready(bars+8*next);
+         }
+         rf_wait(bars+8*current,unsigned(kt/2)&1u);
+@@ -239,7 +245,8 @@
+         }
+         }
+         // Publish this group's completed future copies and old-stage reads.
+-        rf_free(bars+16+8*current);
++        rf_free(bars+16+56*current+8*wm);
++        rf_free(bars+16+56*current+32+8*wn);
+         if constexpr(TileK==64) {
+         if((kt+1)%2==0) {
+             unsigned rb=unsigned((kt+1)/2-1);
+@@ -266,7 +273,7 @@
+ 
+     }
+     __syncthreads();
+-    if(threadIdx.x<4) {
++    if(threadIdx.x<16) {
+         unsigned addr=bars+8*threadIdx.x;
+         asm volatile("mbarrier.inval.shared.b64 [%0];" :: "r"(addr) : "memory");
+     }

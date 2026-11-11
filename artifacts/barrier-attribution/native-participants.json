@@ -1,0 +1,3074 @@
+[
+  {
+    "k_iteration": 0,
+    "barrier_id": 4,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 0,
+    "barrier_id": 5,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 1,
+    "barrier_id": 6,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "store"
+  },
+  {
+    "k_iteration": 1,
+    "barrier_id": 7,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "store"
+  },
+  {
+    "k_iteration": 2,
+    "barrier_id": 4,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 2,
+    "barrier_id": 5,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 3,
+    "barrier_id": 6,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "store"
+  },
+  {
+    "k_iteration": 3,
+    "barrier_id": 7,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "store"
+  },
+  {
+    "k_iteration": 4,
+    "barrier_id": 4,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 4,
+    "barrier_id": 5,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 5,
+    "barrier_id": 6,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "store"
+  },
+  {
+    "k_iteration": 5,
+    "barrier_id": 7,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "store"
+  },
+  {
+    "k_iteration": 6,
+    "barrier_id": 4,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 6,
+    "barrier_id": 5,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 7,
+    "barrier_id": 6,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "store"
+  },
+  {
+    "k_iteration": 7,
+    "barrier_id": 7,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "store"
+  },
+  {
+    "k_iteration": 8,
+    "barrier_id": 4,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 8,
+    "barrier_id": 5,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 9,
+    "barrier_id": 6,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "store"
+  },
+  {
+    "k_iteration": 9,
+    "barrier_id": 7,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "store"
+  },
+  {
+    "k_iteration": 10,
+    "barrier_id": 4,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 10,
+    "barrier_id": 5,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 11,
+    "barrier_id": 6,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "store"
+  },
+  {
+    "k_iteration": 11,
+    "barrier_id": 7,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "store"
+  },
+  {
+    "k_iteration": 12,
+    "barrier_id": 4,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 12,
+    "barrier_id": 5,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 13,
+    "barrier_id": 6,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "store"
+  },
+  {
+    "k_iteration": 13,
+    "barrier_id": 7,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "store"
+  },
+  {
+    "k_iteration": 14,
+    "barrier_id": 4,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 14,
+    "barrier_id": 5,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 15,
+    "barrier_id": 6,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "store"
+  },
+  {
+    "k_iteration": 15,
+    "barrier_id": 7,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "store"
+  },
+  {
+    "k_iteration": 16,
+    "barrier_id": 4,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 16,
+    "barrier_id": 5,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 17,
+    "barrier_id": 6,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "store"
+  },
+  {
+    "k_iteration": 17,
+    "barrier_id": 7,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "store"
+  },
+  {
+    "k_iteration": 18,
+    "barrier_id": 4,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 18,
+    "barrier_id": 5,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 19,
+    "barrier_id": 6,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "store"
+  },
+  {
+    "k_iteration": 19,
+    "barrier_id": 7,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "store"
+  },
+  {
+    "k_iteration": 20,
+    "barrier_id": 4,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 20,
+    "barrier_id": 5,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 21,
+    "barrier_id": 6,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "store"
+  },
+  {
+    "k_iteration": 21,
+    "barrier_id": 7,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "store"
+  },
+  {
+    "k_iteration": 22,
+    "barrier_id": 4,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 22,
+    "barrier_id": 5,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 23,
+    "barrier_id": 6,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "store"
+  },
+  {
+    "k_iteration": 23,
+    "barrier_id": 7,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "store"
+  },
+  {
+    "k_iteration": 24,
+    "barrier_id": 4,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 24,
+    "barrier_id": 5,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 25,
+    "barrier_id": 6,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "store"
+  },
+  {
+    "k_iteration": 25,
+    "barrier_id": 7,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "store"
+  },
+  {
+    "k_iteration": 26,
+    "barrier_id": 4,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 26,
+    "barrier_id": 5,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 27,
+    "barrier_id": 6,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "store"
+  },
+  {
+    "k_iteration": 27,
+    "barrier_id": 7,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "store"
+  },
+  {
+    "k_iteration": 28,
+    "barrier_id": 4,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 28,
+    "barrier_id": 5,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 29,
+    "barrier_id": 6,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "store"
+  },
+  {
+    "k_iteration": 29,
+    "barrier_id": 7,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "store"
+  },
+  {
+    "k_iteration": 30,
+    "barrier_id": 4,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 30,
+    "barrier_id": 5,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 31,
+    "barrier_id": 6,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "store"
+  },
+  {
+    "k_iteration": 31,
+    "barrier_id": 7,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "store"
+  },
+  {
+    "k_iteration": 32,
+    "barrier_id": 4,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 32,
+    "barrier_id": 5,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 33,
+    "barrier_id": 6,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "rotate_xor"
+  },
+  {
+    "k_iteration": 33,
+    "barrier_id": 7,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "rotate_xor"
+  },
+  {
+    "k_iteration": 34,
+    "barrier_id": 4,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 34,
+    "barrier_id": 5,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 35,
+    "barrier_id": 6,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "rotate_xor"
+  },
+  {
+    "k_iteration": 35,
+    "barrier_id": 7,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "rotate_xor"
+  },
+  {
+    "k_iteration": 36,
+    "barrier_id": 4,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 36,
+    "barrier_id": 5,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 37,
+    "barrier_id": 6,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "rotate_xor"
+  },
+  {
+    "k_iteration": 37,
+    "barrier_id": 7,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "rotate_xor"
+  },
+  {
+    "k_iteration": 38,
+    "barrier_id": 4,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 38,
+    "barrier_id": 5,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 39,
+    "barrier_id": 6,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "rotate_xor"
+  },
+  {
+    "k_iteration": 39,
+    "barrier_id": 7,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "rotate_xor"
+  },
+  {
+    "k_iteration": 40,
+    "barrier_id": 4,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 40,
+    "barrier_id": 5,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 41,
+    "barrier_id": 6,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "rotate_xor"
+  },
+  {
+    "k_iteration": 41,
+    "barrier_id": 7,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "rotate_xor"
+  },
+  {
+    "k_iteration": 42,
+    "barrier_id": 4,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 42,
+    "barrier_id": 5,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 43,
+    "barrier_id": 6,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "rotate_xor"
+  },
+  {
+    "k_iteration": 43,
+    "barrier_id": 7,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "rotate_xor"
+  },
+  {
+    "k_iteration": 44,
+    "barrier_id": 4,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 44,
+    "barrier_id": 5,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 45,
+    "barrier_id": 6,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "rotate_xor"
+  },
+  {
+    "k_iteration": 45,
+    "barrier_id": 7,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "rotate_xor"
+  },
+  {
+    "k_iteration": 46,
+    "barrier_id": 4,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 46,
+    "barrier_id": 5,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 47,
+    "barrier_id": 6,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "rotate_xor"
+  },
+  {
+    "k_iteration": 47,
+    "barrier_id": 7,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "rotate_xor"
+  },
+  {
+    "k_iteration": 48,
+    "barrier_id": 4,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 48,
+    "barrier_id": 5,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 49,
+    "barrier_id": 6,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "rotate_xor"
+  },
+  {
+    "k_iteration": 49,
+    "barrier_id": 7,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "rotate_xor"
+  },
+  {
+    "k_iteration": 50,
+    "barrier_id": 4,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 50,
+    "barrier_id": 5,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 51,
+    "barrier_id": 6,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "rotate_xor"
+  },
+  {
+    "k_iteration": 51,
+    "barrier_id": 7,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "rotate_xor"
+  },
+  {
+    "k_iteration": 52,
+    "barrier_id": 4,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 52,
+    "barrier_id": 5,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 53,
+    "barrier_id": 6,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "rotate_xor"
+  },
+  {
+    "k_iteration": 53,
+    "barrier_id": 7,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "rotate_xor"
+  },
+  {
+    "k_iteration": 54,
+    "barrier_id": 4,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 54,
+    "barrier_id": 5,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 55,
+    "barrier_id": 6,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "rotate_xor"
+  },
+  {
+    "k_iteration": 55,
+    "barrier_id": 7,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "rotate_xor"
+  },
+  {
+    "k_iteration": 56,
+    "barrier_id": 4,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 56,
+    "barrier_id": 5,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 57,
+    "barrier_id": 6,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "rotate_xor"
+  },
+  {
+    "k_iteration": 57,
+    "barrier_id": 7,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "rotate_xor"
+  },
+  {
+    "k_iteration": 58,
+    "barrier_id": 4,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 58,
+    "barrier_id": 5,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 59,
+    "barrier_id": 6,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "rotate_xor"
+  },
+  {
+    "k_iteration": 59,
+    "barrier_id": 7,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "rotate_xor"
+  },
+  {
+    "k_iteration": 60,
+    "barrier_id": 4,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 60,
+    "barrier_id": 5,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 61,
+    "barrier_id": 6,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "rotate_xor"
+  },
+  {
+    "k_iteration": 61,
+    "barrier_id": 7,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "rotate_xor"
+  },
+  {
+    "k_iteration": 62,
+    "barrier_id": 4,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 62,
+    "barrier_id": 5,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": false,
+    "fold_mode": "none"
+  },
+  {
+    "k_iteration": 63,
+    "barrier_id": 6,
+    "waiting_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "rotate_xor"
+  },
+  {
+    "k_iteration": 63,
+    "barrier_id": 7,
+    "waiting_warps": [
+      8,
+      9,
+      10,
+      11
+    ],
+    "early_arrival_warps": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "early_arrival_pc": "0x16d0",
+    "late_arrival_pc": "0x2a00",
+    "fold": true,
+    "fold_mode": "rotate_xor"
+  }
+]

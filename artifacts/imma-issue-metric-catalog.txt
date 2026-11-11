@@ -1,0 +1,129 @@
+Chip ad102
+--------------------------------------------------------------------------- --------------- --------------- ----------------------------------------------------------------------
+Metric Name                                                                 Metric Type     Metric Unit     Metric Description                                                    
+--------------------------------------------------------------------------- --------------- --------------- ----------------------------------------------------------------------
+smsp__inst_executed_pipe_tensor_v2.avg                                      Counter         inst            # of warp instructions executed by tensor pipe (This counter metric   
+                                                                                                            represents the avg across all sub-unit instances)                     
+smsp__inst_executed_pipe_tensor_v2.avg.peak_sustained                       Counter         inst/cycle      # of warp instructions executed by tensor pipe (This counter metric   
+                                                                                                            represents the avg peak sustained rate across all sub-unit instances) 
+smsp__inst_executed_pipe_tensor_v2.avg.peak_sustained_active                Counter         inst            # of warp instructions executed by tensor pipe (This counter metric   
+                                                                                                            represents the avg peak sustained rate achieved during unit active    
+                                                                                                            cycles across all sub-unit instances)                                 
+smsp__inst_executed_pipe_tensor_v2.avg.peak_sustained_active.per_second     Counter         inst/s          # of warp instructions executed by tensor pipe (This counter metric   
+                                                                                                            represents the avg peak sustained rate achieved during unit active    
+                                                                                                            cycles per second across all sub-unit instances)                      
+smsp__inst_executed_pipe_tensor_v2.avg.peak_sustained_elapsed               Counter         inst            # of warp instructions executed by tensor pipe (This counter metric   
+                                                                                                            represents the avg peak sustained rate achieved during elapsed        
+                                                                                                            cycles across all sub-unit instances)                                 
+smsp__inst_executed_pipe_tensor_v2.avg.peak_sustained_elapsed.per_second    Counter         inst/s          # of warp instructions executed by tensor pipe (This counter metric   
+                                                                                                            represents the avg peak sustained rate achieved during elapsed        
+                                                                                                            cycles per second across all sub-unit instances)                      
+smsp__inst_executed_pipe_tensor_v2.avg.per_cycle_active                     Counter         inst/cycle      # of warp instructions executed by tensor pipe (This counter metric   
+                                                                                                            represents the avg of the number of operations per unit active cycle  
+                                                                                                            across all sub-unit instances)                                        
+smsp__inst_executed_pipe_tensor_v2.avg.per_cycle_elapsed                    Counter         inst/cycle      # of warp instructions executed by tensor pipe (This counter metric   
+                                                                                                            represents the avg of the number of operations per elapsed cycle      
+                                                                                                            across all sub-unit instances)                                        
+smsp__inst_executed_pipe_tensor_v2.avg.per_second                           Counter         inst/s          # of warp instructions executed by tensor pipe (This counter metric   
+                                                                                                            represents the avg of the number of operations per second across all  
+                                                                                                            sub-unit instances)                                                   
+smsp__inst_executed_pipe_tensor_v2.avg.pct_of_peak_sustained_active         Counter         %               # of warp instructions executed by tensor pipe (This counter metric   
+                                                                                                            represents the avg percent of the peak sustained rate achieved        
+                                                                                                            during unit active cycles across all sub-unit instances)              
+smsp__inst_executed_pipe_tensor_v2.avg.pct_of_peak_sustained_elapsed        Counter         %               # of warp instructions executed by tensor pipe (This counter metric   
+                                                                                                            represents the avg percent of the peak sustained rate achieved        
+                                                                                                            during elapsed cycles across all sub-unit instances)                  
+smsp__inst_executed_pipe_tensor_v2.max                                      Counter         inst            # of warp instructions executed by tensor pipe (This counter metric   
+                                                                                                            represents the max across all sub-unit instances)                     
+smsp__inst_executed_pipe_tensor_v2.max.peak_sustained                       Counter         inst/cycle      # of warp instructions executed by tensor pipe (This counter metric   
+                                                                                                            represents the max peak sustained rate across all sub-unit instances) 
+smsp__inst_executed_pipe_tensor_v2.max.peak_sustained_active                Counter         inst            # of warp instructions executed by tensor pipe (This counter metric   
+                                                                                                            represents the max peak sustained rate achieved during unit active    
+                                                                                                            cycles across all sub-unit instances)                                 
+smsp__inst_executed_pipe_tensor_v2.max.peak_sustained_active.per_second     Counter         inst/s          # of warp instructions executed by tensor pipe (This counter metric   
+                                                                                                            represents the max peak sustained rate achieved during unit active    
+                                                                                                            cycles per second across all sub-unit instances)                      
+smsp__inst_executed_pipe_tensor_v2.max.peak_sustained_elapsed               Counter         inst            # of warp instructions executed by tensor pipe (This counter metric   
+                                                                                                            represents the max peak sustained rate achieved during elapsed        
+                                                                                                            cycles across all sub-unit instances)                                 
+smsp__inst_executed_pipe_tensor_v2.max.peak_sustained_elapsed.per_second    Counter         inst/s          # of warp instructions executed by tensor pipe (This counter metric   
+                                                                                                            represents the max peak sustained rate achieved during elapsed        
+                                                                                                            cycles per second across all sub-unit instances)                      
+smsp__inst_executed_pipe_tensor_v2.max.per_cycle_active                     Counter         inst/cycle      # of warp instructions executed by tensor pipe (This counter metric   
+                                                                                                            represents the max of the number of operations per unit active cycle  
+                                                                                                            across all sub-unit instances)                                        
+smsp__inst_executed_pipe_tensor_v2.max.per_cycle_elapsed                    Counter         inst/cycle      # of warp instructions executed by tensor pipe (This counter metric   
+                                                                                                            represents the max of the number of operations per elapsed cycle      
+                                                                                                            across all sub-unit instances)                                        
+smsp__inst_executed_pipe_tensor_v2.max.per_second                           Counter         inst/s          # of warp instructions executed by tensor pipe (This counter metric   
+                                                                                                            represents the max of the number of operations per second across all  
+                                                                                                            sub-unit instances)                                                   
+smsp__inst_executed_pipe_tensor_v2.max.pct_of_peak_sustained_active         Counter         %               # of warp instructions executed by tensor pipe (This counter metric   
+                                                                                                            represents the max percent of the peak sustained rate achieved        
+                                                                                                            during unit active cycles across all sub-unit instances)              
+smsp__inst_executed_pipe_tensor_v2.max.pct_of_peak_sustained_elapsed        Counter         %               # of warp instructions executed by tensor pipe (This counter metric   
+                                                                                                            represents the max percent of the peak sustained rate achieved        
+                                                                                                            during elapsed cycles across all sub-unit instances)                  
+smsp__inst_executed_pipe_tensor_v2.min                                      Counter         inst            # of warp instructions executed by tensor pipe (This counter metric   
+                                                                                                            represents the min across all sub-unit instances)                     
+smsp__inst_executed_pipe_tensor_v2.min.peak_sustained                       Counter         inst/cycle      # of warp instructions executed by tensor pipe (This counter metric   
+                                                                                                            represents the min peak sustained rate across all sub-unit instances) 
+smsp__inst_executed_pipe_tensor_v2.min.peak_sustained_active                Counter         inst            # of warp instructions executed by tensor pipe (This counter metric   
+                                                                                                            represents the min peak sustained rate achieved during unit active    
+                                                                                                            cycles across all sub-unit instances)                                 
+smsp__inst_executed_pipe_tensor_v2.min.peak_sustained_active.per_second     Counter         inst/s          # of warp instructions executed by tensor pipe (This counter metric   
+                                                                                                            represents the min peak sustained rate achieved during unit active    
+                                                                                                            cycles per second across all sub-unit instances)                      
+smsp__inst_executed_pipe_tensor_v2.min.peak_sustained_elapsed               Counter         inst            # of warp instructions executed by tensor pipe (This counter metric   
+                                                                                                            represents the min peak sustained rate achieved during elapsed        
+                                                                                                            cycles across all sub-unit instances)                                 
+smsp__inst_executed_pipe_tensor_v2.min.peak_sustained_elapsed.per_second    Counter         inst/s          # of warp instructions executed by tensor pipe (This counter metric   
+                                                                                                            represents the min peak sustained rate achieved during elapsed        
+                                                                                                            cycles per second across all sub-unit instances)                      
+smsp__inst_executed_pipe_tensor_v2.min.per_cycle_active                     Counter         inst/cycle      # of warp instructions executed by tensor pipe (This counter metric   
+                                                                                                            represents the min of the number of operations per unit active cycle  
+                                                                                                            across all sub-unit instances)                                        
+smsp__inst_executed_pipe_tensor_v2.min.per_cycle_elapsed                    Counter         inst/cycle      # of warp instructions executed by tensor pipe (This counter metric   
+                                                                                                            represents the min of the number of operations per elapsed cycle      
+                                                                                                            across all sub-unit instances)                                        
+smsp__inst_executed_pipe_tensor_v2.min.per_second                           Counter         inst/s          # of warp instructions executed by tensor pipe (This counter metric   
+                                                                                                            represents the min of the number of operations per second across all  
+                                                                                                            sub-unit instances)                                                   
+smsp__inst_executed_pipe_tensor_v2.min.pct_of_peak_sustained_active         Counter         %               # of warp instructions executed by tensor pipe (This counter metric   
+                                                                                                            represents the min percent of the peak sustained rate achieved        
+                                                                                                            during unit active cycles across all sub-unit instances)              
+smsp__inst_executed_pipe_tensor_v2.min.pct_of_peak_sustained_elapsed        Counter         %               # of warp instructions executed by tensor pipe (This counter metric   
+                                                                                                            represents the min percent of the peak sustained rate achieved        
+                                                                                                            during elapsed cycles across all sub-unit instances)                  
+smsp__inst_executed_pipe_tensor_v2.sum                                      Counter         inst            # of warp instructions executed by tensor pipe (This counter metric   
+                                                                                                            represents the sum across all sub-unit instances)                     
+smsp__inst_executed_pipe_tensor_v2.sum.peak_sustained                       Counter         inst/cycle      # of warp instructions executed by tensor pipe (This counter metric   
+                                                                                                            represents the sum peak sustained rate across all sub-unit instances) 
+smsp__inst_executed_pipe_tensor_v2.sum.peak_sustained_active                Counter         inst            # of warp instructions executed by tensor pipe (This counter metric   
+                                                                                                            represents the sum peak sustained rate achieved during unit active    
+                                                                                                            cycles across all sub-unit instances)                                 
+smsp__inst_executed_pipe_tensor_v2.sum.peak_sustained_active.per_second     Counter         inst/s          # of warp instructions executed by tensor pipe (This counter metric   
+                                                                                                            represents the sum peak sustained rate achieved during unit active    
+                                                                                                            cycles per second across all sub-unit instances)                      
+smsp__inst_executed_pipe_tensor_v2.sum.peak_sustained_elapsed               Counter         inst            # of warp instructions executed by tensor pipe (This counter metric   
+                                                                                                            represents the sum peak sustained rate achieved during elapsed        
+                                                                                                            cycles across all sub-unit instances)                                 
+smsp__inst_executed_pipe_tensor_v2.sum.peak_sustained_elapsed.per_second    Counter         inst/s          # of warp instructions executed by tensor pipe (This counter metric   
+                                                                                                            represents the sum peak sustained rate achieved during elapsed        
+                                                                                                            cycles per second across all sub-unit instances)                      
+smsp__inst_executed_pipe_tensor_v2.sum.per_cycle_active                     Counter         inst/cycle      # of warp instructions executed by tensor pipe (This counter metric   
+                                                                                                            represents the sum of the number of operations per unit active cycle  
+                                                                                                            across all sub-unit instances)                                        
+smsp__inst_executed_pipe_tensor_v2.sum.per_cycle_elapsed                    Counter         inst/cycle      # of warp instructions executed by tensor pipe (This counter metric   
+                                                                                                            represents the sum of the number of operations per elapsed cycle      
+                                                                                                            across all sub-unit instances)                                        
+smsp__inst_executed_pipe_tensor_v2.sum.per_second                           Counter         inst/s          # of warp instructions executed by tensor pipe (This counter metric   
+                                                                                                            represents the sum of the number of operations per second across all  
+                                                                                                            sub-unit instances)                                                   
+smsp__inst_executed_pipe_tensor_v2.sum.pct_of_peak_sustained_active         Counter         %               # of warp instructions executed by tensor pipe (This counter metric   
+                                                                                                            represents the sum percent of the peak sustained rate achieved        
+                                                                                                            during unit active cycles across all sub-unit instances)              
+smsp__inst_executed_pipe_tensor_v2.sum.pct_of_peak_sustained_elapsed        Counter         %               # of warp instructions executed by tensor pipe (This counter metric   
+                                                                                                            represents the sum percent of the peak sustained rate achieved        
+                                                                                                            during elapsed cycles across all sub-unit instances)                  
+

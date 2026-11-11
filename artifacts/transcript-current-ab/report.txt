@@ -1,0 +1,31 @@
+Current8+4 transcript ablation: fixed-SASS, GPU0, no Nsight.
+8192x8192 region,K4096. Kernel-only, not a complete mining grid. No PoW in any mode.
+2 independent runs,9rotating blocks/run,180samples/mode/run,16 launches/sample.
+Unfixed clocks. All modes168registers,69632Bshared,384threads,1CTA/SM,0local.
+run mode mean_ms median_ms p95_ms synchronized_batch_wall_ms_per_launch
+1 full 1.026456 1.021656 1.056835 1.026893
+1 fold_sink 1.011945 1.012736 1.031360 1.012380
+1 gemm_sink 0.957188 0.955517 0.972355 0.957606
+run1: net transcript+epilogue delta=0.069268ms, 6.748% of full time; full/gemm=1.072366.
+run1: fold delta=0.054757ms; output-epilogue differential=0.014511ms.
+Paired net savings%: 9.393, 7.431, 5.440, 6.438, 6.766, 6.675, 6.086, 6.162, 6.245
+2 full 1.024410 1.019712 1.050752 1.024859
+2 fold_sink 1.008021 1.006720 1.025798 1.008444
+2 gemm_sink 0.955621 0.955355 0.972803 0.956040
+run2: net transcript+epilogue delta=0.068788ms, 6.715% of full time; full/gemm=1.071983.
+run2: fold delta=0.052399ms; output-epilogue differential=0.016389ms.
+Paired net savings%: 8.530, 6.326, 7.314, 6.244, 6.668, 5.136, 6.423, 6.608, 7.126
+
+Combined mean ms: {"full": 1.0254328433010313, "fold_sink": 1.009982768032286, "gemm_sink": 0.9564046670993169}
+Net delta 0.069028ms / region, 6.732% of full kernel; throughput ratio 1.072175.
+Fold component 0.053578ms = 5.225% of full kernel.
+Epilogue differential 0.015450ms = 1.507% of full kernel.
+Same-sink control isolates fold path; epilogue differential includes replacing output with a nonzero-cost sample sink.
+No compiler reallocation/DCE in main kernel. All64staticIMMA/16LDSM and copy/handshake words identical.
+Final accumulator dependencies preserved. Full transcript matches accepted reference;
+final R120 per-thread samples match between sink modes for all tested inputs (not all accumulator elements).
+This measures removable direct work under current schedule. It neither isolates all indirect transcript constraints
+nor establishes PeakMiner transcript speed. Do not interpret invalid diagnostic modes as mining throughput.
+Production library and current8+4 checkpoint unchanged. No dependency-breaking C variant tested.
+
+Validation:12edge shape/seed cases plus8192x8192 per timing run PASS. Racecheck0errors0warnings;memcheck0errors.

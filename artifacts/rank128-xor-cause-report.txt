@@ -1,0 +1,49 @@
+XOR tree regression audit, GPU0 only, 2026-10-08.
+
+Correction: the earlier ~19% full-grid slowdown cannot be attributed to tree XOR.
+The implementation unnecessarily marked the pure register XOR asm volatile.
+
+Intervention 1: replace the balanced tree inside the same volatile asm boundary
+with a four-level serial chain, preserving the eight input constraints.
+Serial and tree have byte-identical instruction prefixes through the last IMMA.
+Both retain 16 BSSY/BSYNC reconvergence pairs in the fold region and both are slow.
+Original C++ has one pair, with common control decisions factored out of fragments.
+
+Intervention 2: remove volatile ONLY from those pure XOR asm blocks.
+All load/MMA/memory asm, dimensions, tile sizes, staging and transcript semantics
+remain unchanged. Both serial and tree now have one BSSY/BSYNC pair, and recover
+approximately baseline performance. Tree still has two logical dependency levels;
+serial has four (representative first REDUX dependency cone).
+Original and nonvolatile serial main-compute prefixes are byte-identical.
+Original and nonvolatile tree prefixes differ only in the high encoding word of
+SHF at 0xb60; their instruction text, registers, loads and MMA order are identical.
+See rank128-xor-nonvolatile-mainloop.diff. This is much tighter than the old test.
+
+Timing: 8192x8192,K4096,R128 fold kernel ONLY. Six rotated blocks per variant,
+100 warmup launches/block,40 samples/block,16 launches/event sample:240 samples
+per variant. All three full transcripts compared bit-exact with accepted R128
+for identical seed42 inputs at8192x8192. Existing tree validation covers more
+shapes/seeds; this audit is deliberately a causal/performance test,not deployment.
+No clocks/power settings changed. End-of-block telemetry is in JSON. Small
+sub-percent differences are not demonstrated gains: clocks are not locked and
+samples within blocks are correlated. These times are not full-grid ms or live TH/s.
+
+{"experiment": "audit", "variant": 0, "samples": 240, "mean_ms": 1.0831907669703165, "median_ms": 1.080823004245758, "p95_ms": 1.1067552387714386, "resources": [168, 384, 69632, 1, 0]}
+{"experiment": "audit", "variant": 1, "samples": 240, "mean_ms": 1.3185708964864413, "median_ms": 1.3171849846839905, "p95_ms": 1.3406125605106354, "resources": [167, 384, 69632, 1, 0]}
+{"experiment": "audit", "variant": 2, "samples": 240, "mean_ms": 1.319151110947132, "median_ms": 1.315517008304596, "p95_ms": 1.3429374635219573, "resources": [167, 384, 69632, 1, 0]}
+{"experiment": "nonvolatile", "variant": 0, "samples": 240, "mean_ms": 1.0889830668767293, "median_ms": 1.087624967098236, "p95_ms": 1.1068799495697021, "resources": [168, 384, 69632, 1, 0]}
+{"experiment": "nonvolatile", "variant": 1, "samples": 240, "mean_ms": 1.092964386443297, "median_ms": 1.0889590382575989, "p95_ms": 1.1182201027870178, "resources": [168, 384, 69632, 1, 0]}
+{"experiment": "nonvolatile", "variant": 2, "samples": 240, "mean_ms": 1.090708544353644, "median_ms": 1.0874580144882202, "p95_ms": 1.1136000156402588, "resources": [168, 384, 69632, 1, 0]}
+
+Conclusion: unnecessary volatile on the pure XOR expression changes compiled
+control flow and scheduling. Removing it eliminates the large regression while
+preserving the tree. This supports an implementation-induced compiler regression,
+not an intrinsically slower reduction tree. Exact cycle cost split between extra
+reconvergence and other volatile-induced changes has not been measured; hardware
+PC counters would be needed for that split. No counter evidence is claimed here.
+Tree shortening alone does not show a meaningful whole-kernel improvement in this
+experiment. Original independent fragment reductions already permit interleaving.
+Do not infer that any tree optimization must improve full-kernel time.
+
+Production and A-stream candidate SHA256 checks PASS. Isolated experiment DSOs
+only, no production edits/commits/deployment, no live mining, GPU1/2 untouched.

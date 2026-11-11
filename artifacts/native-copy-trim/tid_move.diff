@@ -1,0 +1,11 @@
+--- fastest-native
++++ tid_move
+@@ -219,7 +219,7 @@
+ 0da0 IMAD R136, R153.reuse, 0x4000, R136
+ 0db0 IMAD R140, R153, 0x4000, R140
+ 0dc0 @P2 BRA 0x1090
+-0dd0 S2R R98, SR_TID.X
++0dd0 LOP3.LUT R98, R162, 0x0, RZ, 0x3c, !PT
+ 0de0 IMAD.U32 R142, RZ, RZ, UR7
+ 0df0 USHF.L.U32 UR4, UR6, 0xe, URZ
+ 0e00 ULDC.64 UR8, c[0x0][0x118]

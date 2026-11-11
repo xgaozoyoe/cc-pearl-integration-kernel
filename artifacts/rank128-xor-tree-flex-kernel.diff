@@ -1,0 +1,22 @@
+--- serial-lane-xor.cu
++++ balanced-lane-xor.cu
+@@ -217,12 +217,13 @@
+             for(int row=0;row<4;++row) {
+                 #pragma unroll
+                 for(int group=0;group<Groups;++group) {
+-                    unsigned x=0;
+-                    #pragma unroll
+-                    for(int half=0;half<2;++half) {
+-                        #pragma unroll
+-                        for(int v=0;v<4;++v) x^=c[row][group][half][v];
+-                    }
++                    unsigned x;
++                    // Keep three independent subtrees visible to the compiler;
++                    // opaque final LOP3 prevents reassociation into one chain.
++                    unsigned p=c[row][group][0][0]^c[row][group][0][1]^c[row][group][0][2];
++                    unsigned q=c[row][group][0][3]^c[row][group][1][0]^c[row][group][1][1];
++                    unsigned r=c[row][group][1][2]^c[row][group][1][3];
++                    asm volatile("lop3.b32 %0,%1,%2,%3,0x96;" : "=r"(x) : "r"(p),"r"(q),"r"(r));
+                     x=__reduce_xor_sync(0xffffffffu,x);
+                     if(lane==0) {
+                         int idx=((wm*4+row)*(BN/16)+wn*Groups+group)*16+(rb%16);

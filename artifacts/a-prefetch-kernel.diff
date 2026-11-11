@@ -1,0 +1,40 @@
+diff --git a/tmp/fold-before-a-prefetch.cuh b/tests/fold_ops.cuh
+index dd97a20..3db2efd 100644
+--- a/tmp/fold-before-a-prefetch.cuh
++++ b/tests/fold_ops.cuh
+@@ -162,15 +162,19 @@ cute_pearl_fold(int M, int N, int K, int R,
+             if (knext < k_tiles) stage_copy(knext,ww);
+             cp_async_fence();
+         }
+-        if constexpr (Schedule >= 12 && Schedule <= 14) {
++        if constexpr ((Schedule >= 12 && Schedule <= 14) || Schedule == 16) {
+             static_assert(decltype(size<1>(tXrB))::value*2 == decltype(size<2>(tCrC))::value);
+             CUTE_UNROLL
+             for(int kk=0; kk<size<2>(tCrA); ++kk) {
+-                copy(s2r_A,tXsA(_,_,kk,wr),tXrA(_,_,kk));
++                if constexpr (Schedule == 16) {
++                    if (kk==0) copy(s2r_A,tXsA(_,_,kk,wr),tXrA(_,_,kk));
++                } else {
++                    copy(s2r_A,tXsA(_,_,kk,wr),tXrA(_,_,kk));
++                }
+                 copy(s2r_B,tXsB(_,0,kk,wr),tXrB(_,0,kk));
+                 CUTE_UNROLL
+                 for(int bn=0; bn<size<1>(tXrB); ++bn) {
+-                    if constexpr (Schedule == 12) {
++                    if constexpr (Schedule == 12 || Schedule == 16) {
+                         if (bn+1<size<1>(tXrB))
+                             copy(s2r_B,tXsB(_,bn+1,kk,wr),tXrB(_,bn+1,kk));
+                     }
+@@ -184,6 +188,12 @@ cute_pearl_fold(int M, int N, int K, int R,
+                                     copy(s2r_B,tXsB(_,bn+1,kk,wr),tXrB(_,bn+1,kk));
+                             }
+                             gemm(tiled_mma,tCrC(_,tm,tn),tCrA(_,tm,kk),tCrB(_,tn,kk),tCrC(_,tm,tn));
++                            if constexpr (Schedule == 16) {
++                                // This A row has no remaining consumers in
++                                // K32(kk); prefetch the next slice immediately.
++                                if (bn+1==size<1>(tXrB) && half==1 && kk+1<size<2>(tCrA))
++                                    copy(s2r_A,tXsA(_,tm,kk+1,wr),tXrA(_,tm,kk+1));
++                            }
+                         }
+                         if constexpr (Schedule == 13) {
+                             // Half0 is now dead: overlap next B group with

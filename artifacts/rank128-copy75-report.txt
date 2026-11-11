@@ -1,0 +1,36 @@
+R128 cooperative-copy warp partition experiment — 2026-10-08
+GPU0 only; both live miners(GPU1PeakMiner,GPU2Open-Pearl) untouched.
+Motivation:paired external sampling shows Tensor duty-cycle gap, not a shortage
+of reported occupancy or SM Issue. Test whether copy/control simplification helps.
+
+Baseline:all12warps copy A and B,then all12compute.
+Candidate:during copy only,7warps handle A and5handle B in one combined loop.
+All12warps still issue LDSM and MMA. No dedicated producer warps removed from MMA.
+Same CTA256x192,warp64x64,K64,2stages,Lead2,Layout6,R128,K4096.
+Same stage bytes:16384A+12288B=28672;1792x16B cp.async copies perstage.
+Both32A+24B warp-level copy instructions perstage (56total), redistributed across
+warps. Same64IMMA/16LDSM perwarp/K64,launch geometry,barriers and padded work.
+128logical accumulators remain in registers. Transcript,V3,target,proof unchanged.
+
+Resource gate:both168regs/thread,384threads,69632Bshared/CTA,1CTA/SM,zero spills.
+SASS static instruction count928->872;LDGSTS sites4->2 because loops unified,
+not because copy bytes or dynamic copy count halve. IMMA64,LDSM16unchanged.
+16transcript/digest comparisons PASS:two seeds x four shapes x two variants.
+Small-case racecheck:0hazards,0errors,0warnings.
+
+Full offline grid131072^2x4096,region8192,matched setup seeds,realV3/noise/fold/PoW.
+Target0 excludes proofs/network.4warmup+40measured pervariant,twice reversedorder.
+80samples pervariant; clocks/power not changed or locked;0.1ms log resolution.
+
+{"variant": 0, "samples": 80, "mean_ms": 331.2825, "median_ms": 331.4, "p95_ms": 332.705, "grids_sec": 3.0185717627704447, "ths": 212.41310415631372}
+{"variant": 1, "samples": 80, "mean_ms": 336.27875, "median_ms": 336.2, "p95_ms": 337.9, "grids_sec": 2.9737234362861167, "ths": 209.25718374314167}
+
+Candidate wall time +1.508%; throughput -1.486%.
+Both orders regress. Reject candidate; retain accepted baseline.
+Static code reduction did not yield speedup. Unified-loop operand selection,
+register scheduling and changed per-warp copy completion can affect throughput;
+no counter evidence apportions the observed loss among them.
+No Tensor-utilization improvement claimed for this candidate:external metrics
+were not collected because it already failed the end-to-end performance gate.
+This excludes this7/5copy partition,not the measured overall Tensor duty-cycle gap.
+No production promotion or commits; reviewable diff and frozen generated source saved.

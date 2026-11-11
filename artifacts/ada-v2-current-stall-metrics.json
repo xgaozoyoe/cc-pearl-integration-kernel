@@ -1,0 +1,942 @@
+{
+  "110": {
+    "derived__memory_l1_conflicts_shared_nway": {
+      "mean": 114.0,
+      "values": [
+        114.0,
+        114.0,
+        114.0
+      ],
+      "unit": ""
+    },
+    "derived__memory_l1_wavefronts_shared_excessive": {
+      "mean": 4981318.666666667,
+      "values": [
+        4981348.0,
+        4981272.0,
+        4981336.0
+      ],
+      "unit": ""
+    },
+    "gpu__time_duration.sum": {
+      "mean": 317.29066666666665,
+      "values": [
+        317.248,
+        317.184,
+        317.44
+      ],
+      "unit": "us"
+    },
+    "launch__registers_per_thread": {
+      "mean": 168.0,
+      "values": [
+        168.0,
+        168.0,
+        168.0
+      ],
+      "unit": "register/thread"
+    },
+    "launch__registers_per_thread_allocated": {
+      "mean": 64512.0,
+      "values": [
+        64512.0,
+        64512.0,
+        64512.0
+      ],
+      "unit": "register/thread"
+    },
+    "memory_l1_wavefronts_shared": {
+      "mean": 28443206.666666668,
+      "values": [
+        28443236.0,
+        28443160.0,
+        28443224.0
+      ],
+      "unit": "sectors"
+    },
+    "memory_l1_wavefronts_shared_ideal": {
+      "mean": 23461888.0,
+      "values": [
+        23461888.0,
+        23461888.0,
+        23461888.0
+      ],
+      "unit": "sectors"
+    },
+    "smsp__average_warps_active_per_inst_executed.ratio": {
+      "mean": 13.285758333333334,
+      "values": [
+        13.284807,
+        13.289469,
+        13.282999
+      ],
+      "unit": "cycle"
+    },
+    "smsp__average_warps_issue_stalled_barrier_per_issue_active.ratio": {
+      "mean": 2.0363453333333332,
+      "values": [
+        2.035522,
+        2.037838,
+        2.035676
+      ],
+      "unit": "inst"
+    },
+    "smsp__average_warps_issue_stalled_branch_resolving_per_issue_active.ratio": {
+      "mean": 0.10620866666666666,
+      "values": [
+        0.10621,
+        0.10621,
+        0.106206
+      ],
+      "unit": "inst"
+    },
+    "smsp__average_warps_issue_stalled_dispatch_stall_per_issue_active.ratio": {
+      "mean": 0.086989,
+      "values": [
+        0.087065,
+        0.086925,
+        0.086977
+      ],
+      "unit": "inst"
+    },
+    "smsp__average_warps_issue_stalled_drain_per_issue_active.ratio": {
+      "mean": 9.4e-05,
+      "values": [
+        9.4e-05,
+        9.4e-05,
+        9.4e-05
+      ],
+      "unit": "inst"
+    },
+    "smsp__average_warps_issue_stalled_imc_miss_per_issue_active.ratio": {
+      "mean": 0.008597666666666667,
+      "values": [
+        0.008374,
+        0.009059,
+        0.00836
+      ],
+      "unit": "inst"
+    },
+    "smsp__average_warps_issue_stalled_lg_throttle_per_issue_active.ratio": {
+      "mean": 4.5e-05,
+      "values": [
+        5.7e-05,
+        4.5e-05,
+        3.3e-05
+      ],
+      "unit": "inst"
+    },
+    "smsp__average_warps_issue_stalled_long_scoreboard_per_issue_active.ratio": {
+      "mean": 0.40995366666666666,
+      "values": [
+        0.410233,
+        0.409651,
+        0.409977
+      ],
+      "unit": "inst"
+    },
+    "smsp__average_warps_issue_stalled_math_pipe_throttle_per_issue_active.ratio": {
+      "mean": 5.506953333333334,
+      "values": [
+        5.507388,
+        5.506577,
+        5.506895
+      ],
+      "unit": "inst"
+    },
+    "smsp__average_warps_issue_stalled_membar_per_issue_active.ratio": {
+      "mean": 0.0,
+      "values": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "unit": "inst"
+    },
+    "smsp__average_warps_issue_stalled_mio_throttle_per_issue_active.ratio": {
+      "mean": 0.16943933333333333,
+      "values": [
+        0.169839,
+        0.168518,
+        0.169961
+      ],
+      "unit": "inst"
+    },
+    "smsp__average_warps_issue_stalled_misc_per_issue_active.ratio": {
+      "mean": 5.1e-05,
+      "values": [
+        5.1e-05,
+        5.1e-05,
+        5.1e-05
+      ],
+      "unit": "inst"
+    },
+    "smsp__average_warps_issue_stalled_no_instruction_per_issue_active.ratio": {
+      "mean": 0.03954166666666667,
+      "values": [
+        0.039539,
+        0.039551,
+        0.039535
+      ],
+      "unit": "inst"
+    },
+    "smsp__average_warps_issue_stalled_not_selected_per_issue_active.ratio": {
+      "mean": 0.5033463333333333,
+      "values": [
+        0.503711,
+        0.503238,
+        0.50309
+      ],
+      "unit": "inst"
+    },
+    "smsp__average_warps_issue_stalled_selected_per_issue_active.ratio": {
+      "mean": 1.0,
+      "values": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "unit": "inst"
+    },
+    "smsp__average_warps_issue_stalled_short_scoreboard_per_issue_active.ratio": {
+      "mean": 0.8108243333333334,
+      "values": [
+        0.809819,
+        0.811181,
+        0.811473
+      ],
+      "unit": "inst"
+    },
+    "smsp__average_warps_issue_stalled_sleeping_per_issue_active.ratio": {
+      "mean": 0.0,
+      "values": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "unit": "inst"
+    },
+    "smsp__average_warps_issue_stalled_tex_throttle_per_issue_active.ratio": {
+      "mean": 0.0,
+      "values": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "unit": "inst"
+    },
+    "smsp__average_warps_issue_stalled_wait_per_issue_active.ratio": {
+      "mean": 2.605744,
+      "values": [
+        2.605743,
+        2.605694,
+        2.605795
+      ],
+      "unit": "inst"
+    },
+    "smsp__issue_active.avg.pct_of_peak_sustained_active": {
+      "mean": 22.579371666666667,
+      "values": [
+        22.582218,
+        22.577218,
+        22.578679
+      ],
+      "unit": "%"
+    },
+    "smsp__issue_active.avg.per_cycle_active": {
+      "mean": 0.23,
+      "values": [
+        0.23,
+        0.23,
+        0.23
+      ],
+      "unit": ""
+    },
+    "smsp__pcsamp_dropped_bytes": {
+      "mean": 0.0,
+      "values": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "unit": "byte"
+    },
+    "smsp__pcsamp_sample_count": {
+      "mean": 90722.0,
+      "values": [
+        90699.0,
+        90728.0,
+        90739.0
+      ],
+      "unit": ""
+    },
+    "smsp__pcsamp_warps_issue_stalled_barrier": {
+      "mean": 13857.333333333334,
+      "values": [
+        13800.0,
+        13935.0,
+        13837.0
+      ],
+      "unit": "warp"
+    },
+    "smsp__pcsamp_warps_issue_stalled_barrier_not_issued": {
+      "mean": 12206.333333333334,
+      "values": [
+        12232.0,
+        12249.0,
+        12138.0
+      ],
+      "unit": "warp"
+    },
+    "smsp__pcsamp_warps_issue_stalled_long_scoreboard": {
+      "mean": 2797.3333333333335,
+      "values": [
+        2776.0,
+        2872.0,
+        2744.0
+      ],
+      "unit": "warp"
+    },
+    "smsp__pcsamp_warps_issue_stalled_long_scoreboard_not_issued": {
+      "mean": 1280.6666666666667,
+      "values": [
+        1267.0,
+        1341.0,
+        1234.0
+      ],
+      "unit": "warp"
+    },
+    "smsp__pcsamp_warps_issue_stalled_math_pipe_throttle": {
+      "mean": 37698.333333333336,
+      "values": [
+        37671.0,
+        37573.0,
+        37851.0
+      ],
+      "unit": "warp"
+    },
+    "smsp__pcsamp_warps_issue_stalled_math_pipe_throttle_not_issued": {
+      "mean": 35668.0,
+      "values": [
+        35643.0,
+        35640.0,
+        35721.0
+      ],
+      "unit": "warp"
+    },
+    "smsp__pcsamp_warps_issue_stalled_mio_throttle": {
+      "mean": 1105.6666666666667,
+      "values": [
+        1052.0,
+        1086.0,
+        1179.0
+      ],
+      "unit": "warp"
+    },
+    "smsp__pcsamp_warps_issue_stalled_mio_throttle_not_issued": {
+      "mean": 771.6666666666666,
+      "values": [
+        747.0,
+        744.0,
+        824.0
+      ],
+      "unit": "warp"
+    },
+    "smsp__pcsamp_warps_issue_stalled_short_scoreboard": {
+      "mean": 5466.666666666667,
+      "values": [
+        5477.0,
+        5451.0,
+        5472.0
+      ],
+      "unit": "warp"
+    },
+    "smsp__pcsamp_warps_issue_stalled_short_scoreboard_not_issued": {
+      "mean": 4477.333333333333,
+      "values": [
+        4519.0,
+        4461.0,
+        4452.0
+      ],
+      "unit": "warp"
+    },
+    "smsp__warps_active.avg.peak_sustained": {
+      "mean": 12.0,
+      "values": [
+        12.0,
+        12.0,
+        12.0
+      ],
+      "unit": "warp"
+    },
+    "smsp__warps_active.avg.per_cycle_active": {
+      "mean": 2.9991133333333333,
+      "values": [
+        2.999277,
+        2.999665,
+        2.998398
+      ],
+      "unit": "warp"
+    },
+    "smsp__warps_active.max.peak_sustained": {
+      "mean": 12.0,
+      "values": [
+        12.0,
+        12.0,
+        12.0
+      ],
+      "unit": "warp"
+    },
+    "smsp__warps_active.max.per_cycle_active": {
+      "mean": 3.2908939999999998,
+      "values": [
+        3.292147,
+        3.290205,
+        3.29033
+      ],
+      "unit": "warp"
+    },
+    "smsp__warps_active.min.peak_sustained": {
+      "mean": 12.0,
+      "values": [
+        12.0,
+        12.0,
+        12.0
+      ],
+      "unit": "warp"
+    },
+    "smsp__warps_active.min.per_cycle_active": {
+      "mean": 2.178288,
+      "values": [
+        2.178539,
+        2.180327,
+        2.175998
+      ],
+      "unit": "warp"
+    },
+    "smsp__warps_active.sum.peak_sustained": {
+      "mean": 6144.0,
+      "values": [
+        6144.0,
+        6144.0,
+        6144.0
+      ],
+      "unit": "warp"
+    },
+    "smsp__warps_active.sum.per_cycle_active": {
+      "mean": 1535.5461403333334,
+      "values": [
+        1535.629964,
+        1535.828604,
+        1535.179853
+      ],
+      "unit": "warp"
+    },
+    "smsp__warps_eligible.avg.per_cycle_active": {
+      "mean": 0.33954633333333334,
+      "values": [
+        0.339549,
+        0.339496,
+        0.339594
+      ],
+      "unit": "warp"
+    },
+    "smsp__warps_eligible.max.per_cycle_active": {
+      "mean": 0.37369066666666667,
+      "values": [
+        0.373669,
+        0.373903,
+        0.3735
+      ],
+      "unit": "warp"
+    },
+    "smsp__warps_eligible.min.per_cycle_active": {
+      "mean": 0.244256,
+      "values": [
+        0.244615,
+        0.243725,
+        0.244428
+      ],
+      "unit": "warp"
+    },
+    "smsp__warps_eligible.sum.per_cycle_active": {
+      "mean": 173.84781433333333,
+      "values": [
+        173.849321,
+        173.822006,
+        173.872116
+      ],
+      "unit": "warp"
+    }
+  },
+  "115": {
+    "derived__memory_l1_conflicts_shared_nway": {
+      "mean": 138.0,
+      "values": [
+        138.0,
+        138.0,
+        138.0
+      ],
+      "unit": ""
+    },
+    "derived__memory_l1_wavefronts_shared_excessive": {
+      "mean": 4980882.666666667,
+      "values": [
+        4980852.0,
+        4980860.0,
+        4980936.0
+      ],
+      "unit": ""
+    },
+    "gpu__time_duration.sum": {
+      "mean": 334.944,
+      "values": [
+        334.88,
+        334.88,
+        335.072
+      ],
+      "unit": "us"
+    },
+    "launch__registers_per_thread": {
+      "mean": 247.0,
+      "values": [
+        247.0,
+        247.0,
+        247.0
+      ],
+      "unit": "register/thread"
+    },
+    "launch__registers_per_thread_allocated": {
+      "mean": 63488.0,
+      "values": [
+        63488.0,
+        63488.0,
+        63488.0
+      ],
+      "unit": "register/thread"
+    },
+    "memory_l1_wavefronts_shared": {
+      "mean": 25559186.666666668,
+      "values": [
+        25559156.0,
+        25559164.0,
+        25559240.0
+      ],
+      "unit": "sectors"
+    },
+    "memory_l1_wavefronts_shared_ideal": {
+      "mean": 20578304.0,
+      "values": [
+        20578304.0,
+        20578304.0,
+        20578304.0
+      ],
+      "unit": "sectors"
+    },
+    "smsp__average_warps_active_per_inst_executed.ratio": {
+      "mean": 9.261558,
+      "values": [
+        9.262331,
+        9.261036,
+        9.261307
+      ],
+      "unit": "cycle"
+    },
+    "smsp__average_warps_issue_stalled_barrier_per_issue_active.ratio": {
+      "mean": 1.3161413333333334,
+      "values": [
+        1.315862,
+        1.314956,
+        1.317606
+      ],
+      "unit": "inst"
+    },
+    "smsp__average_warps_issue_stalled_branch_resolving_per_issue_active.ratio": {
+      "mean": 0.08756133333333332,
+      "values": [
+        0.087542,
+        0.087569,
+        0.087573
+      ],
+      "unit": "inst"
+    },
+    "smsp__average_warps_issue_stalled_dispatch_stall_per_issue_active.ratio": {
+      "mean": 0.063132,
+      "values": [
+        0.063118,
+        0.063082,
+        0.063196
+      ],
+      "unit": "inst"
+    },
+    "smsp__average_warps_issue_stalled_drain_per_issue_active.ratio": {
+      "mean": 6.0666666666666666e-05,
+      "values": [
+        6e-05,
+        6.1e-05,
+        6.1e-05
+      ],
+      "unit": "inst"
+    },
+    "smsp__average_warps_issue_stalled_imc_miss_per_issue_active.ratio": {
+      "mean": 0.0060156666666666666,
+      "values": [
+        0.005914,
+        0.006309,
+        0.005824
+      ],
+      "unit": "inst"
+    },
+    "smsp__average_warps_issue_stalled_lg_throttle_per_issue_active.ratio": {
+      "mean": 0.0,
+      "values": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "unit": "inst"
+    },
+    "smsp__average_warps_issue_stalled_long_scoreboard_per_issue_active.ratio": {
+      "mean": 0.152801,
+      "values": [
+        0.153781,
+        0.153326,
+        0.151296
+      ],
+      "unit": "inst"
+    },
+    "smsp__average_warps_issue_stalled_math_pipe_throttle_per_issue_active.ratio": {
+      "mean": 3.563973,
+      "values": [
+        3.564076,
+        3.564065,
+        3.563778
+      ],
+      "unit": "inst"
+    },
+    "smsp__average_warps_issue_stalled_membar_per_issue_active.ratio": {
+      "mean": 0.0,
+      "values": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "unit": "inst"
+    },
+    "smsp__average_warps_issue_stalled_mio_throttle_per_issue_active.ratio": {
+      "mean": 0.12125833333333333,
+      "values": [
+        0.121394,
+        0.121258,
+        0.121123
+      ],
+      "unit": "inst"
+    },
+    "smsp__average_warps_issue_stalled_misc_per_issue_active.ratio": {
+      "mean": 2.8e-05,
+      "values": [
+        2.8e-05,
+        2.8e-05,
+        2.8e-05
+      ],
+      "unit": "inst"
+    },
+    "smsp__average_warps_issue_stalled_no_instruction_per_issue_active.ratio": {
+      "mean": 0.04789466666666667,
+      "values": [
+        0.047893,
+        0.047888,
+        0.047903
+      ],
+      "unit": "inst"
+    },
+    "smsp__average_warps_issue_stalled_not_selected_per_issue_active.ratio": {
+      "mean": 0.27249233333333334,
+      "values": [
+        0.272209,
+        0.27259,
+        0.272678
+      ],
+      "unit": "inst"
+    },
+    "smsp__average_warps_issue_stalled_selected_per_issue_active.ratio": {
+      "mean": 1.0,
+      "values": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "unit": "inst"
+    },
+    "smsp__average_warps_issue_stalled_short_scoreboard_per_issue_active.ratio": {
+      "mean": 0.275963,
+      "values": [
+        0.276199,
+        0.275866,
+        0.275824
+      ],
+      "unit": "inst"
+    },
+    "smsp__average_warps_issue_stalled_sleeping_per_issue_active.ratio": {
+      "mean": 0.0,
+      "values": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "unit": "inst"
+    },
+    "smsp__average_warps_issue_stalled_tex_throttle_per_issue_active.ratio": {
+      "mean": 0.0,
+      "values": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "unit": "inst"
+    },
+    "smsp__average_warps_issue_stalled_wait_per_issue_active.ratio": {
+      "mean": 2.352359,
+      "values": [
+        2.352386,
+        2.352376,
+        2.352315
+      ],
+      "unit": "inst"
+    },
+    "smsp__issue_active.avg.pct_of_peak_sustained_active": {
+      "mean": 21.599206,
+      "values": [
+        21.598699,
+        21.598956,
+        21.599963
+      ],
+      "unit": "%"
+    },
+    "smsp__issue_active.avg.per_cycle_active": {
+      "mean": 0.22,
+      "values": [
+        0.22,
+        0.22,
+        0.22
+      ],
+      "unit": ""
+    },
+    "smsp__pcsamp_dropped_bytes": {
+      "mean": 0.0,
+      "values": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "unit": "byte"
+    },
+    "smsp__pcsamp_sample_count": {
+      "mean": 95884.0,
+      "values": [
+        95888.0,
+        95882.0,
+        95882.0
+      ],
+      "unit": ""
+    },
+    "smsp__pcsamp_warps_issue_stalled_barrier": {
+      "mean": 13627.333333333334,
+      "values": [
+        13764.0,
+        13560.0,
+        13558.0
+      ],
+      "unit": "warp"
+    },
+    "smsp__pcsamp_warps_issue_stalled_barrier_not_issued": {
+      "mean": 12202.333333333334,
+      "values": [
+        12279.0,
+        12130.0,
+        12198.0
+      ],
+      "unit": "warp"
+    },
+    "smsp__pcsamp_warps_issue_stalled_long_scoreboard": {
+      "mean": 1652.6666666666667,
+      "values": [
+        1603.0,
+        1681.0,
+        1674.0
+      ],
+      "unit": "warp"
+    },
+    "smsp__pcsamp_warps_issue_stalled_long_scoreboard_not_issued": {
+      "mean": 993.3333333333334,
+      "values": [
+        925.0,
+        1046.0,
+        1009.0
+      ],
+      "unit": "warp"
+    },
+    "smsp__pcsamp_warps_issue_stalled_math_pipe_throttle": {
+      "mean": 36821.333333333336,
+      "values": [
+        36709.0,
+        36824.0,
+        36931.0
+      ],
+      "unit": "warp"
+    },
+    "smsp__pcsamp_warps_issue_stalled_math_pipe_throttle_not_issued": {
+      "mean": 35352.666666666664,
+      "values": [
+        35238.0,
+        35398.0,
+        35422.0
+      ],
+      "unit": "warp"
+    },
+    "smsp__pcsamp_warps_issue_stalled_mio_throttle": {
+      "mean": 1225.0,
+      "values": [
+        1224.0,
+        1208.0,
+        1243.0
+      ],
+      "unit": "warp"
+    },
+    "smsp__pcsamp_warps_issue_stalled_mio_throttle_not_issued": {
+      "mean": 1172.3333333333333,
+      "values": [
+        1174.0,
+        1156.0,
+        1187.0
+      ],
+      "unit": "warp"
+    },
+    "smsp__pcsamp_warps_issue_stalled_short_scoreboard": {
+      "mean": 2894.3333333333335,
+      "values": [
+        2913.0,
+        2888.0,
+        2882.0
+      ],
+      "unit": "warp"
+    },
+    "smsp__pcsamp_warps_issue_stalled_short_scoreboard_not_issued": {
+      "mean": 2497.6666666666665,
+      "values": [
+        2499.0,
+        2507.0,
+        2487.0
+      ],
+      "unit": "warp"
+    },
+    "smsp__warps_active.avg.peak_sustained": {
+      "mean": 12.0,
+      "values": [
+        12.0,
+        12.0,
+        12.0
+      ],
+      "unit": "warp"
+    },
+    "smsp__warps_active.avg.per_cycle_active": {
+      "mean": 2.000042666666667,
+      "values": [
+        2.000163,
+        1.999907,
+        2.000058
+      ],
+      "unit": "warp"
+    },
+    "smsp__warps_active.max.peak_sustained": {
+      "mean": 12.0,
+      "values": [
+        12.0,
+        12.0,
+        12.0
+      ],
+      "unit": "warp"
+    },
+    "smsp__warps_active.max.per_cycle_active": {
+      "mean": 2.18992,
+      "values": [
+        2.189209,
+        2.188108,
+        2.192443
+      ],
+      "unit": "warp"
+    },
+    "smsp__warps_active.min.peak_sustained": {
+      "mean": 12.0,
+      "values": [
+        12.0,
+        12.0,
+        12.0
+      ],
+      "unit": "warp"
+    },
+    "smsp__warps_active.min.per_cycle_active": {
+      "mean": 1.4534256666666667,
+      "values": [
+        1.452932,
+        1.453473,
+        1.453872
+      ],
+      "unit": "warp"
+    },
+    "smsp__warps_active.sum.peak_sustained": {
+      "mean": 6144.0,
+      "values": [
+        6144.0,
+        6144.0,
+        6144.0
+      ],
+      "unit": "warp"
+    },
+    "smsp__warps_active.sum.per_cycle_active": {
+      "mean": 1024.0218093333333,
+      "values": [
+        1024.083234,
+        1023.952265,
+        1024.029929
+      ],
+      "unit": "warp"
+    },
+    "smsp__warps_eligible.avg.per_cycle_active": {
+      "mean": 0.274936,
+      "values": [
+        0.274937,
+        0.274906,
+        0.274965
+      ],
+      "unit": "warp"
+    },
+    "smsp__warps_eligible.max.per_cycle_active": {
+      "mean": 0.3016756666666667,
+      "values": [
+        0.301619,
+        0.301707,
+        0.301701
+      ],
+      "unit": "warp"
+    },
+    "smsp__warps_eligible.min.per_cycle_active": {
+      "mean": 0.19821,
+      "values": [
+        0.198276,
+        0.198361,
+        0.197993
+      ],
+      "unit": "warp"
+    },
+    "smsp__warps_eligible.sum.per_cycle_active": {
+      "mean": 140.767426,
+      "values": [
+        140.767882,
+        140.752083,
+        140.782313
+      ],
+      "unit": "warp"
+    }
+  }
+}

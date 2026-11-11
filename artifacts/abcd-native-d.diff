@@ -1,0 +1,248 @@
+--- native-B
++++ native-D
+@@ -1,7 +1,27 @@
+-namespace scope_B {
++namespace scope_reduced {
+ constexpr int BM=256, BN=192, THREADS=384;
+ constexpr int WORDS=(BM/16)*(BN/16)*16;
+ struct Fragment { unsigned v[4]; };
++
++
++// 41 scalar slots, one prologue step plus64 K iterations. Slot-major lanes
++// keep trace IO coalesced. Every computed output is an observable volatile store.
++struct Probe {
++    unsigned* written; const unsigned* replay;
++    size_t lane_index, pitch; int step;
++    unsigned originA; unsigned originB;
++    int firstB;
++};
++__device__ __forceinline__ unsigned route(Probe p,int slot,unsigned computed) {
++    return computed; // No trace, audit, or replay operations in native D.
++
++}
++__device__ __forceinline__ const signed char* route_ptr(Probe p,int slot,const signed char* ptr) {
++    auto bits=reinterpret_cast<unsigned long long>(ptr);
++    unsigned lo=route(p,slot,unsigned(bits));
++    unsigned hi=route(p,slot+1,unsigned(bits>>32));
++    return reinterpret_cast<const signed char*>((static_cast<unsigned long long>(hi)<<32)|lo);
++}
+ 
+ template<int Layout=0>
+ __device__ __forceinline__ unsigned swizzle(unsigned p) {
+@@ -16,26 +36,30 @@
+ template<int TileK,bool Planar,int Layout=0>
+ __device__ __forceinline__ unsigned offset(int row,int col,int height) {
+     unsigned p=Planar ? (col/32)*height*32+row*32+col%32 : row*TileK+col;
++    if constexpr(Layout==6 && TileK==64 && !Planar)
++        return p ^ ((unsigned(row)&6u)<<3);
+     return swizzle<Layout>(p);
+ }
+ template<int TileK,bool Planar,int Layout=0>
+-__device__ __forceinline__ Fragment load16x32(const signed char* base,int row,int col,int lane,int height) {
++__device__ __forceinline__ Fragment load16x32(const signed char* base,int row,int col,int lane,int height,Probe probe) {
+     // Four 8x8 matrices of 16-bit pairs. Registers are low-row/low-K,
+     // high-row/low-K, low-row/high-K, high-row/high-K respectively.
+     unsigned addr=__cvta_generic_to_shared(base+offset<TileK,Planar,Layout>(row+(lane&15),col+(lane>>4)*16,height));
++    addr=route(probe,17+(col/32)*4+(row/16)%4,addr);
+     Fragment x;
+     asm volatile("ldmatrix.sync.aligned.m8n8.x4.shared.b16 {%0,%1,%2,%3},[%4];"
+         : "=r"(x.v[0]),"=r"(x.v[1]),"=r"(x.v[2]),"=r"(x.v[3]) : "r"(addr));
+     return x;
+ }
+ template<int TileK,bool Planar,bool Packed,int Layout=0>
+-__device__ __forceinline__ Fragment loadB16x32(const signed char* base,int row,int col,int lane,int height) {
+-    if constexpr(!Packed) return load16x32<TileK,Planar,Layout>(base,row,col,lane,height);
++__device__ __forceinline__ Fragment loadB16x32(const signed char* base,int row,int col,int lane,int height,Probe probe) {
++    if constexpr(!Packed) return load16x32<TileK,Planar,Layout>(base,row,col,lane,height,probe);
+     else {
+         // Matrix order: Nlow/Klow, Nlow/Khigh, Nhigh/Klow, Nhigh/Khigh.
+         // Each adjacent output pair is now a complete MMA B operand.
+         unsigned addr=__cvta_generic_to_shared(base+offset<TileK,Planar,Layout>(
+             row+(lane&7)+(lane>>4)*8,col+((lane>>3)&1)*16,height));
++        addr=route(probe,25+(col/32)*4+(row/16)%4,addr);
+         Fragment x;
+         asm volatile("ldmatrix.sync.aligned.m8n8.x4.shared.b16 {%0,%1,%2,%3},[%4];"
+             : "=r"(x.v[0]),"=r"(x.v[1]),"=r"(x.v[2]),"=r"(x.v[3]) : "r"(addr));
+@@ -53,63 +77,36 @@
+ }
+ template<int TileK,bool Planar,bool UnrollCopy=false,bool FixedCopy=false,int Layout=0>
+ __device__ __forceinline__ void stage_copy(const signed char* a,const signed char* b,
+-        signed char* sa,signed char* sb,int cm,int cn,int kt,int m,int n,int k) {
+-    if constexpr(FixedCopy) {
+-        static_assert(TileK==64 && !Planar);
+-        // Exact 384-thread assignment: A has 2 full rounds plus 256 lanes;
+-        // B has 2 full rounds. No dynamically bounded copy loops.
+-        #pragma unroll
+-        for(int j=0;j<3;++j) {
+-            if(j<2 || threadIdx.x<256) {
+-                int i=threadIdx.x+j*THREADS;
+-                int row=i/4,col=(i%4)*16,gr=cm*BM+row;
+-                const signed char* src=a+(size_t)(gr<m?gr:0)*k+kt*64+col;
+-                unsigned dst=__cvta_generic_to_shared(sa+swizzle<Layout>(row*64+col));
+-                int valid=gr<m?16:0;
+-                asm volatile("cp.async.cg.shared.global [%0],[%1],16,%2;" :: "r"(dst),"l"(src),"r"(valid));
+-            }
+-        }
+-        #pragma unroll
+-        for(int j=0;j<2;++j) {
+-            int i=threadIdx.x+j*THREADS;
+-            int row=i/4,col=(i%4)*16,gr=cn*BN+row;
+-            const signed char* src=b+(size_t)(gr<n?gr:0)*k+kt*64+col;
+-            unsigned dst=__cvta_generic_to_shared(sb+swizzle<Layout>(row*64+col));
+-            int valid=gr<n?16:0;
+-            asm volatile("cp.async.cg.shared.global [%0],[%1],16,%2;" :: "r"(dst),"l"(src),"r"(valid));
+-        }
+-        asm volatile("cp.async.commit_group;");
+-        return;
+-    }
+-
++        signed char* sa,signed char* sb,int cm,int cn,int kt,int m,int n,int k,Probe probe) {
+     static_assert(TileK==64 && Layout==6 && !Planar);
+     // 384 is a multiple of128: the swizzled low7 chunk bits never change.
+-    int logical=int(threadIdx.x)^(int(threadIdx.x>>3)&3);
+-    int row=logical/4,col=(logical%4)*16;
+     unsigned dstA=__cvta_generic_to_shared(sa+threadIdx.x*16);
+     unsigned dstB=__cvta_generic_to_shared(sb+threadIdx.x*16);
+-    int grA=cm*BM+row,grB=cn*BN+row;
+-    unsigned offA=unsigned(grA)*unsigned(k)+unsigned(kt*64+col);
+-    unsigned offB=unsigned(grB)*unsigned(k)+unsigned(kt*64+col);
++    unsigned cursorA=probe.originA+kt*64;
++    unsigned cursorB=probe.originB+kt*64;
++    int grB=probe.firstB;
+     #pragma unroll
+-    for(int j=0;j<3;++j) if(threadIdx.x+j*THREADS<BM*64/16) {
++    for(int j=0;j<3;++j) if(route(probe,38+j,j<2 || threadIdx.x<256)) {
+         bool valid=true;
+-        const signed char* src=a+offA;
+-        asm volatile("cp.async.cg.shared.global [%0],[%1],16,%2;" :: "r"(dstA),"l"(src),"r"(valid?16:0));
+-        grA+=THREADS/4;offA+=unsigned(THREADS/4)*unsigned(k);dstA+=THREADS*16;
++        const signed char* src=route_ptr(probe,2*j,a+cursorA);
++        unsigned usedDst=route(probe,6+j,dstA);
++        asm volatile("cp.async.cg.shared.global [%0],[%1],16,%2;" :: "r"(usedDst),"l"(src),"r"(valid?16:0));
++        cursorA+=96*4096;dstA+=THREADS*16;
+     }
+     #pragma unroll
+     for(int j=0;j<2;++j) {
+         bool valid=grB<n;
+-        const signed char* src=b+(valid?offB:0u);
+-        asm volatile("cp.async.cg.shared.global [%0],[%1],16,%2;" :: "r"(dstB),"l"(src),"r"(valid?16:0));
+-        grB+=THREADS/4;offB+=unsigned(THREADS/4)*unsigned(k);dstB+=THREADS*16;
++        const signed char* src=route_ptr(probe,9+2*j,valid?b+cursorB:b);
++        unsigned usedDst=route(probe,13+j,dstB);
++        unsigned usedValid=route(probe,15+j,valid?16:0);
++        asm volatile("cp.async.cg.shared.global [%0],[%1],16,%2;" :: "r"(usedDst),"l"(src),"r"(usedValid));
++        grB+=96;cursorB+=96*4096;dstB+=THREADS*16;
+     }
+     asm volatile("cp.async.commit_group;");
+ }
+ 
+ template<int Lead,int TileK=64,bool Planar=false,bool PackedB=false,bool UnrollCopy=false,bool FixedCopy=false,int Stages=2,bool Wide=false,int Layout=0>
+-__global__ void __launch_bounds__(Wide?256:THREADS,1) kernel(const signed char* a,const signed char* b,int m,int n,int k,int r,unsigned* out) {
++__global__ void __launch_bounds__(Wide?256:THREADS,1) kernel(const signed char* a,const signed char* b,int m,int n,int k,int r,unsigned* out,const unsigned* replay,unsigned* written) {
+     constexpr int WarpN=Wide?96:64, Groups=WarpN/16, Threads=Wide?256:THREADS;
+     // Host launch rejects every K except4096. Retain dynamic-K code in
+     // unpacked controls, specialize only the packed-B experiment.
+@@ -128,9 +125,17 @@
+     // column=2*(lane%4) (+1 for c1,c3). Two halves form a16x16 tile.
+     unsigned c[4][Groups][2][4]={};
+     Fragment ar[4], br[Lead+1];
++    Probe probe{written,replay,(size_t(blockIdx.y)*gridDim.x+blockIdx.x)*THREADS+threadIdx.x,
++        size_t(gridDim.x)*gridDim.y*THREADS,0,0,0,0};
++
++    unsigned logical=unsigned(threadIdx.x)^(unsigned(threadIdx.x>>3)&3u);
++    unsigned row=logical/4, col=(logical%4)*16;
++    probe.originA=(unsigned(cm)*BM+row)*4096+col;
++    probe.originB=(unsigned(cn)*BN+row)*4096+col;
++    probe.firstB=cn*BN+row;
+     #pragma unroll
+     for(int p=0;p<Stages-1;++p)
+-        stage_copy<TileK,Planar,UnrollCopy,FixedCopy,Layout>(a,b,sa+p*BM*TileK,sb+p*BN*TileK,cm,cn,p,m,n,k);
++        stage_copy<TileK,Planar,UnrollCopy,FixedCopy,Layout>(a,b,sa+p*BM*TileK,sb+p*BN*TileK,cm,cn,p,m,n,k,probe);
+     static_assert(Stages==2 && TileK==64 && !Wide);
+     // Initial stage publication is prologue-only, not a per-iteration branch.
+     asm volatile("cp.async.wait_group 0;" ::: "memory");
+@@ -139,10 +144,12 @@
+     for(int kt=0;kt<(k+TileK-1)/TileK;++kt) {
+         // IDs4/5 and6/7 alternate. Same two-group protocol; no division,
+         // parity shift or add is needed to select the barriers each iteration.
+-        const unsigned peer_bar=own_bar^1u;
+-        int current=kt%Stages,next=(kt+Stages-1)%Stages;
+-        if(kt+Stages-1<(k+TileK-1)/TileK)
+-            stage_copy<TileK,Planar,UnrollCopy,FixedCopy,Layout>(a,b,sa+next*BM*TileK,sb+next*BN*TileK,cm,cn,kt+Stages-1,m,n,k);
++        probe.step=kt+1;
++        unsigned usedOwn=route(probe,35,own_bar);
++        unsigned peer_bar=route(probe,36,own_bar^1u);
++        int current=route(probe,33,kt%Stages),next=route(probe,34,(kt+Stages-1)%Stages);
++        if(route(probe,37,kt+Stages-1<(k+TileK-1)/TileK))
++            stage_copy<TileK,Planar,UnrollCopy,FixedCopy,Layout>(a,b,sa+next*BM*TileK,sb+next*BN*TileK,cm,cn,kt+Stages-1,m,n,k,probe);
+         signed char* aa=sa+current*BM*TileK;
+         signed char* bb=sb+current*BN*TileK;
+         if constexpr(Lead==0 || Lead==3) {
+@@ -150,13 +157,13 @@
+             for(int slice=0;slice<2;++slice) {
+                 Fragment aa_rows[4],bb_groups[2];
+                 #pragma unroll
+-                for(int row=0;row<4;++row) aa_rows[row]=load16x32<TileK,Planar,Layout>(aa,wm*64+row*16,slice*32,lane,BM);
+-                if constexpr(Lead==3) bb_groups[0]=loadB16x32<TileK,Planar,PackedB,Layout>(bb,wn*WarpN,slice*32,lane,BN);
++                for(int row=0;row<4;++row) aa_rows[row]=load16x32<TileK,Planar,Layout>(aa,wm*64+row*16,slice*32,lane,BM,probe);
++                if constexpr(Lead==3) bb_groups[0]=loadB16x32<TileK,Planar,PackedB,Layout>(bb,wn*WarpN,slice*32,lane,BN,probe);
+                 #pragma unroll
+                 for(int group=0;group<Groups;++group) {
+                     int slot=group%2;
+-                    if constexpr(Lead==0) bb_groups[slot]=loadB16x32<TileK,Planar,PackedB,Layout>(bb,wn*WarpN+group*16,slice*32,lane,BN);
+-                    else if(group+1<Groups) bb_groups[(group+1)%2]=loadB16x32<TileK,Planar,PackedB,Layout>(bb,wn*WarpN+(group+1)*16,slice*32,lane,BN);
++                    if constexpr(Lead==0) bb_groups[slot]=loadB16x32<TileK,Planar,PackedB,Layout>(bb,wn*WarpN+group*16,slice*32,lane,BN,probe);
++                    else if(group+1<Groups) bb_groups[(group+1)%2]=loadB16x32<TileK,Planar,PackedB,Layout>(bb,wn*WarpN+(group+1)*16,slice*32,lane,BN,probe);
+                     #pragma unroll
+                     for(int half=0;half<2;++half) {
+                         #pragma unroll
+@@ -166,9 +173,9 @@
+             }
+         } else {
+         #pragma unroll
+-        for(int row=0;row<4;++row) ar[row]=load16x32<TileK,Planar,Layout>(aa,wm*64+row*16,0,lane,BM);
++        for(int row=0;row<4;++row) ar[row]=load16x32<TileK,Planar,Layout>(aa,wm*64+row*16,0,lane,BM,probe);
+         #pragma unroll
+-        for(int p=0;p<Lead;++p) br[p]=loadB16x32<TileK,Planar,PackedB,Layout>(bb,wn*WarpN+p*16,0,lane,BN);
++        for(int p=0;p<Lead;++p) br[p]=loadB16x32<TileK,Planar,PackedB,Layout>(bb,wn*WarpN+p*16,0,lane,BN,probe);
+         #pragma unroll
+         for(int g=0;g<Groups*(TileK/32);++g) {
+             constexpr int slots=Lead+1;
+@@ -180,8 +187,8 @@
+                 #pragma unroll
+                 for(int half=0;half<2;++half) {
+                     if(half==0 && row==1 && g+Lead<Groups*(TileK/32) && (TileK==64 || kt*TileK+((g+Lead)/Groups)*32<k))
+-                        br[(g+Lead)%slots]=loadB16x32<TileK,Planar,PackedB,Layout>(bb,wn*WarpN+((g+Lead)%Groups)*16,((g+Lead)/Groups)*32,lane,BN);
+-                    if(half==0 && slice+1<TileK/32 && (TileK==64 || kt*TileK+(slice+1)*32<k) && group==Groups-1) nextA=load16x32<TileK,Planar,Layout>(aa,wm*64+row*16,(slice+1)*32,lane,BM);
++                        br[(g+Lead)%slots]=loadB16x32<TileK,Planar,PackedB,Layout>(bb,wn*WarpN+((g+Lead)%Groups)*16,((g+Lead)/Groups)*32,lane,BN,probe);
++                    if(half==0 && slice+1<TileK/32 && (TileK==64 || kt*TileK+(slice+1)*32<k) && group==Groups-1) nextA=load16x32<TileK,Planar,Layout>(aa,wm*64+row*16,(slice+1)*32,lane,BM,probe);
+                     mma<PackedB>(c[row][group][half],ar[row],br[slot],half);
+                     if(slice+1<TileK/32 && (TileK==64 || kt*TileK+(slice+1)*32<k) && group==Groups-1 && half==1)
+                         ar[row]=nextA;
+@@ -238,7 +245,7 @@
+             }
+         }
+         }
+-        asm volatile("bar.sync %0, 384;" :: "r"(own_bar) : "memory");
++        asm volatile("bar.sync %0, 384;" :: "r"(usedOwn) : "memory");
+         own_bar^=2u;
+     }
+     __syncthreads();
+@@ -249,7 +256,7 @@
+ }
+ template<int Lead,int TileK=64,bool Planar=false,bool PackedB=false,bool UnrollCopy=false,bool FixedCopy=false,int Stages=2,bool Wide=false,int Layout=0>
+ cudaError_t launch(const int8_t* a,const int8_t* b,int m,int n,int k,int r,
+-                   uint32_t* t,int* info,cudaStream_t stream) {
++                   uint32_t* t,int* info,cudaStream_t stream,const unsigned* replay,unsigned* written) {
+     if(m<=0 || n<=0 || m%16 || n%16 || r!=128 || k!=4096)
+         return cudaErrorInvalidValue;
+     constexpr int Threads=Wide?256:THREADS;
+@@ -270,7 +277,7 @@
+         info[0]=attr.numRegs;info[1]=Threads;info[2]=smem+attr.sharedSizeBytes;info[3]=active;info[4]=attr.localSizeBytes;
+         return cudaSuccess;
+     }
+-    kernel<Lead,TileK,Planar,PackedB,UnrollCopy,FixedCopy,Stages,Wide,Layout><<<dim3((m+BM-1)/BM,(n+BN-1)/BN),Threads,smem,stream>>>(a,b,m,n,k,r,t);
++    kernel<Lead,TileK,Planar,PackedB,UnrollCopy,FixedCopy,Stages,Wide,Layout><<<dim3((m+BM-1)/BM,(n+BN-1)/BN),Threads,smem,stream>>>(a,b,m,n,k,r,t,replay,written);
+     return cudaGetLastError();
+ }
+-} // namespace scope_B+} // namespace scope_reduced

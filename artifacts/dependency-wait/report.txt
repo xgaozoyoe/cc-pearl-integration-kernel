@@ -1,0 +1,24 @@
+Dependency wait relocation diagnostic (GPU0 only)
+
+8192 x 8192 x 4096 region; kernel-only CUDA events; 200 samples/variant, 16 launches/sample.
+Rotated blocks; boost clocks NOT locked. End-block telemetry is not per-launch clock normalization.
+variant          mean_ms    median_ms   p95_ms    improvement vs AB-zero
+baseline         1.073554   1.068533   1.100273   -6.402%
+ab_zero          1.008958   1.008738   1.010886   +0.000%
+ab_wait2         1.006091   1.006400   1.008515   +0.284%
+ab_wait3         1.005031   1.004736   1.006109   +0.389%
+
+All variants: 168 registers/thread, 69632 dynamic shared bytes/CTA, zero local bytes, 1 CTA/SM, 12 warps/CTA.
+Same instruction text/count/order; wait2/wait3 alter only 4/6 wait-control bytes of AB-zero cubin.
+Wait relocations (SB1): 11a0 -> 11e0; 1250 -> 1290; optional 1310 -> 1420.
+Waiting remains before first R148-R151 overwrite. No intervening scoreboard producer or register use.
+Only three selected B windows tested, not all LDSM waits. No A or C dependency conclusion.
+16 expected-output checks PASS; baseline matches known-good transcript, probes intentionally zero.
+Memcheck: 0 errors. See racecheck.log for separate shared-memory checking.
+Sanitizers do not prove arbitrary binary register-scoreboard correctness; guarded static lifetime audit also required.
+No production library modified; baseline and opt-in candidate checksum verification PASS.
+
+Interpretation: small timing signal, not a usable mining optimization. Need same-metric cycle normalization and PC attribution.
+Next command: sudo bash tools/profile_dependency_wait.sh
+NCU counters need root on this host. Inspect PC 11a0/1250/1310 and relocated 11e0/1290/1420.
+Control encoding reference: https://github.com/cloudcores/CuAssembler/blob/master/CuAsm/CuControlCode.py

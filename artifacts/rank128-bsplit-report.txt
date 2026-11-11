@@ -1,0 +1,62 @@
+Split-B experiment, 2026-10-09. GPU0 only, offline.
+
+Compared unchanged A-stream baseline with staggered half-fragment B
+loads. First B fragment remains LDSM.x4; seven later B fragments use
+two LDSM.x2 each. MMA source order, matrix geometry, shared stages,
+copy path, transcript semantics, seeds and proof path are unchanged.
+Two source prefetch schedules compiled to identical SASS. Only variant1
+was measured against baseline0; variant2 has not been separately tested.
+
+SASS / resources:
+                IMMA  LDSM.x4  LDSM.x2  registers  shared bytes  CTAs/SM
+baseline        64    16       0        168        69632         1
+split B         64    9        14       168        69632         1
+Both:384 threads,12 warps/CTA,12 resident warps/SM,zero spills/local bytes.
+Nominal operand bytes are unchanged, but LDSM instruction count rises
+16 -> 23. No measured L2-traffic or Tensor-utilization claim.
+
+Full transcript AND digest correctness:16/16 comparisons PASS against
+accepted R128 kernel; two seeds and four shapes including8192x8192 and
+partial B tiles. Event harness independently compared full transcripts.
+No live shares submitted. No production library replaced.
+
+CUDA events:6 alternating blocks,100 warmup launches/block,40 samples/
+block,16 launches/sample:240 measured samples per variant.
+8192x8192 main kernel, milliseconds:
+              mean       median     p95
+baseline      1.080423   1.080776   1.106894
+split B       1.118335   1.118850   1.134275
+Time increases3.509%; split B slower in all6 paired blocks.
+
+Full-grid wall time:6 alternating blocks,2 warmup+10 measured grids/block;
+60 measured grids per variant. M=N131072,K4096,R128,region8192.
+Uses actual offline miner setup/noise/Merkle/V3/GEMM/PoW sequence,
+identical setup seeds; no proof submissions.
+              mean ms   median ms   p95 ms    grids/sec   equivalent TH/s
+baseline      307.190   306.900     311.920   3.255314    229.072
+split B       315.318   314.850     320.115   3.171398    223.167
+Time increases8.128ms (2.646%); throughput decreases2.578%.
+All6 paired blocks regress by2.36..2.75% in time.
+Equivalent TH/s uses2^46 MAC/grid; this is not a pool estimate.
+
+Clocks were automatic, not locked; power limit unchanged. Telemetry is
+recorded at each block end, not continuously. Alternating comparisons
+show consistent regression; these do not isolate fixed-clock causality.
+
+Interpretation: the zero-spill version removes the prior spill confound
+but remains slower. Several early B loads are still immediately consumed;
+some later loads have longer lead. Extra load/address instructions and
+remaining short lead are plausible costs, not counter-proven attribution.
+Reject this implementation. This does not disprove operand-overlap
+optimization; it does show splitting loads alone does not provide a gain.
+
+Artifacts:rank128-bsplit-{source.cu,sass,build.log,correctness.json,
+events.json,results.json,summary.json}; baseline/late/early diffs retained.
+Build: .venv/bin/python tools/build_rank128_bsplit.py
+Validate: .venv/bin/python tests/bench_rank128_bsplit.py validate
+Events: .venv/bin/python tests/bench_rank128_bsplit_events.py
+Grids: .venv/bin/python tests/bench_rank128_bsplit.py bench
+Summary: .venv/bin/python tools/summarize_rank128_bsplit.py
+
+PTX x2 address/register mapping checked against NVIDIA PTX documentation:
+https://docs.nvidia.com/cuda/parallel-thread-execution/#warp-level-matrix-instructions-ldmatrix

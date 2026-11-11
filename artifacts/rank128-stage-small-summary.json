@@ -1,0 +1,294 @@
+{
+  "stage-rotation": {
+    "static": {
+      "fixed": {
+        "IMMA": 64,
+        "LDSM": 16,
+        "LDGSTS": 2,
+        "LDL": 0,
+        "STL": 0,
+        "BAR.SYNC": 3,
+        "DEPBAR": 1
+      },
+      "pingpong": {
+        "IMMA": 64,
+        "LDSM": 16,
+        "LDGSTS": 4,
+        "LDL": 0,
+        "STL": 0,
+        "BAR.SYNC": 3,
+        "DEPBAR": 1
+      },
+      "global": {
+        "IMMA": 64,
+        "LDSM": 16,
+        "LDGSTS": 4,
+        "LDL": 0,
+        "STL": 0,
+        "BAR.SYNC": 2,
+        "DEPBAR": 1
+      },
+      "full": {
+        "IMMA": 64,
+        "LDSM": 16,
+        "LDGSTS": 4,
+        "LDL": 0,
+        "STL": 0,
+        "BAR.SYNC": 2,
+        "DEPBAR": 1
+      }
+    },
+    "events": {
+      "resources": {
+        "0": [
+          168,
+          384,
+          69632,
+          1,
+          0
+        ],
+        "1": [
+          167,
+          384,
+          69632,
+          1,
+          0
+        ],
+        "2": [
+          168,
+          384,
+          69632,
+          1,
+          0
+        ],
+        "3": [
+          168,
+          384,
+          69632,
+          1,
+          0
+        ]
+      },
+      "summaries": {
+        "fixed": {
+          "samples": 200,
+          "mean_ms": 0.885845530629158,
+          "median_ms": 0.8856189846992493,
+          "p95_ms": 0.8874399930238723
+        },
+        "pingpong": {
+          "samples": 200,
+          "mean_ms": 0.8918889904022217,
+          "median_ms": 0.8916490077972412,
+          "p95_ms": 0.8935561001300811
+        },
+        "global": {
+          "samples": 200,
+          "mean_ms": 0.9841886308789253,
+          "median_ms": 0.9818879961967468,
+          "p95_ms": 0.9921324878931046
+        },
+        "full": {
+          "samples": 200,
+          "mean_ms": 1.092097229361534,
+          "median_ms": 1.1002560257911682,
+          "p95_ms": 1.1098335444927216
+        }
+      }
+    }
+  },
+  "small-current": {
+    "static": {
+      "baseline": {
+        "IMMA": 64,
+        "LDSM": 16,
+        "LDGSTS": 4,
+        "LDL": 0,
+        "STL": 0,
+        "BAR.SYNC": 2,
+        "DEPBAR": 1
+      },
+      "tile128": {
+        "IMMA": 32,
+        "LDSM": 12,
+        "LDGSTS": 4,
+        "LDL": 0,
+        "STL": 0,
+        "BAR.SYNC": 2,
+        "DEPBAR": 1
+      },
+      "tile64": {
+        "IMMA": 16,
+        "LDSM": 8,
+        "LDGSTS": 4,
+        "LDL": 0,
+        "STL": 0,
+        "BAR.SYNC": 2,
+        "DEPBAR": 1
+      }
+    },
+    "events": {
+      "resources": {
+        "0": [
+          168,
+          384,
+          69632,
+          1,
+          0
+        ],
+        "1": [
+          119,
+          256,
+          36864,
+          2,
+          0
+        ],
+        "2": [
+          74,
+          256,
+          26624,
+          3,
+          0
+        ]
+      },
+      "summaries": {
+        "baseline": {
+          "samples": 240,
+          "mean_ms": 1.0798110345999399,
+          "median_ms": 1.0776320099830627,
+          "p95_ms": 1.100607991218567
+        },
+        "tile128": {
+          "samples": 240,
+          "mean_ms": 1.174567313492298,
+          "median_ms": 1.172831952571869,
+          "p95_ms": 1.2021151602268219,
+          "time_change_pct": 8.77526491729772,
+          "throughput_change_pct": -8.067334907407119
+        },
+        "tile64": {
+          "samples": 240,
+          "mean_ms": 1.4964969431360562,
+          "median_ms": 1.4919270277023315,
+          "p95_ms": 1.5263999700546265,
+          "time_change_pct": 38.58878036845537,
+          "throughput_change_pct": -27.844086848778325
+        }
+      }
+    },
+    "results": {
+      "resources": {
+        "0": [
+          168,
+          384,
+          69632,
+          1,
+          0
+        ],
+        "1": [
+          119,
+          256,
+          36864,
+          2,
+          0
+        ],
+        "2": [
+          74,
+          256,
+          26624,
+          3,
+          0
+        ]
+      },
+      "summaries": {
+        "baseline": {
+          "samples": 60,
+          "mean_ms": 307.81999999999994,
+          "median_ms": 307.45000000000005,
+          "p95_ms": 312.7,
+          "grids_sec": 3.2486518094990586,
+          "equivalent_ths": 228.60354810494448
+        },
+        "tile128": {
+          "samples": 60,
+          "mean_ms": 330.4216666666667,
+          "median_ms": 329.40000000000003,
+          "p95_ms": 336.37,
+          "grids_sec": 3.0264359177414715,
+          "equivalent_ths": 212.96649486564337,
+          "time_change_pct": 7.342494531436139,
+          "throughput_change_pct": -6.840249580082036
+        },
+        "tile64": {
+          "samples": 60,
+          "mean_ms": 414.22833333333335,
+          "median_ms": 413.65,
+          "p95_ms": 419.135,
+          "grids_sec": 2.4141274739777177,
+          "equivalent_ths": 169.8791186286082,
+          "time_change_pct": 34.56836246291126,
+          "throughput_change_pct": -25.68832809601792
+        }
+      }
+    }
+  },
+  "geometry": [
+    {
+      "CTA": [
+        256,
+        192,
+        64
+      ],
+      "warp_tile": [
+        64,
+        64
+      ],
+      "registers": 168,
+      "shared_bytes": 69632,
+      "active_CTAs": 1,
+      "resident_warps": 12,
+      "warp_IMMA_per_K64": 64,
+      "executed_MMA_per_region": 67633152,
+      "nominal_copy_bytes_per_executed_MMA": 37.333333333333336,
+      "nominal_copy_bytes_per_useful_MMA": 37.625
+    },
+    {
+      "CTA": [
+        128,
+        128,
+        64
+      ],
+      "warp_tile": [
+        32,
+        64
+      ],
+      "registers": 119,
+      "shared_bytes": 36864,
+      "active_CTAs": 2,
+      "resident_warps": 16,
+      "warp_IMMA_per_K64": 32,
+      "executed_MMA_per_region": 67108864,
+      "nominal_copy_bytes_per_executed_MMA": 64.0,
+      "nominal_copy_bytes_per_useful_MMA": 64.0
+    },
+    {
+      "CTA": [
+        64,
+        128,
+        64
+      ],
+      "warp_tile": [
+        32,
+        32
+      ],
+      "registers": 74,
+      "shared_bytes": 26624,
+      "active_CTAs": 3,
+      "resident_warps": 24,
+      "warp_IMMA_per_K64": 16,
+      "executed_MMA_per_region": 67108864,
+      "nominal_copy_bytes_per_executed_MMA": 96.0,
+      "nominal_copy_bytes_per_useful_MMA": 96.0
+    }
+  ]
+}

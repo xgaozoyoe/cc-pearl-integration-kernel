@@ -1,0 +1,477 @@
+{
+  "baseline": {
+    "kernel_ms": 1.0380479999999999,
+    "IMMA_per_SM_cycle": 0.19171076796361095,
+    "cycle_throughput_change_pct": 0.0,
+    "tensor_pct": 78.76,
+    "short_scoreboard_pct": 7.34,
+    "long_scoreboard_pct": 2.89,
+    "barrier_pct": 12.79,
+    "math_throttle_pct": 45.39333333333333,
+    "aggregate_effective_SM_GHz": 2.6551425053927686,
+    "hotspot_IMMA_instruction": "IMMA.16832.S8.S8 R112, R144.ROW, R148.COL, R112",
+    "hotspots": {
+      "stall_short_sb": [
+        {
+          "pc": "0x1500",
+          "samples": 14777.0,
+          "share_of_reason_pct": 19.875717917333585
+        },
+        {
+          "pc": "0x11a0",
+          "samples": 12121.0,
+          "share_of_reason_pct": 16.30328056276649
+        },
+        {
+          "pc": "0x1250",
+          "samples": 9411.0,
+          "share_of_reason_pct": 12.65821082222551
+        },
+        {
+          "pc": "0x10e0",
+          "samples": 9188.0,
+          "share_of_reason_pct": 12.358265969037083
+        },
+        {
+          "pc": "0x1310",
+          "samples": 6863.0,
+          "share_of_reason_pct": 9.231038239606171
+        }
+      ],
+      "stall_long_sb": [
+        {
+          "pc": "0xfd0",
+          "samples": 13334.0,
+          "share_of_reason_pct": 46.361392162998506
+        },
+        {
+          "pc": "0xf50",
+          "samples": 9877.0,
+          "share_of_reason_pct": 34.341643197385345
+        },
+        {
+          "pc": "0xc40",
+          "samples": 3609.0,
+          "share_of_reason_pct": 12.548242411599041
+        },
+        {
+          "pc": "0x10b0",
+          "samples": 1467.0,
+          "share_of_reason_pct": 5.100657139876916
+        },
+        {
+          "pc": "0xb00",
+          "samples": 150.0,
+          "share_of_reason_pct": 0.5215395848544905
+        }
+      ],
+      "stall_math": [
+        {
+          "pc": "0x1210",
+          "samples": 81876.0,
+          "share_of_reason_pct": 17.940981192603257
+        },
+        {
+          "pc": "0x1500",
+          "samples": 76052.0,
+          "share_of_reason_pct": 16.664804114268684
+        },
+        {
+          "pc": "0x1580",
+          "samples": 59555.0,
+          "share_of_reason_pct": 13.049918595504018
+        },
+        {
+          "pc": "0x15f0",
+          "samples": 28063.0,
+          "share_of_reason_pct": 6.1492715228885775
+        },
+        {
+          "pc": "0x10e0",
+          "samples": 12433.0,
+          "share_of_reason_pct": 2.724366348718016
+        }
+      ]
+    }
+  },
+  "c_zero": {
+    "kernel_ms": 1.019872,
+    "IMMA_per_SM_cycle": 0.19194588437450127,
+    "cycle_throughput_change_pct": 0.12264121279559337,
+    "tensor_pct": 78.80333333333333,
+    "short_scoreboard_pct": 7.16,
+    "long_scoreboard_pct": 2.89,
+    "barrier_pct": 12.893333333333334,
+    "math_throttle_pct": 45.63666666666667,
+    "aggregate_effective_SM_GHz": 2.699139552404469,
+    "hotspot_IMMA_instruction": "IMMA.16832.S8.S8 R112, R144.ROW, R148.COL, RZ",
+    "hotspots": {
+      "stall_short_sb": [
+        {
+          "pc": "0x1500",
+          "samples": 14737.0,
+          "share_of_reason_pct": 20.490538229446198
+        },
+        {
+          "pc": "0x11a0",
+          "samples": 10652.0,
+          "share_of_reason_pct": 14.81069506819983
+        },
+        {
+          "pc": "0x1250",
+          "samples": 9086.0,
+          "share_of_reason_pct": 12.633305988515175
+        },
+        {
+          "pc": "0x10e0",
+          "samples": 8860.0,
+          "share_of_reason_pct": 12.319072315457237
+        },
+        {
+          "pc": "0x1310",
+          "samples": 6481.0,
+          "share_of_reason_pct": 9.011276261453538
+        }
+      ],
+      "stall_long_sb": [
+        {
+          "pc": "0xfd0",
+          "samples": 13198.0,
+          "share_of_reason_pct": 45.90289371174179
+        },
+        {
+          "pc": "0xf50",
+          "samples": 9955.0,
+          "share_of_reason_pct": 34.62367835281024
+        },
+        {
+          "pc": "0xc40",
+          "samples": 3621.0,
+          "share_of_reason_pct": 12.593906510851419
+        },
+        {
+          "pc": "0x10b0",
+          "samples": 1509.0,
+          "share_of_reason_pct": 5.248330550918197
+        },
+        {
+          "pc": "0xb00",
+          "samples": 150.0,
+          "share_of_reason_pct": 0.5217028380634391
+        }
+      ],
+      "stall_math": [
+        {
+          "pc": "0x1210",
+          "samples": 84437.0,
+          "share_of_reason_pct": 18.40696891152177
+        },
+        {
+          "pc": "0x1500",
+          "samples": 76247.0,
+          "share_of_reason_pct": 16.621577727735474
+        },
+        {
+          "pc": "0x1580",
+          "samples": 54751.0,
+          "share_of_reason_pct": 11.93552536062068
+        },
+        {
+          "pc": "0x15f0",
+          "samples": 32514.0,
+          "share_of_reason_pct": 7.087937600687125
+        },
+        {
+          "pc": "0x10e0",
+          "samples": 13850.0,
+          "share_of_reason_pct": 3.019251269284514
+        }
+      ]
+    }
+  },
+  "a_zero": {
+    "kernel_ms": 1.004992,
+    "IMMA_per_SM_cycle": 0.19238133314614156,
+    "cycle_throughput_change_pct": 0.3497796131398889,
+    "tensor_pct": 78.97333333333333,
+    "short_scoreboard_pct": 7.223333333333334,
+    "long_scoreboard_pct": 2.8966666666666665,
+    "barrier_pct": 12.846666666666666,
+    "math_throttle_pct": 45.64,
+    "aggregate_effective_SM_GHz": 2.732902515481042,
+    "hotspot_IMMA_instruction": "IMMA.16832.S8.S8 R112, RZ.ROW, R148.COL, R112",
+    "hotspots": {
+      "stall_short_sb": [
+        {
+          "pc": "0x1500",
+          "samples": 14270.0,
+          "share_of_reason_pct": 19.76591176674285
+        },
+        {
+          "pc": "0x11a0",
+          "samples": 11426.0,
+          "share_of_reason_pct": 15.826580788143223
+        },
+        {
+          "pc": "0x1250",
+          "samples": 9295.0,
+          "share_of_reason_pct": 12.874852829143293
+        },
+        {
+          "pc": "0x10e0",
+          "samples": 8883.0,
+          "share_of_reason_pct": 12.304176189486807
+        },
+        {
+          "pc": "0x1310",
+          "samples": 6807.0,
+          "share_of_reason_pct": 9.428630791606066
+        }
+      ],
+      "stall_long_sb": [
+        {
+          "pc": "0xfd0",
+          "samples": 13048.0,
+          "share_of_reason_pct": 45.3417659936755
+        },
+        {
+          "pc": "0xf50",
+          "samples": 10129.0,
+          "share_of_reason_pct": 35.19824860131355
+        },
+        {
+          "pc": "0xc40",
+          "samples": 3663.0,
+          "share_of_reason_pct": 12.72891545331341
+        },
+        {
+          "pc": "0x10b0",
+          "samples": 1434.0,
+          "share_of_reason_pct": 4.983146262640303
+        },
+        {
+          "pc": "0xb00",
+          "samples": 149.0,
+          "share_of_reason_pct": 0.5177746116690413
+        }
+      ],
+      "stall_math": [
+        {
+          "pc": "0x1210",
+          "samples": 83155.0,
+          "share_of_reason_pct": 18.15409201158823
+        },
+        {
+          "pc": "0x1500",
+          "samples": 76247.0,
+          "share_of_reason_pct": 16.64596300411963
+        },
+        {
+          "pc": "0x1580",
+          "samples": 55638.0,
+          "share_of_reason_pct": 12.1466823563315
+        },
+        {
+          "pc": "0x15f0",
+          "samples": 34069.0,
+          "share_of_reason_pct": 7.437818059561053
+        },
+        {
+          "pc": "0x10e0",
+          "samples": 13806.0,
+          "share_of_reason_pct": 3.014074851926969
+        }
+      ]
+    }
+  },
+  "b_zero": {
+    "kernel_ms": 1.0071146666666666,
+    "IMMA_per_SM_cycle": 0.19199758179115772,
+    "cycle_throughput_change_pct": 0.14960757321738072,
+    "tensor_pct": 78.82333333333332,
+    "short_scoreboard_pct": 6.93,
+    "long_scoreboard_pct": 2.9,
+    "barrier_pct": 12.806666666666667,
+    "math_throttle_pct": 46.016666666666666,
+    "aggregate_effective_SM_GHz": 2.7325933196484202,
+    "hotspot_IMMA_instruction": "IMMA.16832.S8.S8 R112, R144.ROW, RZ.COL, R112",
+    "hotspots": {
+      "stall_short_sb": [
+        {
+          "pc": "0x1500",
+          "samples": 13027.0,
+          "share_of_reason_pct": 18.723948601489063
+        },
+        {
+          "pc": "0x11a0",
+          "samples": 11727.0,
+          "share_of_reason_pct": 16.8554345013942
+        },
+        {
+          "pc": "0x10e0",
+          "samples": 8922.0,
+          "share_of_reason_pct": 12.823756000804899
+        },
+        {
+          "pc": "0x1250",
+          "samples": 7995.0,
+          "share_of_reason_pct": 11.491361715583407
+        },
+        {
+          "pc": "0x1310",
+          "samples": 6889.0,
+          "share_of_reason_pct": 9.90168741196424
+        }
+      ],
+      "stall_long_sb": [
+        {
+          "pc": "0xfd0",
+          "samples": 12955.0,
+          "share_of_reason_pct": 45.199218477426555
+        },
+        {
+          "pc": "0xf50",
+          "samples": 10056.0,
+          "share_of_reason_pct": 35.08478124345824
+        },
+        {
+          "pc": "0xc40",
+          "samples": 3707.0,
+          "share_of_reason_pct": 12.933500802456214
+        },
+        {
+          "pc": "0x10b0",
+          "samples": 1428.0,
+          "share_of_reason_pct": 4.98220640569395
+        },
+        {
+          "pc": "0xb00",
+          "samples": 155.0,
+          "share_of_reason_pct": 0.5407857093015142
+        }
+      ],
+      "stall_math": [
+        {
+          "pc": "0x1210",
+          "samples": 79729.0,
+          "share_of_reason_pct": 17.260497579646515
+        },
+        {
+          "pc": "0x1500",
+          "samples": 76093.0,
+          "share_of_reason_pct": 16.473341473341474
+        },
+        {
+          "pc": "0x1580",
+          "samples": 57381.0,
+          "share_of_reason_pct": 12.422388486218274
+        },
+        {
+          "pc": "0x15f0",
+          "samples": 33931.0,
+          "share_of_reason_pct": 7.345707877622771
+        },
+        {
+          "pc": "0x10e0",
+          "samples": 16264.0,
+          "share_of_reason_pct": 3.520986499709904
+        }
+      ]
+    }
+  },
+  "ab_zero": {
+    "kernel_ms": 0.9982293333333333,
+    "IMMA_per_SM_cycle": 0.19362883038318687,
+    "cycle_throughput_change_pct": 1.000498010596873,
+    "tensor_pct": 79.50666666666667,
+    "short_scoreboard_pct": 7.203333333333333,
+    "long_scoreboard_pct": 2.8866666666666667,
+    "barrier_pct": 12.77,
+    "math_throttle_pct": 45.85666666666667,
+    "aggregate_effective_SM_GHz": 2.7336904414538608,
+    "hotspot_IMMA_instruction": "IMMA.16832.S8.S8 R112, RZ.ROW, RZ.COL, R112",
+    "hotspots": {
+      "stall_short_sb": [
+        {
+          "pc": "0x1500",
+          "samples": 14551.0,
+          "share_of_reason_pct": 20.351333585085108
+        },
+        {
+          "pc": "0x11a0",
+          "samples": 10958.0,
+          "share_of_reason_pct": 15.326088476761912
+        },
+        {
+          "pc": "0x1250",
+          "samples": 9229.0,
+          "share_of_reason_pct": 12.90787283738234
+        },
+        {
+          "pc": "0x10e0",
+          "samples": 9196.0,
+          "share_of_reason_pct": 12.861718345711129
+        },
+        {
+          "pc": "0x1310",
+          "samples": 6650.0,
+          "share_of_reason_pct": 9.300829382229121
+        }
+      ],
+      "stall_long_sb": [
+        {
+          "pc": "0xfd0",
+          "samples": 12879.0,
+          "share_of_reason_pct": 44.79496365343814
+        },
+        {
+          "pc": "0xf50",
+          "samples": 10118.0,
+          "share_of_reason_pct": 35.19181941497687
+        },
+        {
+          "pc": "0xc40",
+          "samples": 3660.0,
+          "share_of_reason_pct": 12.729992000278251
+        },
+        {
+          "pc": "0x10b0",
+          "samples": 1576.0,
+          "share_of_reason_pct": 5.481548467879378
+        },
+        {
+          "pc": "0xae0",
+          "samples": 163.0,
+          "share_of_reason_pct": 0.5669368021981844
+        }
+      ],
+      "stall_math": [
+        {
+          "pc": "0x1210",
+          "samples": 81055.0,
+          "share_of_reason_pct": 17.73873041856882
+        },
+        {
+          "pc": "0x1500",
+          "samples": 74032.0,
+          "share_of_reason_pct": 16.201760413885474
+        },
+        {
+          "pc": "0x1580",
+          "samples": 61639.0,
+          "share_of_reason_pct": 13.489576266364365
+        },
+        {
+          "pc": "0x15f0",
+          "samples": 28848.0,
+          "share_of_reason_pct": 6.313329160630107
+        },
+        {
+          "pc": "0x10e0",
+          "samples": 13258.0,
+          "share_of_reason_pct": 2.9014877291886427
+        }
+      ]
+    }
+  }
+}

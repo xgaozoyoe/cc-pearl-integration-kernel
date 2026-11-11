@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "native": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "104c0c1b265260dea5c9ab0bb174ebbbe7ee9cceb0cf0acebf2a9d1dfa4d50aa",
+      "smem": 69632,
+      "correct": true
+    },
+    "source_control": {
+      "entry": "_ZN28three_handoff_source_control6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "94d6aae5a7fc75fba95aa058ed7fa347c577e010603f6d096af5139035c5d8e3",
+      "smem": 69632,
+      "correct": true
+    },
+    "three_groups": {
+      "entry": "_ZN26three_handoff_three_groups6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "ad667405556c50567fb4526526a74c025fb5143c148b49a9720efb517c47ea38",
+      "smem": 69632,
+      "correct": true
+    },
+    "three_early": {
+      "entry": "_ZN26three_handoff_three_groups6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "75a2c6bb4a8b1a402342bc5d1fd04cce98dbe846fc999618fca28a316b8c639c",
+      "smem": 69632,
+      "correct": true,
+      "publication_wait_mask": 6
+    }
+  },
+  "warning": "Offline source protocol experiment. Source controls must be compared with frozen native; compiler scheduling may differ."
+}

@@ -1,0 +1,53 @@
+[
+  {
+    "variant": 0,
+    "name": "current A-stream",
+    "samples": 60,
+    "mean_ms": 308.68666666666667,
+    "median_ms": 308.65,
+    "p95_ms": 313.59999999999997,
+    "ths": 227.96172227824545,
+    "grids_sec": 3.2395309159233743,
+    "resources": [
+      168,
+      384,
+      69632,
+      1,
+      0
+    ]
+  },
+  {
+    "variant": 1,
+    "name": "fragment-first deferred fold",
+    "samples": 60,
+    "mean_ms": 567.5966666666667,
+    "median_ms": 567.55,
+    "p95_ms": 569.325,
+    "ths": 123.97666919173355,
+    "grids_sec": 1.7618144339583859,
+    "resources": [
+      166,
+      384,
+      69632,
+      1,
+      0
+    ]
+  },
+  {
+    "variant": 2,
+    "name": "fragment-first immediate fold",
+    "samples": 60,
+    "mean_ms": 582.11,
+    "median_ms": 582.1,
+    "p95_ms": 585.2,
+    "ths": 120.88564734786209,
+    "grids_sec": 1.7178883716136124,
+    "resources": [
+      155,
+      384,
+      69632,
+      1,
+      0
+    ]
+  }
+]

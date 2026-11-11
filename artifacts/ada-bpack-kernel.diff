@@ -1,0 +1,124 @@
+--- baseline/pearl-gemm-ada-v2.cu
++++ csrc/gemm/pearl-gemm-ada-v2.cu
+@@ -26,13 +26,28 @@
+         : "=r"(x.v[0]),"=r"(x.v[1]),"=r"(x.v[2]),"=r"(x.v[3]) : "r"(addr));
+     return x;
+ }
++template<int TileK,bool Planar,bool Packed>
++__device__ __forceinline__ Fragment loadB16x32(const signed char* base,int row,int col,int lane,int height) {
++    if constexpr(!Packed) return load16x32<TileK,Planar>(base,row,col,lane,height);
++    else {
++        // Matrix order: Nlow/Klow, Nlow/Khigh, Nhigh/Klow, Nhigh/Khigh.
++        // Each adjacent output pair is now a complete MMA B operand.
++        unsigned addr=__cvta_generic_to_shared(base+offset<TileK,Planar>(
++            row+(lane&7)+(lane>>4)*8,col+((lane>>3)&1)*16,height));
++        Fragment x;
++        asm volatile("ldmatrix.sync.aligned.m8n8.x4.shared.b16 {%0,%1,%2,%3},[%4];"
++            : "=r"(x.v[0]),"=r"(x.v[1]),"=r"(x.v[2]),"=r"(x.v[3]) : "r"(addr));
++        return x;
++    }
++}
++template<bool Packed=false>
+ __device__ __forceinline__ void mma(unsigned* c,const Fragment& a,const Fragment& b,int half) {
+     // An 8-row B half uses registers (0,2) or (1,3).
+     asm volatile("mma.sync.aligned.m16n8k32.row.col.s32.s8.s8.s32 "
+         "{%0,%1,%2,%3},{%4,%5,%6,%7},{%8,%9},{%0,%1,%2,%3};"
+         : "+r"(c[0]),"+r"(c[1]),"+r"(c[2]),"+r"(c[3])
+         : "r"(a.v[0]),"r"(a.v[1]),"r"(a.v[2]),"r"(a.v[3]),
+-          "r"(b.v[half]),"r"(b.v[half+2]));
++          "r"(b.v[Packed?2*half:half]),"r"(b.v[Packed?2*half+1:half+2]));
+ }
+ template<int TileK,bool Planar>
+ __device__ __forceinline__ void stage_copy(const signed char* a,const signed char* b,
+@@ -64,7 +79,7 @@
+     asm volatile("cp.async.commit_group;");
+ }
+ 
+-template<int Lead,int TileK=64,bool Planar=false>
++template<int Lead,int TileK=64,bool Planar=false,bool PackedB=false>
+ __global__ void __launch_bounds__(THREADS,1) kernel(const signed char* a,const signed char* b,int m,int n,int k,int r,unsigned* out) {
+     extern __shared__ signed char shared[];
+     signed char* sa=shared;
+@@ -95,16 +110,16 @@
+                 Fragment aa_rows[4],bb_groups[2];
+                 #pragma unroll
+                 for(int row=0;row<4;++row) aa_rows[row]=load16x32<TileK,Planar>(aa,wm*64+row*16,slice*32,lane,BM);
+-                if constexpr(Lead==3) bb_groups[0]=load16x32<TileK,Planar>(bb,wn*64,slice*32,lane,BN);
++                if constexpr(Lead==3) bb_groups[0]=loadB16x32<TileK,Planar,PackedB>(bb,wn*64,slice*32,lane,BN);
+                 #pragma unroll
+                 for(int group=0;group<4;++group) {
+                     int slot=group%2;
+-                    if constexpr(Lead==0) bb_groups[slot]=load16x32<TileK,Planar>(bb,wn*64+group*16,slice*32,lane,BN);
+-                    else if(group+1<4) bb_groups[(group+1)%2]=load16x32<TileK,Planar>(bb,wn*64+(group+1)*16,slice*32,lane,BN);
++                    if constexpr(Lead==0) bb_groups[slot]=loadB16x32<TileK,Planar,PackedB>(bb,wn*64+group*16,slice*32,lane,BN);
++                    else if(group+1<4) bb_groups[(group+1)%2]=loadB16x32<TileK,Planar,PackedB>(bb,wn*64+(group+1)*16,slice*32,lane,BN);
+                     #pragma unroll
+                     for(int half=0;half<2;++half) {
+                         #pragma unroll
+-                        for(int row=0;row<4;++row) mma(c[row][group][half],aa_rows[row],bb_groups[slot],half);
++                        for(int row=0;row<4;++row) mma<PackedB>(c[row][group][half],aa_rows[row],bb_groups[slot],half);
+                     }
+                 }
+             }
+@@ -112,7 +127,7 @@
+         #pragma unroll
+         for(int row=0;row<4;++row) ar[row]=load16x32<TileK,Planar>(aa,wm*64+row*16,0,lane,BM);
+         #pragma unroll
+-        for(int p=0;p<Lead;++p) br[p]=load16x32<TileK,Planar>(bb,wn*64+p*16,0,lane,BN);
++        for(int p=0;p<Lead;++p) br[p]=loadB16x32<TileK,Planar,PackedB>(bb,wn*64+p*16,0,lane,BN);
+         #pragma unroll
+         for(int g=0;g<4*(TileK/32);++g) {
+             constexpr int slots=Lead+1;
+@@ -123,8 +138,8 @@
+                 #pragma unroll
+                 for(int row=0;row<4;++row) {
+                     if(half==0 && row==2 && g+Lead<4*(TileK/32) && (TileK==64 || kt*TileK+((g+Lead)/4)*32<k))
+-                        br[(g+Lead)%slots]=load16x32<TileK,Planar>(bb,wn*64+((g+Lead)%4)*16,((g+Lead)/4)*32,lane,BN);
+-                    mma(c[row][group][half],ar[row],br[slot],half);
++                        br[(g+Lead)%slots]=loadB16x32<TileK,Planar,PackedB>(bb,wn*64+((g+Lead)%4)*16,((g+Lead)/4)*32,lane,BN);
++                    mma<PackedB>(c[row][group][half],ar[row],br[slot],half);
+                     if(slice+1<TileK/32 && (TileK==64 || kt*TileK+(slice+1)*32<k) && group==3 && half==1)
+                         ar[row]=load16x32<TileK,Planar>(aa,wm*64+row*16,(slice+1)*32,lane,BM);
+                 }
+@@ -176,7 +191,7 @@
+         if(gr<m/16 && gc<n/16) out[((size_t)gr*(n/16)+gc)*16+i%16]=transcript[i];
+     }
+ }
+-template<int Lead,int TileK=64,bool Planar=false>
++template<int Lead,int TileK=64,bool Planar=false,bool PackedB=false>
+ cudaError_t launch(const int8_t* a,const int8_t* b,int m,int n,int k,int r,
+                    uint32_t* t,int* info,cudaStream_t stream) {
+     if(m<=0 || n<=0 || m%16 || n%16 || r!=256 || k!=4096)
+@@ -185,20 +200,20 @@
+     static bool initialized=false; // Isolated benchmarks use device0 only.
+     cudaError_t err;
+     if(!initialized) {
+-        err=cudaFuncSetAttribute(kernel<Lead,TileK,Planar>,cudaFuncAttributeMaxDynamicSharedMemorySize,smem);
++        err=cudaFuncSetAttribute(kernel<Lead,TileK,Planar,PackedB>,cudaFuncAttributeMaxDynamicSharedMemorySize,smem);
+         if(err!=cudaSuccess)return err;
+-        err=cudaFuncSetAttribute(kernel<Lead,TileK,Planar>,cudaFuncAttributePreferredSharedMemoryCarveout,100);
++        err=cudaFuncSetAttribute(kernel<Lead,TileK,Planar,PackedB>,cudaFuncAttributePreferredSharedMemoryCarveout,100);
+         if(err!=cudaSuccess)return err;
+         initialized=true;
+     }
+     if(info) {
+-        cudaFuncAttributes attr;err=cudaFuncGetAttributes(&attr,kernel<Lead,TileK,Planar>);if(err!=cudaSuccess)return err;
+-        int active;err=cudaOccupancyMaxActiveBlocksPerMultiprocessor(&active,kernel<Lead,TileK,Planar>,THREADS,smem);
++        cudaFuncAttributes attr;err=cudaFuncGetAttributes(&attr,kernel<Lead,TileK,Planar,PackedB>);if(err!=cudaSuccess)return err;
++        int active;err=cudaOccupancyMaxActiveBlocksPerMultiprocessor(&active,kernel<Lead,TileK,Planar,PackedB>,THREADS,smem);
+         if(err!=cudaSuccess)return err;
+         info[0]=attr.numRegs;info[1]=THREADS;info[2]=smem+attr.sharedSizeBytes;info[3]=active;info[4]=attr.localSizeBytes;
+         return cudaSuccess;
+     }
+-    kernel<Lead,TileK,Planar><<<dim3((m+BM-1)/BM,(n+BN-1)/BN),THREADS,smem,stream>>>(a,b,m,n,k,r,t);
++    kernel<Lead,TileK,Planar,PackedB><<<dim3((m+BM-1)/BM,(n+BN-1)/BN),THREADS,smem,stream>>>(a,b,m,n,k,r,t);
+     return cudaGetLastError();
+ }
+ } // namespace pearl_ada_v2
+@@ -211,5 +226,6 @@
+     if(lead==3)return pearl_ada_v2::launch<3>(a,b,m,n,k,r,t,info,stream);
+     if(lead==4)return pearl_ada_v2::launch<2,64,true>(a,b,m,n,k,r,t,info,stream);
+     if(lead==5)return pearl_ada_v2::launch<2,96,true>(a,b,m,n,k,r,t,info,stream);
++    if(lead==6)return pearl_ada_v2::launch<2,64,false,true>(a,b,m,n,k,r,t,info,stream);
+     return cudaErrorInvalidValue;
+ }

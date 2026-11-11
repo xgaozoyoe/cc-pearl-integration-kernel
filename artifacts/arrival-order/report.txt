@@ -1,0 +1,89 @@
+SOURCE-BASED arrival timestamps,NOT a trace of the frozen fastest cubin.
+GPU0,CTA256x192,12warps(8+4),K64/2stages,K4096/rank128,8192region.
+Clock32 per warp before peer BAR.ARV and before own BAR.SYNC;selected singleKiteration perlaunch.
+No per-iteration trace stores except selectediteration;global export occurs after ownsync.
+Allwarps withinCTA share SM clock;unwrap relative W0;only withinCTA comparisons.
+Timestamp-before-op is not exact hardware arrival;64cycle ambiguity band used. No isolated instruction latency claim.
+30launches:10Kindices x3repeats,1376CTAs/launch;full transcript bit-exact each launch.
+All168regs,0spill,69632Bshared,1CTA/SM. Source scheduling still differs.
+CRITICAL:source_control BAR.ARV after64staticMMA;trace after64;frozen fastest after48.
+Consequently these results cannot quantify the fastestbinary waiting distribution.
+Kernel event times40samples/variant:
+native:mean1.022351,median1.019456,p951.048383ms
+source_control:mean1.054569,median1.056189,p951.069382ms
+trace:mean1.104414,median1.104061,p951.111394ms
+Arrival analysis by selected iteration;median cycles across3x1376CTAs:
+kt group ownLateLast% peerEarlyLast% gap(ownLate-peerEarly) ownEarly-peerEarly tailBeyondOwnEarly tailBeyondAllEarly
+0 G0 88.95 1.91 484 444 41 41
+0 G1 5.14 78.68 -402 -444 41 0
+1 G0 100.00 0.00 1122 630 477 477
+1 G1 3.08 77.79 -173 -630 462 0
+16 G0 100.00 0.00 1234 1193 41 41
+16 G1 0.00 100.00 -1137 -1193 56 0
+17 G0 100.00 0.00 1460 974 474 474
+17 G1 0.02 96.17 -506 -974 464 0
+30 G0 100.00 0.00 1235 1194 41 41
+30 G1 0.00 100.00 -1138 -1194 56 0
+31 G0 100.00 0.00 1455 972 473 473
+31 G1 0.02 96.00 -505 -972 463 0
+46 G0 99.93 0.07 1575 1534 41 41
+46 G1 0.07 99.88 -1481 -1534 56 0
+47 G0 100.00 0.00 1657 1022 626 626
+47 G1 0.10 84.35 -477 -1022 550 0
+62 G0 99.90 0.10 1575 1534 41 41
+62 G1 0.10 99.88 -1480 -1534 56 0
+63 G0 100.00 0.00 1513 1001 513 513
+63 G1 0.02 90.02 -446 -1001 553 0
+Maxima compare two classes of potential barrier participants;not measured release time.
+OwnLate last does NOT imply transcript sole bottleneck:ownGroup early may already lag peer.
+Steady nofold G0 already~1193-1534cycles behind beforelate;tailadds~41cycles.
+Fold G0 tail adds~474-626cycles beyond all early timestamps;G1 usuallywaitsG0early.
+Values include marker/control overhead and scheduling;no recoverable speedup estimate.
+This is source-protocol evidence only. Fastestbinary needs matching position-preserving tracing before applying conclusion.
+No production replacement,live mining or new profiler hardwarecounter claim.
+
+Validation: instrumented trace boundary case 512x800, seed9876: transcript bit-exact PASS; compute-sanitizer racecheck 0 errors,0 warnings. This is a boundary-case check, not exhaustive race coverage.
+Production baseline checksum verification: artifacts/libpearl-rank.so OK; libp40cuda.so OK.
+
+Follow-up source/SASS audit:
+- Source control DEPBAR after48 static IMMA; trace DEPBAR after40. Both publish after64. Thus trace perturbs copy-wait placement as well as adding markers, while native publishes after48.
+- Trace clock reads compile to predicated S2UR UR5,SR_CLOCKLO at0x1910 and S2UR UR4,SR_CLOCKLO at0x2b70. Early BAR.ARV at0x1940, late BAR.SYNC at0x2b80. Early marker is not immediately adjacent: two intervening integer instructions.
+- Warp mapping wm=warp%4,wn=warp/4: W0..3 columns0..63; W4..7 columns64..127; W8..11 columns128..191. Each warp has64x64 output and64 IMMA perK64.
+- Copy assignments: W0..7 issue3 A +2 B 16-byte copies/lane; W8..11 issue2 A +2 B. W0..3 vs W4..7 have equal copy count and useful MMA count, but different addresses.
+- K17: G0 last early arrival belongs W0..3 in97.117% of CTAs. Median difference between strip maxima W0..3 and W4..7 is518cycles. K16 corresponding94.840%,423cycles. K46 differs:69.598%,62cycles. No fixed-lag assumption across iterations.
+- K17 median individual late-minus-early: W0..3=457cycles, W4..7=459cycles,W8..11=466cycles. Similar fold intervals despite strongly unequal early arrival times. These intervals include scheduling and marker overhead, not isolated fold latency.
+- No exact iteration-start or wait-entry timestamps exist. Cannot separate inherited phase skew, cp.async waiting, operand readiness, or scheduler contention from these two markers.
+- No evidence here for a specific faulty named barrier or recoverable percentage. Native-position tracing with matched uninstrumented control is still required.
+Reproduction: .venv/bin/python tools/analyze_arrival_warps.py (CPU only, existing raw traces); outputs warp-analysis.json. Production unchanged.
+
+Fixed-timeline arrival-count model (software markers only):
+P=early marker; L=late marker. For group g: Rg=max(max(Lown),max(Ppeer)); A=max(Pall).
+For warp w: modeled wait=Rg-Lw; all-publication wait=max(A-Lw,0); own-tail excess=max(Rg-max(A,Lw),0).
+Units below are mean cycles per warp sample, not CTA critical-path latency or kernel savings.
+All-publication readiness is conservative, not the minimum per-warp dependency set.
+kt group count_wait all_publications_wait own_tail_excess
+16 G0 265.6 232.3 33.3
+16 G1 1330.7 1330.7 0.0
+17 G0 348.3 76.6 271.7
+17 G1 589.2 589.2 0.1
+46 G0 284.9 250.9 34.0
+46 G1 1820.7 1820.7 0.0
+47 G0 418.3 53.6 364.7
+47 G1 564.9 563.6 1.4
+Native loop-entry control: prior sync at2a00, own-ID toggle waitmask8 at2a20, branch/call2a30-2a40; next prefix beginsbb0 with waitmask6. No entry-time trace yet.
+Native main copies atf40/fb0/1020(A),1060/1070(B). Third A predicated on threadIdx<256. Last iteration skips future copies via dc0->1090. Per-warp compute work remains64IMMA,16LDSM.
+No new GPU measurements in this follow-up. Source no-fold tiny own-tail excess must NOT be extrapolated to native: native early publish precedes16tailIMMA, source publish follows all64.
+Instrumentation feasibility: sparse markers must preserve existing dependency waits and locate entry sample after actual deferred blocking. Adding markers still costs instructions/register lifetimes; unchanged instruction order alone cannot guarantee unchanged timing. Need matched instrumentation controls before any native attribution.
+
+Operand-stage dependency enumeration:
+Reproduce with .venv/bin/python tools/analyze_stage_dependencies.py (CPU only).
+All1792 16-byte chunks enumerated with unique copy owner, swizzled address checked, full tile reader sets enumerated. Source mapping from frozen-baseline source lineage; cubin hash checked. This is not dynamic SASS address tracing.
+For next iteration: ready-set=writers of the operand regions this warp reads; free-set=readers of the old-stage regions this warp overwrites. Current single whole-iteration gate needs union of these sets. Own warp completion follows program order.
+9/12 warps require all11external warps in this direct dependency graph. Exceptions:W0 andW3 can omitW10; W10 can omitW0,W3. W5 omits itself only, no removable external dependency.
+ExampleW0:ready W0..7;free W0..9,W11;union excludes onlyW10.
+Source fixed-timeline model narrowing all-publication gate to exact external union:mean advancement1.48..2.08cycles/warp for sampledK16,17,46,47;W10 mean17.75..24.93cycles,others approximately0. Not a kernel speedup estimate or native timing result.
+This graph applies to interior tiles/steady state/current copy ownership and a single gate before entire next iteration. It is NOT a lower bound for designs with partial copying, per-region use-time waits, or different copy assignment. Drain/final boundaries require separate handling.
+Two distinct directions must not be conflated:
+(1) remove unnecessary participant dependencies:little source-model benefit for unchanged whole-iteration gate;
+(2) wait only for read-complete/copy-complete,not same-group tail computation:still logically possible, but requires a race-free publication/phase protocol and overhead measurement.
+Splitting free-before-overwrite and ready-before-LDSM may enable overlap even when their union includes all warps. No implementation or performance gain claimed. No new GPU run or production changes.

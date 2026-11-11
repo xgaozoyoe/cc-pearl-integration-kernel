@@ -1,0 +1,14 @@
+Fixed-clock capture /tmp/pearl-handoff-arrive-tail.aHXWMM; input hashes match.
+3 profiled launches per variant. Cache control deliberately none; not a cold-cache measurement.
+variant kernel_ms effective_GHz tensor_active_pct IMMA_per_SMcycle barrier_pct shortSB_pct
+baseline 1.213845 2.228876 80.177 0.195300064 10.123 6.200
+tail5 1.182517 2.228942 82.357 0.200468557 10.580 6.583
+tail9 1.170731 2.227808 83.257 0.202589771 10.400 6.487
+tail5: kernel time -2.5809%; IMMA/SMcycle +2.6464%
+tail9: kernel time -3.5519%; IMMA/SMcycle +3.7326%
+All variants:301824000 dynamic total instructions;121569664 ALU;67633152 Tensor instructions. L2 bytes ~2.534GB, difference <0.003%.
+tail9 clocks are0.048% lower than baseline; throughput gain is not a boost-clock artifact.
+Barrier and short-scoreboard stall percentages do not decrease; do not describe this result as measured barrier-stall elimination.
+Earlier publication improves useful Tensor instructions per SM elapsed cycle, consistent with enlargement of the handoff overlap window. Aggregate counters alone do not reconstruct the exact warp timeline.
+Independent offline full-grid60-sample result:303.758ms ->296.993ms,231.660 ->236.937 equivalent TH/s (+2.278%). Not a live-pool measurement.
+Production unchanged. Existing correctness/sanitizer results and fixed-SASS audit apply to these hash-verified binaries.

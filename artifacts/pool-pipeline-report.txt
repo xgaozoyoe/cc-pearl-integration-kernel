@@ -1,0 +1,39 @@
+Pool submission pipeline experiment, 2026-10-07
+
+Production libp40cuda.so unchanged; Python baseline preserved in pool-pipeline-baseline/.
+No live process restarted. No real pool submissions made in these tests.
+
+Changes:
+- Linux memfd snapshots shared directly with isolated CPU proof subprocess.
+- Two prefaulted reusable snapshots (2 GiB total at production dimensions).
+- Original pearl_host.build_proof_bt called unchanged; only execution isolation changes.
+- Unique submission IDs; await matching result across notify/difficulty messages.
+- New jobs handed to miner even while submitter waits for a reply.
+- EOF triggers reconnect instead of continuing stale work.
+- Rolling wall rate includes HIT/setup pauses and partial grids; supervisor uses it.
+
+Validation:
+- Six CPU regression tests pass (proof bytes, buffer reuse, response routing,
+  immediate notify handoff, EOF, rolling wall accounting).
+- Full dimensions 131072 x 4096 for both A/Bt: thread/process proof bytes identical.
+- Main-thread heartbeat worst gap: old 961-966 ms; process 6.8 ms.
+- GPU 0 only; production kernel, region 4096; target zero.
+- Injected exactly three hits into each measured 24-grid block (every eight grids).
+- Four warmup grids; two repetitions, reversed mode order.
+- Fake pool receives proof strings; this tests plumbing, not jackpot validity or payout.
+
+Results (two runs):
+Thread mean grid 804.72 / 777.99 ms; equivalent 87.44 / 90.45 TH/s.
+Process mean grid 431.42 / 432.26 ms; equivalent 163.11 / 162.79 TH/s.
+Worst grid: thread 3587 / 3360 ms; process 484.2 / 485.2 ms.
+Shared snapshot copy: 51-63 ms. All twelve injected proofs reached fake submitter.
+Measured work rate gain at this injected HIT frequency: about 83%.
+Not a prediction of pool income: live HIT frequency, difficulty, stale rate and
+share luck differ. CPU subprocess slightly increases proof build latency while
+removing launch-thread stalls. Real-pool validation remains pending approval.
+
+Deployment:
+Changes load on next miner restart. Existing GPU 2 miner is still the old code.
+PEARL_PROOF_PROCESS=0 selects legacy thread mode on a future restart.
+Full Python rollback: restore miner_capi.py and pool_common.py from baseline copies
+while miner is stopped. No CUDA library rebuild required. No git commit made.

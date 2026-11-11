@@ -1,0 +1,23 @@
+Follow-up to validated tail9: reduce barrier-ID preparation constraint.
+
+All patches are isolated cubins; source checkpoint and production backend unchanged.
+Baseline: exact hash-verified tail9 binary from preceding successful experiment.
+id_only9: move original peer-ID LOP3 from originalPC1720 to1620, destinationR96 ->R164; BAR.ARV sourceR96 ->R164. Arrival still leaves9 IMMA. Controls for ID-only scheduling/register change.
+id11: same early ID, arrive after original1700 IMMA's last-LDSM completion wait;11 IMMA remain. No scoreboard wait edits.
+id16: arrive immediately after original16b0 cp.async completion wait;16 IMMA remain. Move mask2 from original16c0 and mask4 from original1700 onto BAR.ARV (mask6). Remove those old waits so original16c0 does not instead wait on BAR.ARV's newly assigned read-scoreboard1.
+
+R164 liveness:
+- Last old use at original1610: LOP3 producing final B shared addressR153.
+- No subsequent explicit R164 use through kernel exit; next iteration unconditionally defines it at original0xcd0 before any read.
+- Tail IMMA vector operands/results do not overlapR164; LDSM operands are shared pointersR149/R153 and destinations148..155.
+- Original1610 has5 fixed stall cycles before R164 reuse; early LOP3 has more than9 scheduled cycles before earliest arrival.
+- BAR.ARV keeps its original read-scoreboard1; the original later wait is retained. No shifted IMMA writes/readsR164.
+
+Publication safety:
+- Original16b0 DEPBAR.LE SB0,0 stays before every arrival.
+- Original1650/16a0 are last LDSM, write-scoreboards1/2. id11 retains original completion waits; id16 waits for both at arrival itself.
+- No original memory operation is removed or reordered. All64 IMMA stay in original relative order with original encoded controls, except the two explicitly moved completion-wait masks in id16.
+- All named-barrier phases and final sync unchanged; only instruction permutation and two register operand fields change for the ID-only/id11 controls.
+- No new instructions, virtual/physical register allocation, shared storage or spill.
+
+This tests earlier publication, not removal of the required shared-stage lifetime boundary. Moving a wait earlier may lose useful IMMA overlap while waiting for the last LDSM; id16 can therefore be slower even though arrival is earlier.

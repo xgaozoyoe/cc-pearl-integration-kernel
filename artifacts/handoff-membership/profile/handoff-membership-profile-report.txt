@@ -1,0 +1,104 @@
+Same frozen hot loop, GPU0 only. NCU base clock policy; compare elapsed-cycle normalized IMMA rate.
+PC samples are sampled attribution, not additive instruction runtimes. A stalled PC may wait for a preceding deferred barrier.
+Late named sync0x2a00 typically blocks at0x2a30; early arrival0x16d0 also waits for final LDSM completion.
+native {"imma_per_SM_elapsed_cycle": 0.20860671702833486, "imma_per_SMSP_elapsed_cycle": 0.052151679257083715, "tensor_Ginst_sec": 59.086778302344776, "kernel_ms": 1.1446826666666667} IMMA/cycle vs matched control +0.0207%
+stall_barrier: total=131748
+  0x2a30 129937 (98.63% of stall_barrier) @!P2  CALL.REL.NOINC 0x74d4c725d750
+  0x2a70 1215 (0.92% of stall_barrier) @P0   EXIT
+  0xc60 596 (0.45% of stall_barrier) UMOV UR5, 0x3000
+stall_short_sb: total=70975
+  0x1290 10439 (14.71% of stall_short_sb) IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32
+  0x1350 9383 (13.22% of stall_short_sb) IMMA.16832.S8.S8 R44, R136.ROW, R148.COL, R44
+  0x1110 8260 (11.64% of stall_short_sb) IADD3 R152, R164, 0x420, RZ
+  0x16d0 7965 (11.22% of stall_short_sb) BAR.ARV R164, 0x180
+  0x11e0 7217 (10.17% of stall_short_sb) IMMA.16832.S8.S8 R108, R144.ROW, R148.COL, R108
+  0x1530 5906 (8.32% of stall_short_sb) IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32
+stall_long_sb: total=25864
+  0xf60 9581 (37.04% of stall_long_sb) IMAD R96, R157, 0x1000, R142
+  0x1000 7725 (29.87% of stall_long_sb) @!P2  IADD3 R141, R141, 0x1800, RZ
+  0xba0 3542 (13.69% of stall_long_sb) BAR.SYNC.DEFER_BLOCKING 0x0
+  0x2a20 2593 (10.03% of stall_long_sb) LOP3.LUT R161, R161, 0x2, RZ, 0x3c, !PT
+  0x10e0 1919 (7.42% of stall_long_sb) LDSM.16.M88.4 R140, [R140]
+  0xb30 166 (0.64% of stall_long_sb) CS2R R10, SRZ
+stall_math: total=377197
+  0x1400 45191 (11.98% of stall_math) IMMA.16832.S8.S8 R132, R96.ROW, R148.COL, R132
+  0x1530 38398 (10.18% of stall_math) IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32
+  0x1250 27028 (7.17% of stall_math) IMMA.16832.S8.S8 R72, R140.ROW, R150.COL, R72
+  0x1120 21837 (5.79% of stall_math) IMMA.16832.S8.S8 R116, R144.ROW, R148.COL, R116
+  0x13d0 7672 (2.03% of stall_math) IMMA.16832.S8.S8 R56, R140.ROW, R148.COL, R56
+  0x16e0 6726 (1.78% of stall_math) IMMA.16832.S8.S8 R128, R100.ROW, R148.COL, R128
+stall_wait: total=156785
+  0x1540 2138 (1.36% of stall_wait) IMMA.16832.S8.S8 R28, R140.ROW, R148.COL, R28
+  0x1550 2005 (1.28% of stall_wait) IMMA.16832.S8.S8 R24, R136.ROW, R148.COL, R24
+  0x11c0 1995 (1.27% of stall_wait) IMMA.16832.S8.S8 R124, R96.ROW, R150.COL, R124
+  0x1790 1956 (1.25% of stall_wait) IMMA.16832.S8.S8 R56, R140.ROW, R152.COL, R56
+  0x17a0 1946 (1.24% of stall_wait) IMMA.16832.S8.S8 R52, R140.ROW, R154.COL, R52
+  0x1150 1937 (1.24% of stall_wait) IMMA.16832.S8.S8 R120, R96.ROW, R148.COL, R120
+masked_control {"imma_per_SM_elapsed_cycle": 0.20856359395121912, "imma_per_SMSP_elapsed_cycle": 0.05214089848780478, "tensor_Ginst_sec": 59.06897957269123, "kernel_ms": 1.145024} IMMA/cycle vs matched control +0.0000%
+stall_barrier: total=130798
+  0x2a30 129035 (98.65% of stall_barrier) @!P2  CALL.REL.NOINC 0x77ddcf26d950
+  0x2a70 1193 (0.91% of stall_barrier) @P0   EXIT
+  0xc60 570 (0.44% of stall_barrier) UMOV UR5, 0x3000
+stall_short_sb: total=71183
+  0x1290 10284 (14.45% of stall_short_sb) IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32
+  0x1350 9505 (13.35% of stall_short_sb) IMMA.16832.S8.S8 R44, R136.ROW, R148.COL, R44
+  0x1110 8486 (11.92% of stall_short_sb) IADD3 R152, R164, 0x420, RZ
+  0x16d0 7950 (11.17% of stall_short_sb) BAR.ARV R164, 0x180
+  0x11e0 7128 (10.01% of stall_short_sb) IMMA.16832.S8.S8 R108, R144.ROW, R148.COL, R108
+  0x1530 5899 (8.29% of stall_short_sb) IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32
+stall_long_sb: total=25780
+  0xf60 9506 (36.87% of stall_long_sb) IMAD R96, R157, 0x1000, R142
+  0x1000 7724 (29.96% of stall_long_sb) @!P2  IADD3 R141, R141, 0x1800, RZ
+  0xba0 3519 (13.65% of stall_long_sb) BAR.SYNC.DEFER_BLOCKING 0x0
+  0x2a20 2632 (10.21% of stall_long_sb) LOP3.LUT R161, R161, 0x2, RZ, 0x3c, !PT
+  0x10e0 1902 (7.38% of stall_long_sb) LDSM.16.M88.4 R140, [R140]
+  0xb30 187 (0.73% of stall_long_sb) CS2R R10, SRZ
+stall_math: total=378525
+  0x1400 45506 (12.02% of stall_math) IMMA.16832.S8.S8 R132, R96.ROW, R148.COL, R132
+  0x1530 38615 (10.20% of stall_math) IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32
+  0x1250 26829 (7.09% of stall_math) IMMA.16832.S8.S8 R72, R140.ROW, R150.COL, R72
+  0x1120 22138 (5.85% of stall_math) IMMA.16832.S8.S8 R116, R144.ROW, R148.COL, R116
+  0x13d0 7622 (2.01% of stall_math) IMMA.16832.S8.S8 R56, R140.ROW, R148.COL, R56
+  0x16e0 6663 (1.76% of stall_math) IMMA.16832.S8.S8 R128, R100.ROW, R148.COL, R128
+stall_wait: total=156820
+  0x11b0 2049 (1.31% of stall_wait) IMMA.16832.S8.S8 R64, R136.ROW, R150.COL, R64
+  0x1540 2028 (1.29% of stall_wait) IMMA.16832.S8.S8 R28, R140.ROW, R148.COL, R28
+  0x1730 2001 (1.28% of stall_wait) IMMA.16832.S8.S8 R100, R100.ROW, R154.COL, R96
+  0x1550 1979 (1.26% of stall_wait) IMMA.16832.S8.S8 R24, R136.ROW, R148.COL, R24
+  0x1760 1977 (1.26% of stall_wait) IMMA.16832.S8.S8 R80, R144.ROW, R152.COL, R80
+  0x1770 1969 (1.26% of stall_wait) IMMA.16832.S8.S8 R76, R144.ROW, R154.COL, R76
+rows6 {"imma_per_SM_elapsed_cycle": 0.19264921090203435, "imma_per_SMSP_elapsed_cycle": 0.04816230272550859, "tensor_Ginst_sec": 54.87348381054608, "kernel_ms": 1.2325333333333335} IMMA/cycle vs matched control -7.6305%
+stall_barrier: total=120698
+  0x2a30 119421 (98.94% of stall_barrier) @!P2  CALL.REL.NOINC 0x7cb9d528e550
+  0xc60 676 (0.56% of stall_barrier) UMOV UR5, 0x3000
+  0x2a70 601 (0.50% of stall_barrier) @P0   EXIT
+stall_short_sb: total=63663
+  0x1350 8060 (12.66% of stall_short_sb) IMMA.16832.S8.S8 R44, R136.ROW, R148.COL, R44
+  0x11e0 7797 (12.25% of stall_short_sb) IMMA.16832.S8.S8 R108, R144.ROW, R148.COL, R108
+  0xe40 7110 (11.17% of stall_short_sb) ISETP.GT.U32.AND P4, PT, R98, 0x3ff, PT
+  0x16d0 6847 (10.76% of stall_short_sb) BAR.ARV R164, 0x180
+  0x1290 6793 (10.67% of stall_short_sb) IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32
+  0x1530 5508 (8.65% of stall_short_sb) IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32
+stall_long_sb: total=18667
+  0xf60 6417 (34.38% of stall_long_sb) IMAD R96, R157, 0x1000, R142
+  0x1000 5563 (29.80% of stall_long_sb) @!P2  IADD3 R141, R141, 0x1800, RZ
+  0xba0 3655 (19.58% of stall_long_sb) BAR.SYNC.DEFER_BLOCKING 0x0
+  0x2a20 1950 (10.45% of stall_long_sb) LOP3.LUT R161, R161, 0x2, RZ, 0x3c, !PT
+  0x10e0 608 (3.26% of stall_long_sb) LDSM.16.M88.4 R140, [R140]
+  0xb30 176 (0.94% of stall_long_sb) CS2R R10, SRZ
+stall_math: total=493219
+  0x1530 91245 (18.50% of stall_math) IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32
+  0x1250 67440 (13.67% of stall_math) IMMA.16832.S8.S8 R72, R140.ROW, R150.COL, R72
+  0x1400 49954 (10.13% of stall_math) IMMA.16832.S8.S8 R132, R96.ROW, R148.COL, R132
+  0x1120 23178 (4.70% of stall_math) IMMA.16832.S8.S8 R116, R144.ROW, R148.COL, R116
+  0x1380 13229 (2.68% of stall_math) IMMA.16832.S8.S8 R80, R144.ROW, R148.COL, R80
+  0x11e0 9403 (1.91% of stall_math) IMMA.16832.S8.S8 R108, R144.ROW, R148.COL, R108
+stall_wait: total=151470
+  0x16f0 1956 (1.29% of stall_wait) IMMA.16832.S8.S8 R36, R100.ROW, R150.COL, R36
+  0x1550 1952 (1.29% of stall_wait) IMMA.16832.S8.S8 R24, R136.ROW, R148.COL, R24
+  0x15d0 1936 (1.28% of stall_wait) IMMA.16832.S8.S8 R68, R136.ROW, R152.COL, R68
+  0x1540 1915 (1.26% of stall_wait) IMMA.16832.S8.S8 R28, R140.ROW, R148.COL, R28
+  0x1680 1908 (1.26% of stall_wait) IMMA.16832.S8.S8 R88, R140.ROW, R154.COL, R88
+  0x1700 1906 (1.26% of stall_wait) IMMA.16832.S8.S8 R108, R144.ROW, R148.COL, R108
+Interpretation checklist: confirm native vs initialization control agree; locate additional rows6 barrier samples; compare eligible warps and IMMA/cycle.
+Do not infer scheduler-to-warp assignment or which individual warp arrived last from aggregate PC sampling.

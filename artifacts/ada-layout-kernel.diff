@@ -1,0 +1,344 @@
+--- baseline/csrc/gemm/pearl-gemm-ada-v2.cu
++++ csrc/gemm/pearl-gemm-ada-v2.cu
+@@ -4,17 +4,23 @@
+ #include <cstdint>
+ 
+ namespace pearl_ada_v2 {
+-constexpr int BM=256, BN=192, BK=64, THREADS=384;
+-constexpr int OPERANDS=2*(BM+BN)*BK, WORDS=(BM/16)*(BN/16)*16;
++constexpr int BM=256, BN=192, THREADS=384;
++constexpr int WORDS=(BM/16)*(BN/16)*16;
+ struct Fragment { unsigned v[4]; };
+ 
+ __device__ __forceinline__ unsigned swizzle(unsigned p) {
+     return p ^ ((p >> 3) & 0x30u);
+ }
+-__device__ __forceinline__ Fragment load16x32(const signed char* base,int row,int col,int lane) {
++template<int TileK,bool Planar>
++__device__ __forceinline__ unsigned offset(int row,int col,int height) {
++    unsigned p=Planar ? (col/32)*height*32+row*32+col%32 : row*TileK+col;
++    return swizzle(p);
++}
++template<int TileK,bool Planar>
++__device__ __forceinline__ Fragment load16x32(const signed char* base,int row,int col,int lane,int height) {
+     // Four 8x8 matrices of 16-bit pairs. Registers are low-row/low-K,
+     // high-row/low-K, low-row/high-K, high-row/high-K respectively.
+-    unsigned addr=__cvta_generic_to_shared(base+swizzle((row+(lane&15))*BK+col+(lane>>4)*16));
++    unsigned addr=__cvta_generic_to_shared(base+offset<TileK,Planar>(row+(lane&15),col+(lane>>4)*16,height));
+     Fragment x;
+     asm volatile("ldmatrix.sync.aligned.m8n8.x4.shared.b16 {%0,%1,%2,%3},[%4];"
+         : "=r"(x.v[0]),"=r"(x.v[1]),"=r"(x.v[2]),"=r"(x.v[3]) : "r"(addr));
+@@ -28,33 +34,42 @@
+         : "r"(a.v[0]),"r"(a.v[1]),"r"(a.v[2]),"r"(a.v[3]),
+           "r"(b.v[half]),"r"(b.v[half+2]));
+ }
++template<int TileK,bool Planar>
+ __device__ __forceinline__ void stage_copy(const signed char* a,const signed char* b,
+         signed char* sa,signed char* sb,int cm,int cn,int kt,int m,int n,int k) {
+     #pragma unroll 1
+-    for(int i=threadIdx.x;i<BM*BK/16;i+=blockDim.x) {
+-        int row=i/4,col=(i%4)*16,gr=cm*BM+row;
+-        const signed char* src=a+(size_t)(gr<m?gr:0)*k+kt*BK+col;
+-        unsigned dst=__cvta_generic_to_shared(sa+swizzle(row*BK+col));
+-        int valid=gr<m?16:0;
++    for(int i=threadIdx.x;i<BM*TileK/16;i+=blockDim.x) {
++        int row=i/(TileK/16),col=(i%(TileK/16))*16,gr=cm*BM+row;
++        int gc=kt*TileK+col;
++        bool valid_row=gr<m && (TileK==64 || gc<k);
++        const signed char* src;
++        if constexpr(TileK==64) src=a+(size_t)(gr<m?gr:0)*k+gc;
++        else src=a+(size_t)(valid_row?gr:0)*k+(valid_row?gc:0);
++        unsigned dst=__cvta_generic_to_shared(sa+offset<TileK,Planar>(row,col,BM));
++        int valid=valid_row?16:0;
+         asm volatile("cp.async.cg.shared.global [%0],[%1],16,%2;" :: "r"(dst),"l"(src),"r"(valid));
+     }
+     #pragma unroll 1
+-    for(int i=threadIdx.x;i<BN*BK/16;i+=blockDim.x) {
+-        int row=i/4,col=(i%4)*16,gr=cn*BN+row;
+-        const signed char* src=b+(size_t)(gr<n?gr:0)*k+kt*BK+col;
+-        unsigned dst=__cvta_generic_to_shared(sb+swizzle(row*BK+col));
+-        int valid=gr<n?16:0;
++    for(int i=threadIdx.x;i<BN*TileK/16;i+=blockDim.x) {
++        int row=i/(TileK/16),col=(i%(TileK/16))*16,gr=cn*BN+row;
++        int gc=kt*TileK+col;
++        bool valid_row=gr<n && (TileK==64 || gc<k);
++        const signed char* src;
++        if constexpr(TileK==64) src=b+(size_t)(gr<n?gr:0)*k+gc;
++        else src=b+(size_t)(valid_row?gr:0)*k+(valid_row?gc:0);
++        unsigned dst=__cvta_generic_to_shared(sb+offset<TileK,Planar>(row,col,BN));
++        int valid=valid_row?16:0;
+         asm volatile("cp.async.cg.shared.global [%0],[%1],16,%2;" :: "r"(dst),"l"(src),"r"(valid));
+     }
+     asm volatile("cp.async.commit_group;");
+ }
+ 
+-template<int Lead>
++template<int Lead,int TileK=64,bool Planar=false>
+ __global__ void __launch_bounds__(THREADS,1) kernel(const signed char* a,const signed char* b,int m,int n,int k,int r,unsigned* out) {
+     extern __shared__ signed char shared[];
+     signed char* sa=shared;
+-    signed char* sb=shared+2*BM*BK;
+-    unsigned* transcript=reinterpret_cast<unsigned*>(shared+OPERANDS);
++    signed char* sb=shared+2*BM*TileK;
++    unsigned* transcript=reinterpret_cast<unsigned*>(shared+2*(BM+BN)*TileK);
+     int linear=blockIdx.x+gridDim.x*blockIdx.y;
+     int first=linear/(8*gridDim.x)*8;
+     int cols=min(8,int(gridDim.y)-first), offset=linear%(8*gridDim.x);
+@@ -65,27 +80,27 @@
+     // column=2*(lane%4) (+1 for c1,c3). Two halves form a16x16 tile.
+     unsigned c[4][4][2][4]={};
+     Fragment ar[4], br[Lead+1];
+-    stage_copy(a,b,sa,sb,cm,cn,0,m,n,k);
+-    for(int kt=0;kt<k/BK;++kt) {
++    stage_copy<TileK,Planar>(a,b,sa,sb,cm,cn,0,m,n,k);
++    for(int kt=0;kt<(k+TileK-1)/TileK;++kt) {
+         asm volatile("cp.async.wait_group 0;");
+         __syncthreads();
+         int current=kt&1,next=current^1;
+-        if(kt+1<k/BK)
+-            stage_copy(a,b,sa+next*BM*BK,sb+next*BN*BK,cm,cn,kt+1,m,n,k);
+-        signed char* aa=sa+current*BM*BK;
+-        signed char* bb=sb+current*BN*BK;
++        if(kt+1<(k+TileK-1)/TileK)
++            stage_copy<TileK,Planar>(a,b,sa+next*BM*TileK,sb+next*BN*TileK,cm,cn,kt+1,m,n,k);
++        signed char* aa=sa+current*BM*TileK;
++        signed char* bb=sb+current*BN*TileK;
+         if constexpr(Lead==0 || Lead==3) {
+             #pragma unroll
+             for(int slice=0;slice<2;++slice) {
+                 Fragment aa_rows[4],bb_groups[2];
+                 #pragma unroll
+-                for(int row=0;row<4;++row) aa_rows[row]=load16x32(aa,wm*64+row*16,slice*32,lane);
+-                if constexpr(Lead==3) bb_groups[0]=load16x32(bb,wn*64,slice*32,lane);
++                for(int row=0;row<4;++row) aa_rows[row]=load16x32<TileK,Planar>(aa,wm*64+row*16,slice*32,lane,BM);
++                if constexpr(Lead==3) bb_groups[0]=load16x32<TileK,Planar>(bb,wn*64,slice*32,lane,BN);
+                 #pragma unroll
+                 for(int group=0;group<4;++group) {
+                     int slot=group%2;
+-                    if constexpr(Lead==0) bb_groups[slot]=load16x32(bb,wn*64+group*16,slice*32,lane);
+-                    else if(group+1<4) bb_groups[(group+1)%2]=load16x32(bb,wn*64+(group+1)*16,slice*32,lane);
++                    if constexpr(Lead==0) bb_groups[slot]=load16x32<TileK,Planar>(bb,wn*64+group*16,slice*32,lane,BN);
++                    else if(group+1<4) bb_groups[(group+1)%2]=load16x32<TileK,Planar>(bb,wn*64+(group+1)*16,slice*32,lane,BN);
+                     #pragma unroll
+                     for(int half=0;half<2;++half) {
+                         #pragma unroll
+@@ -95,28 +110,28 @@
+             }
+         } else {
+         #pragma unroll
+-        for(int row=0;row<4;++row) ar[row]=load16x32(aa,wm*64+row*16,0,lane);
++        for(int row=0;row<4;++row) ar[row]=load16x32<TileK,Planar>(aa,wm*64+row*16,0,lane,BM);
+         #pragma unroll
+-        for(int p=0;p<Lead;++p) br[p]=load16x32(bb,wn*64+p*16,0,lane);
++        for(int p=0;p<Lead;++p) br[p]=load16x32<TileK,Planar>(bb,wn*64+p*16,0,lane,BN);
+         #pragma unroll
+-        for(int g=0;g<8;++g) {
++        for(int g=0;g<4*(TileK/32);++g) {
+             constexpr int slots=Lead+1;
+             int slice=g/4,group=g%4,slot=g%slots;
++            if constexpr(TileK!=64) { if(kt*TileK+slice*32>=k) continue; }
+             #pragma unroll
+             for(int half=0;half<2;++half) {
+                 #pragma unroll
+                 for(int row=0;row<4;++row) {
+-                    if(half==0 && row==2 && g+Lead<8)
+-                        br[(g+Lead)%slots]=load16x32(bb,wn*64+((g+Lead)%4)*16,((g+Lead)/4)*32,lane);
++                    if(half==0 && row==2 && g+Lead<4*(TileK/32) && (TileK==64 || kt*TileK+((g+Lead)/4)*32<k))
++                        br[(g+Lead)%slots]=load16x32<TileK,Planar>(bb,wn*64+((g+Lead)%4)*16,((g+Lead)/4)*32,lane,BN);
+                     mma(c[row][group][half],ar[row],br[slot],half);
+-                    if(slice==0 && group==3 && half==1)
+-                        ar[row]=load16x32(aa,wm*64+row*16,32,lane);
+-                }
+-            }
+-        }
+-        }
+-        if((kt+1)%4==0) {
+-            int rb=(kt+1)/4-1;
++                    if(slice+1<TileK/32 && (TileK==64 || kt*TileK+(slice+1)*32<k) && group==3 && half==1)
++                        ar[row]=load16x32<TileK,Planar>(aa,wm*64+row*16,(slice+1)*32,lane,BM);
++                }
++            }
++            if constexpr(TileK!=64) {
++        if(group==3 && (kt*TileK+(slice+1)*32)%256==0) {
++            int rb=(kt*TileK+(slice+1)*32)/256-1;
+             #pragma unroll
+             for(int row=0;row<4;++row) {
+                 #pragma unroll
+@@ -132,6 +147,28 @@
+                 }
+             }
+         }
++            }
++        }
++        }
++        if constexpr(TileK==64) {
++        if((kt+1)%4==0) {
++            int rb=(kt+1)/4-1;
++            #pragma unroll
++            for(int row=0;row<4;++row) {
++                #pragma unroll
++                for(int group=0;group<4;++group) {
++                    unsigned x=0;
++                    #pragma unroll
++                    for(int half=0;half<2;++half) {
++                        #pragma unroll
++                        for(int v=0;v<4;++v) x^=c[row][group][half][v];
++                    }
++                    x=__reduce_xor_sync(0xffffffffu,x);
++                    if(lane==0) transcript[((wm*4+row)*(BN/16)+wn*4+group)*16+rb]=x;
++                }
++            }
++        }
++        }
+     }
+     __syncthreads();
+     for(int i=threadIdx.x;i<WORDS;i+=THREADS) {
+@@ -139,29 +176,29 @@
+         if(gr<m/16 && gc<n/16) out[((size_t)gr*(n/16)+gc)*16+i%16]=transcript[i];
+     }
+ }
+-template<int Lead>
++template<int Lead,int TileK=64,bool Planar=false>
+ cudaError_t launch(const int8_t* a,const int8_t* b,int m,int n,int k,int r,
+                    uint32_t* t,int* info,cudaStream_t stream) {
+     if(m<=0 || n<=0 || m%16 || n%16 || r!=256 || k!=4096)
+         return cudaErrorInvalidValue;
+-    constexpr int smem=OPERANDS+WORDS*sizeof(unsigned);
++    constexpr int smem=2*(BM+BN)*TileK+WORDS*sizeof(unsigned);
+     static bool initialized=false; // Isolated benchmarks use device0 only.
+     cudaError_t err;
+     if(!initialized) {
+-        err=cudaFuncSetAttribute(kernel<Lead>,cudaFuncAttributeMaxDynamicSharedMemorySize,smem);
++        err=cudaFuncSetAttribute(kernel<Lead,TileK,Planar>,cudaFuncAttributeMaxDynamicSharedMemorySize,smem);
+         if(err!=cudaSuccess)return err;
+-        err=cudaFuncSetAttribute(kernel<Lead>,cudaFuncAttributePreferredSharedMemoryCarveout,100);
++        err=cudaFuncSetAttribute(kernel<Lead,TileK,Planar>,cudaFuncAttributePreferredSharedMemoryCarveout,100);
+         if(err!=cudaSuccess)return err;
+         initialized=true;
+     }
+     if(info) {
+-        cudaFuncAttributes attr;err=cudaFuncGetAttributes(&attr,kernel<Lead>);if(err!=cudaSuccess)return err;
+-        int active;err=cudaOccupancyMaxActiveBlocksPerMultiprocessor(&active,kernel<Lead>,THREADS,smem);
++        cudaFuncAttributes attr;err=cudaFuncGetAttributes(&attr,kernel<Lead,TileK,Planar>);if(err!=cudaSuccess)return err;
++        int active;err=cudaOccupancyMaxActiveBlocksPerMultiprocessor(&active,kernel<Lead,TileK,Planar>,THREADS,smem);
+         if(err!=cudaSuccess)return err;
+         info[0]=attr.numRegs;info[1]=THREADS;info[2]=smem+attr.sharedSizeBytes;info[3]=active;info[4]=attr.localSizeBytes;
+         return cudaSuccess;
+     }
+-    kernel<Lead><<<dim3((m+BM-1)/BM,(n+BN-1)/BN),THREADS,smem,stream>>>(a,b,m,n,k,r,t);
++    kernel<Lead,TileK,Planar><<<dim3((m+BM-1)/BM,(n+BN-1)/BN),THREADS,smem,stream>>>(a,b,m,n,k,r,t);
+     return cudaGetLastError();
+ }
+ } // namespace pearl_ada_v2
+@@ -172,5 +209,7 @@
+     if(lead==2)return pearl_ada_v2::launch<2>(a,b,m,n,k,r,t,info,stream);
+     if(lead==0)return pearl_ada_v2::launch<0>(a,b,m,n,k,r,t,info,stream);
+     if(lead==3)return pearl_ada_v2::launch<3>(a,b,m,n,k,r,t,info,stream);
++    if(lead==4)return pearl_ada_v2::launch<2,64,true>(a,b,m,n,k,r,t,info,stream);
++    if(lead==5)return pearl_ada_v2::launch<2,96,true>(a,b,m,n,k,r,t,info,stream);
+     return cudaErrorInvalidValue;
+ }
+--- baseline/tests/fold_ops.cu
++++ tests/fold_ops.cu
+@@ -154,6 +154,9 @@
+         case 104:return launch_pearl_gemm_ada_v2(2,a,b,m,n,k,r,t,info,nullptr);
+         case 105:return launch_pearl_gemm_ada_v2(0,a,b,m,n,k,r,t,info,nullptr);
+         case 106:return launch_pearl_gemm_ada_v2(3,a,b,m,n,k,r,t,info,nullptr);
++        case 107:return launch_pearl_gemm_ada_v2(4,a,b,m,n,k,r,t,info,nullptr);
++        case 108:return launch_pearl_gemm_ada_v2(5,a,b,m,n,k,r,t,info,nullptr);
++        case 109:return launch_pearl_gemm_ada_v2(2,a,b,m,n,k,r,t,info,nullptr);
+ #endif
+ #if !defined(PEARL_FOCUS_SQUARE) && !defined(PEARL_PURE_BENCH_ONLY)
+         case 21:return variant<128,256,4,-1,false,32,4,2,4>(a,b,m,n,k,r,t,info);
+--- baseline/tests/bench_fold_ablation.py
++++ tests/bench_fold_ablation.py
+@@ -28,7 +28,7 @@
+ reuse_trial = len(sys.argv)>1 and sys.argv[1]=='reuse'
+ mapping_trial = len(sys.argv)>1 and sys.argv[1]=='mapping'
+ operand_trial = len(sys.argv)>1 and sys.argv[1]=='operand'
+-prefetch_trial = len(sys.argv)>1 and sys.argv[1] in ('prefetch','prefetch2','ldsm','ldsm-order','rhythm','ring','ada-v2')
++prefetch_trial = len(sys.argv)>1 and sys.argv[1] in ('prefetch','prefetch2','ldsm','ldsm-order','rhythm','ring','ada-v2','ada-layout')
+ if occupancy:
+     names={11:'8x1 full transcript',20:'2x4 full transcript',
+            27:'128x128 BK32 warp2x4',28:'128x128 BK64 warp2x4',
+@@ -78,6 +78,8 @@
+     if sys.argv[1]=='ada-v2':
+         names={89:'B prefetch baseline',103:'hand Ada v2 lead1',104:'hand Ada v2 lead2',
+                105:'hand Ada v2 streamed B',106:'hand Ada v2 K32 prefetch'}
++    if sys.argv[1]=='ada-layout':
++        names={109:'raw address regrouping',107:'K64 planar K32',108:'K96 planar K32'}
+ full_variants = occupancy or cache_trial or square_trial or mainloop_trial or reuse_trial or mapping_trial or operand_trial or prefetch_trial
+ def gate(m,n,seed):
+     rng=np.random.default_rng(seed); k=4096; r=256
+@@ -138,7 +140,7 @@
+     for v,row in results.items():
+         row['median_ms']=statistics.median(row['samples_ms'])
+         row['equivalent_GEMM_TOPS']=2*m*n*k/(row['median_ms']/1000)/1e12
+-    Path('/tmp/pearl-fold-'+('ada-v2' if prefetch_trial and sys.argv[1]=='ada-v2' else 'ring' if prefetch_trial and sys.argv[1]=='ring' else 'rhythm' if prefetch_trial and sys.argv[1]=='rhythm' else 'ldsm-order' if prefetch_trial and sys.argv[1]=='ldsm-order' else 'ldsm' if prefetch_trial and sys.argv[1]=='ldsm' else 'prefetch2' if prefetch_trial and sys.argv[1]=='prefetch2' else 'prefetch' if prefetch_trial else 'operand' if operand_trial else 'mapping' if mapping_trial else 'reuse' if reuse_trial else 'mainloop' if mainloop_trial else 'square' if square_trial else 'l1' if cache_trial else 'occupancy' if occupancy else 'ablation')+'-results.json').write_text(json.dumps(results,indent=2))
++    Path('/tmp/pearl-fold-'+('ada-layout' if prefetch_trial and sys.argv[1]=='ada-layout' else 'ada-v2' if prefetch_trial and sys.argv[1]=='ada-v2' else 'ring' if prefetch_trial and sys.argv[1]=='ring' else 'rhythm' if prefetch_trial and sys.argv[1]=='rhythm' else 'ldsm-order' if prefetch_trial and sys.argv[1]=='ldsm-order' else 'ldsm' if prefetch_trial and sys.argv[1]=='ldsm' else 'prefetch2' if prefetch_trial and sys.argv[1]=='prefetch2' else 'prefetch' if prefetch_trial else 'operand' if operand_trial else 'mapping' if mapping_trial else 'reuse' if reuse_trial else 'mainloop' if mainloop_trial else 'square' if square_trial else 'l1' if cache_trial else 'occupancy' if occupancy else 'ablation')+'-results.json').write_text(json.dumps(results,indent=2))
+     print(json.dumps(results,indent=2),flush=True)
+ finally:
+     for buf in (a,b,t):buf.free()
+--- baseline/tests/bench_mainloop_grids.py
++++ tests/bench_mainloop_grids.py
+@@ -1,13 +1,13 @@
+ """GPU-0 normal full-grid A/B comparison, with deterministic matched inputs."""
+-import os,sys,json,statistics
++import os,sys,json,statistics,ctypes
+ from pathlib import Path
+ os.environ['CUDA_VISIBLE_DEVICES']='0'
+ os.environ.setdefault('PEARL_TRIAL_LIBRARY','/tmp/libpearl-pure-gemm.so')
+ candidate=int(sys.argv[1]) if len(sys.argv)>1 else 53
+ baseline=int(sys.argv[2]) if len(sys.argv)>2 else 20
+-assert baseline in (20,61,67,88,89) and baseline != candidate
+-assert candidate in range(53,107)
+-names=[str(i) for i in range(107)]
++assert baseline in (20,61,67,88,89,104) and baseline != candidate
++assert candidate in range(53,110)
++names=[str(i) for i in range(110)]
+ names[0]='production';names[20]='current best';names[53]='B LDSM x4'
+ names[54]='K128 s2 streaming';names[55]='K128 s2 full load'
+ names[56]='K32 lookahead joint';names[57]='K32 lookahead staggered'
+@@ -30,8 +30,16 @@
+ names[101]='three-slot B ring';names[102]='two-slot B ring'
+ names[103]='hand Ada v2 lead1';names[104]='hand Ada v2 lead2'
+ names[105]='hand Ada v2 streamed B';names[106]='hand Ada v2 K32 prefetch'
++names[107]='K64 planar K32';names[108]='K96 planar K32'
++names[109]='raw address regrouping'
+ os.environ['PEARL_TRIAL_NAMES']=json.dumps(names)
+ import bench_cute_grid as grid
++candidate_library=grid.lib
++baseline_library=candidate_library
++if os.environ.get('PEARL_BASELINE_LIBRARY'):
++    baseline_library=ctypes.CDLL(os.environ['PEARL_BASELINE_LIBRARY'])
++    for name in ('trial_pow','trial_info'):
++        getattr(baseline_library,name).argtypes=getattr(candidate_library,name).argtypes
+ original_setup=grid.cc.setup_job
+ counts={0:0,baseline:0,candidate:0}
+ class Scheduler(grid.Scheduler):
+@@ -42,12 +50,15 @@
+ results=[]
+ try:
+     for v in (0,baseline,candidate,candidate,baseline,0):
++        grid.lib=baseline_library if v==baseline else candidate_library
+         def setup(*args):
+             seed=0x504541524C000000+counts[v];counts[v]+=1
+             return original_setup(*args[:-1],seed)
+         grid.cc.setup_job=setup
+         results.append(grid.run(v))
+-finally: grid.cc.setup_job=original_setup
++finally:
++    grid.cc.setup_job=original_setup
++    grid.lib=candidate_library
+ summary={}
+ for v in (0,baseline,candidate):
+     ms=[t*1000 for r in results if r['variant']==v for t in r['times'][2:]]
+@@ -56,6 +67,7 @@
+     summary[v]={'median_ms':med,'mean_ms':statistics.mean(ms),
+         'p95_ms':sorted(ms)[18]*.95+sorted(ms)[19]*.05,
+         'grids_per_second':1000/med,'effective_THS':70.368744177664/(med/1000)}
+-out={'baseline':baseline,'warmup_per_block':2,'stable_grids_per_variant':20,'results':results,'summary':summary}
++out={'baseline':baseline,'baseline_library':baseline_library._name,'candidate_library':candidate_library._name,
++     'warmup_per_block':2,'stable_grids_per_variant':20,'results':results,'summary':summary}
+ Path(os.environ.get('PEARL_GRID_RESULT_PATH',f'/tmp/pearl-mainloop-grid-v{candidate}-results.json')).write_text(json.dumps(out,indent=2))
+ print(json.dumps(summary,indent=2),flush=True)

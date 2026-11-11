@@ -1,0 +1,23 @@
+{
+  "warning": "Deliberately racy offline diagnostic. Remove exactly one prologue or epilogue CTA barrier; all other barriers and copy waits retained. Never mine with this binary.",
+  "variants": {
+    "native": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "104c0c1b265260dea5c9ab0bb174ebbbe7ee9cceb0cf0acebf2a9d1dfa4d50aa",
+      "smem": 69632,
+      "correct": true
+    },
+    "no_initial": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "dca63621e730c7e98f86cdef0c07f3ed4a168f1b6d495e5e2cc9b52e6fde28cc",
+      "smem": 69632,
+      "correct": false
+    },
+    "no_final": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "f18ac02ec5506c729be46243a95d8dc228056a1f8c29f4d5c2b6641da2323087",
+      "smem": 69632,
+      "correct": false
+    }
+  }
+}

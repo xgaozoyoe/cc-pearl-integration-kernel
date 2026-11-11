@@ -1,0 +1,40 @@
+--- current A-stream
++++ group8
+@@ -184,6 +184,28 @@
+                     if(slice+1<TileK/32 && (TileK==64 || kt*TileK+(slice+1)*32<k) && group==Groups-1 && half==1)
+                         ar[row]=nextA;
+                 }
++                // In the last K32 slice, groups0/1 are complete before groups2/3.
++                if(slice==1 && (kt+1)%2==0 && group>=2) {
++                    int tile=(group-2)*4+row;
++unsigned x=0;
++ #pragma unroll
++ for(int h=0;h<2;++h)
++ #pragma unroll
++ for(int v=0;v<4;++v)x^=c[tile%4][tile/4][h][v];
++{
++ unsigned reduced=__reduce_xor_sync(0xffffffffu,x);
++ int rb=(kt+1)/2-1;
++ int idx=((wm*4+(tile%4))*(BN/16)+wn*Groups+(tile/4))*16+rb%16;
++ unsigned addr=__cvta_generic_to_shared(transcript+idx);
++ // Predicate the memory operations without lane-divergent source branches.
++ asm volatile("{{ .reg .pred owner,old; .reg .b32 prev,value; "
++     "setp.eq.u32 owner,%2,0; setp.ge.s32 old,%3,16; and.pred old,old,owner; "
++     "mov.b32 value,%1; @old ld.shared.u32 prev,[%0]; "
++     "@old shf.l.wrap.b32 prev,prev,prev,13; @old xor.b32 value,prev,%1; "
++     "@owner st.shared.u32 [%0],value; }}"
++     :: "r"(addr),"r"(reduced),"r"(lane),"r"(rb) : "memory");
++ }
++                }
+             }
+             if constexpr(TileK!=64) {
+         if(group==Groups-1 && (kt*TileK+(slice+1)*32)%128==0) {
+@@ -216,7 +238,7 @@
+             #pragma unroll
+             for(int row=0;row<4;++row) {
+                 #pragma unroll
+-                for(int group=0;group<Groups;++group) {
++                for(int group=2;group<Groups;++group) {
+                     unsigned x=0;
+                     #pragma unroll
+                     for(int half=0;half<2;++half) {

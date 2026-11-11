@@ -1,0 +1,385 @@
+{
+  "note": "PC sample shares are not wall-clock time fractions. A skipped instruction can have attributed samples (PC attribution skew); consult dynamic instruction counts. Phase bounds verified against current SASS only.",
+  "kernel_delta_ms": 0.09373866666666662,
+  "kernel_delta_pct": 8.93307310726193,
+  "variants": {
+    "0": {
+      "total_samples": 1006052.0,
+      "phases": {
+        "main_and_setup": {
+          "samples": 939381.0,
+          "sample_share_pct": 93.37300656427303,
+          "short_sb": 59788.0,
+          "wait": 128925.0,
+          "dynamic_warp_instructions": 634506624.0
+        },
+        "fold_region": {
+          "samples": 57345.0,
+          "sample_share_pct": 5.700003578343863,
+          "short_sb": 14101.0,
+          "wait": 17498.0,
+          "dynamic_warp_instructions": 246491136.0
+        },
+        "epilogue": {
+          "samples": 9326.0,
+          "sample_share_pct": 0.9269898573831173,
+          "short_sb": 0.0,
+          "wait": 2778.0,
+          "dynamic_warp_instructions": 14715648.0
+        }
+      },
+      "fold_short_by_opcode": {
+        "S2R": 0.0,
+        "ULEA.HI": 0.0,
+        "BSSY": 0.0,
+        "UISETP.GE.U32.AND": 0.0,
+        "USHF.R.S32.HI": 0.0,
+        "PLOP3.LUT": 0.0,
+        "ULOP3.LUT": 0.0,
+        "UIADD3": 0.0,
+        "SHF.R.U32.HI": 708.0,
+        "LOP3.LUT": 1905.0,
+        "IMAD": 0.0,
+        "LEA": 0.0,
+        "IMAD.SHL.U32": 0.0,
+        "BRA": 0.0,
+        "REDUX.XOR": 0.0,
+        "IMAD.U32": 5253.0,
+        "ISETP.NE.AND": 0.0,
+        "LDS": 1621.0,
+        "SHF.L.W.U32.HI": 4614.0,
+        "STS": 0.0,
+        "BSYNC": 0.0
+      },
+      "fold_top_short": [
+        {
+          "pc": "0x2280",
+          "samples": 1551.0,
+          "instruction": "SHF.L.W.U32.HI R97, R97, 0xd, R97"
+        },
+        {
+          "pc": "0x2270",
+          "samples": 1375.0,
+          "instruction": "LDS R97, [R96+0xe9c0]"
+        },
+        {
+          "pc": "0x1f10",
+          "samples": 1267.0,
+          "instruction": "@!P2  SHF.L.W.U32.HI R140, R140, 0xd, R140"
+        },
+        {
+          "pc": "0x2050",
+          "samples": 844.0,
+          "instruction": "@!P2  SHF.L.W.U32.HI R142, R99, 0xd, R99"
+        },
+        {
+          "pc": "0x1ff0",
+          "samples": 746.0,
+          "instruction": "@!P2  SHF.L.W.U32.HI R97, R97, 0xd, R97"
+        },
+        {
+          "pc": "0x2910",
+          "samples": 720.0,
+          "instruction": "IMAD.U32 R139, RZ, RZ, UR18"
+        },
+        {
+          "pc": "0x1820",
+          "samples": 708.0,
+          "instruction": "SHF.R.U32.HI R96, RZ, 0x5, R96"
+        },
+        {
+          "pc": "0x24c0",
+          "samples": 648.0,
+          "instruction": "IMAD.U32 R137, RZ, RZ, UR7"
+        },
+        {
+          "pc": "0x27c0",
+          "samples": 646.0,
+          "instruction": "LOP3.LUT R138, R130, R129, R97, 0x96, !PT"
+        },
+        {
+          "pc": "0x2440",
+          "samples": 636.0,
+          "instruction": "IMAD.U32 R99, RZ, RZ, UR6"
+        },
+        {
+          "pc": "0x2970",
+          "samples": 612.0,
+          "instruction": "IMAD.U32 R143, RZ, RZ, UR5"
+        },
+        {
+          "pc": "0x2690",
+          "samples": 504.0,
+          "instruction": "IMAD.U32 R145, RZ, RZ, UR12"
+        },
+        {
+          "pc": "0x1bf0",
+          "samples": 460.0,
+          "instruction": "IMAD.U32 R151, RZ, RZ, UR10"
+        },
+        {
+          "pc": "0x28a0",
+          "samples": 360.0,
+          "instruction": "LOP3.LUT R136, R102, R101, R97, 0x96, !PT"
+        },
+        {
+          "pc": "0x2750",
+          "samples": 306.0,
+          "instruction": "LOP3.LUT R136, R6, R5, R97, 0x96, !PT"
+        }
+      ]
+    },
+    "1": {
+      "total_samples": 934228.0,
+      "phases": {
+        "main_and_setup": {
+          "samples": 928972.0,
+          "sample_share_pct": 99.43739643855676,
+          "short_sb": 62801.0,
+          "wait": 128006.0,
+          "dynamic_warp_instructions": 637676928.0
+        },
+        "fold_region": {
+          "samples": 1328.0,
+          "sample_share_pct": 0.14214945388063727,
+          "short_sb": 0.0,
+          "wait": 1063.0,
+          "dynamic_warp_instructions": 0.0
+        },
+        "epilogue": {
+          "samples": 3928.0,
+          "sample_share_pct": 0.42045410756260787,
+          "short_sb": 0.0,
+          "wait": 2684.0,
+          "dynamic_warp_instructions": 3715200.0
+        }
+      },
+      "fold_short_by_opcode": {
+        "S2R": 0.0,
+        "ULEA.HI": 0.0,
+        "BSSY": 0.0,
+        "UISETP.GE.U32.AND": 0.0,
+        "USHF.R.S32.HI": 0.0,
+        "PLOP3.LUT": 0.0,
+        "ULOP3.LUT": 0.0,
+        "UIADD3": 0.0,
+        "SHF.R.U32.HI": 0.0,
+        "LOP3.LUT": 0.0,
+        "IMAD": 0.0,
+        "LEA": 0.0,
+        "IMAD.SHL.U32": 0.0,
+        "BRA": 0.0,
+        "REDUX.XOR": 0.0,
+        "IMAD.U32": 0.0,
+        "ISETP.NE.AND": 0.0,
+        "LDS": 0.0,
+        "SHF.L.W.U32.HI": 0.0,
+        "STS": 0.0,
+        "BSYNC": 0.0
+      },
+      "fold_top_short": [
+        {
+          "pc": "0x17a0",
+          "samples": 0.0,
+          "instruction": "S2R R96, SR_TID.X"
+        },
+        {
+          "pc": "0x17b0",
+          "samples": 0.0,
+          "instruction": "ULEA.HI UR5, UR7, 0xffffffff, URZ, 0x1f"
+        },
+        {
+          "pc": "0x17c0",
+          "samples": 0.0,
+          "instruction": "BSSY B0, 0x79b0e5262db0"
+        },
+        {
+          "pc": "0x17d0",
+          "samples": 0.0,
+          "instruction": "UISETP.GE.U32.AND UP0, UPT, UR7, 0x22, UPT"
+        },
+        {
+          "pc": "0x17e0",
+          "samples": 0.0,
+          "instruction": "USHF.R.S32.HI UR6, URZ, 0x1f, UR5"
+        },
+        {
+          "pc": "0x17f0",
+          "samples": 0.0,
+          "instruction": "ULEA.HI UR6, UR6, UR5, URZ, 0x4"
+        },
+        {
+          "pc": "0x1800",
+          "samples": 0.0,
+          "instruction": "PLOP3.LUT P0, PT, PT, PT, UP0, 0x80, 0x0"
+        },
+        {
+          "pc": "0x1810",
+          "samples": 0.0,
+          "instruction": "ULOP3.LUT UR6, UR6, 0x3ffffff0, URZ, 0xc0, !UPT"
+        },
+        {
+          "pc": "0x1820",
+          "samples": 0.0,
+          "instruction": "UIADD3 UR6, UR5, -UR6, URZ"
+        },
+        {
+          "pc": "0x1830",
+          "samples": 0.0,
+          "instruction": "SHF.R.U32.HI R96, RZ, 0x5, R96"
+        },
+        {
+          "pc": "0x1840",
+          "samples": 0.0,
+          "instruction": "LOP3.LUT R97, R96, 0x3, RZ, 0xc0, !PT"
+        },
+        {
+          "pc": "0x1850",
+          "samples": 0.0,
+          "instruction": "LOP3.LUT R98, R96, 0x7fffffc, RZ, 0xc0, !PT"
+        },
+        {
+          "pc": "0x1860",
+          "samples": 0.0,
+          "instruction": "LOP3.LUT R96, R34, R33, R32, 0x96, !PT"
+        },
+        {
+          "pc": "0x1870",
+          "samples": 0.0,
+          "instruction": "IMAD R97, R97, 0x30, R98"
+        },
+        {
+          "pc": "0x1880",
+          "samples": 0.0,
+          "instruction": "LOP3.LUT R96, R16, R35, R96, 0x96, !PT"
+        }
+      ]
+    },
+    "4": {
+      "total_samples": 1014271.0,
+      "phases": {
+        "main_and_setup": {
+          "samples": 947164.0,
+          "sample_share_pct": 93.38372091876826,
+          "short_sb": 61465.0,
+          "wait": 130417.0,
+          "dynamic_warp_instructions": 637676928.0
+        },
+        "fold_region": {
+          "samples": 57649.0,
+          "sample_share_pct": 5.683786680285643,
+          "short_sb": 13912.0,
+          "wait": 17299.0,
+          "dynamic_warp_instructions": 246491136.0
+        },
+        "epilogue": {
+          "samples": 9458.0,
+          "sample_share_pct": 0.9324924009460982,
+          "short_sb": 0.0,
+          "wait": 2859.0,
+          "dynamic_warp_instructions": 14814720.0
+        }
+      },
+      "fold_short_by_opcode": {
+        "S2R": 0.0,
+        "ULEA.HI": 0.0,
+        "BSSY": 0.0,
+        "UISETP.GE.U32.AND": 0.0,
+        "USHF.R.S32.HI": 0.0,
+        "PLOP3.LUT": 0.0,
+        "ULOP3.LUT": 0.0,
+        "UIADD3": 0.0,
+        "SHF.R.U32.HI": 739.0,
+        "LOP3.LUT": 1973.0,
+        "IMAD": 0.0,
+        "LEA": 0.0,
+        "IMAD.SHL.U32": 0.0,
+        "BRA": 0.0,
+        "REDUX.XOR": 0.0,
+        "IMAD.U32": 5056.0,
+        "ISETP.NE.AND": 0.0,
+        "LDS": 1568.0,
+        "SHF.L.W.U32.HI": 4576.0,
+        "STS": 0.0,
+        "BSYNC": 0.0
+      },
+      "fold_top_short": [
+        {
+          "pc": "0x2290",
+          "samples": 1506.0,
+          "instruction": "SHF.L.W.U32.HI R97, R97, 0xd, R97"
+        },
+        {
+          "pc": "0x1f20",
+          "samples": 1290.0,
+          "instruction": "@!P0  SHF.L.W.U32.HI R140, R140, 0xd, R140"
+        },
+        {
+          "pc": "0x2280",
+          "samples": 1290.0,
+          "instruction": "LDS R97, [R96+0xe9c0]"
+        },
+        {
+          "pc": "0x2000",
+          "samples": 810.0,
+          "instruction": "@!P0  SHF.L.W.U32.HI R97, R97, 0xd, R97"
+        },
+        {
+          "pc": "0x2060",
+          "samples": 758.0,
+          "instruction": "@!P0  SHF.L.W.U32.HI R142, R99, 0xd, R99"
+        },
+        {
+          "pc": "0x1830",
+          "samples": 739.0,
+          "instruction": "SHF.R.U32.HI R96, RZ, 0x5, R96"
+        },
+        {
+          "pc": "0x2920",
+          "samples": 688.0,
+          "instruction": "IMAD.U32 R139, RZ, RZ, UR18"
+        },
+        {
+          "pc": "0x27d0",
+          "samples": 683.0,
+          "instruction": "LOP3.LUT R138, R130, R129, R97, 0x96, !PT"
+        },
+        {
+          "pc": "0x2980",
+          "samples": 642.0,
+          "instruction": "IMAD.U32 R143, RZ, RZ, UR5"
+        },
+        {
+          "pc": "0x2450",
+          "samples": 621.0,
+          "instruction": "IMAD.U32 R99, RZ, RZ, UR6"
+        },
+        {
+          "pc": "0x24d0",
+          "samples": 613.0,
+          "instruction": "IMAD.U32 R137, RZ, RZ, UR7"
+        },
+        {
+          "pc": "0x26a0",
+          "samples": 511.0,
+          "instruction": "IMAD.U32 R145, RZ, RZ, UR12"
+        },
+        {
+          "pc": "0x28b0",
+          "samples": 398.0,
+          "instruction": "LOP3.LUT R136, R102, R101, R97, 0x96, !PT"
+        },
+        {
+          "pc": "0x1c00",
+          "samples": 317.0,
+          "instruction": "IMAD.U32 R151, RZ, RZ, UR10"
+        },
+        {
+          "pc": "0x19d0",
+          "samples": 308.0,
+          "instruction": "IMAD.U32 R141, RZ, RZ, UR5"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,16 @@
+Frozen baseline, GPU0 only. Offline deliberately racy diagnostics; never mine.
+Control:10a0 ISETP second discarded PT result ->P6, preserving P2; P6=!fold and unused elsewhere.
+no_plain_handoff:both16d0 arrive and2a00 sync execute only in fold rounds; IDs4/5 skipped.
+no_fold_handoff:both16d0 arrive and2a00 sync execute only in non-fold rounds; IDs6/7 skipped.
+Each remaining named barrier still has384participants. Initial/final barriers,cp.wait,LDSM guards retained.
+All64static IMMA,16LDSM,instruction positions,control fields,launch geometry and register allocation retained.
+Each deletion skips32 paired handoffs per warp. Fold/no-fold computations themselves are unchanged.
+This isolates phase-dependent rendezvous effects, NOT independent BAR.ARV/BAR.SYNC opcode costs.
+Skipped synchronization can change values,switching activity and following-round phasing. Effects are not additive.
+
+Unlocked CUDA events,8192x8192 region,K4096.200samples/variant,16launches/sample,rotating blocks.
+native {"samples": 200, "mean_ms": 1.024542309641838, "median_ms": 1.0172149538993835, "p95_ms": 1.0548987209796905} vs_control_time_reduction_pct=-0.2311
+predicate_control {"samples": 200, "mean_ms": 1.0221796530485152, "median_ms": 1.019288957118988, "p95_ms": 1.0417425453662872} vs_control_time_reduction_pct=+0.0000
+no_plain_handoff {"samples": 200, "mean_ms": 1.0086462250351906, "median_ms": 1.0052719712257385, "p95_ms": 1.0279623568058014} vs_control_time_reduction_pct=+1.3240
+no_fold_handoff {"samples": 200, "mean_ms": 1.0143148297071456, "median_ms": 1.0104039907455444, "p95_ms": 1.0427008092403411} vs_control_time_reduction_pct=+0.7694
+Predicate control vs native time change=-0.2306%

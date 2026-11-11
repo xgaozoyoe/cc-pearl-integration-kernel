@@ -1,0 +1,62 @@
+{
+  "baseline": {
+    "cta": [
+      128,
+      256
+    ],
+    "warp": [
+      64,
+      64
+    ],
+    "ideal_global_bytes_per_MMA": 48.0,
+    "ideal_shared_bytes_per_MMA": 128.0,
+    "requested_global_bytes_4096_region": 805306368,
+    "requested_bytes_per_useful_MMA": 48.0,
+    "padded_MMA_work_ratio": 1.0
+  },
+  "transposed": {
+    "cta": [
+      256,
+      128
+    ],
+    "warp": [
+      64,
+      64
+    ],
+    "ideal_global_bytes_per_MMA": 48.0,
+    "ideal_shared_bytes_per_MMA": 128.0,
+    "requested_global_bytes_4096_region": 805306368,
+    "requested_bytes_per_useful_MMA": 48.0,
+    "padded_MMA_work_ratio": 1.0
+  },
+  "small": {
+    "cta": [
+      128,
+      128
+    ],
+    "warp": [
+      64,
+      64
+    ],
+    "ideal_global_bytes_per_MMA": 64.0,
+    "ideal_shared_bytes_per_MMA": 128.0,
+    "requested_global_bytes_4096_region": 1073741824,
+    "requested_bytes_per_useful_MMA": 64.0,
+    "padded_MMA_work_ratio": 1.0
+  },
+  "wide": {
+    "cta": [
+      128,
+      320
+    ],
+    "warp": [
+      64,
+      64
+    ],
+    "ideal_global_bytes_per_MMA": 44.8,
+    "ideal_shared_bytes_per_MMA": 128.0,
+    "requested_global_bytes_4096_region": 754974720,
+    "requested_bytes_per_useful_MMA": 45.0,
+    "padded_MMA_work_ratio": 1.015625
+  }
+}

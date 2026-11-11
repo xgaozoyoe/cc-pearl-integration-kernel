@@ -1,0 +1,18 @@
+Capture:/tmp/pearl-wait-vs-handoff.kxQ9gE
+All input hashes verified;12sampled launches each67,633,152dynamicIMMA. NCU base clock policy, cycle-normalized comparisons below.
+native: {"imma_per_SM_elapsed_cycle": 0.20864008713809687, "imma_per_SMSP_elapsed_cycle": 0.05216002178452422, "tensor_Ginst_sec": 59.30070487910326, "kernel_ms": 1.140512}
+no_copy_wait: {"imma_per_SM_elapsed_cycle": 0.20862392741083619, "imma_per_SMSP_elapsed_cycle": 0.052155981852709046, "tensor_Ginst_sec": 59.15383324028547, "kernel_ms": 1.14336}
+no_barrier: {"imma_per_SM_elapsed_cycle": 0.2222764634509019, "imma_per_SMSP_elapsed_cycle": 0.05556911586272548, "tensor_Ginst_sec": 63.20242797463487, "kernel_ms": 1.0701333333333334}
+both: {"imma_per_SM_elapsed_cycle": 0.22224399965019395, "imma_per_SMSP_elapsed_cycle": 0.05556099991254849, "tensor_Ginst_sec": 63.232364784838694, "kernel_ms": 1.0696106666666667}
+native->no_copy_wait:IMMA/SMcycle -0.007745%
+native->no_barrier:IMMA/SMcycle +6.535837%
+no_barrier->both:IMMA/SMcycle -0.014605%
+native->both:IMMA/SMcycle +6.520277%
+Tensor85.77->85.7833->91.3233->91.32%; L2bytes ~2.534GB for all variants.
+Main named-barrier samples129608->129977 when removing copy wait only; essentially unchanged. Removal of named barriers drops main barrier samples to0 in both variants.
+Short-scoreboard at16d0 remains8005->8083 removing copy wait, and7290->7300 when named barriers absent: LDSM readiness was retained.
+Cycle-cost interaction0.0060% of baseline: no meaningful extra benefit from removing explicit cp.async wait in either named-barrier configuration.
+Conclusion: retain cp.async completion waiting in correct optimization work; prioritize named rendezvous/protocol and resulting warp phasing.
+Limit: does not prove all transfers are completed by the wait or all memory dependencies are irrelevant. Other scoreboards/backpressure remain, and deliberately racy arithmetic changes data and execution phasing.
+Next minimal correct-control candidate: preserve cp.async wait and all loop/compute order; replace paired8+4named arrive/sync with one CTA-wide BAR.SYNC0 at the existing end-of-iteration sync location. Validate full transcript before timing. This distinguishes paired-protocol cost from required cross-warp synchronization, without moving loop code.
+No production changes.

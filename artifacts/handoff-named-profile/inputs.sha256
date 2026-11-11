@@ -1,0 +1,3 @@
+800dd4650b5f1200dc95f3b019ac29a2642297e8317249df9d43bfbce7a9a746  artifacts/libpearl-handoff-named.so
+192fb4be7640dfe06053bf1290fad373f166487ae5fb258cdaa8648163a50632  artifacts/handoff-named-source.cu
+67f1f0c3ca308c47c0fd09784288985919f2ade8a79b7f5bd8809297f2fd6935  tests/bench_handoff_named_events.py

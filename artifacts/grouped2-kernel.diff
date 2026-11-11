@@ -1,0 +1,21 @@
+diff --git a/tmp/fold-ops-before-reuse2.cuh b/tests/fold_ops.cuh
+index cc11aee..cb351fc 100644
+--- a/tmp/fold-ops-before-reuse2.cuh
++++ b/tests/fold_ops.cuh
+@@ -28,7 +28,15 @@ cute_pearl_fold(int M, int N, int K, int R,
+ 
+     auto cta_tiler = make_shape(Int<bM>{}, Int<bN>{}, Int<bK>{});
+     int cta_m = blockIdx.x, cta_n = blockIdx.y;
+-    if constexpr (PairStride < 0) {
++    if constexpr (PairStride <= -100) {
++        constexpr int group = -PairStride-100;
++        int linear = blockIdx.x + gridDim.x * blockIdx.y;
++        int first_n = linear / (group * gridDim.x) * group;
++        int cols = min(group, int(gridDim.y)-first_n);
++        int offset = linear % (group * gridDim.x);
++        cta_n = first_n + offset % cols;
++        cta_m = offset / cols;
++    } else if constexpr (PairStride < 0) {
+         // Grouped-M scheduling: consume a short band of A rows across N
+         // before advancing M. Bijective, including partial final bands.
+         constexpr int group = -PairStride;

@@ -1,0 +1,166 @@
+Exact fastest both_compact binary, no source recompilation.
+Two captures of SAME variant; fixed profiling base clocks, application replay, warm cache policy none.
+Kernel times under profiler are not full-grid wall times or pool TH/s.
+Stall samples identify where a warp was sampled waiting; they do not measure additive execution cost.
+Deferred BAR.SYNC stalls may appear on subsequent instructions; stage_sync_and_backedge groups those PCs.
+first_loads window is a static PC range, not a temporal phase across all warps.
+No inference of simultaneous warp phases from aggregate samples.
+
+CAPTURE0: {"imma_per_SM_elapsed_cycle": 0.20874069252489688, "imma_per_SMSP_elapsed_cycle": 0.05218517313122422, "tensor_Ginst_sec": 59.51252641157603, "kernel_ms": 1.1364586666666667}
+Metrics: {"kernel_ns": 1136458.6666666667, "tensor_pct": 85.79333333333334, "l2_util_pct": 48.93, "l2_bytes": 2533942506.6666665, "barrier_pct": 14.27, "long_scoreboard_pct": 2.8266666666666667, "short_scoreboard_pct": 7.6866666666666665, "math_throttle_pct": 40.92333333333333, "eligible_warps_per_scheduler": 0.36, "active_warps_per_scheduler": 3.0, "issued_warps_per_cycle": 0.24}
+Extra raw metrics: {"dram__bytes.sum": 50107946.666666664, "sm__sass_data_bytes_mem_shared_op_ldsm.sum": 8657043456.0, "smsp__inst_executed_pipe_alu.sum": 121569664.0, "smsp__inst_executed_pipe_tensor_v2.sum": 67633152.0, "sm__cycles_elapsed.avg.per_second": 2227364660.6833334}
+L2 bytes/useful MMA: 37.75868574778239
+stall_barrier: stage_sync_and_backedge=98.61%, output_epilogue=0.89%, stage_address_setup=0.50%
+  0x2a30 98.61% @!P2  CALL.REL.NOINC 0x74844f25d750
+  0x2a70 0.89% @P0   EXIT
+  0xc60 0.50% UMOV UR5, 0x3000
+stall_long_sb: copy_address_and_issue=67.00%, prologue=15.74%, stage_sync_and_backedge=10.14%, first_loads_and_first_mma=7.11%, copy_wait_and_early_arrival=0.00%
+  0xf60 36.73% IMAD R96, R157, 0x1000, R142
+  0x1000 30.27% @!P2  IADD3 R141, R141, 0x1800, RZ
+  0xba0 13.77% BAR.SYNC.DEFER_BLOCKING 0x0
+  0x2a20 10.14% LOP3.LUT R161, R161, 0x2, RZ, 0x3c, !PT
+  0x10e0 7.11% LDSM.16.M88.4 R140, [R140]
+stall_math: interior_ldsm_mma=81.42%, tail_mma_after_arrival=15.65%, transcript_and_gate=1.02%, stage_address_setup=0.87%, copy_address_and_issue=0.49%, prologue=0.27%, output_epilogue=0.22%, first_loads_and_first_mma=0.03%, stage_sync_and_backedge=0.02%
+  0x1400 12.06% IMMA.16832.S8.S8 R132, R96.ROW, R148.COL, R132
+  0x1530 10.07% IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32
+  0x1250 7.17% IMMA.16832.S8.S8 R72, R140.ROW, R150.COL, R72
+  0x1120 5.81% IMMA.16832.S8.S8 R116, R144.ROW, R148.COL, R116
+  0x13d0 2.04% IMMA.16832.S8.S8 R56, R140.ROW, R148.COL, R56
+stall_mio: first_loads_and_first_mma=58.22%, copy_address_and_issue=21.56%, interior_ldsm_mma=10.01%, transcript_and_gate=8.97%, stage_sync_and_backedge=0.82%, copy_wait_and_early_arrival=0.31%, prologue=0.11%
+  0x10c0 14.74% LDSM.16.M88.4 R148, [R148+UR5]
+  0x1100 13.31% LDSM.16.M88.4 R96, [R152]
+  0x10e0 11.92% LDSM.16.M88.4 R140, [R140]
+  0x10f0 10.68% LDSM.16.M88.4 R136, [R136]
+  0x1090 7.56% LDSM.16.M88.4 R144, [R144]
+stall_not_selected: interior_ldsm_mma=51.02%, transcript_and_gate=14.16%, stage_address_setup=9.37%, copy_address_and_issue=9.32%, tail_mma_after_arrival=8.08%, output_epilogue=2.65%, prologue=2.31%, first_loads_and_first_mma=2.16%, stage_sync_and_backedge=0.88%, copy_wait_and_early_arrival=0.06%
+  0x1400 7.78% IMMA.16832.S8.S8 R132, R96.ROW, R148.COL, R132
+  0x1530 7.52% IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32
+  0x1250 4.70% IMMA.16832.S8.S8 R72, R140.ROW, R150.COL, R72
+  0x1120 4.01% IMMA.16832.S8.S8 R116, R144.ROW, R148.COL, R116
+  0xcc0 2.96% LOP3.LUT R137, R155, 0x10, R162, 0xf8, !PT
+stall_short_sb: interior_ldsm_mma=54.37%, transcript_and_gate=17.87%, first_loads_and_first_mma=11.77%, copy_wait_and_early_arrival=11.18%, copy_address_and_issue=4.58%, prologue=0.24%
+  0x1290 14.78% IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32
+  0x1350 13.37% IMMA.16832.S8.S8 R44, R136.ROW, R148.COL, R44
+  0x1110 11.77% IADD3 R152, R164, 0x420, RZ
+  0x16d0 11.18% BAR.ARV R164, 0x180
+  0x11e0 10.24% IMMA.16832.S8.S8 R108, R144.ROW, R148.COL, R108
+stall_wait: interior_ldsm_mma=53.92%, tail_mma_after_arrival=18.91%, transcript_and_gate=12.04%, copy_address_and_issue=5.99%, stage_address_setup=3.63%, output_epilogue=1.82%, first_loads_and_first_mma=1.81%, copy_wait_and_early_arrival=0.86%, stage_sync_and_backedge=0.67%, prologue=0.35%
+  0x1540 1.34% IMMA.16832.S8.S8 R28, R140.ROW, R148.COL, R28
+  0x1550 1.29% IMMA.16832.S8.S8 R24, R136.ROW, R148.COL, R24
+  0x1770 1.28% IMMA.16832.S8.S8 R76, R144.ROW, R154.COL, R76
+  0x11c0 1.27% IMMA.16832.S8.S8 R124, R96.ROW, R150.COL, R124
+  0x11b0 1.26% IMMA.16832.S8.S8 R64, R136.ROW, R150.COL, R64
+stall_barrier (Not Issued): stage_sync_and_backedge=98.80%, output_epilogue=0.67%, stage_address_setup=0.54%
+  0x2a30 98.80% @!P2  CALL.REL.NOINC 0x74844f25d750
+  0x2a70 0.67% @P0   EXIT
+  0xc60 0.54% UMOV UR5, 0x3000
+stall_long_sb (Not Issued): copy_address_and_issue=61.93%, prologue=19.73%, stage_sync_and_backedge=10.18%, first_loads_and_first_mma=8.14%, copy_wait_and_early_arrival=0.01%
+  0xf60 33.58% IMAD R96, R157, 0x1000, R142
+  0x1000 28.35% @!P2  IADD3 R141, R141, 0x1800, RZ
+  0xba0 17.38% BAR.SYNC.DEFER_BLOCKING 0x0
+  0x2a20 10.18% LOP3.LUT R161, R161, 0x2, RZ, 0x3c, !PT
+  0x10e0 8.14% LDSM.16.M88.4 R140, [R140]
+stall_math (Not Issued): interior_ldsm_mma=83.13%, tail_mma_after_arrival=15.44%, transcript_and_gate=0.50%, stage_address_setup=0.32%, copy_address_and_issue=0.24%, prologue=0.22%, output_epilogue=0.12%, first_loads_and_first_mma=0.01%, stage_sync_and_backedge=0.01%
+  0x1400 12.81% IMMA.16832.S8.S8 R132, R96.ROW, R148.COL, R132
+  0x1530 9.64% IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32
+  0x1250 7.52% IMMA.16832.S8.S8 R72, R140.ROW, R150.COL, R72
+  0x1120 6.13% IMMA.16832.S8.S8 R116, R144.ROW, R148.COL, R116
+  0x13d0 2.16% IMMA.16832.S8.S8 R56, R140.ROW, R148.COL, R56
+stall_mio (Not Issued): first_loads_and_first_mma=58.74%, copy_address_and_issue=21.98%, interior_ldsm_mma=10.57%, transcript_and_gate=7.36%, stage_sync_and_backedge=0.89%, copy_wait_and_early_arrival=0.34%, prologue=0.12%
+  0x10c0 14.92% LDSM.16.M88.4 R148, [R148+UR5]
+  0x1100 13.35% LDSM.16.M88.4 R96, [R152]
+  0x10e0 12.16% LDSM.16.M88.4 R140, [R140]
+  0x10f0 10.78% LDSM.16.M88.4 R136, [R136]
+  0x1090 7.53% LDSM.16.M88.4 R144, [R144]
+stall_short_sb (Not Issued): interior_ldsm_mma=55.44%, transcript_and_gate=16.58%, copy_wait_and_early_arrival=12.23%, first_loads_and_first_mma=12.14%, copy_address_and_issue=3.38%, prologue=0.23%
+  0x1290 16.22% IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32
+  0x1350 14.13% IMMA.16832.S8.S8 R44, R136.ROW, R148.COL, R44
+  0x16d0 12.23% BAR.ARV R164, 0x180
+  0x1110 12.14% IADD3 R152, R164, 0x420, RZ
+  0x11e0 9.33% IMMA.16832.S8.S8 R108, R144.ROW, R148.COL, R108
+stall_wait (Not Issued): interior_ldsm_mma=58.01%, tail_mma_after_arrival=20.40%, transcript_and_gate=9.54%, copy_address_and_issue=4.50%, stage_address_setup=2.38%, first_loads_and_first_mma=1.90%, output_epilogue=1.28%, copy_wait_and_early_arrival=1.05%, stage_sync_and_backedge=0.68%, prologue=0.26%
+  0x12f0 1.51% IMMA.16832.S8.S8 R12, R140.ROW, R150.COL, R12
+  0x1680 1.43% IMMA.16832.S8.S8 R88, R140.ROW, R154.COL, R88
+  0x1640 1.42% IMMA.16832.S8.S8 R8, R136.ROW, R150.COL, R8
+  0x12a0 1.42% IMMA.16832.S8.S8 R28, R140.ROW, R148.COL, R28
+  0x1310 1.42% IMMA.16832.S8.S8 R4, R96.ROW, R150.COL, R4
+
+CAPTURE1: {"imma_per_SM_elapsed_cycle": 0.20888971524641148, "imma_per_SMSP_elapsed_cycle": 0.05222242881160287, "tensor_Ginst_sec": 59.638186529049776, "kernel_ms": 1.1340586666666665}
+Metrics: {"kernel_ns": 1134058.6666666667, "tensor_pct": 85.79666666666667, "l2_util_pct": 49.019999999999996, "l2_bytes": 2534015658.6666665, "barrier_pct": 14.266666666666666, "long_scoreboard_pct": 2.82, "short_scoreboard_pct": 7.683333333333334, "math_throttle_pct": 40.913333333333334, "eligible_warps_per_scheduler": 0.36, "active_warps_per_scheduler": 3.0, "issued_warps_per_cycle": 0.24}
+Extra raw metrics: {"dram__bytes.sum": 50185258.666666664, "sm__sass_data_bytes_mem_shared_op_ldsm.sum": 8657043456.0, "smsp__inst_executed_pipe_alu.sum": 121569664.0, "smsp__inst_executed_pipe_tensor_v2.sum": 67633152.0, "sm__cycles_elapsed.avg.per_second": 2230474933.57}
+L2 bytes/useful MMA: 37.75977579752604
+stall_barrier: stage_sync_and_backedge=98.57%, output_epilogue=0.98%, stage_address_setup=0.45%
+  0x2a30 98.57% @!P2  CALL.REL.NOINC 0x72e9cf25d750
+  0x2a70 0.98% @P0   EXIT
+  0xc60 0.45% UMOV UR5, 0x3000
+stall_long_sb: copy_address_and_issue=67.14%, prologue=15.79%, stage_sync_and_backedge=9.90%, first_loads_and_first_mma=7.17%
+  0xf60 36.99% IMAD R96, R157, 0x1000, R142
+  0x1000 30.15% @!P2  IADD3 R141, R141, 0x1800, RZ
+  0xba0 13.82% BAR.SYNC.DEFER_BLOCKING 0x0
+  0x2a20 9.90% LOP3.LUT R161, R161, 0x2, RZ, 0x3c, !PT
+  0x10e0 7.17% LDSM.16.M88.4 R140, [R140]
+stall_math: interior_ldsm_mma=81.36%, tail_mma_after_arrival=15.74%, transcript_and_gate=1.02%, stage_address_setup=0.85%, copy_address_and_issue=0.49%, prologue=0.29%, output_epilogue=0.21%, first_loads_and_first_mma=0.03%, stage_sync_and_backedge=0.02%
+  0x1400 12.09% IMMA.16832.S8.S8 R132, R96.ROW, R148.COL, R132
+  0x1530 10.16% IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32
+  0x1250 7.18% IMMA.16832.S8.S8 R72, R140.ROW, R150.COL, R72
+  0x1120 5.83% IMMA.16832.S8.S8 R116, R144.ROW, R148.COL, R116
+  0x13d0 2.03% IMMA.16832.S8.S8 R56, R140.ROW, R148.COL, R56
+stall_mio: first_loads_and_first_mma=57.98%, copy_address_and_issue=21.51%, interior_ldsm_mma=10.17%, transcript_and_gate=9.10%, stage_sync_and_backedge=0.80%, copy_wait_and_early_arrival=0.38%, prologue=0.05%
+  0x10c0 14.60% LDSM.16.M88.4 R148, [R148+UR5]
+  0x1100 13.49% LDSM.16.M88.4 R96, [R152]
+  0x10e0 11.54% LDSM.16.M88.4 R140, [R140]
+  0x10f0 10.32% LDSM.16.M88.4 R136, [R136]
+  0x1090 8.03% LDSM.16.M88.4 R144, [R144]
+stall_not_selected: interior_ldsm_mma=50.67%, transcript_and_gate=14.34%, stage_address_setup=9.57%, copy_address_and_issue=9.16%, tail_mma_after_arrival=8.17%, output_epilogue=2.62%, prologue=2.31%, first_loads_and_first_mma=2.09%, stage_sync_and_backedge=1.00%, copy_wait_and_early_arrival=0.07%
+  0x1400 7.83% IMMA.16832.S8.S8 R132, R96.ROW, R148.COL, R132
+  0x1530 7.14% IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32
+  0x1250 4.82% IMMA.16832.S8.S8 R72, R140.ROW, R150.COL, R72
+  0x1120 4.27% IMMA.16832.S8.S8 R116, R144.ROW, R148.COL, R116
+  0xcc0 3.04% LOP3.LUT R137, R155, 0x10, R162, 0xf8, !PT
+stall_short_sb: interior_ldsm_mma=54.45%, transcript_and_gate=17.52%, first_loads_and_first_mma=11.70%, copy_wait_and_early_arrival=11.36%, copy_address_and_issue=4.75%, prologue=0.23%
+  0x1290 14.78% IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32
+  0x1350 13.49% IMMA.16832.S8.S8 R44, R136.ROW, R148.COL, R44
+  0x1110 11.70% IADD3 R152, R164, 0x420, RZ
+  0x16d0 11.36% BAR.ARV R164, 0x180
+  0x11e0 10.30% IMMA.16832.S8.S8 R108, R144.ROW, R148.COL, R108
+stall_wait: interior_ldsm_mma=53.79%, tail_mma_after_arrival=18.92%, transcript_and_gate=12.02%, copy_address_and_issue=6.11%, stage_address_setup=3.74%, output_epilogue=1.82%, first_loads_and_first_mma=1.78%, copy_wait_and_early_arrival=0.81%, stage_sync_and_backedge=0.64%, prologue=0.36%
+  0x1540 1.31% IMMA.16832.S8.S8 R28, R140.ROW, R148.COL, R28
+  0x1550 1.28% IMMA.16832.S8.S8 R24, R136.ROW, R148.COL, R24
+  0x1150 1.27% IMMA.16832.S8.S8 R120, R96.ROW, R148.COL, R120
+  0x1750 1.26% IMMA.16832.S8.S8 R104, R144.ROW, R150.COL, R104
+  0x17c0 1.26% IMMA.16832.S8.S8 R44, R136.ROW, R152.COL, R44
+stall_barrier (Not Issued): stage_sync_and_backedge=98.79%, output_epilogue=0.73%, stage_address_setup=0.49%
+  0x2a30 98.79% @!P2  CALL.REL.NOINC 0x72e9cf25d750
+  0x2a70 0.73% @P0   EXIT
+  0xc60 0.49% UMOV UR5, 0x3000
+stall_long_sb (Not Issued): copy_address_and_issue=62.09%, prologue=19.89%, stage_sync_and_backedge=9.92%, first_loads_and_first_mma=8.09%
+  0xf60 33.55% IMAD R96, R157, 0x1000, R142
+  0x1000 28.54% @!P2  IADD3 R141, R141, 0x1800, RZ
+  0xba0 17.53% BAR.SYNC.DEFER_BLOCKING 0x0
+  0x2a20 9.92% LOP3.LUT R161, R161, 0x2, RZ, 0x3c, !PT
+  0x10e0 8.09% LDSM.16.M88.4 R140, [R140]
+stall_math (Not Issued): interior_ldsm_mma=82.99%, tail_mma_after_arrival=15.54%, transcript_and_gate=0.53%, stage_address_setup=0.31%, copy_address_and_issue=0.25%, prologue=0.23%, output_epilogue=0.12%, first_loads_and_first_mma=0.02%, stage_sync_and_backedge=0.01%
+  0x1400 12.79% IMMA.16832.S8.S8 R132, R96.ROW, R148.COL, R132
+  0x1530 9.67% IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32
+  0x1250 7.53% IMMA.16832.S8.S8 R72, R140.ROW, R150.COL, R72
+  0x1120 6.18% IMMA.16832.S8.S8 R116, R144.ROW, R148.COL, R116
+  0x13d0 2.15% IMMA.16832.S8.S8 R56, R140.ROW, R148.COL, R56
+stall_mio (Not Issued): first_loads_and_first_mma=58.67%, copy_address_and_issue=21.84%, interior_ldsm_mma=10.63%, transcript_and_gate=7.51%, stage_sync_and_backedge=0.88%, copy_wait_and_early_arrival=0.41%, prologue=0.06%
+  0x10c0 14.75% LDSM.16.M88.4 R148, [R148+UR5]
+  0x1100 13.63% LDSM.16.M88.4 R96, [R152]
+  0x10e0 11.75% LDSM.16.M88.4 R140, [R140]
+  0x10f0 10.46% LDSM.16.M88.4 R136, [R136]
+  0x1090 8.09% LDSM.16.M88.4 R144, [R144]
+stall_short_sb (Not Issued): interior_ldsm_mma=55.38%, transcript_and_gate=16.29%, copy_wait_and_early_arrival=12.52%, first_loads_and_first_mma=12.17%, copy_address_and_issue=3.42%, prologue=0.22%
+  0x1290 16.17% IMMA.16832.S8.S8 R32, R144.ROW, R148.COL, R32
+  0x1350 14.20% IMMA.16832.S8.S8 R44, R136.ROW, R148.COL, R44
+  0x16d0 12.52% BAR.ARV R164, 0x180
+  0x1110 12.17% IADD3 R152, R164, 0x420, RZ
+  0x11e0 9.34% IMMA.16832.S8.S8 R108, R144.ROW, R148.COL, R108
+stall_wait (Not Issued): interior_ldsm_mma=57.87%, tail_mma_after_arrival=20.39%, transcript_and_gate=9.48%, copy_address_and_issue=4.72%, stage_address_setup=2.45%, first_loads_and_first_mma=1.87%, output_epilogue=1.30%, copy_wait_and_early_arrival=1.01%, stage_sync_and_backedge=0.64%, prologue=0.26%
+  0x16a0 1.50% IMMA.16832.S8.S8 R124, R100.ROW, R154.COL, R124
+  0x12a0 1.47% IMMA.16832.S8.S8 R28, R140.ROW, R148.COL, R28
+  0x1690 1.45% IMMA.16832.S8.S8 R64, R136.ROW, R154.COL, R64
+  0x12b0 1.42% IMMA.16832.S8.S8 R24, R136.ROW, R148.COL, R24
+  0x1680 1.41% IMMA.16832.S8.S8 R88, R140.ROW, R154.COL, R88
+

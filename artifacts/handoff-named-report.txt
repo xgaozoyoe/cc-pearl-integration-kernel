@@ -1,0 +1,46 @@
+GPU0 source-only stage handoff experiments; production path unchanged.
+
+Fixed CTA256x192,K64,2stages,384threads,12warps,K4096,R128;64staticIMMA/16LDSM.
+Event sample = mean of16 launches,240 samples/variant/run in rotated blocks.
+GPU clocks/power settings untouched; DVFS not locked. Differences are descriptive, not cycle-normalized.
+First experiment: parity spin vs token vs one-warp polling+CTA broadcast.
+baseline     n=240 mean=1.088034 median=1.087232 p95=1.113731 ms
+spin         n=240 mean=1.134255 median=1.137340 p95=1.151410 ms
+token        n=240 mean=1.166148 median=1.166976 p95=1.183349 ms
+delegate     n=240 mean=1.142935 median=1.147274 p95=1.154808 ms
+Token and delegate do not improve on baseline. All4 variants168regs,0local,1CTA/SM.
+
+Second experiment: two symmetric groups; named barriers replace mbarrier polling.
+run1
+baseline     n=240 mean=1.093349 median=1.087296 p95=1.122048 ms
+spin         n=240 mean=1.134932 median=1.130880 p95=1.151434 ms
+late         n=240 mean=1.143213 median=1.146432 p95=1.154488 ms
+overlap      n=240 mean=1.092623 median=1.095229 p95=1.108910 ms
+Overlap time reduction vs late=4.425%; vs baseline=0.066%.
+run2
+baseline     n=240 mean=1.091507 median=1.087872 p95=1.113844 ms
+spin         n=240 mean=1.134786 median=1.130752 p95=1.158147 ms
+late         n=240 mean=1.139528 median=1.140232 p95=1.155770 ms
+overlap      n=240 mean=1.090126 median=1.088887 p95=1.108796 ms
+Overlap time reduction vs late=4.335%; vs baseline=0.126%.
+Named variants167regs,0spill,shared69632B,1CTA/SM. Baseline168regs,shared69632B; spin168regs,69640B.
+No polling LDS/R2UR loop, no mbarrier ATOMS in named variants. One BAR.ARV and one receiving BAR per iteration.
+Four alternating IDs prevent double arrival to an unreset peer phase. All12 warps compute, none dedicated to movement.
+Overlap moves arrival before transcript; local cp.async.wait_group0 remains BEFORE arrival.
+SASS: overlap wait1690,arrival1800,firstREDUX1970; late firstREDUX1910,wait2a00,arrival2a70.
+Thus this measures overlap of inter-warp handoff and transcript, not elimination of copy completion waiting.
+
+Full offline grids (includes setup/noise/Merkle/GEMM/PoW),same deterministic seed sequence;60 measured/variant after per-block warmup:
+baseline     n=60 mean=308.535 median=308.200 p95=313.300 ms grids/s=3.241123 TH/s=228.074
+overlap      n=60 mean=309.763 median=309.500 p95=314.205 ms grids/s=3.228271 TH/s=227.169
+Full-grid time reduction=-0.398%.
+
+Correctness: each suite32 complete transcript+PoW comparisons,including8192x8192,passed.
+Both suites:ComputeSanitizer2025.2.1 racecheck24 small/edge cases:0hazards;full-size memcheck:0errors.
+Named-barrier synccheck2025.2.1:0errors on24 small/edge comparisons.
+Earlier sleep/NOP experiment remains quarantined: its racecheck issue is unresolved; not used here.
+No live mining; no production/V3/target/proof changes; no net production speedup claimed.
+Tensor density has NOT been measured for these variants yet. Required next evidence: same-metric IMMA/SMcycle,Tensor utilization,copy-wait and barrier PC stalls.
+Next capture: sudo bash tools/profile_handoff_named.sh 2270585
+References: named-barrier semantics and repeated-arrival restriction:
+https://docs.nvidia.com/cuda/archive/12.0.1/parallel-thread-execution/index.html

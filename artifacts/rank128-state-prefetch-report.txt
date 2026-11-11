@@ -1,0 +1,136 @@
+Late transcript shared-state prefetch, GPU0 only,2026-10-08.
+
+Two isolated builds, each baseline plus last1/last2 tile-state preloads per warp.
+First build uses conditional branch and explicit shared loads before all REDUX.
+Second uses predicated ld.shared PTX, avoiding the added branch/reconvergence.
+Only real shared-memory reads use volatile; no pure XOR asm was introduced.
+Predicated load output uses early-clobber because initialization precedes addr use.
+Both forms read old state only in lane0 and rb>=16; initial transcript writes
+and all current-mainnet state semantics are unchanged.
+
+SASS confirms intended loads before first REDUX in all four candidates. Native
+64IMMA/16LDSM sites unchanged. First build adds a BSSY/BSYNC pair (2vs1); second
+retains1. Static instruction slots880 baseline,904 branch form,888 predicated.
+Registers baseline168,last1=167,last2=168;384threads,69632Bshared,1CTA/SM,zero
+stack/spills. Instruction count equality does not mean identical main-loop schedule.
+
+Correctness:24 full transcript/digest comparisons per build against acceptedR128,
+two seeds and four shapes including8192x8192 and partialN. Both builds PASS.
+Predicated form additionally checked with racecheck on small shapes (see log).
+Full-grid bench includes actual setup/noise/Merkle/V3/fold/PoW,zero target,offline,
+M=N131072,K4096,R128,region8192. Six rotated batches,2warmups+10measured/batch,
+60samples/variant. No clock/power changes,not locked;batch endpoint telemetry saved.
+TH/s is offline work rate,not a live-pool result. No new kernel-only measurements.
+
+{
+  "state-prefetch": [
+    {
+      "variant": 0,
+      "samples": 60,
+      "mean_ms": 307.81499999999994,
+      "median_ms": 307.3,
+      "p95_ms": 311.72499999999997,
+      "ths": 228.6072614319121,
+      "resources": [
+        168,
+        384,
+        69632,
+        1,
+        0
+      ],
+      "throughput_change_pct": 0.0
+    },
+    {
+      "variant": 1,
+      "samples": 60,
+      "mean_ms": 314.24833333333333,
+      "median_ms": 313.85,
+      "p95_ms": 319.505,
+      "ths": 223.92718341968612,
+      "resources": [
+        167,
+        384,
+        69632,
+        1,
+        0
+      ],
+      "throughput_change_pct": -2.047213191265951
+    },
+    {
+      "variant": 2,
+      "samples": 60,
+      "mean_ms": 315.1333333333334,
+      "median_ms": 314.40000000000003,
+      "p95_ms": 320.40500000000003,
+      "ths": 223.29832085148294,
+      "resources": [
+        168,
+        384,
+        69632,
+        1,
+        0
+      ],
+      "throughput_change_pct": -2.3222974402369756
+    }
+  ],
+  "state-prefetch-pred": [
+    {
+      "variant": 0,
+      "samples": 60,
+      "mean_ms": 308.4783333333334,
+      "median_ms": 307.65,
+      "p95_ms": 313.805,
+      "ths": 228.11567806814304,
+      "resources": [
+        168,
+        384,
+        69632,
+        1,
+        0
+      ],
+      "throughput_change_pct": 0.0
+    },
+    {
+      "variant": 1,
+      "samples": 60,
+      "mean_ms": 311.18,
+      "median_ms": 310.65,
+      "p95_ms": 316.235,
+      "ths": 226.13517635344175,
+      "resources": [
+        167,
+        384,
+        69632,
+        1,
+        0
+      ],
+      "throughput_change_pct": -0.8682006127214481
+    },
+    {
+      "variant": 2,
+      "samples": 60,
+      "mean_ms": 311.70833333333326,
+      "median_ms": 311.15,
+      "p95_ms": 316.40000000000003,
+      "ths": 225.75188614676333,
+      "resources": [
+        168,
+        384,
+        69632,
+        1,
+        0
+      ],
+      "throughput_change_pct": -1.0362251035957226
+    }
+  ]
+}
+
+
+Conclusion: no benefit in these four implementations. Predication reduces the
+observed regression (about2% -> about1%),but still does not outperform baseline.
+The loads really moved; this is not a failed source-only prefetch transformation.
+Extra address/predicate instructions, longer live ranges and compiler scheduling
+are confounders; no new counter capture proves how much LDS wait was hidden.
+Do not conclude that all transcript overlap or all prefetch is impossible.
+Keep existing A-stream. No deployment,commits,or production changes. Accepted
+library and A-stream hashes remain unchanged. GPU1/2 never selected.

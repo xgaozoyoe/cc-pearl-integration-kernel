@@ -1,0 +1,36 @@
+GPU0 layered diagnostic, 2026-10-08. Production libraries unchanged.
+8192x8192, K4096, 1376 CTAs, 384 threads, CTA256x192, warp64x64.
+Each warp: 64 K64 iterations x64 MMA m16n8k32, 128 register accumulators.
+No transcript, PoW, submission, or mining integration.
+Full/shared: each row repeats the same random signed K64 input 64 times.
+Shared preloads two immutable stages and alternates addresses; no main-loop copies/handoff.
+Full retains frozen accepted cp.async double-buffered loop.
+Register roof uses independent runtime register operands; calibration, not same matrix output.
+
+full_copy: mean 1.042441 ms, median 1.039760, p95 1.053808; executed 265.747 TMAC/s; host 1.049696 ms.
+shared_resident: mean 0.831670 ms, median 0.829984, p95 0.840704; executed 333.095 TMAC/s; host 0.839272 ms.
+register_roof: mean 0.838729 ms, median 0.836608, p95 0.848616; executed 330.292 TMAC/s; host 0.845953 ms.
+
+Full minus shared = 0.210770 ms, 20.22% of full time.
+Shared rate uplift = 25.34%.
+Two runs, 40 interleaved samples per variant per run after 5s mixed warm-up.
+Clocks not locked: sampled 2670-2715 MHz, memory10501 MHz. Both runs agree.
+These are single-region kernel diagnostics, NOT full-grid or mining TH/s.
+Padding is included in executed TMAC/s. Shared initialization is included in timing.
+Both full/shared: 168 registers,69632 shared bytes,1CTA/SM,12warps/SM (25% theoretical),0 local bytes/spills.
+Roof:166registers,same reserved shared and occupancy,0spill.
+
+Correctness: 2 seeded signed CPU int64 GEMM references with uint32 wrap, each of384 lanes'128-accumulator sum PASS for both variants.
+8192 complete checksum-buffer equality PASS (including partial N edge).
+Checksum validation is not an element-by-element accumulator proof; transcript is disabled.
+Small racecheck:0 hazards. All64 IMMA and16 LDSM remain INSIDE shared loop in SASS.
+Shared cp.async/wait/BAR only in prologue. Full has wait/BAR and future-stage copy inside loop.
+SASS loop static instructions: see rank128-layers-sass.json; copy subloops repeat dynamically.
+
+Conclusion: LDSM+IMMA can approach this matched register calibration when main-loop global-copy/stage management is removed.
+Prioritize copy address/integer scheduling and stage handoff; do not infer that all20% is barrier waiting.
+Removing copies also allows compiler to hoist addresses/change register lifetimes and scheduling; differences are interaction effects.
+Shared slightly faster than roof is not a hardware ceiling violation: different operand schedule and epilogues.
+No Tensor utilization counters collected this round; do not infer a measured utilization from timings.
+Next discriminating experiment: read-only shared+per-K CTA barrier, then read-only shared+observable original copy-address arithmetic, keeping MMA and checksums unchanged.
+After attribution, test actual different-K input and full transcript before any mining use.

@@ -1,0 +1,69 @@
+--- accepted-rank128
++++ copywalk-fulla-rank128
+@@ -81,43 +81,29 @@
+         asm volatile("cp.async.commit_group;");
+         return;
+     }
+-    #pragma unroll (UnrollCopy ? 3 : 1)
+-    for(int i=threadIdx.x;i<BM*TileK/16;i+=(UnrollCopy ? THREADS : blockDim.x)) {
+-        // Invert the baseline chunk swizzle inside each producer warp.
+-        // This leaves the warp's global address set unchanged, but makes
+-        // adjacent producer lanes write adjacent shared 16-byte chunks.
+-        int logical=i;
+-        if constexpr(Layout>=5) logical=i^((i>>3)&3);
+-        int row=logical/(TileK/16),col=(logical%(TileK/16))*16,gr=cm*BM+row;
+-        int gc=kt*TileK+col;
+-        bool valid_row=gr<m && (TileK==64 || gc<k);
+-        const signed char* src;
+-        if constexpr(TileK==64) src=a+(size_t)(gr<m?gr:0)*k+gc;
+-        else src=a+(size_t)(valid_row?gr:0)*k+(valid_row?gc:0);
+-        unsigned dst;
+-        if constexpr(Layout==6) dst=__cvta_generic_to_shared(sa+i*16);
+-        else dst=__cvta_generic_to_shared(sa+offset<TileK,Planar,Layout>(row,col,BM));
+-        int valid=valid_row?16:0;
+-        asm volatile("cp.async.cg.shared.global [%0],[%1],16,%2;" :: "r"(dst),"l"(src),"r"(valid));
+-    }
+-    #pragma unroll (UnrollCopy ? 2 : 1)
+-    for(int i=threadIdx.x;i<BN*TileK/16;i+=(UnrollCopy ? THREADS : blockDim.x)) {
+-        // Invert the baseline chunk swizzle inside each producer warp.
+-        // This leaves the warp's global address set unchanged, but makes
+-        // adjacent producer lanes write adjacent shared 16-byte chunks.
+-        int logical=i;
+-        if constexpr(Layout>=5) logical=i^((i>>3)&3);
+-        int row=logical/(TileK/16),col=(logical%(TileK/16))*16,gr=cn*BN+row;
+-        int gc=kt*TileK+col;
+-        bool valid_row=gr<n && (TileK==64 || gc<k);
+-        const signed char* src;
+-        if constexpr(TileK==64) src=b+(size_t)(gr<n?gr:0)*k+gc;
+-        else src=b+(size_t)(valid_row?gr:0)*k+(valid_row?gc:0);
+-        unsigned dst;
+-        if constexpr(Layout==6) dst=__cvta_generic_to_shared(sb+i*16);
+-        else dst=__cvta_generic_to_shared(sb+offset<TileK,Planar,Layout>(row,col,BN));
+-        int valid=valid_row?16:0;
+-        asm volatile("cp.async.cg.shared.global [%0],[%1],16,%2;" :: "r"(dst),"l"(src),"r"(valid));
++
++    static_assert(TileK==64 && Layout==6 && !Planar);
++    // 384 is a multiple of128: the swizzled low7 chunk bits never change.
++    int logical=int(threadIdx.x)^(int(threadIdx.x>>3)&3);
++    int row=logical/4,col=(logical%4)*16;
++    unsigned dstA=__cvta_generic_to_shared(sa+threadIdx.x*16);
++    unsigned dstB=__cvta_generic_to_shared(sb+threadIdx.x*16);
++    int grA=cm*BM+row,grB=cn*BN+row;
++    unsigned offA=unsigned(grA)*unsigned(k)+unsigned(kt*64+col);
++    unsigned offB=unsigned(grB)*unsigned(k)+unsigned(kt*64+col);
++    #pragma unroll
++    for(int j=0;j<3;++j) if(threadIdx.x+j*THREADS<BM*64/16) {
++        bool valid=true;
++        const signed char* src=a+offA;
++        asm volatile("cp.async.cg.shared.global [%0],[%1],16,%2;" :: "r"(dstA),"l"(src),"r"(valid?16:0));
++        grA+=THREADS/4;offA+=unsigned(THREADS/4)*unsigned(k);dstA+=THREADS*16;
++    }
++    #pragma unroll
++    for(int j=0;j<2;++j) {
++        bool valid=grB<n;
++        const signed char* src=b+(valid?offB:0u);
++        asm volatile("cp.async.cg.shared.global [%0],[%1],16,%2;" :: "r"(dstB),"l"(src),"r"(valid?16:0));
++        grB+=THREADS/4;offB+=unsigned(THREADS/4)*unsigned(k);dstB+=THREADS*16;
+     }
+     asm volatile("cp.async.commit_group;");
+ }

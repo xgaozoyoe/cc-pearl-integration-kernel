@@ -1,0 +1,29 @@
+GPU0 current8+4 fold preamble simplification; no Nsight.
+Kernel8192x8192 region:160event samples/variant,16launches/sample,8rotating blocks.
+Full offline grids:80samples/variant,8rotating blocks,12grids/block discardfirst2.
+Clocks unlocked. Full grids include setup/noise/Merkle/transcript/PoW; no network/proof delivery.
+variant kernel_mean_ms grid_mean_ms grid_median_ms grid_p95_ms grids/sec equivalent_THs
+both_compact 1.020100 292.129 292.400 297.310 3.42315 240.883
+baseline 1.027489 293.518 293.000 299.125 3.40695 239.743
+both_compact: time -0.473%; throughput +0.475%; paired time% -0.773, -0.361, -0.470, -0.304, -0.409, -0.413, -0.514, -0.541
+Same168registers,69632Bshared,384threads,1CTA/SM,0spill.
+All main-loop MMA,LDSM,copy and earlyhandoff instruction words unchanged.
+mod_nop removes3uniformALU operations but retains3NOP issue slots.
+mod_compact/both_compact bypass vacated slots; extra branch executed on second-half folds.
+Address bases and per-tile immediate offsets were already shared; no large repeated-address opportunity found.
+No new source recompilation, no production library changes.
+
+Independent confirmation:run name mean_ms median_ms p95_ms equivalent_THs
+1 baseline 293.192 293.200 297.615 240.009
+1 both_compact 291.855 291.850 296.810 241.109
+run1 throughput gain 0.458%
+2 baseline 293.518 293.000 299.125 239.743
+2 both_compact 292.129 292.400 297.310 240.883
+run2 throughput gain 0.475%
+Combined160grids/variant:
+baseline: mean=293.355ms median=293.150ms p95=298.805ms equivTH/s=239.876
+both_compact: mean=291.992ms median=292.100ms p95=297.105ms equivTH/s=240.996
+Unfixed-clock offline result; do not claim pool-income gain or fixed-cycle attribution.
+
+Validation:all4variants48edge transcript comparisons PASS;24 transcript+PoW comparisons including8192x8192 PASS. Winner racecheck0errors0warnings,memcheck0errors,synccheck0errors.
+Winner faster in all16 paired full-grid batches across2runs. Remains an isolated candidate; production not changed.

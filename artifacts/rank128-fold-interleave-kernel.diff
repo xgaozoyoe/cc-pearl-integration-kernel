@@ -1,0 +1,74 @@
+--- current-astream.cu
++++ interleaved-fold.cu
+@@ -184,6 +184,40 @@
+                     if(slice+1<TileK/32 && (TileK==64 || kt*TileK+(slice+1)*32<k) && group==Groups-1 && half==1)
+                         ar[row]=nextA;
+                 }
++                // Previous output fragment is complete; current fragment's
++                // two independent MMAs separate its last producer from XOR.
++                if(slice==1 && (kt+1)%2==0 && group*4+row>0) {
++                    int previous_row=(row+3)%4;
++                    int previous_group=group-(row==0);
++                    unsigned x=0;
++                    #pragma unroll
++                    for(int h=0;h<2;++h) {
++                        #pragma unroll
++                        for(int v=0;v<4;++v)x^=c[previous_row][previous_group][h][v];
++                    }
++                    x=__reduce_xor_sync(0xffffffffu,x);
++                    if(lane==0) {
++                        int rb=(kt+1)/2-1;
++                        int idx=((wm*4+previous_row)*(BN/16)+wn*Groups+previous_group)*16+rb%16;
++                        if(rb<16)transcript[idx]=x;
++                        else {unsigned prev=transcript[idx];transcript[idx]=((prev<<13)|(prev>>19))^x;}
++                    }
++                }
++                if(slice==1 && (kt+1)%2==0 && group==Groups-1 && row==3) {
++                    unsigned x=0;
++                    #pragma unroll
++                    for(int h=0;h<2;++h) {
++                        #pragma unroll
++                        for(int v=0;v<4;++v)x^=c[3][Groups-1][h][v];
++                    }
++                    x=__reduce_xor_sync(0xffffffffu,x);
++                    if(lane==0) {
++                        int rb=(kt+1)/2-1;
++                        int idx=((wm*4+3)*(BN/16)+wn*Groups+Groups-1)*16+rb%16;
++                        if(rb<16)transcript[idx]=x;
++                        else {unsigned prev=transcript[idx];transcript[idx]=((prev<<13)|(prev>>19))^x;}
++                    }
++                }
+             }
+             if constexpr(TileK!=64) {
+         if(group==Groups-1 && (kt*TileK+(slice+1)*32)%128==0) {
+@@ -210,29 +244,7 @@
+             }
+         }
+         }
+-        if constexpr(TileK==64) {
+-        if((kt+1)%2==0) {
+-            int rb=(kt+1)/2-1;
+-            #pragma unroll
+-            for(int row=0;row<4;++row) {
+-                #pragma unroll
+-                for(int group=0;group<Groups;++group) {
+-                    unsigned x=0;
+-                    #pragma unroll
+-                    for(int half=0;half<2;++half) {
+-                        #pragma unroll
+-                        for(int v=0;v<4;++v) x^=c[row][group][half][v];
+-                    }
+-                    x=__reduce_xor_sync(0xffffffffu,x);
+-                    if(lane==0) {
+-                        int idx=((wm*4+row)*(BN/16)+wn*Groups+group)*16+(rb%16);
+-                        if(rb<16) transcript[idx]=x;
+-                        else { unsigned prev=transcript[idx]; transcript[idx]=((prev<<13)|(prev>>19))^x; }
+-                    }
+-                }
+-            }
+-        }
+-        }
++
+     }
+     __syncthreads();
+     for(int i=threadIdx.x;i<WORDS;i+=Threads) {

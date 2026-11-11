@@ -1,0 +1,32 @@
+GPU0 only;192x192 CTA,9MMA+1consumer,K64/2stages,K4096/rank128;production unchanged.
+Control is batch_reduce from previous experiment. Full warp64x64 accumulator mapping retained.
+Source-interval instrumented cycles/task,5launches x1849CTAs x1152tasks/CTA:
+total: 591.472
+ready: 168.975
+load_issue: 27.814
+free: 17.755
+reduce: 118.677
+update: 133.666
+other: 124.584
+Source intervals include descheduling/instrumentation;not instruction latencies.
+Load interval ends after LDS issue,not guaranteed completion. Free interval ends after arrive issue,not producer observation.
+Reduction interval may include residual load/notification waits and compiler collective machinery.
+Other is arithmetic residual:includes loop/setup/counter accumulation;not a measured pure loop cost.
+SASS phases:load clocks2fb0/3010;LDS2fd0..3000;MEMBAR3060/ARRIVE3070;clock3080;
+REDUX30b0,30e0,30f0,3100;clock3150;state LDS3200..3230,STS3290..3300;clock3320.
+Matched compiler resources control/phases168regs,48Blocal,44/44Bspill;1CTA/SM.
+Noninstrumented event timing40samples/variant,16launches/sample,2rotating blocks,unlocked clocks:
+control:mean3.508951,median3.508800,p953.509197ms
+lanes4:mean3.745506,median3.745431,p953.745745ms
+lanes4 time increase:6.741%
+lanes4 keeps four full-warp reductions then distributes four distinct updates to lanes0..3.
+lanes4 spill52/48B vs control44/44B,168regs,48Blocal,1CTA/SM. Compiler schedule also changes.
+Static bank audit:shared is32bit-word addressed;idx=(((producer%3)*4+lane)*12+(producer/3)*4+group)*16+(rb&15).
+1152tasks audited:four distinct addresses,all same shared bank (word stride192 mod32=0).
+SASS lanes4 uses one active4lane LDS/STS path:3160 LDS,31f0/3200 alternative stores.
+Thus simple lane redistribution does not provide conflict-free shared-memory parallelism.
+No hardware conflict-counter measurement;cannot attribute all6.7%regression solely to conflicts.
+12lanes4 numerical validation cases PASS;5control+5instrumented fullregion outputs bit-exact.
+Boundary512x800 seed9876 phases+lanes4 racecheck:0hazards/errors/warnings.
+No full-grid/PoW/mining runs;production checksum bothOK.
+Potential next diagnostic:pad shared transcript stride16->17 (adjust final gather),pair control/lanes4;NOT implemented.

@@ -1,0 +1,56 @@
+--- current-astream.cu
++++ defer-2-fragments.cu
+@@ -143,6 +143,26 @@
+             stage_copy<TileK,Planar,UnrollCopy,FixedCopy,Layout>(a,b,sa+next*BM*TileK,sb+next*BN*TileK,cm,cn,kt+Stages-1,m,n,k);
+         signed char* aa=sa+current*BM*TileK;
+         signed char* bb=sb+current*BN*TileK;
++        // Snapshot only deferred previous-boundary fragments before ANY new
++        // MMA can overwrite them. Pending scalars survive operand loads/MMA.
++        unsigned pending[2];
++        if(kt>0 && kt%2==0) {
++            #pragma unroll
++            for(int pr=0;pr<2;++pr) {
++                unsigned x;
++                asm volatile("{ .reg .b32 p,q; "
++                    "lop3.b32 p,%1,%2,%3,0x96; "
++                    "lop3.b32 q,%4,%5,%6,0x96; "
++                    "lop3.b32 p,p,%7,%8,0x96; "
++                    "xor.b32 %0,p,q; }"
++                    : "=r"(x) : "r"(c[pr][0][0][0]),"r"(c[pr][0][0][1]),
++                      "r"(c[pr][0][0][2]),"r"(c[pr][0][0][3]),
++                      "r"(c[pr][0][1][0]),"r"(c[pr][0][1][1]),
++                      "r"(c[pr][0][1][2]),"r"(c[pr][0][1][3]));
++                pending[pr]=x;
++            }
++        }
++
+         if constexpr(Lead==0 || Lead==3) {
+             #pragma unroll
+             for(int slice=0;slice<2;++slice) {
+@@ -184,6 +204,17 @@
+                     if(slice+1<TileK/32 && (TileK==64 || kt*TileK+(slice+1)*32<k) && group==Groups-1 && half==1)
+                         ar[row]=nextA;
+                 }
++                // New-iteration MMA has advanced while the old boundary
++                // survives in pending; publish ONLY that saved old value.
++                if(slice==0 && group==0 && row>=2 && row<4 && kt>0 && kt%2==0) {
++                    unsigned x=__reduce_xor_sync(0xffffffffu,pending[row-2]);
++                    if(lane==0) {
++                        int rb=kt/2-1,pr=row-2;
++                        int idx=((wm*4+pr)*(BN/16)+wn*Groups)*16+rb%16;
++                        if(rb<16)transcript[idx]=x;
++                        else {unsigned old=transcript[idx];transcript[idx]=((old<<13)|(old>>19))^x;}
++                    }
++                }
+             }
+             if constexpr(TileK!=64) {
+         if(group==Groups-1 && (kt*TileK+(slice+1)*32)%128==0) {
+@@ -217,6 +248,8 @@
+             for(int row=0;row<4;++row) {
+                 #pragma unroll
+                 for(int group=0;group<Groups;++group) {
++                    // No next iteration after K4096: drain everything there.
++                    if(group==0 && row<2 && kt+1<k/TileK)continue;
+                     unsigned x=0;
+                     #pragma unroll
+                     for(int half=0;half<2;++half) {

@@ -1,0 +1,17 @@
+Frozen native two-site SASS experiment, GPU0 only.
+early_cta:16d0 BAR.ARV -> BAR.SYNC0;2a00 BAR.SYNC ->NOP.
+late_cta:16d0 BAR.ARV ->NOP;2a00 BAR.SYNC ->BAR.SYNC0 (negative control).
+Original instruction positions,cp.wait,LDSM completion masks,64IMMA,16LDSM and transcript unchanged.
+All168regs,69632dynamic shared bytes,384threads,1CTA/SM,0local bytes.
+Early handoff occurs after this warp future copies and old-stage reads complete, before16tailIMMA.
+All warps contribute early; next iteration no longer depends on own-group peers reaching the late sync.
+Hardware deferred blocking may allow independent instructions before actual wait; do not equate source issue PC with stall PC.
+Transcript accesses are warp-owned before final CTA barrier; initial/final barriers remain.
+Original dead own/peer ID arithmetic remains to keep this a controlled test.
+12early_cta small/edge transcript cases:racecheck0hazards,0errors,0warnings.
+
+Unlocked region8192x8192,K4096,R128;200samples/variant,16launches/sample,10rotating blocks.
+native {"samples": 200, "mean_ms": 1.0322698855400085, "median_ms": 1.0292800068855286, "p95_ms": 1.0551693081855773} time_change_vs_native_pct=+0.000000
+late_cta {"samples": 200, "mean_ms": 1.1143133354187011, "median_ms": 1.1095620393753052, "p95_ms": 1.1433686792850495} time_change_vs_native_pct=+7.947868
+early_cta {"samples": 200, "mean_ms": 1.0822463345527649, "median_ms": 1.0757120251655579, "p95_ms": 1.108098304271698} time_change_vs_native_pct=+4.841413
+Full transcript+PoW digest:18cases PASS.

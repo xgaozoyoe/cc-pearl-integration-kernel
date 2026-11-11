@@ -1,0 +1,41 @@
+Correct-arithmetic split arrival/wait experiment; SM89, CUDA12.6.
+
+Invariant at the end of each K64 iteration:
+- all CTA threads have finished reading old operand stage;
+- all prior per-thread cp.async operations, including next-stage copy, completed.
+Only then may threads consume the next stage and overwrite the old stage.
+
+One shared mbarrier, 8 bytes, expected arrivals=2*384=768 per phase.
+Each thread contributes one asynchronous noinc arrival for copy completion,
+and one normal release arrival after its operand reads. Both are required.
+Parity=kt&1. No thread can complete a second phase until all threads arrive,
+so a lagging participant cannot miss two completed phases.
+
+Late control: complete MMA -> transcript -> async arrival + normal arrival -> wait.
+Overlap: complete operand reads/MMA -> async arrival + normal arrival -> transcript -> wait.
+SASS moves asynchronous arrival ahead of some final MMA, but keeps normal release
+arrival after final MMA and both arrivals before transcript reductions in overlap.
+Both versions have the same polling loop at0x2c00..0x2c50.
+
+Initial cp.async.wait_group0 + CTA sync publishes initial input and barrier init.
+Final CTA sync preserves cross-warp transcript output visibility; barrier then invalidated.
+Transcript slots are warp-owned; overlap-region transcript accesses need not be
+ordered by the operand handoff. Final output is ordered by the retained final CTA barrier.
+
+Baseline source extracted from accepted opt-in A-stream candidate, unchanged.
+Baseline SASS instruction text and PCs exactly match frozen handoff-control baseline.
+All3 versions64 IMMA and16 LDSM per K64,168 registers,zero spills,1CTA/SM.
+Dynamic shared69632 baseline,69640 new variants. CTA256x192,384 threads.
+
+Official semantics:
+https://docs.nvidia.com/cuda/archive/11.8.0/parallel-thread-execution/index.html
+cp.async.mbarrier.arrive and mbarrier.test_wait supported on SM80+.
+No TMA, WGMMA, SM90 transaction-barrier or try_wait features used.
+
+Compute Sanitizer2024.3 reported races in overlap despite bit-exact outputs.
+Independent NVIDIA CUDA12.9.79 package contains Compute Sanitizer2025.2.1.
+Same unchanged binary passed2025.2.1 racecheck (0 hazards/errors/warnings)
+and full-size memcheck (0errors). Both logs retained; system CUDA/driver unchanged.
+Official release notes record related fixes in2025.1/2025.2.1:
+https://docs.nvidia.com/compute-sanitizer/ReleaseNotes/index.html
+Package SHA256:e23aad21132ff58b92a22aad372a7048793400b79c625665d325d4ecec6979bf

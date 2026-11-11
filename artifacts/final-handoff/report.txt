@@ -1,0 +1,25 @@
+GPU0 only,8192x8192 region,K4096,rank128. CUDA events; unlocked clocks.
+Two independent runs;200samples/variant/run,16launches/sample,rotating blocks. Not grid/pool throughput.
+Run1
+variant mean_ms median_ms p95_ms delta_native_pct delta_control_pct
+native             1.029359 1.029118 1.049542 +0.0000 +0.5253
+predicate_control  1.023980 1.022368 1.044733 -0.5226 +0.0000
+skip_final         1.027123 1.028736 1.045078 -0.2173 +0.3069
+Run2
+variant mean_ms median_ms p95_ms delta_native_pct delta_control_pct
+native             1.026822 1.022645 1.056342 +0.0000 +0.6158
+predicate_control  1.020538 1.011751 1.049407 -0.6120 +0.0000
+skip_final         1.029723 1.029128 1.056138 +0.2825 +0.9000
+Offline full-grid wall time: name n mean_ms median_ms p95_ms equivalent_TH/s
+native 60 293.735000 293.450000 299.375000 239.565405
+predicate_control 60 293.571667 293.650000 298.610000 239.698691
+Predicate control grid time delta:-0.0556%
+Paired batch time deltas (%):+0.1706, +0.0374, -0.1940, -0.1395, -0.0783, -0.1293
+36transcript+18transcript/PoW comparisons PASS; racecheck0 hazards/errors/warnings.
+All168regs,0local,69632B dynamicshared,384threads,1CTA/SM. Same instructions and control words; only predicate operands changed.
+Existing final-iteration predicate from0xcb0 is retained in unusedP6; copy-skip branch0xdc0 followsP6. Other predicates/data unaffected.
+Only kt63 skips paired BAR.ARV0x16d0 and BAR.SYNC0x2a00. Earlier63handoffs and prologue/final CTA barriers retained.
+Safety:previous handoff published last-stage inputs and released buffers. Final iteration issues no next-stage copies, and no later iteration overwrites old shared data. Transcript remains protected by final CTA output barrier.
+LDSM completion control waits and cp.async waits retained. Both sites are uniformly predicated over CTA. No bare removal of a necessary stage handoff.
+One of64handoffs eliminated; no claim that earlier iterations can be removed safely. Racecheck is additional evidence, not a formal proof.
+No production changes or live mining.

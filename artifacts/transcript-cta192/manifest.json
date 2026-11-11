@@ -1,0 +1,18 @@
+{
+  "variants": {
+    "self": {
+      "entry": "_ZN22transcript_cta192_self6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "b008f09387dc0847b6d0e82c263fa0bc84bbff876daa7d8b616fcac1091ef53c",
+      "threads": 288,
+      "smem": 58368,
+      "correct": true
+    },
+    "consumer": {
+      "entry": "_ZN26transcript_cta192_consumer6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "24c47184a797cbb97ca6eb91528516a2cd93cbcf49d49328efdedf807f91d97b",
+      "threads": 320,
+      "smem": 63120,
+      "correct": true
+    }
+  }
+}

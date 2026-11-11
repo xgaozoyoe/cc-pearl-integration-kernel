@@ -1,0 +1,1002 @@
+{
+  "tail9": [
+    {
+      "pc": "1610",
+      "instruction": "LOP3.LUT R153, R164, 0x30, R153, 0x78, !PT",
+      "stall": 5,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1620",
+      "instruction": "IMMA.16832.S8.S8 R12, R140.ROW, R150.reuse.COL, R12",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1630",
+      "instruction": "IMMA.16832.S8.S8 R8, R136.ROW, R150.reuse.COL, R8",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1640",
+      "instruction": "IMMA.16832.S8.S8 R4, R100.ROW, R150.COL, R4",
+      "stall": 1,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1650",
+      "instruction": "LDSM.16.M88.4 R148, [R149+UR5]",
+      "stall": 7,
+      "write_barrier": 1,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1660",
+      "instruction": "IMMA.16832.S8.S8 R112, R144.ROW, R154.reuse.COL, R112",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1670",
+      "instruction": "IMMA.16832.S8.S8 R88, R140.ROW, R154.reuse.COL, R88",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1680",
+      "instruction": "IMMA.16832.S8.S8 R64, R136.ROW, R154.reuse.COL, R64",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1690",
+      "instruction": "IMMA.16832.S8.S8 R124, R100.ROW, R154.COL, R124",
+      "stall": 1,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "16a0",
+      "instruction": "LDSM.16.M88.4 R152, [R153+UR5]",
+      "stall": 1,
+      "write_barrier": 2,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "16b0",
+      "instruction": "DEPBAR.LE SB0, 0x0",
+      "stall": 6,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "16c0",
+      "instruction": "IMMA.16832.S8.S8 R128, R100.reuse.ROW, R148.COL, R128",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 2
+    },
+    {
+      "pc": "16d0",
+      "instruction": "IMMA.16832.S8.S8 R36, R100.ROW, R150.COL, R36",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "16e0",
+      "instruction": "IMMA.16832.S8.S8 R108, R144.ROW, R148.reuse.COL, R108",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "16f0",
+      "instruction": "IMMA.16832.S8.S8 R84, R140.ROW, R148.COL, R84",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1700",
+      "instruction": "IMMA.16832.S8.S8 R132, R100.reuse.ROW, R152.COL, R132",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 4
+    },
+    {
+      "pc": "1710",
+      "instruction": "IMMA.16832.S8.S8 R100, R100.ROW, R154.COL, R96",
+      "stall": 7,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1720",
+      "instruction": "LOP3.LUT R96, R161, 0x1, RZ, 0x3c, !PT",
+      "stall": 1,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1730",
+      "instruction": "IMMA.16832.S8.S8 R60, R136.ROW, R148.COL, R60",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1740",
+      "instruction": "BAR.ARV R96, 0x180",
+      "stall": 6,
+      "write_barrier": 7,
+      "read_barrier": 1,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1750",
+      "instruction": "IMMA.16832.S8.S8 R104, R144.reuse.ROW, R150.COL, R104",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1760",
+      "instruction": "IMMA.16832.S8.S8 R80, R144.reuse.ROW, R152.COL, R80",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1770",
+      "instruction": "IMMA.16832.S8.S8 R76, R144.ROW, R154.COL, R76",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1780",
+      "instruction": "IMMA.16832.S8.S8 R72, R140.reuse.ROW, R150.COL, R72",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1790",
+      "instruction": "IMMA.16832.S8.S8 R56, R140.reuse.ROW, R152.COL, R56",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "17a0",
+      "instruction": "IMMA.16832.S8.S8 R52, R140.ROW, R154.COL, R52",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "17b0",
+      "instruction": "IMMA.16832.S8.S8 R48, R136.reuse.ROW, R150.COL, R48",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "17c0",
+      "instruction": "IMMA.16832.S8.S8 R44, R136.reuse.ROW, R152.COL, R44",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "17d0",
+      "instruction": "IMMA.16832.S8.S8 R40, R136.ROW, R154.COL, R40",
+      "stall": 1,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "17e0",
+      "instruction": "@!P2 BRA 0x2a00",
+      "stall": 5,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "17f0",
+      "instruction": "S2R R96, SR_TID.X",
+      "stall": 1,
+      "write_barrier": 1,
+      "read_barrier": 7,
+      "wait_mask": 2
+    }
+  ],
+  "id_only9": [
+    {
+      "pc": "1610",
+      "instruction": "LOP3.LUT R153, R164, 0x30, R153, 0x78, !PT",
+      "stall": 5,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1620",
+      "instruction": "LOP3.LUT R164, R161, 0x1, RZ, 0x3c, !PT",
+      "stall": 1,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1630",
+      "instruction": "IMMA.16832.S8.S8 R12, R140.ROW, R150.reuse.COL, R12",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1640",
+      "instruction": "IMMA.16832.S8.S8 R8, R136.ROW, R150.reuse.COL, R8",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1650",
+      "instruction": "IMMA.16832.S8.S8 R4, R100.ROW, R150.COL, R4",
+      "stall": 1,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1660",
+      "instruction": "LDSM.16.M88.4 R148, [R149+UR5]",
+      "stall": 7,
+      "write_barrier": 1,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1670",
+      "instruction": "IMMA.16832.S8.S8 R112, R144.ROW, R154.reuse.COL, R112",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1680",
+      "instruction": "IMMA.16832.S8.S8 R88, R140.ROW, R154.reuse.COL, R88",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1690",
+      "instruction": "IMMA.16832.S8.S8 R64, R136.ROW, R154.reuse.COL, R64",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "16a0",
+      "instruction": "IMMA.16832.S8.S8 R124, R100.ROW, R154.COL, R124",
+      "stall": 1,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "16b0",
+      "instruction": "LDSM.16.M88.4 R152, [R153+UR5]",
+      "stall": 1,
+      "write_barrier": 2,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "16c0",
+      "instruction": "DEPBAR.LE SB0, 0x0",
+      "stall": 6,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "16d0",
+      "instruction": "IMMA.16832.S8.S8 R128, R100.reuse.ROW, R148.COL, R128",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 2
+    },
+    {
+      "pc": "16e0",
+      "instruction": "IMMA.16832.S8.S8 R36, R100.ROW, R150.COL, R36",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "16f0",
+      "instruction": "IMMA.16832.S8.S8 R108, R144.ROW, R148.reuse.COL, R108",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1700",
+      "instruction": "IMMA.16832.S8.S8 R84, R140.ROW, R148.COL, R84",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1710",
+      "instruction": "IMMA.16832.S8.S8 R132, R100.reuse.ROW, R152.COL, R132",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 4
+    },
+    {
+      "pc": "1720",
+      "instruction": "IMMA.16832.S8.S8 R100, R100.ROW, R154.COL, R96",
+      "stall": 7,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1730",
+      "instruction": "IMMA.16832.S8.S8 R60, R136.ROW, R148.COL, R60",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1740",
+      "instruction": "BAR.ARV R164, 0x180",
+      "stall": 6,
+      "write_barrier": 7,
+      "read_barrier": 1,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1750",
+      "instruction": "IMMA.16832.S8.S8 R104, R144.reuse.ROW, R150.COL, R104",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1760",
+      "instruction": "IMMA.16832.S8.S8 R80, R144.reuse.ROW, R152.COL, R80",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1770",
+      "instruction": "IMMA.16832.S8.S8 R76, R144.ROW, R154.COL, R76",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1780",
+      "instruction": "IMMA.16832.S8.S8 R72, R140.reuse.ROW, R150.COL, R72",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1790",
+      "instruction": "IMMA.16832.S8.S8 R56, R140.reuse.ROW, R152.COL, R56",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "17a0",
+      "instruction": "IMMA.16832.S8.S8 R52, R140.ROW, R154.COL, R52",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "17b0",
+      "instruction": "IMMA.16832.S8.S8 R48, R136.reuse.ROW, R150.COL, R48",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "17c0",
+      "instruction": "IMMA.16832.S8.S8 R44, R136.reuse.ROW, R152.COL, R44",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "17d0",
+      "instruction": "IMMA.16832.S8.S8 R40, R136.ROW, R154.COL, R40",
+      "stall": 1,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "17e0",
+      "instruction": "@!P2 BRA 0x2a00",
+      "stall": 5,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "17f0",
+      "instruction": "S2R R96, SR_TID.X",
+      "stall": 1,
+      "write_barrier": 1,
+      "read_barrier": 7,
+      "wait_mask": 2
+    }
+  ],
+  "id11": [
+    {
+      "pc": "1610",
+      "instruction": "LOP3.LUT R153, R164, 0x30, R153, 0x78, !PT",
+      "stall": 5,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1620",
+      "instruction": "LOP3.LUT R164, R161, 0x1, RZ, 0x3c, !PT",
+      "stall": 1,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1630",
+      "instruction": "IMMA.16832.S8.S8 R12, R140.ROW, R150.reuse.COL, R12",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1640",
+      "instruction": "IMMA.16832.S8.S8 R8, R136.ROW, R150.reuse.COL, R8",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1650",
+      "instruction": "IMMA.16832.S8.S8 R4, R100.ROW, R150.COL, R4",
+      "stall": 1,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1660",
+      "instruction": "LDSM.16.M88.4 R148, [R149+UR5]",
+      "stall": 7,
+      "write_barrier": 1,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1670",
+      "instruction": "IMMA.16832.S8.S8 R112, R144.ROW, R154.reuse.COL, R112",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1680",
+      "instruction": "IMMA.16832.S8.S8 R88, R140.ROW, R154.reuse.COL, R88",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1690",
+      "instruction": "IMMA.16832.S8.S8 R64, R136.ROW, R154.reuse.COL, R64",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "16a0",
+      "instruction": "IMMA.16832.S8.S8 R124, R100.ROW, R154.COL, R124",
+      "stall": 1,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "16b0",
+      "instruction": "LDSM.16.M88.4 R152, [R153+UR5]",
+      "stall": 1,
+      "write_barrier": 2,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "16c0",
+      "instruction": "DEPBAR.LE SB0, 0x0",
+      "stall": 6,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "16d0",
+      "instruction": "IMMA.16832.S8.S8 R128, R100.reuse.ROW, R148.COL, R128",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 2
+    },
+    {
+      "pc": "16e0",
+      "instruction": "IMMA.16832.S8.S8 R36, R100.ROW, R150.COL, R36",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "16f0",
+      "instruction": "IMMA.16832.S8.S8 R108, R144.ROW, R148.reuse.COL, R108",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1700",
+      "instruction": "IMMA.16832.S8.S8 R84, R140.ROW, R148.COL, R84",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1710",
+      "instruction": "IMMA.16832.S8.S8 R132, R100.reuse.ROW, R152.COL, R132",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 4
+    },
+    {
+      "pc": "1720",
+      "instruction": "BAR.ARV R164, 0x180",
+      "stall": 6,
+      "write_barrier": 7,
+      "read_barrier": 1,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1730",
+      "instruction": "IMMA.16832.S8.S8 R100, R100.ROW, R154.COL, R96",
+      "stall": 7,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1740",
+      "instruction": "IMMA.16832.S8.S8 R60, R136.ROW, R148.COL, R60",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1750",
+      "instruction": "IMMA.16832.S8.S8 R104, R144.reuse.ROW, R150.COL, R104",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1760",
+      "instruction": "IMMA.16832.S8.S8 R80, R144.reuse.ROW, R152.COL, R80",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1770",
+      "instruction": "IMMA.16832.S8.S8 R76, R144.ROW, R154.COL, R76",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1780",
+      "instruction": "IMMA.16832.S8.S8 R72, R140.reuse.ROW, R150.COL, R72",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1790",
+      "instruction": "IMMA.16832.S8.S8 R56, R140.reuse.ROW, R152.COL, R56",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "17a0",
+      "instruction": "IMMA.16832.S8.S8 R52, R140.ROW, R154.COL, R52",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "17b0",
+      "instruction": "IMMA.16832.S8.S8 R48, R136.reuse.ROW, R150.COL, R48",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "17c0",
+      "instruction": "IMMA.16832.S8.S8 R44, R136.reuse.ROW, R152.COL, R44",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "17d0",
+      "instruction": "IMMA.16832.S8.S8 R40, R136.ROW, R154.COL, R40",
+      "stall": 1,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "17e0",
+      "instruction": "@!P2 BRA 0x2a00",
+      "stall": 5,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "17f0",
+      "instruction": "S2R R96, SR_TID.X",
+      "stall": 1,
+      "write_barrier": 1,
+      "read_barrier": 7,
+      "wait_mask": 2
+    }
+  ],
+  "id16": [
+    {
+      "pc": "1610",
+      "instruction": "LOP3.LUT R153, R164, 0x30, R153, 0x78, !PT",
+      "stall": 5,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1620",
+      "instruction": "LOP3.LUT R164, R161, 0x1, RZ, 0x3c, !PT",
+      "stall": 1,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1630",
+      "instruction": "IMMA.16832.S8.S8 R12, R140.ROW, R150.reuse.COL, R12",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1640",
+      "instruction": "IMMA.16832.S8.S8 R8, R136.ROW, R150.reuse.COL, R8",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1650",
+      "instruction": "IMMA.16832.S8.S8 R4, R100.ROW, R150.COL, R4",
+      "stall": 1,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1660",
+      "instruction": "LDSM.16.M88.4 R148, [R149+UR5]",
+      "stall": 7,
+      "write_barrier": 1,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1670",
+      "instruction": "IMMA.16832.S8.S8 R112, R144.ROW, R154.reuse.COL, R112",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1680",
+      "instruction": "IMMA.16832.S8.S8 R88, R140.ROW, R154.reuse.COL, R88",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1690",
+      "instruction": "IMMA.16832.S8.S8 R64, R136.ROW, R154.reuse.COL, R64",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "16a0",
+      "instruction": "IMMA.16832.S8.S8 R124, R100.ROW, R154.COL, R124",
+      "stall": 1,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "16b0",
+      "instruction": "LDSM.16.M88.4 R152, [R153+UR5]",
+      "stall": 1,
+      "write_barrier": 2,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "16c0",
+      "instruction": "DEPBAR.LE SB0, 0x0",
+      "stall": 6,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "16d0",
+      "instruction": "BAR.ARV R164, 0x180",
+      "stall": 6,
+      "write_barrier": 7,
+      "read_barrier": 1,
+      "wait_mask": 6
+    },
+    {
+      "pc": "16e0",
+      "instruction": "IMMA.16832.S8.S8 R128, R100.reuse.ROW, R148.COL, R128",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "16f0",
+      "instruction": "IMMA.16832.S8.S8 R36, R100.ROW, R150.COL, R36",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1700",
+      "instruction": "IMMA.16832.S8.S8 R108, R144.ROW, R148.reuse.COL, R108",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1710",
+      "instruction": "IMMA.16832.S8.S8 R84, R140.ROW, R148.COL, R84",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1720",
+      "instruction": "IMMA.16832.S8.S8 R132, R100.reuse.ROW, R152.COL, R132",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1730",
+      "instruction": "IMMA.16832.S8.S8 R100, R100.ROW, R154.COL, R96",
+      "stall": 7,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1740",
+      "instruction": "IMMA.16832.S8.S8 R60, R136.ROW, R148.COL, R60",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1750",
+      "instruction": "IMMA.16832.S8.S8 R104, R144.reuse.ROW, R150.COL, R104",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1760",
+      "instruction": "IMMA.16832.S8.S8 R80, R144.reuse.ROW, R152.COL, R80",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1770",
+      "instruction": "IMMA.16832.S8.S8 R76, R144.ROW, R154.COL, R76",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1780",
+      "instruction": "IMMA.16832.S8.S8 R72, R140.reuse.ROW, R150.COL, R72",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "1790",
+      "instruction": "IMMA.16832.S8.S8 R56, R140.reuse.ROW, R152.COL, R56",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "17a0",
+      "instruction": "IMMA.16832.S8.S8 R52, R140.ROW, R154.COL, R52",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "17b0",
+      "instruction": "IMMA.16832.S8.S8 R48, R136.reuse.ROW, R150.COL, R48",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "17c0",
+      "instruction": "IMMA.16832.S8.S8 R44, R136.reuse.ROW, R152.COL, R44",
+      "stall": 8,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "17d0",
+      "instruction": "IMMA.16832.S8.S8 R40, R136.ROW, R154.COL, R40",
+      "stall": 1,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "17e0",
+      "instruction": "@!P2 BRA 0x2a00",
+      "stall": 5,
+      "write_barrier": 7,
+      "read_barrier": 7,
+      "wait_mask": 0
+    },
+    {
+      "pc": "17f0",
+      "instruction": "S2R R96, SR_TID.X",
+      "stall": 1,
+      "write_barrier": 1,
+      "read_barrier": 7,
+      "wait_mask": 2
+    }
+  ]
+}

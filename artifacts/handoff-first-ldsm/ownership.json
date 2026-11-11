@@ -1,0 +1,2114 @@
+[
+  {
+    "warp": 0,
+    "operand": "A",
+    "fragment": 0,
+    "k_half": 0,
+    "producers": [
+      0,
+      1
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 0,
+    "operand": "A",
+    "fragment": 0,
+    "k_half": 1,
+    "producers": [
+      0,
+      1
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 0,
+    "operand": "A",
+    "fragment": 1,
+    "k_half": 0,
+    "producers": [
+      2,
+      3
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 0,
+    "operand": "A",
+    "fragment": 1,
+    "k_half": 1,
+    "producers": [
+      2,
+      3
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 0,
+    "operand": "A",
+    "fragment": 2,
+    "k_half": 0,
+    "producers": [
+      4,
+      5
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 0,
+    "operand": "A",
+    "fragment": 2,
+    "k_half": 1,
+    "producers": [
+      4,
+      5
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 0,
+    "operand": "A",
+    "fragment": 3,
+    "k_half": 0,
+    "producers": [
+      6,
+      7
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 0,
+    "operand": "A",
+    "fragment": 3,
+    "k_half": 1,
+    "producers": [
+      6,
+      7
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 0,
+    "operand": "B",
+    "fragment": 0,
+    "k_half": 0,
+    "producers": [
+      0,
+      1
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 0,
+    "operand": "B",
+    "fragment": 0,
+    "k_half": 1,
+    "producers": [
+      0,
+      1
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 0,
+    "operand": "B",
+    "fragment": 1,
+    "k_half": 0,
+    "producers": [
+      2,
+      3
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 0,
+    "operand": "B",
+    "fragment": 1,
+    "k_half": 1,
+    "producers": [
+      2,
+      3
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 0,
+    "operand": "B",
+    "fragment": 2,
+    "k_half": 0,
+    "producers": [
+      4,
+      5
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 0,
+    "operand": "B",
+    "fragment": 2,
+    "k_half": 1,
+    "producers": [
+      4,
+      5
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 0,
+    "operand": "B",
+    "fragment": 3,
+    "k_half": 0,
+    "producers": [
+      6,
+      7
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 0,
+    "operand": "B",
+    "fragment": 3,
+    "k_half": 1,
+    "producers": [
+      6,
+      7
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 1,
+    "operand": "A",
+    "fragment": 0,
+    "k_half": 0,
+    "producers": [
+      8,
+      9
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 1,
+    "operand": "A",
+    "fragment": 0,
+    "k_half": 1,
+    "producers": [
+      8,
+      9
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 1,
+    "operand": "A",
+    "fragment": 1,
+    "k_half": 0,
+    "producers": [
+      10,
+      11
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 1,
+    "operand": "A",
+    "fragment": 1,
+    "k_half": 1,
+    "producers": [
+      10,
+      11
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 1,
+    "operand": "A",
+    "fragment": 2,
+    "k_half": 0,
+    "producers": [
+      0,
+      1
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 1,
+    "operand": "A",
+    "fragment": 2,
+    "k_half": 1,
+    "producers": [
+      0,
+      1
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 1,
+    "operand": "A",
+    "fragment": 3,
+    "k_half": 0,
+    "producers": [
+      2,
+      3
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 1,
+    "operand": "A",
+    "fragment": 3,
+    "k_half": 1,
+    "producers": [
+      2,
+      3
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 1,
+    "operand": "B",
+    "fragment": 0,
+    "k_half": 0,
+    "producers": [
+      0,
+      1
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 1,
+    "operand": "B",
+    "fragment": 0,
+    "k_half": 1,
+    "producers": [
+      0,
+      1
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 1,
+    "operand": "B",
+    "fragment": 1,
+    "k_half": 0,
+    "producers": [
+      2,
+      3
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 1,
+    "operand": "B",
+    "fragment": 1,
+    "k_half": 1,
+    "producers": [
+      2,
+      3
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 1,
+    "operand": "B",
+    "fragment": 2,
+    "k_half": 0,
+    "producers": [
+      4,
+      5
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 1,
+    "operand": "B",
+    "fragment": 2,
+    "k_half": 1,
+    "producers": [
+      4,
+      5
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 1,
+    "operand": "B",
+    "fragment": 3,
+    "k_half": 0,
+    "producers": [
+      6,
+      7
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 1,
+    "operand": "B",
+    "fragment": 3,
+    "k_half": 1,
+    "producers": [
+      6,
+      7
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 2,
+    "operand": "A",
+    "fragment": 0,
+    "k_half": 0,
+    "producers": [
+      4,
+      5
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 2,
+    "operand": "A",
+    "fragment": 0,
+    "k_half": 1,
+    "producers": [
+      4,
+      5
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 2,
+    "operand": "A",
+    "fragment": 1,
+    "k_half": 0,
+    "producers": [
+      6,
+      7
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 2,
+    "operand": "A",
+    "fragment": 1,
+    "k_half": 1,
+    "producers": [
+      6,
+      7
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 2,
+    "operand": "A",
+    "fragment": 2,
+    "k_half": 0,
+    "producers": [
+      8,
+      9
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 2,
+    "operand": "A",
+    "fragment": 2,
+    "k_half": 1,
+    "producers": [
+      8,
+      9
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 2,
+    "operand": "A",
+    "fragment": 3,
+    "k_half": 0,
+    "producers": [
+      10,
+      11
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 2,
+    "operand": "A",
+    "fragment": 3,
+    "k_half": 1,
+    "producers": [
+      10,
+      11
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 2,
+    "operand": "B",
+    "fragment": 0,
+    "k_half": 0,
+    "producers": [
+      0,
+      1
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 2,
+    "operand": "B",
+    "fragment": 0,
+    "k_half": 1,
+    "producers": [
+      0,
+      1
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 2,
+    "operand": "B",
+    "fragment": 1,
+    "k_half": 0,
+    "producers": [
+      2,
+      3
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 2,
+    "operand": "B",
+    "fragment": 1,
+    "k_half": 1,
+    "producers": [
+      2,
+      3
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 2,
+    "operand": "B",
+    "fragment": 2,
+    "k_half": 0,
+    "producers": [
+      4,
+      5
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 2,
+    "operand": "B",
+    "fragment": 2,
+    "k_half": 1,
+    "producers": [
+      4,
+      5
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 2,
+    "operand": "B",
+    "fragment": 3,
+    "k_half": 0,
+    "producers": [
+      6,
+      7
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 2,
+    "operand": "B",
+    "fragment": 3,
+    "k_half": 1,
+    "producers": [
+      6,
+      7
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 3,
+    "operand": "A",
+    "fragment": 0,
+    "k_half": 0,
+    "producers": [
+      0,
+      1
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 3,
+    "operand": "A",
+    "fragment": 0,
+    "k_half": 1,
+    "producers": [
+      0,
+      1
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 3,
+    "operand": "A",
+    "fragment": 1,
+    "k_half": 0,
+    "producers": [
+      2,
+      3
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 3,
+    "operand": "A",
+    "fragment": 1,
+    "k_half": 1,
+    "producers": [
+      2,
+      3
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 3,
+    "operand": "A",
+    "fragment": 2,
+    "k_half": 0,
+    "producers": [
+      4,
+      5
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 3,
+    "operand": "A",
+    "fragment": 2,
+    "k_half": 1,
+    "producers": [
+      4,
+      5
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 3,
+    "operand": "A",
+    "fragment": 3,
+    "k_half": 0,
+    "producers": [
+      6,
+      7
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 3,
+    "operand": "A",
+    "fragment": 3,
+    "k_half": 1,
+    "producers": [
+      6,
+      7
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 3,
+    "operand": "B",
+    "fragment": 0,
+    "k_half": 0,
+    "producers": [
+      0,
+      1
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 3,
+    "operand": "B",
+    "fragment": 0,
+    "k_half": 1,
+    "producers": [
+      0,
+      1
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 3,
+    "operand": "B",
+    "fragment": 1,
+    "k_half": 0,
+    "producers": [
+      2,
+      3
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 3,
+    "operand": "B",
+    "fragment": 1,
+    "k_half": 1,
+    "producers": [
+      2,
+      3
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 3,
+    "operand": "B",
+    "fragment": 2,
+    "k_half": 0,
+    "producers": [
+      4,
+      5
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 3,
+    "operand": "B",
+    "fragment": 2,
+    "k_half": 1,
+    "producers": [
+      4,
+      5
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 3,
+    "operand": "B",
+    "fragment": 3,
+    "k_half": 0,
+    "producers": [
+      6,
+      7
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 3,
+    "operand": "B",
+    "fragment": 3,
+    "k_half": 1,
+    "producers": [
+      6,
+      7
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 4,
+    "operand": "A",
+    "fragment": 0,
+    "k_half": 0,
+    "producers": [
+      0,
+      1
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 4,
+    "operand": "A",
+    "fragment": 0,
+    "k_half": 1,
+    "producers": [
+      0,
+      1
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 4,
+    "operand": "A",
+    "fragment": 1,
+    "k_half": 0,
+    "producers": [
+      2,
+      3
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 4,
+    "operand": "A",
+    "fragment": 1,
+    "k_half": 1,
+    "producers": [
+      2,
+      3
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 4,
+    "operand": "A",
+    "fragment": 2,
+    "k_half": 0,
+    "producers": [
+      4,
+      5
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 4,
+    "operand": "A",
+    "fragment": 2,
+    "k_half": 1,
+    "producers": [
+      4,
+      5
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 4,
+    "operand": "A",
+    "fragment": 3,
+    "k_half": 0,
+    "producers": [
+      6,
+      7
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 4,
+    "operand": "A",
+    "fragment": 3,
+    "k_half": 1,
+    "producers": [
+      6,
+      7
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 4,
+    "operand": "B",
+    "fragment": 0,
+    "k_half": 0,
+    "producers": [
+      8,
+      9
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 4,
+    "operand": "B",
+    "fragment": 0,
+    "k_half": 1,
+    "producers": [
+      8,
+      9
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 4,
+    "operand": "B",
+    "fragment": 1,
+    "k_half": 0,
+    "producers": [
+      10,
+      11
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 4,
+    "operand": "B",
+    "fragment": 1,
+    "k_half": 1,
+    "producers": [
+      10,
+      11
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 4,
+    "operand": "B",
+    "fragment": 2,
+    "k_half": 0,
+    "producers": [
+      0,
+      1
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 4,
+    "operand": "B",
+    "fragment": 2,
+    "k_half": 1,
+    "producers": [
+      0,
+      1
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 4,
+    "operand": "B",
+    "fragment": 3,
+    "k_half": 0,
+    "producers": [
+      2,
+      3
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 4,
+    "operand": "B",
+    "fragment": 3,
+    "k_half": 1,
+    "producers": [
+      2,
+      3
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 5,
+    "operand": "A",
+    "fragment": 0,
+    "k_half": 0,
+    "producers": [
+      8,
+      9
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 5,
+    "operand": "A",
+    "fragment": 0,
+    "k_half": 1,
+    "producers": [
+      8,
+      9
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 5,
+    "operand": "A",
+    "fragment": 1,
+    "k_half": 0,
+    "producers": [
+      10,
+      11
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 5,
+    "operand": "A",
+    "fragment": 1,
+    "k_half": 1,
+    "producers": [
+      10,
+      11
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 5,
+    "operand": "A",
+    "fragment": 2,
+    "k_half": 0,
+    "producers": [
+      0,
+      1
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 5,
+    "operand": "A",
+    "fragment": 2,
+    "k_half": 1,
+    "producers": [
+      0,
+      1
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 5,
+    "operand": "A",
+    "fragment": 3,
+    "k_half": 0,
+    "producers": [
+      2,
+      3
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 5,
+    "operand": "A",
+    "fragment": 3,
+    "k_half": 1,
+    "producers": [
+      2,
+      3
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 5,
+    "operand": "B",
+    "fragment": 0,
+    "k_half": 0,
+    "producers": [
+      8,
+      9
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 5,
+    "operand": "B",
+    "fragment": 0,
+    "k_half": 1,
+    "producers": [
+      8,
+      9
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 5,
+    "operand": "B",
+    "fragment": 1,
+    "k_half": 0,
+    "producers": [
+      10,
+      11
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 5,
+    "operand": "B",
+    "fragment": 1,
+    "k_half": 1,
+    "producers": [
+      10,
+      11
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 5,
+    "operand": "B",
+    "fragment": 2,
+    "k_half": 0,
+    "producers": [
+      0,
+      1
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 5,
+    "operand": "B",
+    "fragment": 2,
+    "k_half": 1,
+    "producers": [
+      0,
+      1
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 5,
+    "operand": "B",
+    "fragment": 3,
+    "k_half": 0,
+    "producers": [
+      2,
+      3
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 5,
+    "operand": "B",
+    "fragment": 3,
+    "k_half": 1,
+    "producers": [
+      2,
+      3
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 6,
+    "operand": "A",
+    "fragment": 0,
+    "k_half": 0,
+    "producers": [
+      4,
+      5
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 6,
+    "operand": "A",
+    "fragment": 0,
+    "k_half": 1,
+    "producers": [
+      4,
+      5
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 6,
+    "operand": "A",
+    "fragment": 1,
+    "k_half": 0,
+    "producers": [
+      6,
+      7
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 6,
+    "operand": "A",
+    "fragment": 1,
+    "k_half": 1,
+    "producers": [
+      6,
+      7
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 6,
+    "operand": "A",
+    "fragment": 2,
+    "k_half": 0,
+    "producers": [
+      8,
+      9
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 6,
+    "operand": "A",
+    "fragment": 2,
+    "k_half": 1,
+    "producers": [
+      8,
+      9
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 6,
+    "operand": "A",
+    "fragment": 3,
+    "k_half": 0,
+    "producers": [
+      10,
+      11
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 6,
+    "operand": "A",
+    "fragment": 3,
+    "k_half": 1,
+    "producers": [
+      10,
+      11
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 6,
+    "operand": "B",
+    "fragment": 0,
+    "k_half": 0,
+    "producers": [
+      8,
+      9
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 6,
+    "operand": "B",
+    "fragment": 0,
+    "k_half": 1,
+    "producers": [
+      8,
+      9
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 6,
+    "operand": "B",
+    "fragment": 1,
+    "k_half": 0,
+    "producers": [
+      10,
+      11
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 6,
+    "operand": "B",
+    "fragment": 1,
+    "k_half": 1,
+    "producers": [
+      10,
+      11
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 6,
+    "operand": "B",
+    "fragment": 2,
+    "k_half": 0,
+    "producers": [
+      0,
+      1
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 6,
+    "operand": "B",
+    "fragment": 2,
+    "k_half": 1,
+    "producers": [
+      0,
+      1
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 6,
+    "operand": "B",
+    "fragment": 3,
+    "k_half": 0,
+    "producers": [
+      2,
+      3
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 6,
+    "operand": "B",
+    "fragment": 3,
+    "k_half": 1,
+    "producers": [
+      2,
+      3
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 7,
+    "operand": "A",
+    "fragment": 0,
+    "k_half": 0,
+    "producers": [
+      0,
+      1
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 7,
+    "operand": "A",
+    "fragment": 0,
+    "k_half": 1,
+    "producers": [
+      0,
+      1
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 7,
+    "operand": "A",
+    "fragment": 1,
+    "k_half": 0,
+    "producers": [
+      2,
+      3
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 7,
+    "operand": "A",
+    "fragment": 1,
+    "k_half": 1,
+    "producers": [
+      2,
+      3
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 7,
+    "operand": "A",
+    "fragment": 2,
+    "k_half": 0,
+    "producers": [
+      4,
+      5
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 7,
+    "operand": "A",
+    "fragment": 2,
+    "k_half": 1,
+    "producers": [
+      4,
+      5
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 7,
+    "operand": "A",
+    "fragment": 3,
+    "k_half": 0,
+    "producers": [
+      6,
+      7
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 7,
+    "operand": "A",
+    "fragment": 3,
+    "k_half": 1,
+    "producers": [
+      6,
+      7
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 7,
+    "operand": "B",
+    "fragment": 0,
+    "k_half": 0,
+    "producers": [
+      8,
+      9
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 7,
+    "operand": "B",
+    "fragment": 0,
+    "k_half": 1,
+    "producers": [
+      8,
+      9
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 7,
+    "operand": "B",
+    "fragment": 1,
+    "k_half": 0,
+    "producers": [
+      10,
+      11
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 7,
+    "operand": "B",
+    "fragment": 1,
+    "k_half": 1,
+    "producers": [
+      10,
+      11
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 7,
+    "operand": "B",
+    "fragment": 2,
+    "k_half": 0,
+    "producers": [
+      0,
+      1
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 7,
+    "operand": "B",
+    "fragment": 2,
+    "k_half": 1,
+    "producers": [
+      0,
+      1
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 7,
+    "operand": "B",
+    "fragment": 3,
+    "k_half": 0,
+    "producers": [
+      2,
+      3
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 7,
+    "operand": "B",
+    "fragment": 3,
+    "k_half": 1,
+    "producers": [
+      2,
+      3
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 8,
+    "operand": "A",
+    "fragment": 0,
+    "k_half": 0,
+    "producers": [
+      0,
+      1
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 8,
+    "operand": "A",
+    "fragment": 0,
+    "k_half": 1,
+    "producers": [
+      0,
+      1
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 8,
+    "operand": "A",
+    "fragment": 1,
+    "k_half": 0,
+    "producers": [
+      2,
+      3
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 8,
+    "operand": "A",
+    "fragment": 1,
+    "k_half": 1,
+    "producers": [
+      2,
+      3
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 8,
+    "operand": "A",
+    "fragment": 2,
+    "k_half": 0,
+    "producers": [
+      4,
+      5
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 8,
+    "operand": "A",
+    "fragment": 2,
+    "k_half": 1,
+    "producers": [
+      4,
+      5
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 8,
+    "operand": "A",
+    "fragment": 3,
+    "k_half": 0,
+    "producers": [
+      6,
+      7
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 8,
+    "operand": "A",
+    "fragment": 3,
+    "k_half": 1,
+    "producers": [
+      6,
+      7
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 8,
+    "operand": "B",
+    "fragment": 0,
+    "k_half": 0,
+    "producers": [
+      4,
+      5
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 8,
+    "operand": "B",
+    "fragment": 0,
+    "k_half": 1,
+    "producers": [
+      4,
+      5
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 8,
+    "operand": "B",
+    "fragment": 1,
+    "k_half": 0,
+    "producers": [
+      6,
+      7
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 8,
+    "operand": "B",
+    "fragment": 1,
+    "k_half": 1,
+    "producers": [
+      6,
+      7
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 8,
+    "operand": "B",
+    "fragment": 2,
+    "k_half": 0,
+    "producers": [
+      8,
+      9
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 8,
+    "operand": "B",
+    "fragment": 2,
+    "k_half": 1,
+    "producers": [
+      8,
+      9
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 8,
+    "operand": "B",
+    "fragment": 3,
+    "k_half": 0,
+    "producers": [
+      10,
+      11
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 8,
+    "operand": "B",
+    "fragment": 3,
+    "k_half": 1,
+    "producers": [
+      10,
+      11
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 9,
+    "operand": "A",
+    "fragment": 0,
+    "k_half": 0,
+    "producers": [
+      8,
+      9
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 9,
+    "operand": "A",
+    "fragment": 0,
+    "k_half": 1,
+    "producers": [
+      8,
+      9
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 9,
+    "operand": "A",
+    "fragment": 1,
+    "k_half": 0,
+    "producers": [
+      10,
+      11
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 9,
+    "operand": "A",
+    "fragment": 1,
+    "k_half": 1,
+    "producers": [
+      10,
+      11
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 9,
+    "operand": "A",
+    "fragment": 2,
+    "k_half": 0,
+    "producers": [
+      0,
+      1
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 9,
+    "operand": "A",
+    "fragment": 2,
+    "k_half": 1,
+    "producers": [
+      0,
+      1
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 9,
+    "operand": "A",
+    "fragment": 3,
+    "k_half": 0,
+    "producers": [
+      2,
+      3
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 9,
+    "operand": "A",
+    "fragment": 3,
+    "k_half": 1,
+    "producers": [
+      2,
+      3
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 9,
+    "operand": "B",
+    "fragment": 0,
+    "k_half": 0,
+    "producers": [
+      4,
+      5
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 9,
+    "operand": "B",
+    "fragment": 0,
+    "k_half": 1,
+    "producers": [
+      4,
+      5
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 9,
+    "operand": "B",
+    "fragment": 1,
+    "k_half": 0,
+    "producers": [
+      6,
+      7
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 9,
+    "operand": "B",
+    "fragment": 1,
+    "k_half": 1,
+    "producers": [
+      6,
+      7
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 9,
+    "operand": "B",
+    "fragment": 2,
+    "k_half": 0,
+    "producers": [
+      8,
+      9
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 9,
+    "operand": "B",
+    "fragment": 2,
+    "k_half": 1,
+    "producers": [
+      8,
+      9
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 9,
+    "operand": "B",
+    "fragment": 3,
+    "k_half": 0,
+    "producers": [
+      10,
+      11
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 9,
+    "operand": "B",
+    "fragment": 3,
+    "k_half": 1,
+    "producers": [
+      10,
+      11
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 10,
+    "operand": "A",
+    "fragment": 0,
+    "k_half": 0,
+    "producers": [
+      4,
+      5
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 10,
+    "operand": "A",
+    "fragment": 0,
+    "k_half": 1,
+    "producers": [
+      4,
+      5
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 10,
+    "operand": "A",
+    "fragment": 1,
+    "k_half": 0,
+    "producers": [
+      6,
+      7
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 10,
+    "operand": "A",
+    "fragment": 1,
+    "k_half": 1,
+    "producers": [
+      6,
+      7
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 10,
+    "operand": "A",
+    "fragment": 2,
+    "k_half": 0,
+    "producers": [
+      8,
+      9
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 10,
+    "operand": "A",
+    "fragment": 2,
+    "k_half": 1,
+    "producers": [
+      8,
+      9
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 10,
+    "operand": "A",
+    "fragment": 3,
+    "k_half": 0,
+    "producers": [
+      10,
+      11
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 10,
+    "operand": "A",
+    "fragment": 3,
+    "k_half": 1,
+    "producers": [
+      10,
+      11
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 10,
+    "operand": "B",
+    "fragment": 0,
+    "k_half": 0,
+    "producers": [
+      4,
+      5
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 10,
+    "operand": "B",
+    "fragment": 0,
+    "k_half": 1,
+    "producers": [
+      4,
+      5
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 10,
+    "operand": "B",
+    "fragment": 1,
+    "k_half": 0,
+    "producers": [
+      6,
+      7
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 10,
+    "operand": "B",
+    "fragment": 1,
+    "k_half": 1,
+    "producers": [
+      6,
+      7
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 10,
+    "operand": "B",
+    "fragment": 2,
+    "k_half": 0,
+    "producers": [
+      8,
+      9
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 10,
+    "operand": "B",
+    "fragment": 2,
+    "k_half": 1,
+    "producers": [
+      8,
+      9
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 10,
+    "operand": "B",
+    "fragment": 3,
+    "k_half": 0,
+    "producers": [
+      10,
+      11
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 10,
+    "operand": "B",
+    "fragment": 3,
+    "k_half": 1,
+    "producers": [
+      10,
+      11
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 11,
+    "operand": "A",
+    "fragment": 0,
+    "k_half": 0,
+    "producers": [
+      0,
+      1
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 11,
+    "operand": "A",
+    "fragment": 0,
+    "k_half": 1,
+    "producers": [
+      0,
+      1
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 11,
+    "operand": "A",
+    "fragment": 1,
+    "k_half": 0,
+    "producers": [
+      2,
+      3
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 11,
+    "operand": "A",
+    "fragment": 1,
+    "k_half": 1,
+    "producers": [
+      2,
+      3
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 11,
+    "operand": "A",
+    "fragment": 2,
+    "k_half": 0,
+    "producers": [
+      4,
+      5
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 11,
+    "operand": "A",
+    "fragment": 2,
+    "k_half": 1,
+    "producers": [
+      4,
+      5
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 11,
+    "operand": "A",
+    "fragment": 3,
+    "k_half": 0,
+    "producers": [
+      6,
+      7
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 11,
+    "operand": "A",
+    "fragment": 3,
+    "k_half": 1,
+    "producers": [
+      6,
+      7
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 11,
+    "operand": "B",
+    "fragment": 0,
+    "k_half": 0,
+    "producers": [
+      4,
+      5
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 11,
+    "operand": "B",
+    "fragment": 0,
+    "k_half": 1,
+    "producers": [
+      4,
+      5
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 11,
+    "operand": "B",
+    "fragment": 1,
+    "k_half": 0,
+    "producers": [
+      6,
+      7
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 11,
+    "operand": "B",
+    "fragment": 1,
+    "k_half": 1,
+    "producers": [
+      6,
+      7
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 11,
+    "operand": "B",
+    "fragment": 2,
+    "k_half": 0,
+    "producers": [
+      8,
+      9
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 11,
+    "operand": "B",
+    "fragment": 2,
+    "k_half": 1,
+    "producers": [
+      8,
+      9
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 11,
+    "operand": "B",
+    "fragment": 3,
+    "k_half": 0,
+    "producers": [
+      10,
+      11
+    ],
+    "local_wait_sufficient": false
+  },
+  {
+    "warp": 11,
+    "operand": "B",
+    "fragment": 3,
+    "k_half": 1,
+    "producers": [
+      10,
+      11
+    ],
+    "local_wait_sufficient": false
+  }
+]

@@ -1,0 +1,578 @@
+[
+  {
+    "name": "native",
+    "m": 256,
+    "n": 384,
+    "seed": 42,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "ld_rename",
+    "m": 256,
+    "n": 384,
+    "seed": 42,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "ld_release",
+    "m": 256,
+    "n": 384,
+    "seed": 42,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "cp_rename",
+    "m": 256,
+    "n": 384,
+    "seed": 42,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "cp_release",
+    "m": 256,
+    "n": 384,
+    "seed": 42,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "both_release",
+    "m": 256,
+    "n": 384,
+    "seed": 42,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "native",
+    "m": 256,
+    "n": 384,
+    "seed": 1234,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "ld_rename",
+    "m": 256,
+    "n": 384,
+    "seed": 1234,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "ld_release",
+    "m": 256,
+    "n": 384,
+    "seed": 1234,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "cp_rename",
+    "m": 256,
+    "n": 384,
+    "seed": 1234,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "cp_release",
+    "m": 256,
+    "n": 384,
+    "seed": 1234,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "both_release",
+    "m": 256,
+    "n": 384,
+    "seed": 1234,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "native",
+    "m": 256,
+    "n": 384,
+    "seed": 9876,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "ld_rename",
+    "m": 256,
+    "n": 384,
+    "seed": 9876,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "ld_release",
+    "m": 256,
+    "n": 384,
+    "seed": 9876,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "cp_rename",
+    "m": 256,
+    "n": 384,
+    "seed": 9876,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "cp_release",
+    "m": 256,
+    "n": 384,
+    "seed": 9876,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "both_release",
+    "m": 256,
+    "n": 384,
+    "seed": 9876,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "native",
+    "m": 256,
+    "n": 400,
+    "seed": 42,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "ld_rename",
+    "m": 256,
+    "n": 400,
+    "seed": 42,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "ld_release",
+    "m": 256,
+    "n": 400,
+    "seed": 42,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "cp_rename",
+    "m": 256,
+    "n": 400,
+    "seed": 42,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "cp_release",
+    "m": 256,
+    "n": 400,
+    "seed": 42,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "both_release",
+    "m": 256,
+    "n": 400,
+    "seed": 42,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "native",
+    "m": 256,
+    "n": 400,
+    "seed": 1234,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "ld_rename",
+    "m": 256,
+    "n": 400,
+    "seed": 1234,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "ld_release",
+    "m": 256,
+    "n": 400,
+    "seed": 1234,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "cp_rename",
+    "m": 256,
+    "n": 400,
+    "seed": 1234,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "cp_release",
+    "m": 256,
+    "n": 400,
+    "seed": 1234,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "both_release",
+    "m": 256,
+    "n": 400,
+    "seed": 1234,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "native",
+    "m": 256,
+    "n": 400,
+    "seed": 9876,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "ld_rename",
+    "m": 256,
+    "n": 400,
+    "seed": 9876,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "ld_release",
+    "m": 256,
+    "n": 400,
+    "seed": 9876,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "cp_rename",
+    "m": 256,
+    "n": 400,
+    "seed": 9876,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "cp_release",
+    "m": 256,
+    "n": 400,
+    "seed": 9876,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "both_release",
+    "m": 256,
+    "n": 400,
+    "seed": 9876,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "native",
+    "m": 512,
+    "n": 768,
+    "seed": 42,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "ld_rename",
+    "m": 512,
+    "n": 768,
+    "seed": 42,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "ld_release",
+    "m": 512,
+    "n": 768,
+    "seed": 42,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "cp_rename",
+    "m": 512,
+    "n": 768,
+    "seed": 42,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "cp_release",
+    "m": 512,
+    "n": 768,
+    "seed": 42,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "both_release",
+    "m": 512,
+    "n": 768,
+    "seed": 42,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "native",
+    "m": 512,
+    "n": 768,
+    "seed": 1234,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "ld_rename",
+    "m": 512,
+    "n": 768,
+    "seed": 1234,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "ld_release",
+    "m": 512,
+    "n": 768,
+    "seed": 1234,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "cp_rename",
+    "m": 512,
+    "n": 768,
+    "seed": 1234,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "cp_release",
+    "m": 512,
+    "n": 768,
+    "seed": 1234,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "both_release",
+    "m": 512,
+    "n": 768,
+    "seed": 1234,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "native",
+    "m": 512,
+    "n": 768,
+    "seed": 9876,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "ld_rename",
+    "m": 512,
+    "n": 768,
+    "seed": 9876,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "ld_release",
+    "m": 512,
+    "n": 768,
+    "seed": 9876,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "cp_rename",
+    "m": 512,
+    "n": 768,
+    "seed": 9876,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "cp_release",
+    "m": 512,
+    "n": 768,
+    "seed": 9876,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "both_release",
+    "m": 512,
+    "n": 768,
+    "seed": 9876,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "native",
+    "m": 512,
+    "n": 800,
+    "seed": 42,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "ld_rename",
+    "m": 512,
+    "n": 800,
+    "seed": 42,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "ld_release",
+    "m": 512,
+    "n": 800,
+    "seed": 42,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "cp_rename",
+    "m": 512,
+    "n": 800,
+    "seed": 42,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "cp_release",
+    "m": 512,
+    "n": 800,
+    "seed": 42,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "both_release",
+    "m": 512,
+    "n": 800,
+    "seed": 42,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "native",
+    "m": 512,
+    "n": 800,
+    "seed": 1234,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "ld_rename",
+    "m": 512,
+    "n": 800,
+    "seed": 1234,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "ld_release",
+    "m": 512,
+    "n": 800,
+    "seed": 1234,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "cp_rename",
+    "m": 512,
+    "n": 800,
+    "seed": 1234,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "cp_release",
+    "m": 512,
+    "n": 800,
+    "seed": 1234,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "both_release",
+    "m": 512,
+    "n": 800,
+    "seed": 1234,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "native",
+    "m": 512,
+    "n": 800,
+    "seed": 9876,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "ld_rename",
+    "m": 512,
+    "n": 800,
+    "seed": 9876,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "ld_release",
+    "m": 512,
+    "n": 800,
+    "seed": 9876,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "cp_rename",
+    "m": 512,
+    "n": 800,
+    "seed": 9876,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "cp_release",
+    "m": 512,
+    "n": 800,
+    "seed": 9876,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  },
+  {
+    "name": "both_release",
+    "m": 512,
+    "n": 800,
+    "seed": 9876,
+    "expected_probe_semantics_pass": true,
+    "transcript_bit_exact": true
+  }
+]

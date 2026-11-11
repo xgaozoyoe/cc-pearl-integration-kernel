@@ -1,0 +1,66 @@
+[
+  {
+    "variant": 110,
+    "kernel_ms": [
+      0.317248,
+      0.317184,
+      0.31744
+    ],
+    "mean_ms": 0.31729066666666667,
+    "median_ms": 0.317248,
+    "estimated_gpc_GHz": [
+      2.5226625112341137,
+      2.5207112361499946,
+      2.5219156662392894
+    ],
+    "stall_sample_percent": {
+      "stall_barrier": 15.274501590940822,
+      "stall_long_sb": 3.083412329240243,
+      "stall_math": 41.55368414864458,
+      "stall_mio": 1.218741503347222,
+      "stall_short_sb": 6.025734294511438,
+      "stall_wait": 19.629196887193846,
+      "stall_barrier (Not Issued)": 13.454656349433801,
+      "stall_long_sb (Not Issued)": 1.4116384853361552,
+      "stall_math (Not Issued)": 39.31571173475012,
+      "stall_mio (Not Issued)": 0.8505838348654865,
+      "stall_short_sb (Not Issued)": 4.935223356334002,
+      "stall_wait (Not Issued)": 15.239963845594232
+    },
+    "active_warps_per_scheduler": 2.9991133333333333,
+    "eligible_warps_per_scheduler": 0.33954633333333334,
+    "issue_active_percent": 22.579371666666667
+  },
+  {
+    "variant": 115,
+    "kernel_ms": [
+      0.33488,
+      0.33488,
+      0.335072
+    ],
+    "mean_ms": 0.334944,
+    "median_ms": 0.33488,
+    "estimated_gpc_GHz": [
+      2.5162174781742714,
+      2.5181875190038223,
+      2.517807298947689
+    ],
+    "stall_sample_percent": {
+      "stall_barrier": 14.212312099342261,
+      "stall_long_sb": 1.723610473766913,
+      "stall_math": 38.40195792137722,
+      "stall_mio": 1.2775854157106503,
+      "stall_short_sb": 3.018578003977028,
+      "stall_wait": 25.425166520656905,
+      "stall_barrier (Not Issued)": 12.726141309638034,
+      "stall_long_sb (Not Issued)": 1.035974024168092,
+      "stall_math (Not Issued)": 36.8702459916844,
+      "stall_mio (Not Issued)": 1.2226579338923422,
+      "stall_short_sb (Not Issued)": 2.60488367888977,
+      "stall_wait (Not Issued)": 21.494027505457986
+    },
+    "active_warps_per_scheduler": 2.000042666666667,
+    "eligible_warps_per_scheduler": 0.274936,
+    "issue_active_percent": 21.599206
+  }
+]

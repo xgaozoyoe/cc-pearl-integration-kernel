@@ -1,0 +1,8 @@
+{
+  "/home/xgao/pearl-4090/libp40cuda.so": "dd21041b17312d177aac619875bbad5d32703da7827d042185a7a783f8531ce6",
+  "/tmp/libpearl-imma-roof.so": "c468b67c2ae6bd6e9d60294e715c0545ffcda1c2b4b82e0efd5057d9bd347a5b",
+  "/home/xgao/pearl-4090/tests/ada_imma_roof.cu": "e31dd0df1cc1eb3d34fba5ff225179be43d3158525d9099a7c4108f06176878d",
+  "/home/xgao/pearl-4090/tools/build_ada_imma_roof.sh": "82d5d9c582416169b9da0392548500470fa2eacc01b18a8edd2c25e18237913f",
+  "/home/xgao/pearl-4090/tests/bench_ada_imma_roof.py": "d195b4e27507d9582d695eed2024cf57317cf542df1ea29feccdd612863de0bb",
+  "/home/xgao/pearl-4090/tests/compare_ada_imma_roof.py": "9a6ab8dff4f82fa9e0aa7e198987b3e623eb2142e1c9f6c278dbf80b96c28c5b"
+}

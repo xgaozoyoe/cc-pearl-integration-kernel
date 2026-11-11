@@ -1,0 +1,12 @@
+Capture:/tmp/pearl-barrier-sites.L9xQus
+All hashes verified;3 sampled launches/variant;67,633,152dynamicIMMA each.
+NCU base-clock policy does not guarantee identical achieved clock; use cycle-normalized comparison.
+native: {"imma_per_SM_elapsed_cycle": 0.20863406836574167, "imma_per_SMSP_elapsed_cycle": 0.052158517091435416, "tensor_Ginst_sec": 59.025560468437945, "kernel_ms": 1.1458453333333334} barrier samples at deferred prologue/main/epilogue PCs={"0xc60": 623.0, "0x2a30": 129850.0, "0x2a70": 1254.0}
+time_reduction_pct=0.0 IMMA/cycle_gain_pct=0.0
+no_initial: {"imma_per_SM_elapsed_cycle": 0.20900681036322488, "imma_per_SMSP_elapsed_cycle": 0.05225170259080622, "tensor_Ginst_sec": 59.338401448092924, "kernel_ms": 1.1398186666666668} barrier samples at deferred prologue/main/epilogue PCs={"0xc60": 0.0, "0x2a30": 130455.0, "0x2a70": 1188.0}
+time_reduction_pct=0.5259581281475967 IMMA/cycle_gain_pct=0.17865826056260303
+no_final: {"imma_per_SM_elapsed_cycle": 0.20893408347214143, "imma_per_SMSP_elapsed_cycle": 0.05223352086803536, "tensor_Ginst_sec": 59.4032919564937, "kernel_ms": 1.1385813333333332} barrier samples at deferred prologue/main/epilogue PCs={"0xc60": 634.0, "0x2a30": 129545.0, "0x2a70": 0.0}
+time_reduction_pct=0.6339424518027048 IMMA/cycle_gain_pct=0.14379967219630974
+Conclusion: both single-site ablations show only~0.1-0.2%cycle-normalized gain; no evidence of a several-percent bottleneck at either.
+Do not equate wall-time difference to intrinsic barrier latency, or sum these configuration-dependent effects.
+Racy diagnostic binaries are not mining candidates. Main-loop arrival/sync individual effects remain unmeasured.

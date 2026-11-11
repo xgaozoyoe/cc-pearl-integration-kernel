@@ -1,0 +1,584 @@
+[
+  {
+    "function": "_ZN19fragment_pipeline_26kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+    "instructions": 1064,
+    "imma": 64,
+    "ldsm": 16,
+    "redux": [
+      {
+        "pc": "0x1390",
+        "imma_before": 6,
+        "source": "REDUX.XOR UR4, R157 ;"
+      },
+      {
+        "pc": "0x1490",
+        "imma_before": 8,
+        "source": "REDUX.XOR UR4, R157 ;"
+      },
+      {
+        "pc": "0x1e00",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR4, R124 ;"
+      },
+      {
+        "pc": "0x1e30",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR5, R126 ;"
+      },
+      {
+        "pc": "0x1e60",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR6, R136 ;"
+      },
+      {
+        "pc": "0x1e80",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR4, R138 ;"
+      },
+      {
+        "pc": "0x2070",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR4, R124 ;"
+      },
+      {
+        "pc": "0x2140",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR4, R126 ;"
+      },
+      {
+        "pc": "0x2230",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR4, R127 ;"
+      },
+      {
+        "pc": "0x23e0",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR4, R124 ;"
+      },
+      {
+        "pc": "0x2410",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR5, R126 ;"
+      },
+      {
+        "pc": "0x2440",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR6, R136 ;"
+      },
+      {
+        "pc": "0x2490",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR4, R138 ;"
+      },
+      {
+        "pc": "0x2620",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR4, R124 ;"
+      },
+      {
+        "pc": "0x26c0",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR4, R126 ;"
+      },
+      {
+        "pc": "0x27b0",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR4, R127 ;"
+      },
+      {
+        "pc": "0x28d0",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR4, R138 ;"
+      },
+      {
+        "pc": "0x2950",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR5, R126 ;"
+      },
+      {
+        "pc": "0x29a0",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR6, R136 ;"
+      },
+      {
+        "pc": "0x29e0",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR4, R138 ;"
+      },
+      {
+        "pc": "0x2b10",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR4, R138 ;"
+      },
+      {
+        "pc": "0x2c00",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR4, R126 ;"
+      },
+      {
+        "pc": "0x2cf0",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR4, R127 ;"
+      },
+      {
+        "pc": "0x2de0",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR4, R126 ;"
+      },
+      {
+        "pc": "0x2f00",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR4, R138 ;"
+      },
+      {
+        "pc": "0x2f80",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR5, R126 ;"
+      },
+      {
+        "pc": "0x2fd0",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR6, R136 ;"
+      },
+      {
+        "pc": "0x3010",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR4, R138 ;"
+      },
+      {
+        "pc": "0x3140",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR4, R138 ;"
+      },
+      {
+        "pc": "0x3230",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR4, R126 ;"
+      },
+      {
+        "pc": "0x3320",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR4, R127 ;"
+      },
+      {
+        "pc": "0x3410",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR4, R126 ;"
+      }
+    ],
+    "spill_instructions": 3
+  },
+  {
+    "function": "_ZN19fragment_pipeline_16kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+    "instructions": 1096,
+    "imma": 64,
+    "ldsm": 16,
+    "redux": [
+      {
+        "pc": "0x1250",
+        "imma_before": 4,
+        "source": "REDUX.XOR UR7, R160 ;"
+      },
+      {
+        "pc": "0x1c60",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR4, R62 ;"
+      },
+      {
+        "pc": "0x1ca0",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR7, R108 ;"
+      },
+      {
+        "pc": "0x1cd0",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR9, R110 ;"
+      },
+      {
+        "pc": "0x1cf0",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR4, R62 ;"
+      },
+      {
+        "pc": "0x1ea0",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR4, R109 ;"
+      },
+      {
+        "pc": "0x1f30",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR7, R110 ;"
+      },
+      {
+        "pc": "0x1f70",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR4, R140 ;"
+      },
+      {
+        "pc": "0x2070",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR4, R109 ;"
+      },
+      {
+        "pc": "0x20f0",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR7, R62 ;"
+      },
+      {
+        "pc": "0x2110",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR9, R108 ;"
+      },
+      {
+        "pc": "0x2220",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR4, R110 ;"
+      },
+      {
+        "pc": "0x22b0",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR7, R62 ;"
+      },
+      {
+        "pc": "0x22e0",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR9, R108 ;"
+      },
+      {
+        "pc": "0x2320",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR4, R110 ;"
+      },
+      {
+        "pc": "0x24b0",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR4, R110 ;"
+      },
+      {
+        "pc": "0x2540",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR7, R108 ;"
+      },
+      {
+        "pc": "0x2570",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR9, R140 ;"
+      },
+      {
+        "pc": "0x25b0",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR4, R142 ;"
+      },
+      {
+        "pc": "0x26f0",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR4, R110 ;"
+      },
+      {
+        "pc": "0x27a0",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR7, R62 ;"
+      },
+      {
+        "pc": "0x27d0",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR9, R108 ;"
+      },
+      {
+        "pc": "0x27f0",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR10, R110 ;"
+      },
+      {
+        "pc": "0x2900",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR4, R110 ;"
+      },
+      {
+        "pc": "0x2990",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR7, R62 ;"
+      },
+      {
+        "pc": "0x29c0",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR9, R108 ;"
+      },
+      {
+        "pc": "0x2a00",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR4, R110 ;"
+      },
+      {
+        "pc": "0x2b90",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR4, R110 ;"
+      },
+      {
+        "pc": "0x2c20",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR7, R108 ;"
+      },
+      {
+        "pc": "0x2c50",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR9, R140 ;"
+      },
+      {
+        "pc": "0x2c90",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR4, R142 ;"
+      },
+      {
+        "pc": "0x2dd0",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR4, R110 ;"
+      },
+      {
+        "pc": "0x2e80",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR7, R62 ;"
+      },
+      {
+        "pc": "0x2eb0",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR9, R108 ;"
+      },
+      {
+        "pc": "0x2ed0",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR10, R110 ;"
+      },
+      {
+        "pc": "0x2fe0",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR4, R110 ;"
+      },
+      {
+        "pc": "0x3070",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR7, R62 ;"
+      },
+      {
+        "pc": "0x30a0",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR9, R108 ;"
+      },
+      {
+        "pc": "0x30e0",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR4, R110 ;"
+      },
+      {
+        "pc": "0x3270",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR4, R110 ;"
+      },
+      {
+        "pc": "0x3300",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR7, R108 ;"
+      },
+      {
+        "pc": "0x3330",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR9, R140 ;"
+      },
+      {
+        "pc": "0x3370",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR4, R142 ;"
+      },
+      {
+        "pc": "0x34b0",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR4, R110 ;"
+      },
+      {
+        "pc": "0x3560",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR7, R62 ;"
+      },
+      {
+        "pc": "0x3590",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR9, R108 ;"
+      },
+      {
+        "pc": "0x35b0",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR10, R110 ;"
+      }
+    ],
+    "spill_instructions": 0
+  },
+  {
+    "function": "_ZN26fragment_pipeline_original6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+    "instructions": 880,
+    "imma": 64,
+    "ldsm": 16,
+    "redux": [
+      {
+        "pc": "0x18e0",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR5, R137 ;"
+      },
+      {
+        "pc": "0x1960",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR6, R98 ;"
+      },
+      {
+        "pc": "0x19d0",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR7, R136 ;"
+      },
+      {
+        "pc": "0x1a20",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR8, R138 ;"
+      },
+      {
+        "pc": "0x1a80",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR9, R140 ;"
+      },
+      {
+        "pc": "0x1ae0",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR10, R98 ;"
+      },
+      {
+        "pc": "0x1b40",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR11, R136 ;"
+      },
+      {
+        "pc": "0x1ba0",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR12, R138 ;"
+      },
+      {
+        "pc": "0x1c10",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR13, R98 ;"
+      },
+      {
+        "pc": "0x1c80",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR14, R136 ;"
+      },
+      {
+        "pc": "0x1ce0",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR15, R138 ;"
+      },
+      {
+        "pc": "0x1d50",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR16, R97 ;"
+      },
+      {
+        "pc": "0x1dc0",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR17, R136 ;"
+      },
+      {
+        "pc": "0x1e10",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR18, R99 ;"
+      },
+      {
+        "pc": "0x1e70",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR19, R144 ;"
+      },
+      {
+        "pc": "0x1ec0",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR5, R146 ;"
+      },
+      {
+        "pc": "0x22d0",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR5, R137 ;"
+      },
+      {
+        "pc": "0x2350",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR6, R98 ;"
+      },
+      {
+        "pc": "0x23b0",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR7, R136 ;"
+      },
+      {
+        "pc": "0x2400",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR8, R138 ;"
+      },
+      {
+        "pc": "0x2460",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR9, R140 ;"
+      },
+      {
+        "pc": "0x24a0",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR10, R98 ;"
+      },
+      {
+        "pc": "0x2500",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR11, R136 ;"
+      },
+      {
+        "pc": "0x2580",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR12, R138 ;"
+      },
+      {
+        "pc": "0x2600",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR13, R98 ;"
+      },
+      {
+        "pc": "0x2660",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR14, R136 ;"
+      },
+      {
+        "pc": "0x26c0",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR15, R138 ;"
+      },
+      {
+        "pc": "0x2730",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR16, R98 ;"
+      },
+      {
+        "pc": "0x27a0",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR17, R136 ;"
+      },
+      {
+        "pc": "0x2810",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR18, R138 ;"
+      },
+      {
+        "pc": "0x2880",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR19, R98 ;"
+      },
+      {
+        "pc": "0x28f0",
+        "imma_before": 64,
+        "source": "REDUX.XOR UR5, R136 ;"
+      }
+    ],
+    "spill_instructions": 0
+  }
+]

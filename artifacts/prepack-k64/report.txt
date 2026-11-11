@@ -1,0 +1,42 @@
+GPU0 only; offline K4096/rank128; no production deployment.
+Layout: [row-block][K64-stage][shared-swizzled bytes]. Ablock256,Bblock192.
+CTA256x192,384threads,warp64x64,2stages,64IMMA+16LDSM per K64 unchanged.
+Native is frozen fastest fixed-SASS baseline; source and packed are recompiled controls.
+Both recompiled controls lose native early-publication scheduling; performance vs source is not proof of additive gains over native.
+
+Kernel events8192x8192:200 samples/variant,16 launches/sample,10 rotating blocks.
+variant mean_ms median_ms p95_ms registers local_bytes shared_bytes CTAs/SM
+native 1.024689 1.018171 1.050816 168 0 69632 1
+source 1.070623 1.068102 1.106161 168 0 69632 1
+packed 1.054544 1.050180 1.077827 166 0 69632 1
+
+Pack A8192+B8192 pair:mean 0.145037ms,70 CUDA event samples after10 warmup.
+Amortized model16 pairs/grid: 2.320589ms. This is an estimate; full-grid wall times below include actual pack launches.
+Full grid:noised A regions packed once per row region; B regions packed once per grid when generated.
+Original A/B and Merkle/proof/target paths unchanged. Pack kernels on default stream follow noise and precede GEMM.
+Steady-state extra retained buffers:32MiB A +16*32.25MiB B =548MiB.
+Raw bytes read per grid1GiB; packed bytes written1028MiB (B region padding included).
+
+Full-grid wall:60 samples/variant,6 balanced rotating blocks,12grids/block discardfirst2.
+Includes actual setup/noise/V3/Merkle/pack/GEMM/transcript/PoW. Target0:no network or proof delivery.
+Clock/power settings untouched and unlocked. TH/s is consensus-equivalent work, not pool hashrate.
+variant mean_ms median_ms p95_ms grids_per_sec equivalent_THs
+native 293.032 292.900 298.425 3.412600 240.140
+source 306.357 305.950 310.710 3.264169 229.695
+packed 301.597 301.700 305.325 3.315687 233.321
+Packed vs source:work-rate change +1.578%; time change -1.554%
+Paired block work-rate changes%: +1.440, +1.760, +1.619, +1.567, +1.560, +1.524
+Packed vs native:work-rate change -2.840%; time change +2.923%
+Paired block work-rate changes%: -2.986, -2.620, -2.813, -3.128, -2.796, -2.698
+
+Static disassembly counts (not dynamic instruction throughput):
+source {'IMMA.': 64, 'LDSM.': 16, 'LDGSTS': 10, 'BAR.': 6, 'REDUX': 32, 'LDL': 0, 'STL': 0}
+packed {'IMMA.': 64, 'LDSM.': 16, 'LDGSTS': 10, 'BAR.': 6, 'REDUX': 32, 'LDL': 0, 'STL': 0}
+
+Important limits: original warp copies already cover full32B sectors. No measured L2-byte reduction or Tensor utilization claim.
+Prepack changes address/control instructions and register allocation as well as access continuity; cannot isolate their contributions.
+Observed regional pack latency is not a bandwidth ceiling or guaranteed cost inside the miner.
+Next bounded experiment if continuing: restore comparable safe early publication in both source and packed, then retest full-grid including packing.
+No new production baseline selected by this experiment.
+
+Validation:12independent byte-layout comparisons including padding PASS;36edge transcript comparisons PASS;18transcript+PoW comparisons including8192x8192 PASS. Packed variant memcheck0errors; racecheck0errors (see logs for warnings/hazards). Production and frozen candidate hashes unchanged. No live mining or deployment.

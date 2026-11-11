@@ -1,0 +1,32 @@
+{
+  "variants": {
+    "native": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "104c0c1b265260dea5c9ab0bb174ebbbe7ee9cceb0cf0acebf2a9d1dfa4d50aa",
+      "smem": 69632,
+      "correct": true,
+      "threads": 384
+    },
+    "control": {
+      "entry": "_ZN17self_fold_control6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "f032c1df8e941af54cc5eb8066b1c1055eb8ab0f907896091e6122e969e61387",
+      "threads": 384,
+      "smem": 69632,
+      "correct": true
+    },
+    "batch2": {
+      "entry": "_ZN16self_fold_batch26kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "3e49c6e3807a5a5e90e2da0e9ead2ad7687719e1c7062a002753628cbf3dc36d",
+      "threads": 384,
+      "smem": 69632,
+      "correct": true
+    },
+    "batch4": {
+      "entry": "_ZN16self_fold_batch46kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "12a9316a48aa57a4254e46ea9f1e8719b95824a26f52f6f77c0ab17f5822c4d2",
+      "threads": 384,
+      "smem": 69632,
+      "correct": true
+    }
+  }
+}

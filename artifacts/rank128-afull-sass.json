@@ -1,0 +1,28 @@
+[
+  {
+    "function": "_ZN18rank128_afull_fast6kernelILi2ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+    "instructions": 920,
+    "counts": {
+      "IMMA": 64,
+      "LDSM": 16,
+      "LDGSTS": 4,
+      "ISETP": 33,
+      "SEL": 2,
+      "LDL": 0,
+      "STL": 0
+    }
+  },
+  {
+    "function": "_ZN22rank128_afull_baseline6kernelILi2ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+    "instructions": 928,
+    "counts": {
+      "IMMA": 64,
+      "LDSM": 16,
+      "LDGSTS": 4,
+      "ISETP": 35,
+      "SEL": 4,
+      "LDL": 0,
+      "STL": 0
+    }
+  }
+]

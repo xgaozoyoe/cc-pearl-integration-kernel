@@ -1,0 +1,22 @@
+{
+  "redux": {
+    "static_IMMA": 64,
+    "static_LDSM": 16,
+    "static_REDUX": 16
+  },
+  "local": {
+    "static_IMMA": 64,
+    "static_LDSM": 16,
+    "static_REDUX": 0
+  },
+  "pure": {
+    "static_IMMA": 64,
+    "static_LDSM": 16,
+    "static_REDUX": 32
+  },
+  "full": {
+    "static_IMMA": 64,
+    "static_LDSM": 16,
+    "static_REDUX": 32
+  }
+}

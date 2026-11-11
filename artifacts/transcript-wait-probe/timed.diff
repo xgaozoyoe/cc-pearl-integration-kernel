@@ -1,0 +1,74 @@
+--- batch_reduce
++++ timed
+@@ -1,6 +1,6 @@
+ #include <cuda_runtime.h>
+ #include <cstdint>
+-namespace handoff_diagnosis_batch_reduce {
++namespace transcript_wait_probe_timed {
+ constexpr int BM=192, BN=192, THREADS=288;
+ constexpr int WORDS=(BM/16)*(BN/16)*16;
+ struct Fragment { unsigned v[4]; };
+@@ -90,6 +90,9 @@
+ }
+ __device__ __forceinline__ void task_arrive(unsigned bar) {
+  asm volatile("mbarrier.arrive.shared.b64 _,[%0];" :: "r"(bar) : "memory");
++}
++__device__ __forceinline__ unsigned stamp() {
++ unsigned t; asm volatile("mov.u32 %0, %%clock;" : "=r"(t) :: "memory"); return t;
+ }
+ template<int Lead,int TileK=64,bool Planar=false,bool PackedB=false,bool UnrollCopy=false,bool FixedCopy=false,int Stages=2,bool Wide=false,int Layout=0>
+ __global__ void __launch_bounds__(320,1) kernel(const signed char* a,const signed char* b,int m,int n,int k,int r,unsigned* out) {
+@@ -107,6 +110,7 @@
+     int cm=offset/cols,cn=first+offset%cols;
+     int warp=threadIdx.x/32,lane=threadIdx.x%32;
+     int wm=warp%3,wn=warp/3;
++    unsigned dstart=stamp(),dw=0,dp=0,db=0,dmask=0,dcount=0;
+     // Native MMA lane ownership: row=lane/4 (+8 for c2,c3),
+     // column=2*(lane%4) (+1 for c1,c3). Two halves form a16x16 tile.
+ 
+@@ -123,7 +127,10 @@
+         for(unsigned seq=0;seq<128;++seq) {
+             unsigned rb=seq/4,group=seq%4;
+             for(unsigned producer=0;producer<9;++producer) {
++                unsigned before=stamp();
+                 task_wait(barbase+producer*16,seq&1u);
++                unsigned after=stamp();dw+=after-before;
++                dmask+=(__activemask()!=0xffffffffu);++dcount;
+                 unsigned values[4];
+                 #pragma unroll
+                 for(int row=0;row<4;++row) values[row]=tasks[producer*128+row*32+lane];
+@@ -138,6 +145,7 @@
+                         else {unsigned prev=transcript[idx];transcript[idx]=((prev<<13)|(prev>>19))^values[row];}
+                     }
+                 }
++                dp+=stamp()-after;
+             }
+         }
+     } else {
+@@ -205,7 +213,7 @@
+             if(slice==1 && (kt+1)%2==0) {
+ 
+             unsigned seq=unsigned((kt+1)/2-1)*4+group;
+-            if(seq)task_wait(barbase+warp*16+8,(seq-1)&1u);
++            if(seq) {unsigned before=stamp();task_wait(barbase+warp*16+8,(seq-1)&1u);dw+=stamp()-before;}
+             #pragma unroll
+             for(int row=0;row<4;++row) {
+                 unsigned x=0;
+@@ -248,10 +256,17 @@
+         asm volatile("cp.async.wait_group 0;" ::: "memory");
+         asm volatile("bar.arrive %0, 288;" :: "r"(peer_bar) : "memory");
+ 
++        unsigned bar_start=stamp();
+         asm volatile("bar.sync %0, 288;" :: "r"(own_bar) : "memory");
++        db+=stamp()-bar_start;
+         own_bar^=2u;
+     }
+     } // producer path
++    unsigned dend=stamp();
++    if(lane==0) {
++        unsigned* dst=out+(size_t(m)*n/256*16)+(size_t(blockIdx.x)+size_t(gridDim.x)*blockIdx.y)*80+warp*8;
++        dst[0]=dend-dstart;dst[1]=dw;dst[2]=dp;dst[3]=db;dst[4]=dmask;dst[5]=dcount;dst[6]=0;dst[7]=0;
++    }
+     __syncthreads();
+     if(threadIdx.x<18) {
+         unsigned addr=barbase+8*threadIdx.x;

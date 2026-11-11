@@ -1,0 +1,23 @@
+{
+  "description": "Correctness candidate:skip only kt63 handoff after final A/B reads; no future shared-stage reuse. Final CTA barrier retains transcript publication. No added instructions.",
+  "variants": {
+    "native": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "104c0c1b265260dea5c9ab0bb174ebbbe7ee9cceb0cf0acebf2a9d1dfa4d50aa",
+      "smem": 69632,
+      "correct": true
+    },
+    "predicate_control": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "aa03be8620b891e3548f2f26ccb64a5ab08ffa76914808782891c596b2b2fa46",
+      "smem": 69632,
+      "correct": true
+    },
+    "skip_final": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "7c43a049604411d398a7c8f9209cb5ab18e0b6ddac91c2d1b7356c91f43490f8",
+      "smem": 69632,
+      "correct": true
+    }
+  }
+}

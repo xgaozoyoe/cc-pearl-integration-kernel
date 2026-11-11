@@ -1,0 +1,46 @@
+R128 register-lifetime investigation — 2026-10-08
+
+GPU0 only; production/accepted library SHA256 unchanged. GPU2 live miner untouched.
+
+Evidence from CUDA12.6 nvdisasm --life-range-mode narrow:
+Baseline has 128 logical INT32 accumulator values/thread from 4*4*2*4 array.
+Allocated168 GPR/thread; zero stack/spills. Static analyzer peak161 live GPR,
+main-loop BAR at0xdf0 reports140. Accumulator destination register union132
+across the instruction stream includes remapping, NOT132 simultaneous accumulators.
+Live-range counts are static dataflow evidence, not runtime stall or occupancy data.
+Logical A fragments16 words, B ring12 words in source; compiler can rename/reorder
+and shorten/recompute temporaries, so source array sizes do not fix physical usage.
+
+Experiment1: reread tid.x at transcript output to shorten output-index lifetime.
+Compiler instead spills four address-related temporaries in prologue (STL PCs
+0x570,0x630,0x660,0x680) and reloads in main-loop operand-address work
+(0x1550,0x1560,0x1740,0x1760).16B stack,16B spill loads/stores.
+Rejected before running; harness prevents spilled candidate execution.
+This is not evidence that accumulators themselves spilled in this build.
+
+Experiment2: B ring3->2slots, same two-group initial prefetch.
+Overwrite current slot only after its last MMA consumer (half1,row3), instead
+of issuing future B load at half0,row2 into a third slot.
+All12 full transcript/digest comparisons pass against accepted R128 library.
+Same CTA256x192,warp64x64,12warps,K64,R128,K4096,2sharedstages,Layout6.
+168regs/thread,69632Bshared/CTA,1CTA/SM,12warps/SM,zero spills for both.
+Static count928instructions,64IMMA,16LDSM,4LDGSTS sites for both; SASS differs.
+Static live-GPR peak remains161 (candidate0x17d0IMMA; baseline0x17f0LDSM).
+Source B-ring reduction did NOT yield reduced physical register pressure.
+Load placement changes are recorded in rank128-bring2-load-schedule.json.
+
+Full offline grid131072^2x4096,region8192,matched setup seeds; includes real
+V3/setup/noise/fold/PoW. Targetzero: excludes proof/submission and pool effects.
+4warmup+40measured per variant, repeated with reversed order (80samples each).
+Clock/power policy unchanged, clocks not locked. Wall logs have0.1ms resolution.
+
+{"variant": 0, "n": 80, "mean_ms": 330.2, "median_ms": 330.55, "p95_ms": 332.305, "grids_sec": 3.0284675953967293, "ths": 213.1094614708177}
+{"variant": 1, "n": 80, "mean_ms": 333.55375, "median_ms": 333.7, "p95_ms": 335.4, "grids_sec": 2.998017560887863, "ths": 210.96673078226226}
+
+Candidate time +1.016%; throughput -1.005%.
+Conclusion: retain baseline; neither lifetime rewrite improves it. No new live
+mining performance claim. This narrows the source-vs-machine-code issue: smaller
+source arrays and deferred source reads do not necessarily lower allocated or peak
+live registers. Avoid further ring-size tuning without a machine-code change that
+addresses a measured bottleneck. No additional root profiling requested for this
+regression. No commits or production promotion.

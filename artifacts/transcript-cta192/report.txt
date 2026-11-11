@@ -1,0 +1,22 @@
+192x192 CTA experiment; GPU0 only; no production changes.
+Both:9 MMA warps,warp tile64x64,K64,2 stages,rank128,K4096.
+self:288threads,58368B shared;consumer:320threads,63120B shared.
+Both168registers/thread,1CTA/SM. Consumer retains fixed group/producer task order.
+Copy loop adapted for288producers identically in both variants; partial M/N zero-filled.
+MMA cohort split is6+3; stage barriers count288; consumer ready/free count32.
+Data/dimensions identical between variants. 8192x8192 useful region,43x43CTAs.
+One session,40samples/variant,16launches/sample,2rotating blocks,unlocked clocks.
+These are kernel CUDA-event timings,not full-grid/pool performance.
+name stack_B spill_stores_B spill_loads_B mean_ms median_ms p95_ms
+self 56 56 56 1.428309 1.425929 1.453021
+consumer 40 36 44 5.315570 5.313977 5.319744
+consumer/self time ratio:3.7216
+ptxas spill bytes are compiler diagnostics,not measured dynamic traffic.
+Prior256x192 consumer had504/500spill store/load bytes;192x192 has36/44.
+24transcript bit-exact comparisons PASS. Racecheck:512x800/seed9876,both variants,0hazards.
+No full-grid timing,PoW test,live mining or new Nsight hardware counters.
+Clocks varied: self2685-2700MHz,consumer2730MHz; power/temperature differ.
+Conclusion:smallerCTA greatly reduces spill but does not make this consumer implementation competitive.
+Cannot isolate residual spills vs shared transport vs fixed-order consumer bottleneck from these timings.
+Same-tile self baseline also spills;not a tuned production replacement.
+Production library checksum verification:bothOK.

@@ -1,0 +1,4 @@
+NOT VALIDATED. Do not benchmark/profile/mine these cubins.
+Cross-loop barrier relocation prototypes timed out; last guarded attempt reported CUDA700.
+Branch-only and prefix-only controls passed; no performance conclusion follows.
+User stopped execution-structure modifications. Preserve artifacts for inspection only.

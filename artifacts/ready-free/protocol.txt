@@ -1,0 +1,46 @@
+Isolated 2-slot ready/free experiment (SM89,384threads,all warps still compute).
+32 extra shared bytes: ready0,ready1,free0,free1; aligned8,count384 each.
+
+For logical tile k: slot=k%2,phase=(k/2)%2.
+Producer: wait free(slot,k-2) before overwriting, except virgin k0/k1;
+issue unchanged cp.async copies;enqueue ONE async ready arrival/thread.
+Consumer: wait ready(slot,k);load fragments/compute;arrive free(slot,k)
+after old-stage reads;compute transcript;proceed without waiting for peers' fold.
+Ready uses cp.async.mbarrier.arrive.noinc,not an additional normal arrive.
+Free uses one mbarrier.arrive perthread. Waiting does not contribute arrival.
+
+Induction:
+Initial slots pristine. Ready(k) cannot complete until all384 producers' copies
+complete, and successful test_wait acquires their publication before LDSM.
+Free(k) cannot complete until all384 consumers' reads precede their release.
+Every writer(k+2) observes free(k), so cannot overwrite unread k.
+Before ready(k+2) can receive arrivals,free(k) must complete;all readers(k)
+observed ready(k), so earlier ready phase has been observed.
+Before free(k+2) can receive arrivals,ready(k+2) must complete;all writers(k+2)
+observed free(k), so earlier free phase has been observed.
+No waiter can lag across2 completed phases:its own required contribution to
+the next use prevents the second completion. Parity therefore remains valid.
+Final CTA barrier retained;all copies needed by final reads have been observed.
+Objects invalidated only after final CTA rendezvous. No live mining entrypoint.
+
+split_late: waits free(current),ready(next) at end before next iteration.
+split_deferred: waits free only before overwrite and ready only before reads.
+Both preserve copy-before-compute order. A future experiment changing that order
+would be distinct and is not claimed here.
+
+The source snapshot publishes after final MMA when compiled. Fast frozen SASS
+publishes after48of64MMA. This difference is a confound; native and recompiled
+source_control are both measured. Compiler scheduling differences prevent
+attributing total time differences solely to barrier instruction overhead.
+
+Random model uses12 warp-aggregated participants and random completion delays;
+100schedules/mode;not exhaustive GPU scheduling proof. Negative controls remove
+ready/free waiting and must detect unready read/overwrite respectively.
+CUDA transcript/PoW validation and racecheck are separate empirical checks.
+
+Expected new costs (measure before accepting):two wait loops persteadyiteration,
+phase/address arithmetic,async publication,free shared atomic arrival and fence.
+No extra MMA/copy work,no extra warp,no intermediate accumulator spill required.
+
+PTX memory semantics:
+https://docs.nvidia.com/cuda/archive/11.8.0/parallel-thread-execution/index.html#parallel-synchronization-and-communication-instructions-cp-async-mbarrier-arrive

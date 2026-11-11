@@ -1,0 +1,48 @@
+[
+  {
+    "function": "_ZN22rank128_bring2_compact6kernelILi2ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+    "peak_static_live_gpr": 161,
+    "barriers": [
+      {
+        "pc": "0x0df0",
+        "op": "BAR.SYNC.DEFER_BLOCKING 0x0 ;",
+        "live_gpr": 140
+      },
+      {
+        "pc": "0x2ca0",
+        "op": "BAR.SYNC.DEFER_BLOCKING 0x0 ;",
+        "live_gpr": 4
+      }
+    ],
+    "peak_locations": [
+      {
+        "pc": "0x17d0",
+        "op": "IMMA.16832.S8.S8 R108, R148.ROW, R110.COL, R84 ;",
+        "live_gpr": 161
+      }
+    ]
+  },
+  {
+    "function": "_ZN23rank128_bring2_baseline6kernelILi2ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+    "peak_static_live_gpr": 161,
+    "barriers": [
+      {
+        "pc": "0x0df0",
+        "op": "BAR.SYNC.DEFER_BLOCKING 0x0 ;",
+        "live_gpr": 140
+      },
+      {
+        "pc": "0x2ca0",
+        "op": "BAR.SYNC.DEFER_BLOCKING 0x0 ;",
+        "live_gpr": 4
+      }
+    ],
+    "peak_locations": [
+      {
+        "pc": "0x17f0",
+        "op": "LDSM.16.M88.4 R108, [R165+UR5] ;",
+        "live_gpr": 161
+      }
+    ]
+  }
+]

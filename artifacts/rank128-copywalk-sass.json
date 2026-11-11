@@ -1,0 +1,24 @@
+{
+  "_ZN21rank128_copywalk_fast6kernelILi2ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj": {
+    "static_instructions": 904,
+    "IMMA": 64,
+    "LDSM": 16,
+    "IMAD": 149,
+    "LEA": 41,
+    "IADD3": 55,
+    "LDGSTS": 4,
+    "LDL": 0,
+    "STL": 0
+  },
+  "_ZN25rank128_copywalk_baseline6kernelILi2ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj": {
+    "static_instructions": 928,
+    "IMMA": 64,
+    "LDSM": 16,
+    "IMAD": 156,
+    "LEA": 49,
+    "IADD3": 43,
+    "LDGSTS": 4,
+    "LDL": 0,
+    "STL": 0
+  }
+}

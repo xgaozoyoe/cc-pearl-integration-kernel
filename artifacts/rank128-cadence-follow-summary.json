@@ -1,0 +1,40 @@
+{
+  "copycadence4": {
+    "stats": [
+      {
+        "variant": 0,
+        "samples": 80,
+        "mean_ms": 312.215,
+        "median_ms": 311.95000000000005,
+        "effective_ths": 225.38553297459765
+      },
+      {
+        "variant": 1,
+        "samples": 80,
+        "mean_ms": 310.09125,
+        "median_ms": 309.95000000000005,
+        "effective_ths": 226.92915126648688
+      }
+    ],
+    "gain_percent": 0.6848790476996713
+  },
+  "bfirst": {
+    "stats": [
+      {
+        "variant": 0,
+        "samples": 80,
+        "mean_ms": 314.25875,
+        "median_ms": 314.40000000000003,
+        "effective_ths": 223.9197609538764
+      },
+      {
+        "variant": 1,
+        "samples": 80,
+        "mean_ms": 314.75875,
+        "median_ms": 314.85,
+        "effective_ths": 223.5640603403845
+      }
+    ],
+    "gain_percent": -0.15885181905189727
+  }
+}

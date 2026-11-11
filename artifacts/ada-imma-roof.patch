@@ -1,0 +1,235 @@
+diff --git a/tests/ada_imma_roof.cu b/tests/ada_imma_roof.cu
+new file mode 100644
+index 0000000..3214a19
+--- /dev/null
++++ b/tests/ada_imma_roof.cu
+@@ -0,0 +1,88 @@
++// Offline throughput calibration only. Not a Pearl/mining kernel.
++// Same 12 warps, 64x64 accumulator ownership, and 64 m16n8k32 per K64.
++#include <cuda_runtime.h>
++#include <cstdint>
++__global__ __launch_bounds__(384,1)
++void imma_roof(const unsigned* input,unsigned* sink,unsigned long long* times,
++               unsigned* smids,int iterations) {
++    unsigned a[4][4],b[3][4],c[4][4][2][4]={};
++    int tid=threadIdx.x, lane=tid%32;
++    #pragma unroll
++    for(int r=0;r<4;++r)
++        #pragma unroll
++        for(int j=0;j<4;++j) a[r][j]=input[tid*28+r*4+j];
++    #pragma unroll
++    for(int r=0;r<3;++r)
++        #pragma unroll
++        for(int j=0;j<4;++j) b[r][j]=input[tid*28+16+r*4+j];
++    unsigned long long start=clock64();
++    #pragma unroll 1
++    for(int k=0;k<iterations;++k) {
++        #pragma unroll
++        for(int g=0;g<8;++g) {
++            #pragma unroll
++            for(int h=0;h<2;++h) {
++                #pragma unroll
++                for(int r=0;r<4;++r) {
++                    unsigned* d=c[r][g%4][h];
++                    asm volatile("mma.sync.aligned.m16n8k32.row.col.s32.s8.s8.s32 "
++                      "{%0,%1,%2,%3},{%4,%5,%6,%7},{%8,%9},{%0,%1,%2,%3};"
++                      : "+r"(d[0]),"+r"(d[1]),"+r"(d[2]),"+r"(d[3])
++                      : "r"(a[r][0]),"r"(a[r][1]),"r"(a[r][2]),"r"(a[r][3]),
++                        "r"(b[g%3][2*h]),"r"(b[g%3][2*h+1]));
++                }
++            }
++        }
++    }
++    unsigned long long end=clock64();
++    // All 128 accumulators observable; nonzero runtime input prevents dead MMA.
++    unsigned checksum=0;
++    #pragma unroll
++    for(int r=0;r<4;++r)
++        #pragma unroll
++        for(int g=0;g<4;++g)
++            #pragma unroll
++            for(int h=0;h<2;++h)
++                #pragma unroll
++                for(int j=0;j<4;++j) checksum+=c[r][g][h][j];
++    sink[blockIdx.x*384+tid]=checksum;
++    if(lane==0) {
++        int i=(blockIdx.x*12+tid/32)*2;
++        times[i]=start;times[i+1]=end;
++    }
++    if(tid==0) {
++        unsigned sm;asm("mov.u32 %0, %%smid;" : "=r"(sm));
++        smids[blockIdx.x]=sm;
++    }
++}
++extern "C" int roof_run(const unsigned* input,unsigned* sink,unsigned long long* times,
++ unsigned* smids,int blocks,int iterations,int* info,float* ms) {
++    constexpr int shared=69632;
++    static bool initialized=false;
++    cudaError_t e;
++    if(!initialized) {
++        e=cudaFuncSetAttribute(imma_roof,cudaFuncAttributeMaxDynamicSharedMemorySize,shared);
++        if(e!=cudaSuccess)return e;
++        e=cudaFuncSetAttribute(imma_roof,cudaFuncAttributePreferredSharedMemoryCarveout,100);
++        if(e!=cudaSuccess)return e; initialized=true;
++    }
++    if(info) {
++        cudaFuncAttributes attr;
++        e=cudaFuncGetAttributes(&attr,imma_roof);if(e!=cudaSuccess)return e;
++        int active;e=cudaOccupancyMaxActiveBlocksPerMultiprocessor(&active,imma_roof,384,shared);
++        if(e!=cudaSuccess)return e;
++        info[0]=attr.numRegs;info[1]=attr.localSizeBytes;info[2]=shared;info[3]=active;
++        return cudaSuccess;
++    }
++    if(blocks<=0||iterations<=0)return cudaErrorInvalidValue;
++    cudaEvent_t begin,end;
++    e=cudaEventCreate(&begin);if(e!=cudaSuccess)return e;
++    e=cudaEventCreate(&end);if(e!=cudaSuccess){cudaEventDestroy(begin);return e;}
++    cudaEventRecord(begin);
++    imma_roof<<<blocks,384,shared>>>(input,sink,times,smids,iterations);
++    e=cudaGetLastError();
++    if(e==cudaSuccess)e=cudaEventRecord(end);
++    if(e==cudaSuccess)e=cudaEventSynchronize(end);
++    if(e==cudaSuccess)e=cudaEventElapsedTime(ms,begin,end);
++    cudaEventDestroy(begin);cudaEventDestroy(end);return e;
++}
+diff --git a/tools/build_ada_imma_roof.sh b/tools/build_ada_imma_roof.sh
+new file mode 100644
+index 0000000..f25422f
+--- /dev/null
++++ b/tools/build_ada_imma_roof.sh
+@@ -0,0 +1,4 @@
++#!/usr/bin/env bash
++set -euo pipefail
++cd "$(dirname "$0")/.."
++/usr/local/cuda-12.6/bin/nvcc -std=c++20 -O3 -lineinfo   -gencode arch=compute_89,code=sm_89 -Xcompiler -fPIC   --ptxas-options=-v -shared tests/ada_imma_roof.cu   -o /tmp/libpearl-imma-roof.so
+diff --git a/tests/bench_ada_imma_roof.py b/tests/bench_ada_imma_roof.py
+new file mode 100644
+index 0000000..408e80c
+--- /dev/null
++++ b/tests/bench_ada_imma_roof.py
+@@ -0,0 +1,74 @@
++"""GPU0 only, register-resident IMMA ceiling; not a mining benchmark."""
++import os
++os.environ["CUDA_VISIBLE_DEVICES"]="0"
++import ctypes as C,json,sys,time,subprocess
++from pathlib import Path
++import numpy as np
++root=Path(__file__).resolve().parents[1];sys.path.insert(0,str(root/"python"))
++import cuda_capi as cc
++P=C.c_void_p;I=C.c_int
++lib=C.CDLL("/tmp/libpearl-imma-roof.so")
++lib.roof_run.argtypes=[P,P,P,P,I,I,P,P]
++info=np.zeros(4,np.int32)
++cc._chk(lib.roof_run(None,None,None,None,1,1,info.ctypes.data,None),"info")
++assert info[1]==0 and info[3]==1,info
++print("resources",info.tolist(),flush=True)
++inp=cc.DBuf(384*28*4);out=cc.DBuf(352*384*4)
++tim=cc.DBuf(352*12*2*8);sm=cc.DBuf(352*4)
++def run(blocks,iters):
++    ms=C.c_float()
++    cc._chk(lib.roof_run(inp.ptr,out.ptr,tim.ptr,sm.ptr,blocks,iters,None,C.byref(ms)),"roof")
++    return ms.value
++def telem():
++    return subprocess.check_output(["nvidia-smi","-i","0","--query-gpu=clocks.sm,clocks.mem,power.draw,power.limit,temperature.gpu","--format=csv,noheader"],text=True).strip()
++validation=[]
++for vals in [(1,2,3),(-1,2,-3)]:
++    host=np.empty((384,28),np.uint32)
++    for row in range(4):host[:,4*row:4*row+4]=np.uint32((row+1)*0x01010101)
++    for slot,val in enumerate(vals):host[:,16+4*slot:20+4*slot]=np.uint32((val&255)*0x01010101)
++    inp.from_host(host)
++    for iters in (1,64,4096):
++        run(128,iters)
++        got=np.empty(352*384,np.uint32);out.to_host(got)
++        expected=(256*iters*10*sum(vals[g%3]+vals[(g+4)%3] for g in range(4)))&0xffffffff
++        assert np.all(got[:128*384]==expected),(vals,iters,expected,got[:10])
++        validation.append(dict(values=vals,iterations=iters,expected=expected,passed=True))
++rng=np.random.default_rng(123)
++inp.from_host(rng.integers(0,2**32,(384,28),dtype=np.uint32))
++cases=[(128,256),(128,1024),(128,4096),(352,64)]
++# Keep GPU busy for >=3 seconds before measurements.
++start=time.perf_counter()
++while time.perf_counter()-start<3:run(128,4096)
++rows=[];telemetry=[];cycle_stats={}
++for repeat in range(2):
++    for sample in range(40):
++        for j in range(len(cases)):
++            blocks,iters=cases[(sample+repeat+j)%len(cases)]
++            ms=run(blocks,iters)
++            rows.append(dict(run=repeat,sample=sample,blocks=blocks,iterations=iters,ms=ms))
++        if sample%20==0:
++            t=telem();telemetry.append(t);print(repeat,sample,t,flush=True)
++for blocks,iters in cases:
++    run(blocks,iters)
++    ht=np.empty((352,12,2),np.uint64);hs=np.empty(352,np.uint32)
++    tim.to_host(ht);sm.to_host(hs)
++    spans=[]
++    for smid in np.unique(hs[:blocks]):
++        indices=np.flatnonzero(hs[:blocks]==smid)
++        span=int(ht[indices,:,1].max())-int(ht[indices,:,0].min())
++        mma=len(indices)*12*64*iters
++        spans.append(dict(sm=int(smid),ctas=len(indices),cycles=span,mma_per_cycle=mma/span))
++    cycle_stats[f"{blocks}x{iters}"]=dict(active_sms=len(spans),sms=spans,
++        mma_per_sm_cycle_mean=float(np.mean([s["mma_per_cycle"] for s in spans])))
++summary={}
++for blocks,iters in cases:
++    vals=np.array([r["ms"] for r in rows if r["blocks"]==blocks and r["iterations"]==iters])
++    mma=blocks*12*64*iters
++    summary[f"{blocks}x{iters}"]=dict(median_ms=float(np.median(vals)),mean_ms=float(vals.mean()),
++        p95_ms=float(np.percentile(vals,95)),warp_mma_count=mma,
++        executed_TMAC_per_s=mma*4096/(float(np.median(vals))*1e9))
++result=dict(resources=dict(zip(["registers","local_bytes","reserved_shared_bytes","ctas_per_sm"],map(int,info))),
++    correctness=validation,telemetry=telemetry,summaries=summary,cycles=cycle_stats,measurements=rows)
++(root/"artifacts/ada-imma-roof-results.json").write_text(json.dumps(result,indent=2)+"\n")
++print(json.dumps(summary,indent=2),flush=True)
++for name,v in cycle_stats.items():print(name,v["active_sms"],v["mma_per_sm_cycle_mean"],flush=True)
+diff --git a/tests/compare_ada_imma_roof.py b/tests/compare_ada_imma_roof.py
+new file mode 100644
+index 0000000..9e29433
+--- /dev/null
++++ b/tests/compare_ada_imma_roof.py
+@@ -0,0 +1,45 @@
++"""Matched short-region roof vs existing v121; GPU0, offline only."""
++import os
++os.environ["CUDA_VISIBLE_DEVICES"]="0"
++import ctypes as C,json,sys,time,subprocess
++from pathlib import Path
++import numpy as np
++root=Path(__file__).resolve().parents[1];sys.path.insert(0,str(root/"python"))
++import cuda_capi as cc
++P=C.c_void_p;I=C.c_int
++roof=C.CDLL("/tmp/libpearl-imma-roof.so")
++roof.roof_run.argtypes=[P,P,P,P,I,I,P,P]
++base=C.CDLL("/tmp/libpearl-ada-ws.so")
++base.ws_bench.argtypes=[I,P,P,I,I,I,I,P,I,P]
++rng=np.random.default_rng(42)
++a=cc.DBuf(4096*4096);b=cc.DBuf(4096*4096);t=cc.DBuf(4096*4096//256*16*4)
++a.from_host(rng.integers(-128,128,(4096,4096),np.int8))
++b.from_host(rng.integers(-128,128,(4096,4096),np.int8))
++inp=cc.DBuf(384*28*4);out=cc.DBuf(352*384*4);tim=cc.DBuf(352*12*2*8);sm=cc.DBuf(352*4)
++inp.from_host(rng.integers(0,2**32,(384,28),dtype=np.uint32))
++def run(v):
++ ms=C.c_float()
++ if v=="baseline":rc=base.ws_bench(0,a.ptr,b.ptr,4096,4096,4096,256,t.ptr,1,C.byref(ms))
++ else:rc=roof.roof_run(inp.ptr,out.ptr,tim.ptr,sm.ptr,352,64,None,C.byref(ms))
++ cc._chk(rc,v);return ms.value
++start=time.perf_counter()
++while time.perf_counter()-start<3:
++ run("baseline");run("register_roof")
++rows=[];telemetry=[]
++for repeat in range(2):
++ for sample in range(40):
++  order=["baseline","register_roof"]
++  if (sample+repeat)%2:order.reverse()
++  for v in order:rows.append(dict(run=repeat,sample=sample,variant=v,ms=run(v)))
++  if sample%20==0:
++   telemetry.append(subprocess.check_output(["nvidia-smi","-i","0","--query-gpu=clocks.sm,clocks.mem,temperature.gpu,power.draw,power.limit","--format=csv,noheader"],text=True).strip())
++summary={}
++for v in ("baseline","register_roof"):
++ vals=np.array([r["ms"] for r in rows if r["variant"]==v])
++ summary[v]=dict(median_ms=float(np.median(vals)),mean_ms=float(vals.mean()),p95_ms=float(np.percentile(vals,95)),
++  useful_work_equiv_THs=4096**3/(float(np.median(vals))*1e9))
++result=dict(summaries=summary,telemetry=telemetry,measurements=rows,
++ note="Both 352 CTA x12 warps x64 K64 iterations; roof operands repeat, no memory work in loop. Useful equivalent applies original region padding convention; not mining throughput.")
++(root/"artifacts/ada-imma-roof-matched.json").write_text(json.dumps(result,indent=2)+"\n")
++print(json.dumps(result["summaries"],indent=2))
++print(telemetry)

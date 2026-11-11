@@ -1,0 +1,292 @@
+diff --git a/tools/build_rank128_copycadence.py b/tools/build_rank128_copycadence.py
+new file mode 100644
+index 0000000..f0e7c28
+--- /dev/null
++++ b/tools/build_rank128_copycadence.py
+@@ -0,0 +1,28 @@
++"""Interleave future B copies with MMA, keeping next-stage commit after both A/B."""
++from pathlib import Path
++import subprocess,argparse
++p=argparse.ArgumentParser();p.add_argument('group',type=int,choices=[2,4]);args=p.parse_args()
++root=Path(__file__).resolve().parents[1]
++s=(root/'artifacts/rank128-copywalk-fulla-candidate-source.cu').read_text();ns='rank128_copyfollow_fulla_fast'
++a=s.index('namespace '+ns);b=s.index('// namespace '+ns,a)+len('// namespace '+ns)
++s='#include <cuda_runtime.h>\n#include <cstdint>\n'+s[a:b]
++name='copycadence'+str(args.group)
++base=s.replace(ns,'rank128_'+name+'_baseline')
++new=s.replace(ns,'rank128_'+name+'_fast')
++new=new.replace('bool FixedCopy=false,int Layout=0>','bool FixedCopy=false,int Layout=0,bool CopyA=true,bool CopyB=true>')
++new=new.replace('    #pragma unroll\n    for(int j=0;j<3;++j)', '    if constexpr(CopyA)\n    #pragma unroll\n    for(int j=0;j<3;++j)')
++new=new.replace('    #pragma unroll\n    for(int j=0;j<2;++j)', '    if constexpr(CopyB)\n    #pragma unroll\n    for(int j=0;j<2;++j)')
++# Final commit in helper; unused FixedCopy branch remains unchanged.
++pos=new.index('    asm volatile("cp.async.commit_group;");',new.index('static_assert(TileK==64 && Layout==6'))
++new=new[:pos]+new[pos:].replace('    asm volatile("cp.async.commit_group;");','    if constexpr(CopyB) asm volatile("cp.async.commit_group;");',1)
++call='stage_copy<TileK,Planar,UnrollCopy,FixedCopy,Layout>(a,b,sa+next*BM*TileK,sb+next*BN*TileK,cm,cn,kt+Stages-1,m,n,k);'
++assert new.count(call)==1
++new=new.replace(call,call.replace('FixedCopy,Layout>','FixedCopy,Layout,true,false>'))
++point='        for(int g=0;g<Groups*(TileK/32);++g) {'
++new=new.replace(point,point+f'''\n            if(g=={args.group} && kt+Stages-1<(k+TileK-1)/TileK)
++                '''+call.replace('FixedCopy,Layout>','FixedCopy,Layout,false,true>'))
++template=(root/'tools/build_rank128_addr32.py').read_text()
++tail=template[template.index('source=base+new'):].replace('addr32',name)
++# The source is an aligned-A specialization; reject unsupported sizes for this offline ABI.
++tail=tail.replace('    if(v==0)return', '    if(m%256 || m>1048576 || n>1048576)return cudaErrorInvalidValue;\n    if(v==0)return')
++exec(tail)
+diff --git a/tools/build_rank128_copyloop.py b/tools/build_rank128_copyloop.py
+new file mode 100644
+index 0000000..a55e41d
+--- /dev/null
++++ b/tools/build_rank128_copyloop.py
+@@ -0,0 +1,16 @@
++"""Compare against the measured copywalk winner, not the retired baseline."""
++from pathlib import Path
++import subprocess,argparse
++p=argparse.ArgumentParser();p.add_argument('candidate',choices=['unroll2']);args=p.parse_args()
++root=Path(__file__).resolve().parents[1]
++s=(root/'artifacts/rank128-copywalk-fulla-candidate-source.cu').read_text();ns='rank128_copyfollow_fulla_fast'
++a=s.index('namespace '+ns);b=s.index('// namespace '+ns,a)+len('// namespace '+ns)
++s='#include <cuda_runtime.h>\n#include <cstdint>\n'+s[a:b]
++name='copyfollow_'+args.candidate
++base=s.replace(ns,'rank128_'+name+'_baseline')
++new=s.replace(ns,'rank128_'+name+'_fast')
++new=new.replace('    for(int kt=0;', '    #pragma unroll 2\n    for(int kt=0;')
++template=(root/'tools/build_rank128_addr32.py').read_text()
++tail=template[template.index('source=base+new'):].replace('addr32',name)
++tail=tail.replace('    if(v==0)return','    if(m%256 || m>1048576 || n>1048576)return cudaErrorInvalidValue;\n    if(v==0)return')
++exec(tail)
+diff --git a/tools/build_rank128_bfirst.py b/tools/build_rank128_bfirst.py
+new file mode 100644
+index 0000000..89efbd1
+--- /dev/null
++++ b/tools/build_rank128_bfirst.py
+@@ -0,0 +1,14 @@
++"""Remove provably redundant first B copy bounds for N%192==0 or >=96."""
++from pathlib import Path
++import subprocess
++root=Path(__file__).resolve().parents[1]
++s=(root/'artifacts/rank128-copywalk-fulla-candidate-source.cu').read_text();ns='rank128_copyfollow_fulla_fast'
++a=s.index('namespace '+ns);b=s.index('// namespace '+ns,a)+len('// namespace '+ns)
++s='#include <cuda_runtime.h>\n#include <cstdint>\n'+s[a:b]
++base=s.replace(ns,'rank128_bfirst_baseline')
++new=s.replace(ns,'rank128_bfirst_fast').replace('bool valid=grB<n;', 'bool valid=(j==0) || grB<n;')
++template=(root/'tools/build_rank128_addr32.py').read_text()
++tail=template[template.index('source=base+new'):].replace('addr32','bfirst')
++tail=tail.replace('    if(v==0)return','    if(m%256 || m>1048576 || n>1048576)return cudaErrorInvalidValue;\n    if(v==0)return')
++tail=tail.replace('(m>1048576 || n>1048576)','(n%192>0 && n%192<96)')
++exec(tail)
+diff --git a/tests/bench_rank128_copycadence4.py b/tests/bench_rank128_copycadence4.py
+new file mode 100644
+index 0000000..a964a1a
+--- /dev/null
++++ b/tests/bench_rank128_copycadence4.py
+@@ -0,0 +1,79 @@
++"""GPU0-only full-A-tile fast path R128 test. Production library is never replaced."""
++import os
++os.environ['CUDA_VISIBLE_DEVICES']='0'
++import argparse,ctypes as C,json,re,statistics,sys
++from pathlib import Path
++import numpy as np
++root=Path(__file__).resolve().parents[1];sys.path.insert(0,str(root/'python'))
++import cuda_capi as cc
++import miner_capi as miner
++import pool_common
++P,I=C.c_void_p,C.c_int
++lib=C.CDLL('/tmp/libpearl-rank128-copycadence4.so')
++lib.copycadence4_fold.argtypes=[I,P,P,I,I,P,P]
++lib.copycadence4_pow.argtypes=[I,P,P,I,I,P,P,P,P,P,P]
++ref=C.CDLL(str(root/'artifacts/libpearl-rank.so'))
++ref.rank_pow.argtypes=[I,P,P,I,I,P,P,P,P,P,P]
++def pow_call(v,a,b,m,n,key,target,t,d=None,f=None,c=None):
++ cc._chk(lib.copycadence4_pow(v,cc._as(a),cc._as(b),m,n,cc._as(key),cc._as(target),cc._as(t),cc._as(d),cc._as(f),cc._as(c)),'copycadence4 pow')
++p=argparse.ArgumentParser();p.add_argument('mode',choices=['validate','bench','profile']);p.add_argument('--variant',type=int,default=0);p.add_argument('--small-only',action='store_true');args=p.parse_args()
++resources={}
++for v in (0,1):
++ info=np.zeros(5,np.int32);cc._chk(lib.copycadence4_fold(v,None,None,8192,8192,None,info.ctypes.data),'info');resources[v]=info.tolist()
++print('resources',resources,flush=True)
++if args.mode=='validate':
++ results=[]
++ for m,n in (((256,48),(256,384),(256,400)) if args.small_only else ((256,48),(256,384),(256,400),(8192,8192))):
++  for seed in (42,1234):
++   rng=np.random.default_rng(seed);alloc=[]
++   def buf(size):
++    x=cc.DBuf(size);alloc.append(x);return x
++   a,b=buf(m*4096),buf(n*4096);a.from_host(rng.integers(-128,128,(m,4096),np.int8));b.from_host(rng.integers(-128,128,(n,4096),np.int8))
++   key,target=buf(32),buf(32);key.from_host(rng.integers(0,256,32,np.uint8));target.memset(0)
++   t,d=buf(m*n//256*64),buf(m*n//256*32)
++   cc._chk(ref.rank_pow(128,a.ptr,b.ptr,m,n,key.ptr,target.ptr,t.ptr,d.ptr,None,None),'frozen')
++   expected_t=np.empty(m*n//256*16,np.uint32);expected_d=np.empty(m*n//256*32,np.uint8)
++   t.to_host(expected_t);d.to_host(expected_d)
++   for v in (0,1):
++    t.memset(0xa5);d.memset(0xa5);pow_call(v,a,b,m,n,key,target,t,d)
++    actual_t=np.empty_like(expected_t);actual_d=np.empty_like(expected_d);t.to_host(actual_t);d.to_host(actual_d)
++    assert np.array_equal(actual_t,expected_t),(v,m,n,seed,'transcript')
++    assert np.array_equal(actual_d,expected_d),(v,m,n,seed,'digest')
++    row=dict(variant=v,m=m,n=n,seed=seed,transcript_pass=True,digest_pass=True);results.append(row);print('PASS',row,flush=True)
++   for x in alloc:x.free()
++ Path('artifacts/rank128-copycadence4-correctness-small.json' if args.small_only else 'artifacts/rank128-copycadence4-correctness.json').write_text(json.dumps(results,indent=2)+'\n')
++elif args.mode=='profile':
++ a,b,t=cc.DBuf(8192*4096),cc.DBuf(8192*4096),cc.DBuf(512*512*64)
++ rng=np.random.default_rng(42)
++ for x in (a,b):x.from_host(rng.integers(-128,128,(8192,4096),np.int8))
++ for _ in range(40):
++  cc._chk(lib.copycadence4_fold(args.variant,a.ptr,b.ptr,8192,8192,t.ptr,None),'profile');cc.sync()
++else:
++ assert resources[1][3]==1 and resources[1][4]==0,resources
++ miner.PROOF_PROCESS=False;miner.R=pool_common.R=128
++ class Pool:
++  def check_newer_job(self,job):return None
++ class Scheduler:
++  mode='user'
++  def __init__(self):self.grids=0
++  def note(self,elapsed):pass
++  def maybe_switch(self):self.grids+=1;return self.grids>=44
++ original_setup=cc.setup_job;results=[]
++ for repeat in range(2):
++  for v in ((0,1) if repeat==0 else (1,0)):
++   scheduler=Scheduler();times=[];bufs=miner.Bufs(8192)
++   cc.setup_job=lambda *a:original_setup(*a[:-1],202610070000+scheduler.grids)
++   cc.pearl_pow_split=lambda a,b,m,n,k,r,key,target,t,dig,found,coord,variant:pow_call(v,a,b,m,n,key,target,t,dig,found,coord)
++   def log(line):
++    match=re.search(r'grid wall: ([\d.]+) s',line)
++    if match:times.append(float(match[1])*1000)
++   miner.mine_job(Pool(),pool_common.real_config(),bytes(80),0,'offline',8192,0,scheduler,bufs,dict(user=0,dev=0),None,log)
++   values=times[4:];mean=statistics.mean(values)
++   row=dict(variant=v,repeat=repeat,samples=len(values),median_ms=statistics.median(values),mean_ms=mean,p95_ms=float(np.percentile(values,95)),grids_sec=1000/mean,consensus_equivalent_ths=(2**46/1e12)*1000/mean)
++   row["samples_ms"]=values;results.append(row);print(json.dumps({k:x for k,x in row.items() if k!="samples_ms"}),flush=True)
++   for value in vars(bufs).values():
++    if isinstance(value,cc.DBuf):value.free()
++    elif isinstance(value,list):
++     for x in value:
++      if isinstance(x,cc.DBuf):x.free()
++ Path('artifacts/rank128-copycadence4-results.json').write_text(json.dumps(dict(resources=resources,measurements=results),indent=2)+'\n')
+diff --git a/tests/bench_rank128_bfirst.py b/tests/bench_rank128_bfirst.py
+new file mode 100644
+index 0000000..3bfac8c
+--- /dev/null
++++ b/tests/bench_rank128_bfirst.py
+@@ -0,0 +1,79 @@
++"""GPU0-only full-A-tile fast path R128 test. Production library is never replaced."""
++import os
++os.environ['CUDA_VISIBLE_DEVICES']='0'
++import argparse,ctypes as C,json,re,statistics,sys
++from pathlib import Path
++import numpy as np
++root=Path(__file__).resolve().parents[1];sys.path.insert(0,str(root/'python'))
++import cuda_capi as cc
++import miner_capi as miner
++import pool_common
++P,I=C.c_void_p,C.c_int
++lib=C.CDLL('/tmp/libpearl-rank128-bfirst.so')
++lib.bfirst_fold.argtypes=[I,P,P,I,I,P,P]
++lib.bfirst_pow.argtypes=[I,P,P,I,I,P,P,P,P,P,P]
++ref=C.CDLL(str(root/'artifacts/libpearl-rank.so'))
++ref.rank_pow.argtypes=[I,P,P,I,I,P,P,P,P,P,P]
++def pow_call(v,a,b,m,n,key,target,t,d=None,f=None,c=None):
++ cc._chk(lib.bfirst_pow(v,cc._as(a),cc._as(b),m,n,cc._as(key),cc._as(target),cc._as(t),cc._as(d),cc._as(f),cc._as(c)),'bfirst pow')
++p=argparse.ArgumentParser();p.add_argument('mode',choices=['validate','bench','profile']);p.add_argument('--variant',type=int,default=0);p.add_argument('--small-only',action='store_true');args=p.parse_args()
++resources={}
++for v in (0,1):
++ info=np.zeros(5,np.int32);cc._chk(lib.bfirst_fold(v,None,None,8192,8192,None,info.ctypes.data),'info');resources[v]=info.tolist()
++print('resources',resources,flush=True)
++if args.mode=='validate':
++ results=[]
++ for m,n in (((256,48),(256,272),(256,288),(256,384),(256,400)) if args.small_only else ((256,48),(256,272),(256,288),(256,384),(256,400),(8192,8192))):
++  for seed in (42,1234):
++   rng=np.random.default_rng(seed);alloc=[]
++   def buf(size):
++    x=cc.DBuf(size);alloc.append(x);return x
++   a,b=buf(m*4096),buf(n*4096);a.from_host(rng.integers(-128,128,(m,4096),np.int8));b.from_host(rng.integers(-128,128,(n,4096),np.int8))
++   key,target=buf(32),buf(32);key.from_host(rng.integers(0,256,32,np.uint8));target.memset(0)
++   t,d=buf(m*n//256*64),buf(m*n//256*32)
++   cc._chk(ref.rank_pow(128,a.ptr,b.ptr,m,n,key.ptr,target.ptr,t.ptr,d.ptr,None,None),'frozen')
++   expected_t=np.empty(m*n//256*16,np.uint32);expected_d=np.empty(m*n//256*32,np.uint8)
++   t.to_host(expected_t);d.to_host(expected_d)
++   for v in (0,1):
++    t.memset(0xa5);d.memset(0xa5);pow_call(v,a,b,m,n,key,target,t,d)
++    actual_t=np.empty_like(expected_t);actual_d=np.empty_like(expected_d);t.to_host(actual_t);d.to_host(actual_d)
++    assert np.array_equal(actual_t,expected_t),(v,m,n,seed,'transcript')
++    assert np.array_equal(actual_d,expected_d),(v,m,n,seed,'digest')
++    row=dict(variant=v,m=m,n=n,seed=seed,transcript_pass=True,digest_pass=True);results.append(row);print('PASS',row,flush=True)
++   for x in alloc:x.free()
++ Path('artifacts/rank128-bfirst-correctness-small.json' if args.small_only else 'artifacts/rank128-bfirst-correctness.json').write_text(json.dumps(results,indent=2)+'\n')
++elif args.mode=='profile':
++ a,b,t=cc.DBuf(8192*4096),cc.DBuf(8192*4096),cc.DBuf(512*512*64)
++ rng=np.random.default_rng(42)
++ for x in (a,b):x.from_host(rng.integers(-128,128,(8192,4096),np.int8))
++ for _ in range(40):
++  cc._chk(lib.bfirst_fold(args.variant,a.ptr,b.ptr,8192,8192,t.ptr,None),'profile');cc.sync()
++else:
++ assert resources[1][3]==1 and resources[1][4]==0,resources
++ miner.PROOF_PROCESS=False;miner.R=pool_common.R=128
++ class Pool:
++  def check_newer_job(self,job):return None
++ class Scheduler:
++  mode='user'
++  def __init__(self):self.grids=0
++  def note(self,elapsed):pass
++  def maybe_switch(self):self.grids+=1;return self.grids>=44
++ original_setup=cc.setup_job;results=[]
++ for repeat in range(2):
++  for v in ((0,1) if repeat==0 else (1,0)):
++   scheduler=Scheduler();times=[];bufs=miner.Bufs(8192)
++   cc.setup_job=lambda *a:original_setup(*a[:-1],202610070000+scheduler.grids)
++   cc.pearl_pow_split=lambda a,b,m,n,k,r,key,target,t,dig,found,coord,variant:pow_call(v,a,b,m,n,key,target,t,dig,found,coord)
++   def log(line):
++    match=re.search(r'grid wall: ([\d.]+) s',line)
++    if match:times.append(float(match[1])*1000)
++   miner.mine_job(Pool(),pool_common.real_config(),bytes(80),0,'offline',8192,0,scheduler,bufs,dict(user=0,dev=0),None,log)
++   values=times[4:];mean=statistics.mean(values)
++   row=dict(variant=v,repeat=repeat,samples=len(values),median_ms=statistics.median(values),mean_ms=mean,p95_ms=float(np.percentile(values,95)),grids_sec=1000/mean,consensus_equivalent_ths=(2**46/1e12)*1000/mean)
++   row["samples_ms"]=values;results.append(row);print(json.dumps({k:x for k,x in row.items() if k!="samples_ms"}),flush=True)
++   for value in vars(bufs).values():
++    if isinstance(value,cc.DBuf):value.free()
++    elif isinstance(value,list):
++     for x in value:
++      if isinstance(x,cc.DBuf):x.free()
++ Path('artifacts/rank128-bfirst-results.json').write_text(json.dumps(dict(resources=resources,measurements=results),indent=2)+'\n')
+diff --git a/tools/profile_copyfinal_stalls.sh b/tools/profile_copyfinal_stalls.sh
+new file mode 100644
+index 0000000..561ca72
+--- /dev/null
++++ b/tools/profile_copyfinal_stalls.sh
+@@ -0,0 +1,40 @@
++#!/usr/bin/env bash
++# Offline GPU0 only: accepted R128 vs latest validated copywalk-fulla kernel.
++# Requires counter access. Validated for Nsight Compute2024.3.2 CLI.
++set -euo pipefail
++cd "$(dirname "$0")/.."
++if [[ $EUID -ne 0 ]]; then
++ echo 'Hardware counters require root: sudo bash tools/profile_copyfinal_stalls.sh' >&2
++ exit 1
++fi
++GPU_UUID=$(nvidia-smi -i 0 --query-gpu=uuid --format=csv,noheader)
++APPS=$(nvidia-smi --query-compute-apps=gpu_uuid --format=csv,noheader)
++if [[ "$APPS" == *"$GPU_UUID"* ]]; then echo 'GPU0 already has a compute process' >&2; exit 1; fi
++export CUDA_VISIBLE_DEVICES=0
++
++PROFILE_OUT="${PROFILE_OUT:-$(mktemp -d /tmp/pearl-copyfinal-stalls.XXXXXX)}"
++printf '%s\n' "$PROFILE_OUT" > /tmp/pearl-copyfinal-stalls-last.txt
++chmod 644 /tmp/pearl-copyfinal-stalls-last.txt
++mkdir -p "$PROFILE_OUT"
++METRICS='gpu__time_duration.sum,dram__bytes.sum,lts__t_bytes.sum,sm__sass_data_bytes_mem_shared_op_ldsm.sum,lts__throughput.avg.pct_of_peak_sustained_elapsed,smsp__warp_issue_stalled_barrier_per_warp_active.pct,smsp__warp_issue_stalled_long_scoreboard_per_warp_active.pct,smsp__warp_issue_stalled_short_scoreboard_per_warp_active.pct,smsp__warp_issue_stalled_math_pipe_throttle_per_warp_active.pct,sm__pipe_tensor_op_imma_cycles_active_v2.avg.pct_of_peak_sustained_active'
++for VARIANT in 0 1; do
++  REPORT="$PROFILE_OUT/v$VARIANT"
++  if [[ ! -s "$REPORT.ncu-rep" ]]; then
++  /usr/local/cuda/bin/ncu --devices 0 --clock-control none \
++    --replay-mode application --cache-control none --kernel-name-base demangled \
++    --kernel-name 'regex:.*(pearl_rank128|rank128_copyfollow_fulla_fast).*::kernel.*' \
++    --launch-skip 32 --launch-count 3 --metrics "$METRICS" \
++    --section SourceCounters --section SchedulerStats --section WarpStateStats \
++    --warp-sampling-interval auto --warp-sampling-max-passes 5 --import-source yes \
++    -o "$REPORT" "$PWD/.venv/bin/python" tests/bench_rank128_copyfinal.py profile --variant "$VARIANT" \
++    > "$REPORT.log" 2>&1
++  else
++    printf 'Reusing existing report: %s\n' "$REPORT.ncu-rep"
++  fi
++  /usr/local/cuda/bin/ncu --import "$REPORT.ncu-rep" --page raw --print-units base --csv > "$REPORT.raw.csv"
++  /usr/local/cuda/bin/ncu --import "$REPORT.ncu-rep" --page source --print-source sass --csv > "$REPORT.sass.csv"
++done
++"$PWD/.venv/bin/python" tools/analyze_instruction_stalls.py "$PROFILE_OUT"/v*.sass.csv --output "$PROFILE_OUT/pc-stalls.json"
++"$PWD/.venv/bin/python" tools/analyze_ada_ws.py "$PROFILE_OUT" --variants 0 1 --useful-mma 67108864
++chmod -R a+rX "$PROFILE_OUT"
++printf 'Reports: %s\n' "$PROFILE_OUT"

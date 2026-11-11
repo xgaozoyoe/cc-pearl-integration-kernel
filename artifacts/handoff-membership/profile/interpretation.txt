@@ -1,0 +1,19 @@
+Capture: /tmp/pearl-handoff-membership.nGuQRv
+Hashes verified. Three profiled launches/variant, same metrics/replay/cache/clock policy; same67633152dynamic IMMA/launch.
+Compare masked_control versus rows6 to remove initialization trampoline as a confound. Native and control IMMA/cycle differ by0.0207%.
+native {"kernel_ns": 1144682.6666666667, "tensor_pct": 85.77666666666667, "l2_util_pct": 48.77, "l2_bytes": 2533951317.3333335, "barrier_pct": 14.276666666666666, "long_scoreboard_pct": 2.8233333333333333, "short_scoreboard_pct": 7.68, "math_throttle_pct": 40.92666666666667, "eligible_warps_per_scheduler": 0.36, "active_warps_per_scheduler": 3.0, "issued_warps_per_cycle": 0.24}
+L2bytes/usefulMMA=37.75881703694662
+masked_control {"kernel_ns": 1145024.0, "tensor_pct": 85.75, "l2_util_pct": 48.766666666666666, "l2_bytes": 2534121557.3333335, "barrier_pct": 14.23, "long_scoreboard_pct": 2.8133333333333335, "short_scoreboard_pct": 7.68, "math_throttle_pct": 40.983333333333334, "eligible_warps_per_scheduler": 0.36, "active_warps_per_scheduler": 3.0, "issued_warps_per_cycle": 0.24}
+L2bytes/usefulMMA=37.76135381062826
+rows6 {"kernel_ns": 1232533.3333333333, "tensor_pct": 79.08666666666667, "l2_util_pct": 45.12, "l2_bytes": 2534014314.6666665, "barrier_pct": 12.04, "long_scoreboard_pct": 1.89, "short_scoreboard_pct": 6.35, "math_throttle_pct": 49.28333333333333, "eligible_warps_per_scheduler": 0.35, "active_warps_per_scheduler": 3.0, "issued_warps_per_cycle": 0.22}
+L2bytes/usefulMMA=37.759755770365395
+Rows6 vs matched control: time+7.6426%,IMMA/elapsedSMcycle-7.6305%
+Key PC attribution: additional math throttle concentrates at0x1530 and0x1250 (IMMA), not at the late barrier blocking PC0x2a30.
+0x1530: first IMMA after second-half operand loads0x14a0..0x1520.0x1250: second IMMA in a B-half consumer sequence. Same instructions/operands in both variants.
+Barrier stall14.23->12.04%; math throttle40.98->49.28%; tensor85.75->79.09%; issued warps0.24->0.22; eligible0.36->0.35; active3->3 warps/scheduler.
+L2bytes/usefulMMA37.7614->37.7598: no material change in measured operand traffic.
+Interpretation: grouping changes temporal issue contention/readiness even with identical code and work. A smaller barrier-stall fraction is not sufficient for higher throughput.
+Hypothesis, not established cause: rows6 aligns cohorts with scheduler/operand issue phases, creating more burst contention and poorer temporal coverage. Aggregate counters do not prove physical warp-to-scheduler mapping, the precise shared pipeline conflict, or an issue timeline.
+Math throttle indicates issue-side pressure; it is not a direct measure of useful Tensor Core saturation. Stall shares are not additive runtime components.
+Do not attribute the unlocked5.6% gap to barrier latency. Under this profile policy the gap is7.64% wall time and7.63% lower normalized IMMA rate.
+Recommendation: preserve fastest8+4, use instruction-level issue/readiness diagnostics rather than treating lower barrier stall or more groups as an optimization target. No production changes.

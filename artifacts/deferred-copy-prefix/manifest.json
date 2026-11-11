@@ -1,0 +1,23 @@
+{
+  "description": "Shared writes/reads remain after synchronization. Late sync spans33common+23copy-prep instructions; paths preserve final K copy skip and final exit.",
+  "variants": {
+    "native": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "104c0c1b265260dea5c9ab0bb174ebbbe7ee9cceb0cf0acebf2a9d1dfa4d50aa",
+      "smem": 69632,
+      "correct": true
+    },
+    "matched_control": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "a10591995bee5cab7352cb68df0186412076cc09a39f21cd1e0ef619b2289422",
+      "smem": 69632,
+      "correct": true
+    },
+    "late_copy_sync": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "7796d7f3bb80ce33c50337924bd81e4ffadaa5ea4ae7251017ac2726aacf0cce",
+      "smem": 69632,
+      "correct": true
+    }
+  }
+}

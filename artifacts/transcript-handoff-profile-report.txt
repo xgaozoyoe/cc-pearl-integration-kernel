@@ -1,0 +1,30 @@
+Capture: /tmp/pearl-transcript-handoff.RwOpYO
+All input hashes match;3 launches/variant;67,633,152 IMMA each.
+
+variant  kernel_ms  tensor%  barrier% shortSB% IMMA/SMcycle dynamic_instructions poll_checks/warp/K64
+baseline  1.040832  78.747   12.793   7.337   0.191689886   298571136  0.0000
+late      1.125173  71.843   0.120   14.147   0.174901059   391451084  9.5078
+overlap   1.080875  75.690   0.220   12.310   0.184256568   382187248  8.0468
+
+Overlap IMMA/cycle vs baseline: -3.8778%.
+Overlap IMMA/cycle vs late: +5.3490%.
+Overlap total dynamic instructions vs baseline: +28.0054%.
+Overlap polling loop instructions/kernel: 51021424; polling accounts for 66.731% of short-scoreboard samples.
+Effective SM GHz baseline/late/overlap: 2.648322/2.684960/2.653097.
+
+Polling loop:
+0x2c00 LDS R112,[0x11004]
+0x2c10 R2UR UR8,R112
+0x2c20 ULOP3.LUT phase test
+0x2c30 PLOP3.LUT predicate transfer
+0x2c40 NOP
+0x2c50 conditional BRA back to0x2c00
+
+Interpretation: earlier arrival helps the new mechanism (+5.35% IMMA/cycle vs late), but does not beat native baseline.
+Polling adds substantial dynamic instruction work and a serial shared-load -> register-transfer -> predicate chain.
+Eligible and issued warp metrics rise while useful Tensor issue falls: more issued instructions are not necessarily useful MMA.
+L2 bytes/useful MMA stays37.758..37.759; register count168,zero spill,1CTA/SM unchanged.
+No sampled membar stalls; do not assert MEMBAR/ATOMS dominates elapsed time from their presence alone.
+Samples are not wall-time fractions. This evidence identifies polling as a major new cost but does not assign all slowdown exclusively to it.
+Next experiment should reduce polling/checking work or use a cheaper safe handoff. Do not keep advancing arrival without controlling its waiting cost.
+All prior transcript/digest checks and2025.2.1 memcheck/racecheck passed; production libraries unchanged.

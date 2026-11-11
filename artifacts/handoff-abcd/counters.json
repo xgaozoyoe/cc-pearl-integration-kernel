@@ -1,0 +1,52 @@
+{
+  "A": {
+    "sm__cycles_elapsed.avg.per_second": 2232901324.9700003,
+    "gpu__time_duration.sum": 1233504.0,
+    "smsp__inst_executed_pipe_alu.sum": 119423104.0,
+    "smsp__inst_executed_pipe_tensor.sum": 67633152.0,
+    "smsp__inst_executed_pipe_tensor_v2.sum": 67633152.0,
+    "smsp__warps_eligible.avg.per_cycle_active": 0.32,
+    "smsp__warp_issue_stalled_math_pipe_throttle_per_warp_active.pct": 45.39666666666667,
+    "smsp__warp_issue_stalled_barrier_per_warp_active.pct": 12.79
+  },
+  "B": {
+    "sm__cycles_elapsed.avg.per_second": 2232967652.6433334,
+    "gpu__time_duration.sum": 1211520.0,
+    "smsp__inst_executed_pipe_alu.sum": 121569664.0,
+    "smsp__inst_executed_pipe_tensor.sum": 67633152.0,
+    "smsp__inst_executed_pipe_tensor_v2.sum": 67633152.0,
+    "smsp__warps_eligible.avg.per_cycle_active": 0.36,
+    "smsp__warp_issue_stalled_math_pipe_throttle_per_warp_active.pct": 49.093333333333334,
+    "smsp__warp_issue_stalled_barrier_per_warp_active.pct": 10.123333333333333
+  },
+  "C0": {
+    "sm__cycles_elapsed.avg.per_second": 2230470726.3566666,
+    "gpu__time_duration.sum": 1207669.3333333333,
+    "smsp__inst_executed_pipe_alu.sum": 121569664.0,
+    "smsp__inst_executed_pipe_tensor.sum": 67633152.0,
+    "smsp__inst_executed_pipe_tensor_v2.sum": 67633152.0,
+    "smsp__warps_eligible.avg.per_cycle_active": 0.36,
+    "smsp__warp_issue_stalled_math_pipe_throttle_per_warp_active.pct": 49.45666666666666,
+    "smsp__warp_issue_stalled_barrier_per_warp_active.pct": 10.033333333333333
+  },
+  "C": {
+    "sm__cycles_elapsed.avg.per_second": 2228514208.4700003,
+    "gpu__time_duration.sum": 1206037.3333333333,
+    "smsp__inst_executed_pipe_alu.sum": 121569664.0,
+    "smsp__inst_executed_pipe_tensor.sum": 67633152.0,
+    "smsp__inst_executed_pipe_tensor_v2.sum": 67633152.0,
+    "smsp__warps_eligible.avg.per_cycle_active": 0.36,
+    "smsp__warp_issue_stalled_math_pipe_throttle_per_warp_active.pct": 51.593333333333334,
+    "smsp__warp_issue_stalled_barrier_per_warp_active.pct": 9.836666666666666
+  },
+  "D": {
+    "sm__cycles_elapsed.avg.per_second": 2230705951.003333,
+    "gpu__time_duration.sum": 1211594.6666666667,
+    "smsp__inst_executed_pipe_alu.sum": 118448896.0,
+    "smsp__inst_executed_pipe_tensor.sum": 67633152.0,
+    "smsp__inst_executed_pipe_tensor_v2.sum": 67633152.0,
+    "smsp__warps_eligible.avg.per_cycle_active": 0.36,
+    "smsp__warp_issue_stalled_math_pipe_throttle_per_warp_active.pct": 49.089999999999996,
+    "smsp__warp_issue_stalled_barrier_per_warp_active.pct": 10.113333333333333
+  }
+}

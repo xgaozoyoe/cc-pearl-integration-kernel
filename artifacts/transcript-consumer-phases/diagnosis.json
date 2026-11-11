@@ -1,0 +1,113 @@
+{
+  "resources": {
+    "control": [
+      168,
+      48,
+      0,
+      1
+    ],
+    "phases": [
+      168,
+      48,
+      0,
+      1
+    ]
+  },
+  "records": [
+    {
+      "name": "control",
+      "repeat": 0,
+      "launch_wall_ms": 3.8979128003120422
+    },
+    {
+      "name": "control",
+      "repeat": 1,
+      "launch_wall_ms": 3.885960206389427
+    },
+    {
+      "name": "control",
+      "repeat": 2,
+      "launch_wall_ms": 3.8907602429389954
+    },
+    {
+      "name": "control",
+      "repeat": 3,
+      "launch_wall_ms": 3.8868505507707596
+    },
+    {
+      "name": "control",
+      "repeat": 4,
+      "launch_wall_ms": 3.8904696702957153
+    },
+    {
+      "name": "phases",
+      "repeat": 0,
+      "launch_wall_ms": 3.881644457578659,
+      "mean_cycles_per_task": {
+        "total": 591.4861308289766,
+        "ready": 168.99068330854516,
+        "load_issue": 27.81615203037678,
+        "free": 17.758310610840695,
+        "reduce": 118.67570355222043,
+        "update": 133.65562513145244,
+        "other": 124.58965619554114
+      }
+    },
+    {
+      "name": "phases",
+      "repeat": 1,
+      "launch_wall_ms": 3.9054471999406815,
+      "mean_cycles_per_task": {
+        "total": 591.445960842197,
+        "ready": 168.96308158313803,
+        "load_issue": 27.80951509073974,
+        "free": 17.74594281443423,
+        "reduce": 118.67772604185446,
+        "update": 133.66648216378223,
+        "other": 124.5832131482483
+      }
+    },
+    {
+      "name": "phases",
+      "repeat": 2,
+      "launch_wall_ms": 3.906017169356346,
+      "mean_cycles_per_task": {
+        "total": 591.4937555397813,
+        "ready": 168.97862536431103,
+        "load_issue": 27.82039794408389,
+        "free": 17.763898747821646,
+        "reduce": 118.67658193618172,
+        "update": 133.674870237666,
+        "other": 124.57938130971696
+      }
+    },
+    {
+      "name": "phases",
+      "repeat": 3,
+      "launch_wall_ms": 3.9158444851636887,
+      "mean_cycles_per_task": {
+        "total": 591.4566746852653,
+        "ready": 168.9664542770867,
+        "load_issue": 27.811976068144943,
+        "free": 17.749167624391564,
+        "reduce": 118.6753040307073,
+        "update": 133.66811264347095,
+        "other": 124.58566004146385
+      }
+    },
+    {
+      "name": "phases",
+      "repeat": 4,
+      "launch_wall_ms": 3.903564065694809,
+      "mean_cycles_per_task": {
+        "total": 591.4761611005949,
+        "ready": 168.97753524803196,
+        "load_issue": 27.813596219427918,
+        "free": 17.75884721846644,
+        "reduce": 118.67788847950844,
+        "update": 133.66379630881556,
+        "other": 124.58449762634457
+      }
+    }
+  ]
+}

@@ -1,0 +1,147 @@
+--- /dev/null
++++ b/tools/profile_peakminer_gpu1.sh
+@@ -0,0 +1,48 @@
++#!/usr/bin/env bash
++# Short CUDA timeline capture. Does not stop existing miners or change clocks.
++set -euo pipefail
++cd "$(dirname "$0")/.."
++# Keep device numbering identical to the verified --devices 1 mining command.
++unset CUDA_VISIBLE_DEVICES CUDA_DEVICE_ORDER
++PEAK_BIN=/home/xgao/peakminer/peakminer
++[[ -x "$PEAK_BIN" ]] || { echo "Missing $PEAK_BIN" >&2; exit 1; }
++GPU_UUID=$(nvidia-smi -i 1 --query-gpu=uuid --format=csv,noheader)
++APPS=$(nvidia-smi --query-compute-apps=gpu_uuid,pid,process_name --format=csv,noheader)
++if printf '%s\n' "$APPS" | grep -F "$GPU_UUID"; then
++  echo 'GPU 1 is busy. Stop only its PeakMiner with Ctrl+C, then rerun. GPU 2 stays running.' >&2
++  exit 2
++fi
++PROFILE_OUT=$(mktemp -d /tmp/pearl-peakminer-profile.XXXXXX)
++chmod 755 "$PROFILE_OUT"
++printf 'Reports: %s\n' "$PROFILE_OUT"
++printf '%s\n' "$PROFILE_OUT" > /tmp/pearl-peakminer-last-profile.txt
++chmod 644 /tmp/pearl-peakminer-last-profile.txt
++sha256sum "$PEAK_BIN" > "$PROFILE_OUT/binary.sha256"
++nvidia-smi --query-gpu=index,uuid,pci.bus_id,temperature.gpu,power.draw,power.limit,clocks.sm,clocks.mem --format=csv > "$PROFILE_OUT/gpus-before.csv"
++# Target process tree only; CPU/system-wide sampling disabled. 20s warmup +20s trace.
++# Use a distinct pool worker and disable HTTP API to avoid port conflicts.
++set +e
++timeout --signal=TERM --kill-after=10s 90s /usr/local/cuda/bin/nsys profile \
++  --trace=cuda,nvtx --sample=none --cpuctxsw=none \
++  --delay="${PROFILE_DELAY:-20}" --duration=20 --kill=sigterm --wait=all \
++  --output="$PROFILE_OUT/peakminer" \
++  "$PEAK_BIN" --coin pearl --devices 1 \
++  -o pearl-eu2.luckypool.io:3360 \
++  -u prl1pp2fh58veqcg8x6g3msx0hshznkml6l2q9ev5efj5tsjzjcc2fm6q58xfw9 \
++  -w peakminer-gpu1-profile --api-port 0 --log-file "$PROFILE_OUT/miner.log" \
++  > "$PROFILE_OUT/nsys.log" 2>&1
++STATUS=$?
++set -e
++printf '%s\n' "$STATUS" > "$PROFILE_OUT/exit-status.txt"
++nvidia-smi --query-compute-apps=gpu_uuid,pid,process_name --format=csv > "$PROFILE_OUT/processes-after.csv"
++if [[ ! -s "$PROFILE_OUT/peakminer.nsys-rep" ]]; then
++  tail -60 "$PROFILE_OUT/nsys.log"
++  echo "No trace generated. Keep logs for diagnosis: $PROFILE_OUT" >&2
++  exit 3
++fi
++/usr/local/cuda/bin/nsys export --type sqlite --output "$PROFILE_OUT/peakminer.sqlite" "$PROFILE_OUT/peakminer.nsys-rep" > "$PROFILE_OUT/export.log" 2>&1
++/usr/local/cuda/bin/nsys stats --report cuda_gpu_kern_sum,cuda_gpu_kern_gb_sum,cuda_gpu_mem_time_sum,cuda_api_sum \
++  --format csv "$PROFILE_OUT/peakminer.sqlite" > "$PROFILE_OUT/summary.csv" 2> "$PROFILE_OUT/stats.log"
++python3 tools/analyze_peakminer_trace.py "$PROFILE_OUT/peakminer.sqlite" > "$PROFILE_OUT/kernels.json"
++chmod -R a+rX "$PROFILE_OUT"
++printf 'Capture complete: %s\nResume your normal GPU1 command after checking processes-after.csv.\n' "$PROFILE_OUT"
+--- /dev/null
++++ b/tools/analyze_peakminer_trace.py
+@@ -0,0 +1,23 @@
++"""Read-only Nsight Systems kernel inventory; no per-grid TH/s inference."""
++import json, sqlite3, sys
++from pathlib import Path
++path = Path(sys.argv[1]).resolve()
++con = sqlite3.connect(path.as_uri() + '?mode=ro', uri=True)
++tables = {r[0] for r in con.execute("SELECT name FROM sqlite_master WHERE type='table'")}
++if 'CUPTI_ACTIVITY_KIND_KERNEL' not in tables:
++    raise SystemExit('No CUDA kernels recorded; profiling injection may not have reached the GPU process.')
++cols = {r[1] for r in con.execute('PRAGMA table_info(CUPTI_ACTIVITY_KIND_KERNEL)')}
++name = next((x for x in ('demangledName', 'shortName', 'mangledName') if x in cols), None)
++if not name or 'StringIds' not in tables:
++    raise SystemExit('Unknown Nsight kernel name schema; inspect SQLite manually.')
++fields = [x for x in ('deviceId','contextId','gridX','gridY','gridZ','blockX','blockY','blockZ','registersPerThread','staticSharedMemory','dynamicSharedMemory') if x in cols]
++select = ','.join('k.'+f for f in fields)
++query = ('SELECT s.value, '+select+', COUNT(*), SUM(k.end-k.start), AVG(k.end-k.start) '
++         'FROM CUPTI_ACTIVITY_KIND_KERNEL k JOIN StringIds s ON s.id=k.'+name+
++         ' GROUP BY s.value,'+select+' ORDER BY SUM(k.end-k.start) DESC')
++rows=[]
++for row in con.execute(query):
++    result={'kernel':row[0], **dict(zip(fields,row[1:1+len(fields)])),
++            'launches':row[-3], 'sum_kernel_ms':row[-2]/1e6, 'mean_kernel_ms':row[-1]/1e6}
++    rows.append(result)
++print(json.dumps({'note':'Summed kernel durations may overlap; not full-grid wall time or useful MMA counts.', 'kernels':rows},indent=2))
+--- /dev/null
++++ b/tools/run_peakminer_capture.py
+@@ -0,0 +1,39 @@
++"""Temporarily replace only the known GPU1 PeakMiner worker with a bounded trace."""
++import os, signal, subprocess, time
++from pathlib import Path
++ROOT=Path(__file__).resolve().parents[1]
++BIN='/home/xgao/peakminer/peakminer'
++CMD=[BIN,'--coin','pearl','--devices','1','-o','pearl-eu2.luckypool.io:3360','-u','prl1pp2fh58veqcg8x6g3msx0hshznkml6l2q9ev5efj5tsjzjcc2fm6q58xfw9','-w','peakminer-gpu1','--log-file','/tmp/peakminer-gpu1.log','--log-append']
++def matches():
++    result=[]
++    for p in Path('/proc').iterdir():
++        if not p.name.isdigit():continue
++        try:
++            a=p.joinpath('cmdline').read_bytes().decode().strip('\0').split('\0')
++            if not a or Path(a[0]).name!='peakminer':continue
++            if a[a.index('--devices')+1]=='1' and a[a.index('-w')+1]=='peakminer-gpu1':result.append(int(p.name))
++        except (OSError,ValueError,IndexError):continue
++    return result
++pids=matches()
++if not pids:raise SystemExit('Expected GPU1 worker not found; refusing automatic restart sequence.')
++print('Stopping exact GPU1 worker PIDs:',pids,flush=True)
++for pid in pids:
++    try:os.kill(pid,signal.SIGINT)
++    except ProcessLookupError:pass
++for _ in range(40):
++    if not matches():break
++    time.sleep(.25)
++if matches():raise SystemExit('GPU1 worker did not stop gracefully; no force kill or second launch attempted.')
++try:
++    subprocess.run(['bash',str(ROOT/'tools/profile_peakminer_gpu1.sh')],cwd=ROOT,check=True,timeout=120)
++finally:
++    # Profile script checks device occupancy. Recheck before restoring normal mining.
++    uuid=subprocess.check_output(['nvidia-smi','-i','1','--query-gpu=uuid','--format=csv,noheader'],text=True).strip()
++    apps=subprocess.check_output(['nvidia-smi','--query-compute-apps=gpu_uuid,pid','--format=csv,noheader'],text=True)
++    if uuid in apps:
++        print('GPU1 still occupied; did not start a duplicate. Check nvidia-smi.',flush=True)
++    else:
++        env=os.environ.copy();env.pop('CUDA_VISIBLE_DEVICES',None);env.pop('CUDA_DEVICE_ORDER',None)
++        with open('/tmp/peakminer-gpu1-restored-console.log','ab') as f:
++            p=subprocess.Popen(CMD,cwd='/home/xgao/peakminer',env=env,stdin=subprocess.DEVNULL,stdout=f,stderr=subprocess.STDOUT,start_new_session=True)
++        print('Normal GPU1 mining restored, launcher PID',p.pid,'console /tmp/peakminer-gpu1-restored-console.log',flush=True)
+--- /dev/null
++++ b/tools/profile_peakminer_gpu1_metrics.sh
+@@ -0,0 +1,25 @@
++#!/usr/bin/env bash
++# External GPU1 metrics. Leaves the running PeakMiner and GPU2 miner intact.
++set -euo pipefail
++if [[ ${EUID} -ne 0 ]]; then
++  echo 'GPU hardware counters require root on this host (RmProfilingAdminOnly=1).' >&2
++  echo 'Run: sudo bash tools/profile_peakminer_gpu1_metrics.sh' >&2
++  exit 1
++fi
++unset CUDA_VISIBLE_DEVICES CUDA_DEVICE_ORDER
++OUT=$(mktemp -d /tmp/pearl-peakminer-gpu1-metrics.XXXXXX)
++chmod 755 "$OUT"
++printf 'Report directory: %s\n' "$OUT"
++printf '%s\n' "$OUT" > /tmp/pearl-peakminer-last-metrics.txt
++chmod 644 /tmp/pearl-peakminer-last-metrics.txt
++curl -fsS --max-time 5 http://127.0.0.1:4068/summary > "$OUT/miner-before.json"
++nvidia-smi -i 1 --query-gpu=index,uuid,temperature.gpu,power.draw,clocks.sm,clocks.mem --format=csv > "$OUT/gpu-before.csv"
++# No CUDA injection into the miner: /bin/sleep is the only launched target.
++# All selected GPU metrics are device-wide; cannot attribute them to kernel PCs.
++/usr/local/cuda/bin/nsys profile --trace=none --sample=none --cpuctxsw=none \
++  --gpu-metrics-devices=1 --gpu-metrics-frequency=1000 \
++  --duration=30 --output="$OUT/gpu1" /bin/sleep 32 > "$OUT/nsys.log" 2>&1
++/usr/local/cuda/bin/nsys export --type sqlite --output "$OUT/gpu1.sqlite" "$OUT/gpu1.nsys-rep" > "$OUT/export.log" 2>&1
++curl -fsS --max-time 5 http://127.0.0.1:4068/summary > "$OUT/miner-after.json"
++chmod -R a+rX "$OUT"
++printf 'Complete: %s\n' "$OUT"

@@ -1,0 +1,100 @@
+"""GPU0 offline region-size sweep of frozen v121. No production edits."""
+import os
+os.environ["CUDA_VISIBLE_DEVICES"]="0"
+import argparse,ctypes as C,json,re,sys,subprocess
+from pathlib import Path
+import numpy as np
+root=Path(__file__).resolve().parents[1];sys.path.insert(0,str(root/"python"))
+import cuda_capi as cc
+import miner_capi as miner
+from pool_common import real_config
+p=argparse.ArgumentParser();p.add_argument("mode",choices=["validate","bench"]);args=p.parse_args()
+P=C.c_void_p;I=C.c_int
+lib=C.CDLL("/tmp/libpearl-ada-linear-copy.so")
+lib.trial_pow.argtypes=[I,P,P,I,I,I,I,P,P,P,P,P,P]
+lib.trial_info.argtypes=[I,P]
+info=np.zeros(5,np.int32);cc._chk(lib.trial_info(121,info.ctypes.data),"info")
+assert info.tolist()==[168,384,69632,1,0],info
+print("resources",info.tolist(),flush=True)
+def pow(a,b,m,n,key,target,t,dig=None,found=None,coord=None):
+ cc._chk(lib.trial_pow(121,cc._as(a),cc._as(b),m,n,4096,256,cc._as(key),cc._as(target),cc._as(t),
+                      cc._as(dig),cc._as(found),cc._as(coord)),"v121")
+if args.mode=="validate":
+ results=[]
+ for rs in (8192,16384,32768):
+  rng=np.random.default_rng(rs)
+  da,db=cc.DBuf(rs*4096),cc.DBuf(rs*4096)
+  da.from_host(rng.integers(-128,128,(rs,4096),np.int8))
+  db.from_host(rng.integers(-128,128,(rs,4096),np.int8))
+  key,target=cc.DBuf(32),cc.DBuf(32)
+  key.from_host(rng.integers(0,256,32,np.uint8));target.memset(0)
+  h=rs//16
+  t,d=cc.DBuf(h*h*64),cc.DBuf(h*h*32)
+  pow(da,db,rs,rs,key,target,t,d);cc.sync()
+  ht=np.empty((h,h,16),np.uint32);hd=np.empty((h,h,32),np.uint8)
+  t.to_host(ht);d.to_host(hd)
+  small_t,small_d=cc.DBuf(256*256*64),cc.DBuf(256*256*32)
+  st=np.empty((256,256,16),np.uint32);sd=np.empty((256,256,32),np.uint8)
+  for r in range(0,rs,4096):
+   for c in range(0,rs,4096):
+    pow(da.offset(r*4096),db.offset(c*4096),4096,4096,key,target,small_t,small_d);cc.sync()
+    small_t.to_host(st);small_d.to_host(sd)
+    assert np.array_equal(ht[r//16:r//16+256,c//16:c//16+256],st),(rs,r,c,"transcript")
+    assert np.array_equal(hd[r//16:r//16+256,c//16:c//16+256],sd),(rs,r,c,"digest")
+  results.append(dict(region=rs,tiles=h*h,subregions=(rs//4096)**2,transcript_pass=True,digest_pass=True))
+  print("PASS",results[-1],flush=True)
+  for buf in (da,db,key,target,t,d,small_t,small_d):buf.free()
+ (root/"artifacts/ada-regions-correctness.json").write_text(json.dumps(results,indent=2)+"\n")
+else:
+ original_pow=cc.pearl_pow_split;original_setup=cc.setup_job
+ cc.pearl_pow_split=lambda a,b,m,n,k,r,key,target,t,dig,found,coord,variant:pow(a,b,m,n,key,target,t,dig,found,coord)
+ class Pool:
+  def check_newer_job(self,job):return None
+ class Scheduler:
+  mode="user"
+  def __init__(self):self.grids=0
+  def note(self,elapsed):pass
+  def maybe_switch(self):
+   self.grids+=1;return self.grids>=24
+ results=[]
+ try:
+  for repeat in range(2):
+   sizes=[4096,8192,16384,32768]
+   if repeat:sizes.reverse()
+   for rs in sizes:
+    count=[0]
+    def setup(*a):
+     seed=0x504541524c010000+repeat*24+count[0];count[0]+=1
+     return original_setup(*a[:-1],seed)
+    cc.setup_job=setup
+    times=[];reported=[];buf=miner.Bufs(rs)
+    def log(msg):
+     match=re.search(r"grid wall: ([\d.]+) s",msg)
+     if match:times.append(float(match[1])*1000)
+     match=re.search(r"grid \d+ done:.*\(([\d.]+) TH/s\)",msg)
+     if match:reported.append(float(match[1]))
+    try:
+     miner.mine_job(Pool(),real_config(),bytes(80),0,"offline-regions",rs,0,Scheduler(),buf,
+                    {"user":0,"dev":0},None,log)
+    finally:
+     for value in vars(buf).values():
+      if isinstance(value,cc.DBuf):value.free()
+      elif isinstance(value,list):
+       for v in value:v.free()
+    telemetry=subprocess.check_output(["nvidia-smi","-i","0","--query-gpu=clocks.sm,clocks.mem,temperature.gpu,power.draw,power.limit","--format=csv,noheader"],text=True).strip()
+    assert len(times)==24 and len(reported)==24
+    results.append(dict(run=repeat,region=rs,wall_ms=times,reported_search_THS=reported,telemetry=telemetry))
+    print(repeat,rs,"median",float(np.median(times[4:])),"TH/s",70.368744177664*1000/float(np.median(times[4:])),telemetry,flush=True)
+ finally:cc.pearl_pow_split=original_pow;cc.setup_job=original_setup
+ summary={}
+ for rs in (4096,8192,16384,32768):
+  vals=np.array([t for block in results if block["region"]==rs for t in block["wall_ms"][4:]])
+  assert len(vals)==40
+  med=float(np.median(vals))
+  summary[str(rs)]=dict(median_ms=med,mean_ms=float(vals.mean()),p95_ms=float(np.percentile(vals,95)),
+   grids_per_sec=1000/med,effective_THS=70.368744177664*1000/med,
+   search_THS_median=float(np.median([v for b in results if b["region"]==rs for v in b["reported_search_THS"][4:]])))
+ (root/"artifacts/ada-regions-results.json").write_text(json.dumps(dict(summary=summary,results=results,
+  warmup_per_block=4,stable_per_run=20,runs=2,library=lib._name,variant=121,
+  includes="production generation, V3, noise, GEMM, transcript, PoW and jackpot checks; offline zero target; no network/proof submission"),indent=2)+"\n")
+ print(json.dumps(summary,indent=2),flush=True)

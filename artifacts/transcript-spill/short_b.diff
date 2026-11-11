@@ -1,0 +1,43 @@
+--- consumer_fine
++++ short_b
+@@ -1,6 +1,6 @@
+ #include <cuda_runtime.h>
+ #include <cstdint>
+-namespace transcript_tasks_consumer_fine {
++namespace transcript_spill_short_b {
+ constexpr int BM=256, BN=192, THREADS=384;
+ constexpr int WORDS=(BM/16)*(BN/16)*16;
+ struct Fragment { unsigned v[4]; };
+@@ -168,7 +168,7 @@
+         }
+     } else {
+     unsigned c[4][Groups][2][4]={};
+-    Fragment ar[4], br[Lead+1];
++    Fragment ar[4], br[1];
+     #pragma unroll
+     for(int p=0;p<Stages-1;++p)
+         stage_copy<TileK,Planar,UnrollCopy,FixedCopy,Layout>(a,b,sa+p*BM*TileK,sb+p*BN*TileK,cm,cn,p,m,n,k);
+@@ -209,19 +209,19 @@
+         #pragma unroll
+         for(int row=0;row<4;++row) ar[row]=load16x32<TileK,Planar,Layout>(aa,wm*64+row*16,0,lane,BM);
+         #pragma unroll
+-        for(int p=0;p<Lead;++p) br[p]=loadB16x32<TileK,Planar,PackedB,Layout>(bb,wn*WarpN+p*16,0,lane,BN);
++        for(int p=0;p<0;++p) br[p]=loadB16x32<TileK,Planar,PackedB,Layout>(bb,wn*WarpN+p*16,0,lane,BN);
+         #pragma unroll
+         for(int g=0;g<Groups*(TileK/32);++g) {
+-            constexpr int slots=Lead+1;
++            constexpr int slots=1;
+             int slice=g/Groups,group=g%Groups,slot=g%slots;
++            br[0]=loadB16x32<TileK,Planar,PackedB,Layout>(bb,wn*WarpN+group*16,slice*32,lane,BN);
+             if constexpr(TileK!=64) { if(kt*TileK+slice*32>=k) continue; }
+             #pragma unroll
+             for(int row=0;row<4;++row) {
+                 Fragment nextA;
+                 #pragma unroll
+                 for(int half=0;half<2;++half) {
+-                    if(half==0 && row==1 && g+Lead<Groups*(TileK/32) && (TileK==64 || kt*TileK+((g+Lead)/Groups)*32<k))
+-                        br[(g+Lead)%slots]=loadB16x32<TileK,Planar,PackedB,Layout>(bb,wn*WarpN+((g+Lead)%Groups)*16,((g+Lead)/Groups)*32,lane,BN);
++
+                     if(half==0 && slice+1<TileK/32 && (TileK==64 || kt*TileK+(slice+1)*32<k) && group==Groups-1) nextA=load16x32<TileK,Planar,Layout>(aa,wm*64+row*16,(slice+1)*32,lane,BM);
+                     mma<PackedB>(c[row][group][half],ar[row],br[slot],half);
+                     if(slice+1<TileK/32 && (TileK==64 || kt*TileK+(slice+1)*32<k) && group==Groups-1 && half==1)

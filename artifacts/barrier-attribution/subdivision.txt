@@ -1,0 +1,36 @@
+Static barrier subdivision audit; not a latency/performance prediction.
+Frozen SASS SHA256 104c0c1b265260dea5c9ab0bb174ebbbe7ee9cceb0cf0acebf2a9d1dfa4d50aa
+Current warp grid (A row group x B column group):
+w00 w04 w08
+w01 w05 w09
+w02 w06 w10
+w03 w07 w11
+Current copy ownership by logical64x64 operand block:
+A0: producers=[0, 1, 2, 3, 4, 5, 6, 7], consumers=[0, 4, 8]
+A1: producers=[0, 1, 2, 3, 8, 9, 10, 11], consumers=[1, 5, 9]
+A2: producers=[4, 5, 6, 7, 8, 9, 10, 11], consumers=[2, 6, 10]
+A3: producers=[0, 1, 2, 3, 4, 5, 6, 7], consumers=[3, 7, 11]
+B0: producers=[0, 1, 2, 3, 4, 5, 6, 7], consumers=[0, 1, 2, 3]
+B1: producers=[0, 1, 2, 3, 8, 9, 10, 11], consumers=[4, 5, 6, 7]
+B2: producers=[4, 5, 6, 7, 8, 9, 10, 11], consumers=[8, 9, 10, 11]
+
+All-to-all early-publication, one late-wait barrier per consumer group:
+groups | main-loop IDs with two alternating phases | warp-level barrier instructions/K/CTA | ordered pairs gated by own-group late completion
+[8, 4] | 4 | 24 | 68
+[6, 6] | 4 | 24 | 60
+[4, 4, 4] | 6 | 36 | 36
+[3, 3, 3, 3] | 8 | 48 | 24
+[2, 2, 2, 2, 2, 2] | 12 | 72 | 12
+
+Each warp arrives early on EVERY other group barrier, then syncs late on its own. Each barrier still counts384 threads.
+3 groups:24 early warp-arrivals +12 late warp-syncs vs baseline12+12; +50% barrier instructions, not +50% total runtime.
+IDs can use1..6, leaving0 for prologue/epilogue; alternating phases avoid immediate ID reuse.
+Safety invariant: before consuming next stage or overwriting old stage, all own-group warps have reached late sync and all other-group warps have published completed copies+reads.
+This preserves existing data reuse/28672 unique logical copy bytes per CTA/K64. Requires implementation validation and phase-reuse proof before use.
+Own-group late-peer pairs fall68->36 for8+4->4+4+4; this is dependency-edge count, NOT a predicted speedup.
+A/B split is different:4 A cohorts with3 consumers each;3 B cohorts with4 consumers each. Current producers span other cohorts.
+Previous remapped cohort_ab/cohort_ba used two sequential blocking barriers per warp. Intersection propagates late dependencies across all12 warps; do not repeat as a new design.
+Readiness and overwrite permission must both be protected.14 logical ready/free objects (7x2) would become28 if naively doubled by stage, exceeding16 named IDs.
+Do not infer fewer IDs suffice without a safe lifetime/reuse protocol. More named barriers alone does not reduce wait.
+Recommended next experiment: existing8+4 vs4+4+4 early-arrive/late-sync, same operands/layout/MMA, include same-structure compiled baseline and frozen-native comparison.
+Use2 extra early publication groups only if actual saved tail wait outweighs added arrive/ID instructions; no performance claim yet.

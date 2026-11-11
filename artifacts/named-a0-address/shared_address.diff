@@ -1,0 +1,83 @@
+--- publish_after_a
++++ shared_address
+@@ -1,6 +1,6 @@
+ #include <cuda_runtime.h>
+ #include <cstdint>
+-namespace named_a0_publish_after_a {
++namespace named_address_shared_address {
+ constexpr int BM=256, BN=192, THREADS=384;
+ constexpr int WORDS=(BM/16)*(BN/16)*16;
+ struct Fragment { unsigned v[4]; };
+@@ -55,7 +55,7 @@
+ }
+ template<int TileK,bool Planar,bool UnrollCopy=false,bool FixedCopy=false,int Layout=0>
+ __device__ __forceinline__ void stage_copy(const signed char* a,const signed char* b,
+-        signed char* sa,signed char* sb,int cm,int cn,int kt,int m,int n,int k) {
++        signed char* sa,signed char* sb,int cm,int cn,int kt,int m,int n,int k,unsigned handoff=0) {
+     if constexpr(FixedCopy) {
+         static_assert(TileK==64 && !Planar);
+         // Exact 384-thread assignment: A has 2 full rounds plus 256 lanes;
+@@ -93,6 +93,16 @@
+     int grA=cm*BM+row,grB=cn*BN+row;
+     unsigned offA=unsigned(grA)*unsigned(k)+unsigned(kt*64+col);
+     unsigned offB=unsigned(grB)*unsigned(k)+unsigned(kt*64+col);
++    if(kt>=2) {
++        if(threadIdx.x>=128 && threadIdx.x<256) {
++            unsigned free_id=1u+unsigned((kt-2)&1);
++            asm volatile("barrier.cta.sync %0,192;" :: "r"(free_id) : "memory");
++            const signed char* src=a+offA;
++            asm volatile("cp.async.cg.shared.global [%0],[%1],16,16;"
++                         :: "r"(dstA),"l"(src) : "memory");
++        }
++        asm volatile("bar.sync %0,384;" :: "r"(handoff) : "memory");
++    }
+     #pragma unroll
+     for(int j=0;j<3;++j) if(threadIdx.x+j*THREADS<BM*64/16) {
+         bool valid=true;
+@@ -112,18 +122,6 @@
+     asm volatile("cp.async.commit_group;");
+ }
+ 
+-// Offline experiment only; consult validation records before use.
+-__device__ __forceinline__ void early_a32_64(const signed char* a,signed char* stage,
+-                                          int cm,int copy_k,int k) {
+-    unsigned t=threadIdx.x;
+-    unsigned logical=t^((t>>3)&3u);
+-    unsigned row=logical/4,col=(logical%4)*16;
+-    unsigned dst=__cvta_generic_to_shared(stage+t*16);
+-    const signed char* src=a+(size_t(cm*BM)+row)*k+copy_k*64+col;
+-    asm volatile("cp.async.cg.shared.global [%0],[%1],16,16;"
+-                 :: "r"(dst),"l"(src) : "memory");
+-    // No added commit: the unchanged stage_copy commits all future copies.
+-}
+ template<int Lead,int TileK=64,bool Planar=false,bool PackedB=false,bool UnrollCopy=false,bool FixedCopy=false,int Stages=2,bool Wide=false,int Layout=0>
+ __global__ void __launch_bounds__(Wide?256:THREADS,1) kernel(const signed char* a,const signed char* b,int m,int n,int k,int r,unsigned* out) {
+     constexpr int WarpN=Wide?96:64, Groups=WarpN/16, Threads=Wide?256:THREADS;
+@@ -153,22 +151,13 @@
+     __syncthreads();
+     unsigned own_bar=4u+unsigned(threadIdx.x>=256);
+     for(int kt=0;kt<(k+TileK-1)/TileK;++kt) {
+-        if(kt>0) {
+-            if(kt+1<k/64 && warp>=4 && warp<8) {
+-                unsigned free_id=1u+unsigned((kt-1)&1);
+-                asm volatile("barrier.cta.sync %0,192;" :: "r"(free_id) : "memory");
+-                early_a32_64(a,sa+((kt+1)&1)*BM*TileK,cm,kt+1,k);
+-            }
+-            // Same previous-round handoff, now after this one early copy.
++        int current=kt%Stages,next=(kt+Stages-1)%Stages;
++        if(kt+1<k/64)
++            stage_copy<TileK,Planar,UnrollCopy,FixedCopy,Layout>(a,b,sa+next*BM*TileK,sb+next*BN*TileK,cm,cn,kt+1,m,n,k,own_bar);
++        else if(kt>0)
+             asm volatile("bar.sync %0,384;" :: "r"(own_bar) : "memory");
+-            own_bar^=2u;
+-        }
+-        // IDs4/5 and6/7 alternate. Same two-group protocol; no division,
+-        // parity shift or add is needed to select the barriers each iteration.
++        if(kt>0) own_bar^=2u;
+         const unsigned peer_bar=own_bar^1u;
+-        int current=kt%Stages,next=(kt+Stages-1)%Stages;
+-        if(kt+Stages-1<(k+TileK-1)/TileK)
+-            stage_copy<TileK,Planar,UnrollCopy,FixedCopy,Layout>(a,b,sa+next*BM*TileK,sb+next*BN*TileK,cm,cn,kt+Stages-1,m,n,k);
+         signed char* aa=sa+current*BM*TileK;
+         signed char* bb=sb+current*BN*TileK;
+         if constexpr(Lead==0 || Lead==3) {

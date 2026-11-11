@@ -1,0 +1,39 @@
+User hypothesis: separate producer/consumer named barriers around transcript.
+Evidence anchored to source snapshot artifacts/fold-defer-reduce/source.cu,
+first namespace fold_defer_source8, and frozen fold-preamble/both_compact.cubin.
+
+1. Actual transcript data path
+MMA -> warp-private c[4][4][2][4] registers -> per-thread XOR
+-> __reduce_xor_sync within warp -> lane0 writes transcript shared region.
+The next rank boundary updates the same warp-owned transcript entries.
+Final CTA barrier precedes collective copying of transcript to global memory.
+There is no cross-warp intermediate accumulator consumer today.
+
+2. Actual cross-warp handoff data
+Future A/B cp.async completion: write -> next iteration's LDSM.
+Current A/B LDSM completion: read -> next iteration's overwrite of old slot.
+Current early arrival certifies both for that warp. Own group late sync additionally
+waits for its peers' tail MMA/transcript. Peer group's early arrival already permits
+some overlap with its tail MMA/transcript.
+
+3. A genuinely different protocol would separate
+ready(S): all relevant producers' copies complete before LDSM(S).
+free(S): all relevant consumers' reads complete before overwriting S.
+No consumer should wait for unrelated transcript completion to satisfy ready/free.
+MMA accumulator update still follows its own previous rank-boundary transcript read.
+
+4. Requirements before implementing that protocol
+Specify producers/consumers and participant counts per barrier and phase;
+show each participant contributes exactly once per phase;
+prove wraparound cannot reuse an ID before prior participants depart;
+keep the final transcript-output barrier;
+account for extra arrivals, polling, address work, branches and register lifetimes.
+Do not append both bar.arrive and bar.sync for the same participants/phase and
+assume bar.sync is a wait-only operation.
+
+5. Boundaries of current evidence
+This round's LDSM relocation does NOT implement ready/free separation, nor
+producer/consumer transcript warps. It only measures safe post-handoff overlap.
+Earlier cohort and mbarrier experiments do not conclusively rule out all separate
+ready/free designs, but repeating them under new names is not useful.
+No new protocol speedup is claimed.

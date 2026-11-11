@@ -1,0 +1,38 @@
+Capture:/tmp/pearl-handoff-cursor.ynsZDT
+All source/library/harness hashes verified;3 launches per variant,67,633,152 IMMA each.
+
+variant kernel_ms Tensor% IMMA/SMcycle dynamic_inst barrier% shortSB% longSB% math%
+baseline   1.033707 78.750 0.191667300 298571136 12.790 7.333 2.893 45.387
+control    1.022475 80.163 0.195133865 301824000 10.123 6.200 2.820 49.090
+hoist      1.044597 77.583 0.188712553 290348160 7.713 8.030 3.057 49.617
+induction  1.044064 77.620 0.188866291 287243904 6.807 8.093 2.800 50.777
+
+hoist: dynamic instructions vs control=-3.802%; IMMA/cycle=-3.291%; time=+2.164%.
+Effective SM GHz control/candidate=2.648329/2.680405.
+L2 bytes/usefulMMA control/candidate=37.759374/37.759132.
+Largest opcode count changes:[('LOP3.LUT', -14629632.00000003), ('SHF.R.U32.HI', -4144512.0), ('ULOP3.LUT', 2097024.0), ('IMAD', 2080512.000000015), ('ISETP.GE.AND', 2080512.0), ('PLOP3.LUT', 1056768.0), ('ISETP.NE.AND', -1056768.0), ('UIADD3', 1056768.0)]
+stall_short_sb: [{'pc': '0x12b0', 'instruction': 'IMMA.16832.S8.S8 R88, R144.ROW, R148.COL, R88', 'samples': 10852.0}, {'pc': '0x1360', 'instruction': 'IMMA.16832.S8.S8 R112, R144.ROW, R148.COL, R112', 'samples': 10160.0}]
+stall_long_sb: [{'pc': '0x10b0', 'instruction': '@!P2  IADD3 R147, R147, 0x1800, RZ', 'samples': 9720.0}, {'pc': '0x1240', 'instruction': 'LDSM.16.M88.4 R144, [R144]', 'samples': 9052.0}]
+stall_math: [{'pc': '0x15f0', 'instruction': 'IMMA.16832.S8.S8 R88, R144.ROW, R148.COL, R88', 'samples': 84135.0}, {'pc': '0x1780', 'instruction': 'IMMA.16832.S8.S8 R64, R140.ROW, R150.COL, R64', 'samples': 48188.0}]
+stall_barrier: [{'pc': '0x2ad0', 'instruction': 'UMOV UR4, UR6', 'samples': 77692.0}, {'pc': '0xd90', 'instruction': 'UMOV UR5, 0x3000', 'samples': 672.0}]
+
+induction: dynamic instructions vs control=-4.831%; IMMA/cycle=-3.212%; time=+2.111%.
+Effective SM GHz control/candidate=2.648329/2.679604.
+L2 bytes/usefulMMA control/candidate=37.759374/37.758712.
+Largest opcode count changes:[('LOP3.LUT', -12549120.00000003), ('IADD3', 3186816.0), ('IMAD', -3120767.9999999963), ('SHF.R.U32.HI', -3104256.0), ('ISETP.GE.AND', 2080512.0), ('IMAD.MOV.U32', 1056768.0), ('IMAD.U32', -1040256.0), ('IMAD.SHL.U32', -1023744.0)]
+stall_short_sb: [{'pc': '0x1270', 'instruction': 'IMMA.16832.S8.S8 R112, R144.ROW, R148.COL, R112', 'samples': 10221.0}, {'pc': '0x11c0', 'instruction': 'IMMA.16832.S8.S8 R88, R144.ROW, R148.COL, R88', 'samples': 8859.0}]
+stall_long_sb: [{'pc': '0x1050', 'instruction': '@!P0  IADD3 R139, R139, 0x1800, RZ', 'samples': 9196.0}, {'pc': '0xfd0', 'instruction': '@!P3  IADD3 R139, R139, 0x1800, RZ', 'samples': 6614.0}]
+stall_math: [{'pc': '0x1430', 'instruction': 'IMMA.16832.S8.S8 R52, R144.ROW, R150.COL, R52', 'samples': 66184.0}, {'pc': '0x15d0', 'instruction': 'IMMA.16832.S8.S8 R24, R136.ROW, R150.COL, R24', 'samples': 51009.0}]
+stall_barrier: [{'pc': '0x2a60', 'instruction': '@!P0  CALL.REL.NOINC 0x71b8a325d780', 'samples': 68420.0}, {'pc': '0xd30', 'instruction': 'UMOV UR5, 0x3000', 'samples': 606.0}]
+
+Findings:
+1. Copy-address simplification reduces actual executed instructions, not merely static code size. Neither candidate improves performance.
+2. Regression persists after frequency normalization; candidates had higher effective clock yet lower IMMA/cycle.
+3. Same MMA count,L2 bytes/usefulMMA,168regs,0spills,69632Bshared,1CTA/SM. No evidence of additional traffic or lost occupancy.
+4. Barrier-stall share decreases while short-scoreboard and math-throttle shares increase. These shares are not additive wall-time costs.
+5. Important short-scoreboard samples occur at IMMA operand consumers. E.g.induction1270 immediately follows B LDSM1260;hoist1360 immediately follows B LDSM1350. Control also has analogous immediate consumers; adjacency alone is not a newly introduced defect.
+6. SASS scheduling changed: copy wait moved from after48IMMA to after56IMMA. Source arithmetic simplification is not an isolated scheduling intervention.
+7. Operand supply/scheduling is implicated; attribution of all slowdown to a particular LDSM,wait or register dependency is NOT established. Extra scalar instructions may overlap latency, but that explanation remains a hypothesis.
+Decision:retain validated lean checkpoint;do not promote hoist/induction. Stay with handoff overlap, but next reductions should preserve operand schedule or explicitly control it.
+Next bounded diagnostic:choose a hot LDSM-consumer dependency and alter only its load-to-use spacing on the lean checkpoint while keeping handoff/copy work fixed;inspect SASS before benchmarking. Do not infer benefit from instruction-count reduction alone.
+No production modifications or GPU execution during this analysis.

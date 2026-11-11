@@ -1,0 +1,56 @@
+--- region_deferred
++++ hoist_only
+@@ -1,6 +1,6 @@
+ #include <cuda_runtime.h>
+ #include <cstdint>
+-namespace region_free_region_deferred {
++namespace region_compact_hoist_only {
+ constexpr int BM=256, BN=192, THREADS=384;
+ constexpr int WORDS=(BM/16)*(BN/16)*16;
+ struct Fragment { unsigned v[4]; };
+@@ -69,7 +69,7 @@
+ __device__ __forceinline__ void region_wait(unsigned bars,int kt,int row,bool b) {
+  if(kt>=2) rf_wait(bars+16+56*(kt&1)+8*((b?4:0)+row/64),unsigned((kt-2)/2)&1u);
+ }
+-template<int TileK,bool Planar,bool UnrollCopy=false,bool FixedCopy=false,int Layout=0>
++template<int TileK,bool Planar,bool UnrollCopy=false,bool FixedCopy=false,int Layout=0,bool Reuse=false>
+ __device__ __forceinline__ void stage_copy(const signed char* a,const signed char* b,
+         signed char* sa,signed char* sb,int cm,int cn,int kt,int m,int n,int k,unsigned bars=0) {
+     if constexpr(FixedCopy) {
+@@ -102,6 +102,8 @@
+ 
+     static_assert(TileK==64 && Layout==6 && !Planar);
+     // 384 is a multiple of128: the swizzled low7 chunk bits never change.
++    unsigned free_base=bars+16+56*(kt&1);
++    unsigned free_phase=unsigned((kt-2)/2)&1u;
+     int logical=int(threadIdx.x)^(int(threadIdx.x>>3)&3);
+     int row=logical/4,col=(logical%4)*16;
+     unsigned dstA=__cvta_generic_to_shared(sa+threadIdx.x*16);
+@@ -111,7 +113,7 @@
+     unsigned offB=unsigned(grB)*unsigned(k)+unsigned(kt*64+col);
+     #pragma unroll
+     for(int j=0;j<3;++j) if(threadIdx.x+j*THREADS<BM*64/16) {
+-        region_wait(bars,kt,(threadIdx.x+j*THREADS)/4,false);
++        if constexpr(Reuse) rf_wait(free_base+0+8*((threadIdx.x+j*THREADS)/256),free_phase);
+         bool valid=true;
+         const signed char* src=a+offA;
+         asm volatile("cp.async.cg.shared.global [%0],[%1],16,%2;" :: "r"(dstA),"l"(src),"r"(valid?16:0));
+@@ -119,7 +121,7 @@
+     }
+     #pragma unroll
+     for(int j=0;j<2;++j) {
+-        region_wait(bars,kt,(threadIdx.x+j*THREADS)/4,true);
++        if constexpr(Reuse) rf_wait(free_base+32+8*((threadIdx.x+j*THREADS)/256),free_phase);
+         bool valid=grB<n;
+         const signed char* src=b+(valid?offB:0u);
+         asm volatile("cp.async.cg.shared.global [%0],[%1],16,%2;" :: "r"(dstB),"l"(src),"r"(valid?16:0));
+@@ -170,6 +172,9 @@
+         if(kt+1<k/64) {
+             // Slot(next) previously held K(kt-1), except pristine slot1 at kt0.
+ 
++            if(kt>0)
++            stage_copy<TileK,Planar,UnrollCopy,FixedCopy,Layout,true>(a,b,sa+next*BM*TileK,sb+next*BN*TileK,cm,cn,kt+1,m,n,k,bars);
++            else
+             stage_copy<TileK,Planar,UnrollCopy,FixedCopy,Layout>(a,b,sa+next*BM*TileK,sb+next*BN*TileK,cm,cn,kt+1,m,n,k,bars);
+             rf_ready(bars+8*next);
+         }

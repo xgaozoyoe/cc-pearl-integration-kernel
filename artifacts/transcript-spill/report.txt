@@ -1,0 +1,18 @@
+GPU0 only. 8192x8192, K4096/rank128, CUDA event region timing, not full grid.
+40 samples/variant,16 launches/sample,2 rotating blocks; one session, clocks unlocked.
+All variants: 416 threads,128 registers/thread,75968 B dynamic shared,1 CTA/SM.
+48 transcript comparisons PASS; no racecheck or PoW validation for these new variants.
+variant stack_B ptxas_spill_stores_B ptxas_spill_loads_B mean_ms median_ms p95_ms
+control 280 504 500 6.428233 6.428289 6.434818
+short_b 288 492 500 6.539825 6.538720 6.546883
+short_a 288 512 516 6.702034 6.701904 6.710952
+short_ab 288 492 500 6.531830 6.532189 6.536387
+ptxas spill byte counts are compiler diagnostics, not measured dynamic traffic.
+CUDA12.6 cuda_occupancy.h: register allocation granularity256/warp,4 SM subpartitions;
+hardware feasibility uses warp count rounded to4 (lines1386-1399).
+13 warps rounded to16:128 regs/thread fits65536;136 requires69632 and fails.
+128 accumulator INT32/lane leaves no headroom for operands/addresses at that cap.
+Shorter operand lifetimes did not materially reduce spills or improve performance.
+Potential follow-up, NOT implemented:192x192 CTA,9 MMA+1 consumer warps; rounded12 allows168 registers/thread.
+This changes operand reuse and needs a same-tile homogeneous control; no no-spill or speedup claim.
+Original production libraries verified unchanged. No live mining.

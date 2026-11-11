@@ -1,0 +1,30 @@
+{
+  "depth": 2,
+  "trace": [
+    {
+      "pc": "18b0",
+      "source": "LOP3.LUT R96, R126, R125, R124, 0x96, !PT ;",
+      "depth": 1
+    },
+    {
+      "pc": "18d0",
+      "source": "LOP3.LUT R97, R121, R120, R127, 0x96, !PT ;",
+      "depth": 1
+    },
+    {
+      "pc": "18f0",
+      "source": "LOP3.LUT R98, R123, R122, RZ, 0x3c, !PT ;",
+      "depth": 1
+    },
+    {
+      "pc": "1920",
+      "source": "LOP3.LUT R96, R96, R97, R98, 0x96, !PT ;",
+      "depth": 2
+    },
+    {
+      "pc": "1940",
+      "source": "LOP3.LUT R136, R95, R94, RZ, 0x3c, !PT ;",
+      "depth": 1
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+IMMA late-K64 encoded-stall experiment (GPU0 only)
+
+Only PCs 1680..1720 inclusive changed: 11 consecutive independent accumulator updates.
+Changed stall nibble 8 -> 4 or 1; all opcode/operands, waits, yield, scoreboard and reuse bits preserved.
+Final 4 eight-cycle gaps (1730..1760) and final IMMA remain unchanged.
+No production ABI exported; no production binary modified.
+
+Variant    mean_ms    median_ms  p95_ms     mean_time_change
+baseline   1.080302   1.074880   1.110115   +0.000%
+tail4      1.080640   1.074765   1.109551   +0.031%
+tail1      1.083840   1.077091   1.111120   +0.328%
+
+200 CUDA event measurements per variant; 16 launches per measurement; 10 rotated blocks.
+Dimensions 8192 x 8192 x 4096, CTA256x192, 12 warps, 168 registers/thread, 69632 dynamic shared bytes, 1 CTA/SM.
+Each variant matched accepted reference transcript for the 8192 benchmark inputs before timing.
+Additional 36 small/edge transcript checks PASS; memcheck 0 errors.
+No performance gain demonstrated. Boost frequency varied; no cycle-normalized result yet.
+Lowering an encoded minimum gap need not lower elapsed time; math pipeline backpressure can dominate.
+This is only one late-mainloop window, not an ablation of all instruction scheduling gaps.
+Theoretical encoded-gap reduction is 44/77 cycles per K64 window, NOT measured saved cycles.
+Next: sudo bash tools/profile_imma_cadence.sh
+Compare IMMA per elapsed SM cycle and PCs1680..1770, plus hot PCs1210/1500/1580.
+Keep candidate experimental regardless of small-suite correctness; no live-mining deployment.

@@ -1,0 +1,249 @@
+diff --git a/tools/build_handoff_abcd.py b/tools/build_handoff_abcd.py
+new file mode 100644
+index 0000000..4a39a4f
+--- /dev/null
++++ b/tools/build_handoff_abcd.py
+@@ -0,0 +1,70 @@
++"""Offline fixed-SASS diagnostics. C/C0 are deliberately invalid Pearl arithmetic."""
++from pathlib import Path
++import struct,re,json,hashlib,subprocess,difflib
++root=Path(__file__).resolve().parents[1];out=root/'artifacts/handoff-abcd'
++out.mkdir(exist_ok=True)
++if not (out/'handoff-lean-source.sm_89.cubin').exists():
++ subprocess.run(['/usr/local/cuda-12.6/bin/cuobjdump','-xelf','all','../libpearl-handoff-lean.so'],cwd=out,check=True)
++binary=(out/'handoff-lean-source.sm_89.cubin').read_bytes()
++assert hashlib.sha256(binary).hexdigest()=='46fd8653295a23a2215aaad91dbfdf41c98fe87359af09201dfbcb21f1687bad', 'Unexpected input; audit patch offsets again'
++shoff=struct.unpack_from('<Q',binary,40)[0];size,count,strings=struct.unpack_from('<HHH',binary,58)
++hs=[struct.unpack_from('<IIQQQQIIQQ',binary,shoff+i*size) for i in range(count)];h=hs[strings];names=binary[h[4]:h[4]+h[5]]
++secs={names[h[0]:].split(b'\0')[0].decode():h for h in hs}
++dump=subprocess.check_output(['/usr/local/cuda-12.6/bin/cuobjdump','--dump-sass',str(out/'handoff-lean-source.sm_89.cubin')],text=True)
++def entry(ns):return next(n[6:] for n in secs if n.startswith('.text.') and ns+'6kernel' in n)
++aentry=entry('handoff_lean_baseline');bentry=entry('handoff_lean_toggle');offset=secs['.text.'+bentry][4]
++def rows(s,e):return {int(pc,16):ins for pc,ins in re.findall(r'/\*([0-9a-f]+)\*/\s+(.*?)\s*;',s.split('Function : '+e)[1].split('Function : ')[0])}
++r=rows(dump,bentry)
++def word(data,pc):return int.from_bytes(data[offset+pc:offset+pc+16],'little')
++def put(data,pc,w):data[offset+pc:offset+pc+16]=w.to_bytes(16,'little')
++def ctrl(pc):return (word(binary,pc)>>105)&0x1ffff
++immas=[pc for pc,s in r.items() if s.startswith('IMMA.')];assert len(immas)==64
++nop=next(word(binary,pc) for pc,s in r.items() if s=='NOP')
++zero=bytearray(binary)
++for pc in immas:
++ regs=re.findall(r'\bR(\d+|Z)',r[pc]);assert len(regs)==4
++ for i,b in enumerate((2,3,4,8)):assert zero[offset+pc+b]==(255 if regs[i]=='Z' else int(regs[i]))
++ zero[offset+pc+4]=255
++zr=dict(r)
++for pc in immas:zr[pc]=', '.join(part if i!=2 else re.sub(r'R\d+', 'RZ', part) for i,part in enumerate(r[pc].split(', ')))
++moves=[(0x11d0,0x11e0,0x1220),(0x1280,0x1290,0x12d0),(0x1340,0x1350,0x1410)]
++c=bytearray(zero)
++for producer,first,last in moves:
++ assert r[producer].startswith('LDSM.16.M88.4 R148,') and (ctrl(producer)>>5)&7==1
++ assert ctrl(first)>>11==2 and ctrl(last)>>11==0
++ for pc in range(first,last,16):
++  s=zr[pc];ct=ctrl(pc);assert (ct>>5)&7==7 and (ct>>8)&7==7
++  assert not any(x in s for x in ('BRA','BAR.','LDSM','LDG','STS','STG'))
++  regs=set(map(int,re.findall(r'\bR(\d+)',s)))
++  if s.startswith('IMMA.'):regs|={x+j for x in tuple(regs) for j in range(4)}
++  assert not regs.intersection(range(148,152)),(hex(pc),s)
++ assert re.match(r'(SHF\S*|IADD3|LOP3\S*) R14[89],',r[last])
++ for pc,mask in ((first,0),(last,2)):put(c,pc,(word(c,pc)&~(63<<116))|(mask<<116))
++d=bytearray(binary);removed=[0xe40,0xe60,0xe80]
++for pc in removed:
++ assert r[pc].startswith(('ISETP.','IADD3'))
++ mask=((1<<17)-1)<<105;put(d,pc,(nop&~mask)|(word(d,pc)&mask))
++for pred,pcs in [('!P4',[0xeb0,0xec0,0xed0,0xf40,0xf70]),('!P2',[0xef0,0xf00,0xf50,0xfb0,0x1000])]:
++ for pc in pcs:
++  assert r[pc].startswith('@'+pred+' ')
++  w=word(d,pc);assert (w>>12)&15==8+int(pred[-1]);put(d,pc,(w&~(15<<12))|(7<<12))
++manifest=dict(warning='C and C0 have intentionally wrong arithmetic; never use for mining. C relocates only three B scoreboard waits. D keeps NOP slots and fixed stalls.',source_sha256=hashlib.sha256(binary).hexdigest(),variants={},wait_moves=moves)
++for name,data,e in [('A',binary,aentry),('B',binary,bentry),('C0',zero,bentry),('C',c,bentry),('D',d,bentry)]:
++ path=out/(name+'.cubin');path.write_bytes(data)
++ s=subprocess.check_output(['/usr/local/cuda-12.6/bin/cuobjdump','--dump-sass',str(path)],text=True);(out/(name+'.sass')).write_text(s)
++ rr=rows(s,e);assert sum(x.startswith('IMMA.') for x in rr.values())==64
++ if name in ('C0','C'):
++  for pc in r:
++   if pc not in immas:assert rr[pc]==r[pc]
++   else:assert rr[pc]==zr[pc],(rr[pc],zr[pc])
++ if name=='D':
++  for pc in removed:assert rr[pc]=='NOP'
++  for pc in r:
++   if pc not in removed:
++    expected=r[pc]
++    if pc in [0xeb0,0xec0,0xed0,0xf40,0xf70,0xef0,0xf00,0xf50,0xfb0,0x1000]:
++     expected=expected.removeprefix('@!P4 ').removeprefix('@!P2 ')
++    assert rr[pc]==expected
++ manifest['variants'][name]=dict(entry=e,sha256=hashlib.sha256(data).hexdigest(),smem=69632,correct=name in ('A','B','D'),static_imma=64,static_ldsm=sum(x.startswith('LDSM.') for x in rr.values()))
++ (out/(name+'.diff')).write_text('\n'.join(difflib.unified_diff([f'{pc:x}: {s}' for pc,s in r.items()],[f'{pc:x}: {s}' for pc,s in rr.items()],fromfile='B',tofile=name))+'\n')
++(out/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n');print('Built A/B/C0/C/D; IMMA and instruction preservation verified.')
+diff --git a/tests/bench_handoff_abcd.py b/tests/bench_handoff_abcd.py
+new file mode 100644
+index 0000000..abb478b
+--- /dev/null
++++ b/tests/bench_handoff_abcd.py
+@@ -0,0 +1,84 @@
++"""GPU0-only fixed-SASS A/B/C/D diagnostic, never a mining backend."""
++import os
++os.environ['CUDA_VISIBLE_DEVICES']='0'
++from pathlib import Path
++import ctypes as C,json,subprocess,sys,argparse,time,hashlib
++import numpy as np
++root=Path(__file__).resolve().parents[1];out=root/'artifacts/handoff-abcd';sys.path.insert(0,str(root/'python'))
++p=argparse.ArgumentParser();p.add_argument('mode',choices=['validate','bench','profile']);p.add_argument('--variant',type=int,default=0,choices=range(5));p.add_argument('--allow-supervisor-pid',type=int,default=0);args=p.parse_args()
++sys.path.insert(0,str(root/'tools'))
++from check_gpu0_idle import check_gpu0_idle
++if args.mode!='profile':check_gpu0_idle(args.allow_supervisor_pid)
++import cuda_capi as cc
++P,I,U=C.c_void_p,C.c_int,C.c_uint
++# Force runtime primary-context creation before using the driver API.
++init=cc.DBuf(4)
++drv=C.CDLL('libcuda.so.1');drv.cuInit.argtypes=[U];drv.cuModuleLoad.argtypes=[C.POINTER(P),C.c_char_p];drv.cuModuleGetFunction.argtypes=[C.POINTER(P),P,C.c_char_p]
++drv.cuFuncSetAttribute.argtypes=[P,I,I];drv.cuFuncGetAttribute.argtypes=[C.POINTER(I),I,P];drv.cuOccupancyMaxActiveBlocksPerMultiprocessor.argtypes=[C.POINTER(I),P,I,C.c_size_t]
++drv.cuLaunchKernel.argtypes=[P,U,U,U,U,U,U,U,P,C.POINTER(P),P]
++def check(x):
++ if x:raise RuntimeError('CUDA driver status '+str(x))
++check(drv.cuInit(0));manifest=json.loads((out/'manifest.json').read_text());names=list(manifest['variants']);mods=[];funcs=[];resources={}
++for name in names:
++ assert hashlib.sha256((out/(name+'.cubin')).read_bytes()).hexdigest()==manifest['variants'][name]['sha256']
++ path=out/(name+'.cubin')
++ mod,f=P(),P();check(drv.cuModuleLoad(C.byref(mod),str(path).encode()));check(drv.cuModuleGetFunction(C.byref(f),mod,manifest['variants'][name]['entry'].encode()))
++ check(drv.cuFuncSetAttribute(f,8,manifest['variants'][name]['smem']));check(drv.cuFuncSetAttribute(f,9,100))
++ info=[]
++ for key in (4,3,1):
++  val=I();check(drv.cuFuncGetAttribute(C.byref(val),key,f));info.append(val.value)
++ active=I();check(drv.cuOccupancyMaxActiveBlocksPerMultiprocessor(C.byref(active),f,384,manifest['variants'][name]['smem']));info.append(active.value)
++ assert info==[168,0,0,1],info
++ resources[name]=info;mods.append(mod);funcs.append(f)
++print('resources [registers,local,static_shared,CTAs/SM]',resources,flush=True)
++def launch(v,a,b,m,n,t):
++ vals=[P(a.ptr.value if isinstance(a.ptr,P) else a.ptr),P(b.ptr.value if isinstance(b.ptr,P) else b.ptr),I(m),I(n),I(4096),I(128),P(t.ptr.value if isinstance(t.ptr,P) else t.ptr)]
++ pars=(P*len(vals))(*[C.cast(C.byref(x),P) for x in vals]);check(drv.cuLaunchKernel(funcs[v],(m+255)//256,(n+191)//192,1,384,1,1,manifest['variants'][names[v]]['smem'],None,pars,None))
++ref=C.CDLL(str(root/'artifacts/libpearl-rank.so'));ref.rank_fold.argtypes=[I,P,P,I,I,P,P]
++if args.mode=='validate':
++ rows=[]
++ for m,n in ((256,384),(256,400),(512,768),(512,800)):
++  for seed in (42,1234,9876):
++   rng=np.random.default_rng(seed);ah=rng.integers(-128,128,(m,4096),np.int8);bh=rng.integers(-128,128,(n,4096),np.int8)
++   a,b,t=cc.DBuf(ah.nbytes),cc.DBuf(bh.nbytes),cc.DBuf(m*n//256*64);a.from_host(ah);b.from_host(bh)
++   cc._chk(ref.rank_fold(128,a.ptr,b.ptr,m,n,t.ptr,None),'reference');expected=np.empty(m*n//256*16,np.uint32);t.to_host(expected)
++   for v,name in enumerate(names):
++    t.memset(0xa5);launch(v,a,b,m,n,t);got=np.empty_like(expected);t.to_host(got)
++    exp=expected if manifest['variants'][name]['correct'] else np.zeros_like(expected)
++    assert np.array_equal(got,exp),(name,m,n,seed,np.flatnonzero(got!=exp)[:8])
++    row=dict(name=name,m=m,n=n,seed=seed,expected_probe_semantics_pass=True,transcript_bit_exact=manifest['variants'][name]['correct']);rows.append(row);print(row,flush=True)
++   for buf in (a,b,t):buf.free()
++ (out/'validation.json').write_text(json.dumps(rows,indent=2)+'\n')
++else:
++ m=n=8192;a,b,t=cc.DBuf(m*4096),cc.DBuf(n*4096),cc.DBuf(m*n//256*64);rng=np.random.default_rng(42)
++ for buf in (a,b):buf.from_host(rng.integers(-128,128,(m,4096),np.int8))
++ if args.mode=='profile':
++  for _ in range(40):launch(args.variant,a,b,m,n,t);cc.sync()
++  sys.exit(0)
++ cc._chk(ref.rank_fold(128,a.ptr,b.ptr,m,n,t.ptr,None),'reference');expected=np.empty(m*n//256*16,np.uint32);t.to_host(expected)
++ for v in range(len(names)):
++  launch(v,a,b,m,n,t);got=np.empty_like(expected);t.to_host(got);assert np.array_equal(got,expected if manifest['variants'][names[v]]['correct'] else np.zeros_like(expected)),names[v]
++ runtime=C.CDLL('/usr/local/cuda-12.6/lib64/libcudart.so');runtime.cudaEventCreate.argtypes=[C.POINTER(P)];runtime.cudaEventRecord.argtypes=[P,P];runtime.cudaEventSynchronize.argtypes=[P];runtime.cudaEventElapsedTime.argtypes=[C.POINTER(C.c_float),P,P];runtime.cudaEventDestroy.argtypes=[P]
++ start,end=P(),P();cc._chk(runtime.cudaEventCreate(C.byref(start)),'event');cc._chk(runtime.cudaEventCreate(C.byref(end)),'event')
++ warm=time.perf_counter()
++ while time.perf_counter()-warm<3:
++  for _ in range(16):launch(0,a,b,m,n,t)
++  cc.sync()
++ rows=[]
++ for repeat in range(10):
++  for j in range(len(names)):
++   v=(repeat+j)%len(names)
++   for _ in range(100):launch(v,a,b,m,n,t)
++   cc.sync();values=[]
++   for _ in range(20):
++    cc._chk(runtime.cudaEventRecord(start,None),'event')
++    for _ in range(16):launch(v,a,b,m,n,t)
++    cc._chk(runtime.cudaEventRecord(end,None),'event');cc._chk(runtime.cudaEventSynchronize(end),'event');ms=C.c_float();cc._chk(runtime.cudaEventElapsedTime(C.byref(ms),start,end),'event');values.append(ms.value/16)
++   row=dict(name=names[v],variant=v,repeat=repeat,samples_ms=values,mean_ms=float(np.mean(values)),median_ms=float(np.median(values)),p95_ms=float(np.percentile(values,95)))
++   row['telemetry_end']=subprocess.check_output(['nvidia-smi','-i','0','--query-gpu=clocks.sm,clocks.mem,power.draw,temperature.gpu','--format=csv,noheader'],text=True).strip();rows.append(row);print(json.dumps({k:x for k,x in row.items() if k!='samples_ms'}),flush=True)
++ result=dict(resources=resources,measurements=rows,summaries={})
++ for name in names:
++  vals=np.array([x for r in rows if r['name']==name for x in r['samples_ms']]);result['summaries'][name]=dict(samples=len(vals),mean_ms=float(vals.mean()),median_ms=float(np.median(vals)),p95_ms=float(np.percentile(vals,95)))
++ (out/'events.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result['summaries'],indent=2),flush=True)
++ for x in (start,end):cc._chk(runtime.cudaEventDestroy(x),'event destroy')
++ for buf in (a,b,t):buf.free()
+diff --git a/tools/profile_handoff_abcd.sh b/tools/profile_handoff_abcd.sh
+new file mode 100644
+index 0000000..ea920d9
+--- /dev/null
++++ b/tools/profile_handoff_abcd.sh
+@@ -0,0 +1,48 @@
++#!/usr/bin/env bash
++# Offline GPU0 only: A/B/C0/C/D fixed-SASS diagnostics; diagnostic only.
++# Requires counter access. Validated for Nsight Compute2024.3.2 CLI.
++set -euo pipefail
++cd "$(dirname "$0")/.."
++if [[ $EUID -ne 0 ]]; then
++ echo 'Hardware counters require root: sudo bash tools/profile_handoff_abcd.sh' >&2
++ exit 1
++fi
++.venv/bin/python tools/check_gpu0_idle.py --allow-supervisor-pid "${1:-0}"
++export CUDA_VISIBLE_DEVICES=0
++
++PROFILE_OUT="${PROFILE_OUT:-$(mktemp -d /tmp/pearl-handoff-abcd.XXXXXX)}"
++printf '%s\n' "$PROFILE_OUT" > /tmp/pearl-handoff-abcd-last.txt
++chmod 644 /tmp/pearl-handoff-abcd-last.txt
++mkdir -p "$PROFILE_OUT"
++if compgen -G "$PROFILE_OUT/v*.ncu-rep" > /dev/null; then
++ echo 'Use a fresh PROFILE_OUT directory; existing reports must not mix with changed binaries.' >&2
++ exit 1
++fi
++sha256sum artifacts/handoff-abcd/manifest.json artifacts/handoff-abcd/*.cubin > "$PROFILE_OUT/inputs.sha256"
++nvidia-smi -i 0 --query-gpu=uuid,name,driver_version,clocks.sm,clocks.mem,power.limit,temperature.gpu --format=csv > "$PROFILE_OUT/gpu-before.csv"
++/usr/local/cuda/bin/ncu --version > "$PROFILE_OUT/ncu-version.txt"
++METRICS='sm__cycles_elapsed.avg.per_second,smsp__inst_executed_pipe_alu.sum,smsp__inst_executed_pipe_tensor.sum,smsp__warps_eligible.avg.per_cycle_active,sm__cycles_elapsed.sum,smsp__cycles_elapsed.sum,smsp__inst_executed_pipe_tensor_v2.sum,smsp__inst_executed_pipe_tensor_v2.avg.per_cycle_elapsed,gpu__time_duration.sum,dram__bytes.sum,lts__t_bytes.sum,sm__sass_data_bytes_mem_shared_op_ldsm.sum,lts__throughput.avg.pct_of_peak_sustained_elapsed,smsp__warp_issue_stalled_barrier_per_warp_active.pct,smsp__warp_issue_stalled_long_scoreboard_per_warp_active.pct,smsp__warp_issue_stalled_short_scoreboard_per_warp_active.pct,smsp__warp_issue_stalled_math_pipe_throttle_per_warp_active.pct,sm__pipe_tensor_op_imma_cycles_active_v2.avg.pct_of_peak_sustained_active'
++for VARIANT in 0 1 2 3 4; do
++  REPORT="$PROFILE_OUT/v$VARIANT"
++  if [[ ! -s "$REPORT.ncu-rep" ]]; then
++  /usr/local/cuda/bin/ncu --devices 0 --clock-control base \
++    --replay-mode application --cache-control none --kernel-name-base demangled \
++    --kernel-name 'regex:.*handoff_lean_.*::kernel.*' \
++    --launch-skip 32 --launch-count 3 --metrics "$METRICS" \
++    --section SourceCounters --section SchedulerStats --section WarpStateStats \
++    --warp-sampling-interval auto --warp-sampling-max-passes 5 --import-source yes \
++    -o "$REPORT" "$PWD/.venv/bin/python" tests/bench_handoff_abcd.py profile --variant "$VARIANT" \
++    > "$REPORT.log" 2>&1
++  else
++    printf 'Reusing existing report: %s\n' "$REPORT.ncu-rep"
++  fi
++  /usr/local/cuda/bin/ncu --import "$REPORT.ncu-rep" --page raw --print-units base --csv > "$REPORT.raw.csv"
++  /usr/local/cuda/bin/ncu --import "$REPORT.ncu-rep" --page source --print-source sass --csv > "$REPORT.sass.csv"
++done
++"$PWD/.venv/bin/python" tools/analyze_instruction_stalls.py "$PROFILE_OUT"/v*.sass.csv --output "$PROFILE_OUT/pc-stalls.json"
++"$PWD/.venv/bin/python" tools/analyze_ada_ws.py "$PROFILE_OUT" --variants 0 1 2 3 4 --useful-mma 67108864
++nvidia-smi -i 0 --query-gpu=uuid,name,driver_version,clocks.sm,clocks.mem,power.limit,temperature.gpu --format=csv > "$PROFILE_OUT/gpu-after.csv"
++"$PWD/.venv/bin/python" tools/analyze_imma_issue.py "$PROFILE_OUT" --variants 0 1 2 3 4
++"$PWD/.venv/bin/python" tools/report_handoff_abcd.py --capture "$PROFILE_OUT"
++chmod -R a+rX "$PROFILE_OUT"
++printf 'Reports: %s\n' "$PROFILE_OUT"
+diff --git a/tools/report_handoff_abcd.py b/tools/report_handoff_abcd.py
+new file mode 100644
+index 0000000..d951eba
+--- /dev/null
++++ b/tools/report_handoff_abcd.py
+@@ -0,0 +1,23 @@
++"""Summarize events and optional Nsight wide CSV capture; never label probes mining gains."""
++from pathlib import Path
++import argparse,json,csv,statistics
++p=argparse.ArgumentParser();p.add_argument('--capture',type=Path);a=p.parse_args()
++root=Path(__file__).resolve().parents[1];out=root/'artifacts/handoff-abcd'
++names=list(json.loads((out/'manifest.json').read_text())['variants'])
++lines=['A/B/C0/C/D: offline 8192x8192 K4096 region; NOT full-grid mining throughput.', 'CAUTION: unlocked event runs have different boost clocks; time differences are not isolated dependency gains. C/C0 sampled near2715MHz while B varied2460..2670MHz. Use fixed-clock Nsight capture and per-cycle normalization.']
++for path in (sorted(out.glob('events-run*.json')) or [out/'events.json']):
++ s=json.loads(path.read_text())['summaries'];base=s['B']['mean_ms'];lines+=['',path.name,'Variant  median_ms  mean_ms  p95_ms  time_vs_B']
++ for n in names:
++  r=s[n];lines.append(f"{n:7s} {r['median_ms']:.6f} {r['mean_ms']:.6f} {r['p95_ms']:.6f} {(r['mean_ms']/base-1)*100:+.3f}%")
++metrics=['sm__cycles_elapsed.avg.per_second','gpu__time_duration.sum','smsp__inst_executed_pipe_alu.sum','smsp__inst_executed_pipe_tensor.sum','smsp__inst_executed_pipe_tensor_v2.sum','smsp__warps_eligible.avg.per_cycle_active','smsp__warp_issue_stalled_math_pipe_throttle_per_warp_active.pct','smsp__warp_issue_stalled_barrier_per_warp_active.pct']
++if a.capture:
++ result={}
++ for v,n in enumerate(names):
++  rows=list(csv.reader((a.capture/f'v{v}.raw.csv').open()));i=next(i for i,r in enumerate(rows) if 'ID' in r and 'Kernel Name' in r);h=rows[i]
++  ds=[dict(zip(h,r)) for r in rows[i+1:] if len(r)==len(h)];result[n]={}
++  for m in metrics:
++   vals=[float(d[m].replace(',','')) for d in ds if m in d and d[m] not in ('','n/a','N/A')]
++   result[n][m]=statistics.mean(vals) if vals else None
++ (out/'counters.json').write_text(json.dumps(result,indent=2)+'\n');lines+=['',json.dumps(result,indent=2)]
++lines+=['','C/C0 are invalid Pearl arithmetic. C vs C0 isolates only three deferred B waits.', 'D retains NOP slots; negative results cannot exclude a benefit from rescheduling.', 'All variants:168 regs/thread,69632B dynamic shared,0 local bytes,1CTA/SM,12warps/SM.']
++text='\n'.join(lines)+'\n';(out/'report.txt').write_text(text);print(text)

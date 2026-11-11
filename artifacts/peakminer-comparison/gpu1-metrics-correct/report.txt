@@ -1,0 +1,40 @@
+PeakMiner external GPU metrics — corrected physical GPU1 capture
+Source:/tmp/pearl-peakminer-gpu1-metrics.wU6t8v
+
+Device verified:physicalGPU1,PCI0000:22:00.0,UUIDe2bcf3ea-ca6c-49ce-c8ff-220481820348,
+Nsight metrics device3. No target injection or miner restart. GPU2 untouched.
+30,105 samples over30.1042s; diagnostic log confirms collection, no warnings/errors.
+Miner-reported rate before313.777TH/s,after312.725TH/s;power450/449W;
+core2430MHz before/after;temperature69C;accepted15 and invalid0 at both endpoints.
+No new share in this30s window is not evidence of failure (pool ETA~62s/share).
+These endpoint rates are not a continuous throughput average for this capture.
+
+Metric                      Mean%     Median%  p05%  p95%
+SMs Active                  99.540    100      100   100
+Tensor Active               97.310     98       98    98
+SM Issue                    12.961     13       13    13
+DRAM Read Bandwidth          7.021      4        4    11
+DRAM Write Bandwidth         0.664      1        0     1
+Compute Warps in Flight     17.007     17       17    17
+Tensor Active below90% in1.455% of samples. No warmup clipping; all samples used.
+Integer-valued percentage counters have coarse1% quantization.
+Raw SQLite GPC Clock values show signed-width/unit anomalies; excluded from
+clock interpretation. Use independently recorded miner/NVML clocks instead.
+
+Interpretation:Tensor pipes are active nearly continuously during this capture,
+and off-chip DRAM throughput is far below peak. This supports a high Tensor duty
+cycle as a meaningful lead. It does NOT identify MMA shape/type/count, useful work
+per instruction, register/shared ownership, or L2/shared bandwidth bottlenecks.
+SM Issue measures issuing cycles, not useful FLOP/TOP utilization;13% does not
+contradict97% Tensor Active. Do not infer CTA geometry from the warps percentage.
+
+Earlier Open-Pearl72% was Nsight Compute IMMA active-cycle metric on regional
+launches. Current data uses Nsight Systems realtime elapsed-cycle Tensor metric
+on the full running miner. They must not be treated as directly comparable.
+Reference definition:https://docs.nvidia.com/nsight-systems/UserGuide/index.html#gpu-metrics
+
+Next:tools/profile_miner_pair_metrics.sh captures physicalGPU1(PeakMiner) and
+physicalGPU2(Open-Pearl) simultaneously via PCI-mapped Nsight IDs.30s external
+sampling only,no injection/restarts/power changes. Requires root counter access.
+Not yet run. Cross-GPU clocks remain a comparison limitation, but instrumentation
+and workload inclusion become consistent. No new kernel modification justified yet.

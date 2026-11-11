@@ -1,0 +1,348 @@
+{
+  "source": "artifacts/rank128-bpair.sass",
+  "loads": [
+    {
+      "load_pc": "0x1150",
+      "register_start": 144,
+      "role": "A",
+      "first_use_pc": "0x1200",
+      "instructions_between": 10,
+      "independent_IMMA_between": 0,
+      "previous_operand_use_pc": null,
+      "IMMA_after_previous_use_before_load": null,
+      "consumer_count": 8
+    },
+    {
+      "load_pc": "0x1190",
+      "register_start": 148,
+      "role": "B",
+      "first_use_pc": "0x1200",
+      "instructions_between": 6,
+      "independent_IMMA_between": 0,
+      "previous_operand_use_pc": null,
+      "IMMA_after_previous_use_before_load": null,
+      "consumer_count": 8
+    },
+    {
+      "load_pc": "0x11d0",
+      "register_start": 56,
+      "role": "A",
+      "first_use_pc": "0x1210",
+      "instructions_between": 3,
+      "independent_IMMA_between": 1,
+      "previous_operand_use_pc": null,
+      "IMMA_after_previous_use_before_load": null,
+      "consumer_count": 8
+    },
+    {
+      "load_pc": "0x11e0",
+      "register_start": 128,
+      "role": "A",
+      "first_use_pc": "0x1240",
+      "instructions_between": 5,
+      "independent_IMMA_between": 3,
+      "previous_operand_use_pc": null,
+      "IMMA_after_previous_use_before_load": null,
+      "consumer_count": 8
+    },
+    {
+      "load_pc": "0x11f0",
+      "register_start": 108,
+      "role": "A",
+      "first_use_pc": "0x12b0",
+      "instructions_between": 11,
+      "independent_IMMA_between": 5,
+      "previous_operand_use_pc": null,
+      "IMMA_after_previous_use_before_load": null,
+      "consumer_count": 8
+    },
+    {
+      "load_pc": "0x1400",
+      "register_start": 28,
+      "role": "B",
+      "first_use_pc": "0x1410",
+      "instructions_between": 0,
+      "independent_IMMA_between": 0,
+      "previous_operand_use_pc": null,
+      "IMMA_after_previous_use_before_load": null,
+      "consumer_count": 8
+    },
+    {
+      "load_pc": "0x15d0",
+      "register_start": 24,
+      "role": "B",
+      "first_use_pc": "0x1610",
+      "instructions_between": 3,
+      "independent_IMMA_between": 0,
+      "previous_operand_use_pc": null,
+      "IMMA_after_previous_use_before_load": null,
+      "consumer_count": 8
+    },
+    {
+      "load_pc": "0x1600",
+      "register_start": 152,
+      "role": "B",
+      "first_use_pc": "0x1630",
+      "instructions_between": 2,
+      "independent_IMMA_between": 2,
+      "previous_operand_use_pc": null,
+      "IMMA_after_previous_use_before_load": null,
+      "consumer_count": 8
+    },
+    {
+      "load_pc": "0x1750",
+      "register_start": 8,
+      "role": "A",
+      "first_use_pc": "0x19b0",
+      "instructions_between": 37,
+      "independent_IMMA_between": 7,
+      "previous_operand_use_pc": null,
+      "IMMA_after_previous_use_before_load": null,
+      "consumer_count": 8
+    },
+    {
+      "load_pc": "0x1810",
+      "register_start": 100,
+      "role": "B",
+      "first_use_pc": "0x19b0",
+      "instructions_between": 25,
+      "independent_IMMA_between": 3,
+      "previous_operand_use_pc": null,
+      "IMMA_after_previous_use_before_load": null,
+      "consumer_count": 8
+    },
+    {
+      "load_pc": "0x1870",
+      "register_start": 112,
+      "role": "A",
+      "first_use_pc": "0x19d0",
+      "instructions_between": 21,
+      "independent_IMMA_between": 4,
+      "previous_operand_use_pc": null,
+      "IMMA_after_previous_use_before_load": null,
+      "consumer_count": 8
+    },
+    {
+      "load_pc": "0x18a0",
+      "register_start": 80,
+      "role": "A",
+      "first_use_pc": "0x19c0",
+      "instructions_between": 17,
+      "independent_IMMA_between": 3,
+      "previous_operand_use_pc": null,
+      "IMMA_after_previous_use_before_load": null,
+      "consumer_count": 8
+    },
+    {
+      "load_pc": "0x18c0",
+      "register_start": 56,
+      "role": "A",
+      "first_use_pc": "0x19e0",
+      "instructions_between": 17,
+      "independent_IMMA_between": 5,
+      "previous_operand_use_pc": "0x17f0",
+      "IMMA_after_previous_use_before_load": 1,
+      "consumer_count": 8
+    },
+    {
+      "load_pc": "0x19a0",
+      "register_start": 108,
+      "role": "B",
+      "first_use_pc": "0x1a20",
+      "instructions_between": 7,
+      "independent_IMMA_between": 4,
+      "previous_operand_use_pc": "0x1950",
+      "IMMA_after_previous_use_before_load": 0,
+      "consumer_count": 8
+    },
+    {
+      "load_pc": "0x1b20",
+      "register_start": 104,
+      "role": "B",
+      "first_use_pc": "0x1b40",
+      "instructions_between": 1,
+      "independent_IMMA_between": 0,
+      "previous_operand_use_pc": null,
+      "IMMA_after_previous_use_before_load": null,
+      "consumer_count": 8
+    },
+    {
+      "load_pc": "0x1b30",
+      "register_start": 96,
+      "role": "B",
+      "first_use_pc": "0x1b60",
+      "instructions_between": 2,
+      "independent_IMMA_between": 2,
+      "previous_operand_use_pc": null,
+      "IMMA_after_previous_use_before_load": null,
+      "consumer_count": 8
+    }
+  ],
+  "C_recurrences": [
+    {
+      "previous_pc": "0x1240",
+      "pc": "0x19b0",
+      "independent_IMMA_between": 28
+    },
+    {
+      "previous_pc": "0x1220",
+      "pc": "0x19c0",
+      "independent_IMMA_between": 30
+    },
+    {
+      "previous_pc": "0x1290",
+      "pc": "0x19d0",
+      "independent_IMMA_between": 29
+    },
+    {
+      "previous_pc": "0x12b0",
+      "pc": "0x19e0",
+      "independent_IMMA_between": 29
+    },
+    {
+      "previous_pc": "0x1410",
+      "pc": "0x1a20",
+      "independent_IMMA_between": 27
+    },
+    {
+      "previous_pc": "0x1200",
+      "pc": "0x1a70",
+      "independent_IMMA_between": 36
+    },
+    {
+      "previous_pc": "0x14d0",
+      "pc": "0x1aa0",
+      "independent_IMMA_between": 25
+    },
+    {
+      "previous_pc": "0x1410",
+      "pc": "0x1ab0",
+      "independent_IMMA_between": 30
+    },
+    {
+      "previous_pc": "0x1530",
+      "pc": "0x1ac0",
+      "independent_IMMA_between": 26
+    },
+    {
+      "previous_pc": "0x1430",
+      "pc": "0x1ad0",
+      "independent_IMMA_between": 31
+    },
+    {
+      "previous_pc": "0x1580",
+      "pc": "0x1ae0",
+      "independent_IMMA_between": 27
+    },
+    {
+      "previous_pc": "0x1320",
+      "pc": "0x1af0",
+      "independent_IMMA_between": 35
+    },
+    {
+      "previous_pc": "0x1480",
+      "pc": "0x1b00",
+      "independent_IMMA_between": 32
+    },
+    {
+      "previous_pc": "0x15c0",
+      "pc": "0x1b10",
+      "independent_IMMA_between": 29
+    },
+    {
+      "previous_pc": "0x1670",
+      "pc": "0x1b40",
+      "independent_IMMA_between": 24
+    },
+    {
+      "previous_pc": "0x1740",
+      "pc": "0x1b50",
+      "independent_IMMA_between": 22
+    },
+    {
+      "previous_pc": "0x16b0",
+      "pc": "0x1b60",
+      "independent_IMMA_between": 25
+    },
+    {
+      "previous_pc": "0x1710",
+      "pc": "0x1b70",
+      "independent_IMMA_between": 25
+    },
+    {
+      "previous_pc": "0x1460",
+      "pc": "0x1b80",
+      "independent_IMMA_between": 39
+    },
+    {
+      "previous_pc": "0x1630",
+      "pc": "0x1b90",
+      "independent_IMMA_between": 32
+    },
+    {
+      "previous_pc": "0x1640",
+      "pc": "0x1ba0",
+      "independent_IMMA_between": 32
+    },
+    {
+      "previous_pc": "0x1610",
+      "pc": "0x1bb0",
+      "independent_IMMA_between": 36
+    },
+    {
+      "previous_pc": "0x1620",
+      "pc": "0x1bc0",
+      "independent_IMMA_between": 36
+    },
+    {
+      "previous_pc": "0x1210",
+      "pc": "0x1bd0",
+      "independent_IMMA_between": 53
+    },
+    {
+      "previous_pc": "0x1650",
+      "pc": "0x1be0",
+      "independent_IMMA_between": 35
+    },
+    {
+      "previous_pc": "0x1770",
+      "pc": "0x1bf0",
+      "independent_IMMA_between": 31
+    },
+    {
+      "previous_pc": "0x17c0",
+      "pc": "0x1c00",
+      "independent_IMMA_between": 30
+    },
+    {
+      "previous_pc": "0x17f0",
+      "pc": "0x1c10",
+      "independent_IMMA_between": 30
+    },
+    {
+      "previous_pc": "0x17a0",
+      "pc": "0x1c20",
+      "independent_IMMA_between": 33
+    },
+    {
+      "previous_pc": "0x1840",
+      "pc": "0x1c30",
+      "independent_IMMA_between": 31
+    },
+    {
+      "previous_pc": "0x18d0",
+      "pc": "0x1c40",
+      "independent_IMMA_between": 31
+    },
+    {
+      "previous_pc": "0x1950",
+      "pc": "0x1c50",
+      "independent_IMMA_between": 31
+    }
+  ],
+  "caveats": [
+    "Static instructions, not cycle distances.",
+    "No dynamic evidence of warp phase alignment.",
+    "C recurrence counts cover the unrolled body only, not the loop backedge."
+  ]
+}

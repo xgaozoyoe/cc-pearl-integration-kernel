@@ -1,0 +1,40 @@
+Controlled question: do two specific address-register anti-dependencies materially constrain this fastest binary?
+
+Freeze baseline: fold-preamble/both_compact.cubin, SHA256104c0c1b265260dea5c9ab0bb174ebbbe7ee9cceb0cf0acebf2a9d1dfa4d50aa.
+No recompile. Six variants preserve launch geometry, all64IMMA/16LDSM sites,
+all global copies, named-barrier protocol and transcript work. Same168regs,
+69632Bshared,384threads,1CTA/SM,0local. All instruction addresses unchanged.
+
+A native
+B ld_rename:1110 writes next address intoR154 instead ofR152;14d0/14f0 readR154.
+  WaitSB4 remains1110. Controls for register selection/lifetime only.
+C ld_release:same asB, move waitSB4 from1110 to1150(first IMMA readingAfrom1100).
+  Three independent IMMA can precede the address-read completion wait. Existing
+  operand-result waits stay. No load or necessary completion condition removed.
+D cp_rename:f60 computes newBpointer intoR154;fa0,fc0,1010 use it, with1010
+  delivering originalR96globalpointer. Original f60waitSB1 remains.
+E cp_release:same asD, move waitSB1 fromf60 tof70, whereR141 must be updated.
+  Only one additional instruction can precede this wait; narrow control.
+F both_release:combineC+E. R154 copytemp ends1010, newLDSMaddress starts1110.
+
+R154 liveness audited for both explicit scalar and implicit IMMA/LDSM vectors.
+It is not read/written by original code in tested intervalf60..14f0. Later B
+LDSM at1520 definesR152..155 before those operands are used. Fixed register
+allocation already containsR154; no metadata change.
+Original named BAR.ARV16d0, BAR.SYNC2a00 and final barrier2a50 byte-identical.
+
+Rejected prototype usedR166 based on resource count; CUDA715 at first experimental
+validation. It was stopped before any benchmark and retained in rejected-r166.
+The R154 implementation replaces it; no conclusion is drawn from failed build.
+
+Interpretation bounds:
+- CvsB and EvsD isolate wait relocation with same renaming.
+- BvsA and DvsA quantify renaming's own scheduling/register-bank effects.
+- FvsA tests combined usable change, not additive sum of individual effects.
+- Small timing delta does not exclude all address dependency, operand latency,
+  cp.async completion or stage-handoff costs; these transformations expose only
+  narrow instruction windows.
+- PC stalls can transfer to first actual consumer. Root Nsight script records
+  cycle-normalized issue and old/new wait-PC sampling to check this directly.
+- Normal event and grid timing uses unlocked clocks and alternating order.
+- No pool submission, proof delivery timing, or production replacement.

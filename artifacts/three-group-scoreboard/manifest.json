@@ -1,0 +1,79 @@
+{
+  "variants": {
+    "native": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "104c0c1b265260dea5c9ab0bb174ebbbe7ee9cceb0cf0acebf2a9d1dfa4d50aa",
+      "smem": 69632,
+      "correct": true,
+      "control_changes": []
+    },
+    "three_early": {
+      "entry": "_ZN26three_handoff_three_groups6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "75a2c6bb4a8b1a402342bc5d1fd04cce98dbe846fc999618fca28a316b8c639c",
+      "smem": 69632,
+      "correct": true,
+      "publication_wait_mask": 6,
+      "control_changes": []
+    },
+    "clear_tail": {
+      "entry": "_ZN26three_handoff_three_groups6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "1ae218017cdc89cb9864d8bdf0ae5e0e1c4b0f90b8e057a877786e59f9a951ea",
+      "smem": 69632,
+      "correct": true,
+      "publication_wait_mask": 6,
+      "control_changes": [
+        {
+          "pc": "0x16f0",
+          "bit": 116,
+          "width": 6,
+          "old": 2,
+          "new": 0
+        },
+        {
+          "pc": "0x1730",
+          "bit": 116,
+          "width": 6,
+          "old": 4,
+          "new": 0
+        }
+      ]
+    },
+    "split_read_sb": {
+      "entry": "_ZN26three_handoff_three_groups6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "a9ff108fe9b6d3fd4d2d2d3729b14cd3b7a5f3a4f6b6125813a9eb7b8f6ff7a2",
+      "smem": 69632,
+      "correct": true,
+      "publication_wait_mask": 6,
+      "control_changes": [
+        {
+          "pc": "0x16f0",
+          "bit": 116,
+          "width": 6,
+          "old": 2,
+          "new": 0
+        },
+        {
+          "pc": "0x1730",
+          "bit": 116,
+          "width": 6,
+          "old": 4,
+          "new": 0
+        },
+        {
+          "pc": "0x16e0",
+          "bit": 113,
+          "width": 3,
+          "old": 1,
+          "new": 2
+        },
+        {
+          "pc": "0x2a20",
+          "bit": 116,
+          "width": 6,
+          "old": 0,
+          "new": 4
+        }
+      ]
+    }
+  }
+}

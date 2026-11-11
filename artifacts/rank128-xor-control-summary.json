@@ -1,0 +1,53 @@
+[
+  {
+    "variant": 0,
+    "name": "current A-stream",
+    "samples": 80,
+    "mean_ms": 308.93,
+    "median_ms": 308.8,
+    "p95_ms": 313.915,
+    "ths": 227.78216481942187,
+    "grids_sec": 3.2369792509630013,
+    "resources": [
+      168,
+      384,
+      69632,
+      1,
+      0
+    ]
+  },
+  {
+    "variant": 1,
+    "name": "early local XOR",
+    "samples": 80,
+    "mean_ms": 313.715,
+    "median_ms": 312.90000000000003,
+    "p95_ms": 318.44000000000005,
+    "ths": 224.30787236078606,
+    "grids_sec": 3.1876065855952063,
+    "resources": [
+      167,
+      384,
+      69632,
+      1,
+      0
+    ]
+  },
+  {
+    "variant": 2,
+    "name": "same helper late XOR",
+    "samples": 80,
+    "mean_ms": 313.10375,
+    "median_ms": 312.40000000000003,
+    "p95_ms": 318.01,
+    "ths": 224.74577253598528,
+    "grids_sec": 3.1938295213647234,
+    "resources": [
+      168,
+      384,
+      69632,
+      1,
+      0
+    ]
+  }
+]

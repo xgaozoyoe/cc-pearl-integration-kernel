@@ -1,0 +1,248 @@
+{
+  "baseline": 110,
+  "baseline_library": "/tmp/libpearl-ada-bpack-fixedk.so",
+  "candidate_library": "/tmp/libpearl-ada-swizzle.so",
+  "warmup_per_block": 2,
+  "stable_grids_per_variant": 20,
+  "results": [
+    {
+      "variant": 0,
+      "name": "production",
+      "times": [
+        0.4287,
+        0.4233,
+        0.4334,
+        0.4273,
+        0.4295,
+        0.4311,
+        0.4287,
+        0.434,
+        0.4293,
+        0.4305,
+        0.4292,
+        0.4295
+      ],
+      "median_seconds_excluding_first": 0.4295,
+      "grids_per_second": 2.3282887077997674,
+      "effective_THS": 163.8387524509057,
+      "reported_search_THS": [
+        170.67,
+        172.58,
+        168.35,
+        170.93,
+        169.93,
+        169.4,
+        170.22,
+        168.23,
+        170.17,
+        169.71,
+        170.1,
+        170.04
+      ],
+      "median_reported_search_THS": 170.04
+    },
+    {
+      "variant": 110,
+      "name": "MMA-packed B x4",
+      "times": [
+        0.3445,
+        0.352,
+        0.3551,
+        0.3546,
+        0.3519,
+        0.3556,
+        0.3522,
+        0.3527,
+        0.3545,
+        0.3532,
+        0.353,
+        0.3537
+      ],
+      "median_seconds_excluding_first": 0.3532,
+      "grids_per_second": 2.8312570781426953,
+      "effective_THS": 199.23200503302377,
+      "reported_search_THS": [
+        213.51,
+        209.03,
+        207.24,
+        207.6,
+        209.31,
+        207.0,
+        208.89,
+        208.76,
+        207.57,
+        208.46,
+        208.6,
+        207.93
+      ],
+      "median_reported_search_THS": 208.46
+    },
+    {
+      "variant": 117,
+      "name": "xor3 shift3",
+      "times": [
+        0.3438,
+        0.3517,
+        0.3543,
+        0.3535,
+        0.3523,
+        0.3528,
+        0.353,
+        0.3534,
+        0.3536,
+        0.3521,
+        0.3525,
+        0.3519
+      ],
+      "median_seconds_excluding_first": 0.3528,
+      "grids_per_second": 2.834467120181406,
+      "effective_THS": 199.45789166004533,
+      "reported_search_THS": [
+        213.93,
+        209.16,
+        207.72,
+        208.31,
+        208.78,
+        208.44,
+        208.6,
+        208.34,
+        208.25,
+        209.19,
+        208.9,
+        208.97
+      ],
+      "median_reported_search_THS": 208.6
+    },
+    {
+      "variant": 117,
+      "name": "xor3 shift3",
+      "times": [
+        0.3436,
+        0.3513,
+        0.3546,
+        0.3516,
+        0.3516,
+        0.3534,
+        0.3546,
+        0.3511,
+        0.3529,
+        0.3525,
+        0.352,
+        0.3528
+      ],
+      "median_seconds_excluding_first": 0.3525,
+      "grids_per_second": 2.8368794326241136,
+      "effective_THS": 199.62764305720285,
+      "reported_search_THS": [
+        214.04,
+        209.57,
+        207.63,
+        209.23,
+        209.44,
+        208.17,
+        207.61,
+        209.84,
+        208.65,
+        208.92,
+        209.27,
+        208.66
+      ],
+      "median_reported_search_THS": 208.92
+    },
+    {
+      "variant": 110,
+      "name": "MMA-packed B x4",
+      "times": [
+        0.3459,
+        0.3535,
+        0.3556,
+        0.3535,
+        0.3519,
+        0.3546,
+        0.3546,
+        0.3531,
+        0.3541,
+        0.3534,
+        0.3531,
+        0.3539
+      ],
+      "median_seconds_excluding_first": 0.3535,
+      "grids_per_second": 2.828854314002829,
+      "effective_THS": 199.06292553794626,
+      "reported_search_THS": [
+        212.58,
+        208.25,
+        207.06,
+        208.19,
+        208.97,
+        207.63,
+        207.52,
+        208.54,
+        208.0,
+        208.1,
+        208.58,
+        207.96
+      ],
+      "median_reported_search_THS": 208.1
+    },
+    {
+      "variant": 0,
+      "name": "production",
+      "times": [
+        0.4228,
+        0.4302,
+        0.4325,
+        0.4293,
+        0.4329,
+        0.4281,
+        0.4327,
+        0.4298,
+        0.4295,
+        0.4308,
+        0.4293,
+        0.4305
+      ],
+      "median_seconds_excluding_first": 0.4302,
+      "grids_per_second": 2.3245002324500232,
+      "effective_THS": 163.57216219819617,
+      "reported_search_THS": [
+        172.51,
+        169.79,
+        168.95,
+        170.03,
+        168.72,
+        170.72,
+        168.75,
+        169.99,
+        169.91,
+        169.66,
+        170.02,
+        169.74
+      ],
+      "median_reported_search_THS": 169.79
+    }
+  ],
+  "summary": {
+    "0": {
+      "median_ms": 429.65,
+      "mean_ms": 430.395,
+      "p95_ms": 433.43,
+      "grids_per_second": 2.327475852438031,
+      "effective_THS": 163.78155283990225
+    },
+    "110": {
+      "median_ms": 353.6,
+      "mean_ms": 353.71500000000003,
+      "p95_ms": 355.6,
+      "grids_per_second": 2.8280542986425337,
+      "effective_THS": 199.00662946171943
+    },
+    "117": {
+      "median_ms": 352.8,
+      "mean_ms": 352.825,
+      "p95_ms": 354.6,
+      "grids_per_second": 2.834467120181406,
+      "effective_THS": 199.45789166004533
+    }
+  }
+}

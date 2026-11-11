@@ -1,0 +1,90 @@
+--- lean8-source
++++ defer2_copy
+@@ -108,6 +108,16 @@
+     asm volatile("cp.async.commit_group;");
+ }
+ 
++
++__device__ __forceinline__ void finish_pending(unsigned local,unsigned* transcript,
++ int wm,int wn,int lane,int group,unsigned rb) {
++    unsigned x=__reduce_xor_sync(0xffffffffu,local);
++    if(lane==0) {
++        unsigned idx=((wm*4+3)*12+wn*4+group)*16+(rb&15u);
++        if(rb<16)transcript[idx]=x;
++        else {unsigned old=transcript[idx];transcript[idx]=((old<<13)|(old>>19))^x;}
++    }
++}
+ template<int Lead,int TileK=64,bool Planar=false,bool PackedB=false,bool UnrollCopy=false,bool FixedCopy=false,int Stages=2,bool Wide=false,int Layout=0>
+ __global__ void __launch_bounds__(Wide?256:THREADS,1) kernel(const signed char* a,const signed char* b,int m,int n,int k,int r,unsigned* out) {
+     constexpr int WarpN=Wide?96:64, Groups=WarpN/16, Threads=Wide?256:THREADS;
+@@ -135,7 +145,8 @@
+     // Initial stage publication is prologue-only, not a per-iteration branch.
+     asm volatile("cp.async.wait_group 0;" ::: "memory");
+     __syncthreads();
+-    unsigned own_bar=4u+unsigned(threadIdx.x>=192);
++    unsigned pending[2]; // local XOR only, not accumulator copies
++    unsigned own_bar=4u+unsigned(threadIdx.x>=256);
+     for(int kt=0;kt<(k+TileK-1)/TileK;++kt) {
+         // IDs4/5 and6/7 alternate. Same two-group protocol; no division,
+         // parity shift or add is needed to select the barriers each iteration.
+@@ -143,6 +154,13 @@
+         int current=kt%Stages,next=(kt+Stages-1)%Stages;
+         if(kt+Stages-1<(k+TileK-1)/TileK)
+             stage_copy<TileK,Planar,UnrollCopy,FixedCopy,Layout>(a,b,sa+next*BM*TileK,sb+next*BN*TileK,cm,cn,kt+Stages-1,m,n,k);
++        // Previous boundary's accumulator reads completed in prior K.
++        // Future cp.async has been issued above; reduce while copy is in flight.
++        if(kt>0 && (kt&1)==0) {
++            #pragma unroll
++            for(int i=0;i<2;++i)
++                finish_pending(pending[i],transcript,wm,wn,lane,Groups-2+i,unsigned(kt/2-1));
++        }
+         signed char* aa=sa+current*BM*TileK;
+         signed char* bb=sb+current*BN*TileK;
+         if constexpr(Lead==0 || Lead==3) {
+@@ -202,7 +220,7 @@
+                     }
+                     x=__reduce_xor_sync(0xffffffffu,x);
+                     if(lane==0) {
+-                        int idx=((wm*4+row)*(BN/16)+wn*Groups+group)*16+(rb%16);
++                        int idx=((wm*4+row)*(BN/16)+wn*Groups+group)*16+(rb&15u);
+                         if(rb<16) transcript[idx]=x;
+                         else { unsigned prev=transcript[idx]; transcript[idx]=((prev<<13)|(prev>>19))^x; }
+                     }
+@@ -217,7 +235,7 @@
+         asm volatile("bar.arrive %0, 384;" :: "r"(peer_bar) : "memory");
+         if constexpr(TileK==64) {
+         if((kt+1)%2==0) {
+-            int rb=(kt+1)/2-1;
++            unsigned rb=unsigned((kt+1)/2-1);
+             #pragma unroll
+             for(int row=0;row<4;++row) {
+                 #pragma unroll
+@@ -228,12 +246,16 @@
+                         #pragma unroll
+                         for(int v=0;v<4;++v) x^=c[row][group][half][v];
+                     }
++                    if(row==3 && group>=Groups-2) {
++                        pending[group-(Groups-2)]=x;
++                    } else {
+                     x=__reduce_xor_sync(0xffffffffu,x);
+                     if(lane==0) {
+-                        int idx=((wm*4+row)*(BN/16)+wn*Groups+group)*16+(rb%16);
++                        int idx=((wm*4+row)*(BN/16)+wn*Groups+group)*16+(rb&15u);
+                         if(rb<16) transcript[idx]=x;
+                         else { unsigned prev=transcript[idx]; transcript[idx]=((prev<<13)|(prev>>19))^x; }
+                     }
++                    }
+                 }
+             }
+         }
+@@ -241,6 +263,10 @@
+         asm volatile("bar.sync %0, 384;" :: "r"(own_bar) : "memory");
+         own_bar^=2u;
+     }
++    // Flush K4096's pending local XOR before final CTA output barrier.
++    #pragma unroll
++    for(int i=0;i<2;++i)
++        finish_pending(pending[i],transcript,wm,wn,lane,Groups-2+i,31u);
+     __syncthreads();
+     for(int i=threadIdx.x;i<WORDS;i+=Threads) {
+         int tile=i/16,gr=cm*(BM/16)+tile/(BN/16),gc=cn*(BN/16)+tile%(BN/16);

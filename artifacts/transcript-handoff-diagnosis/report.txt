@@ -1,0 +1,36 @@
+GPU0 offline diagnosis;192x192 CTA,warp64x64,K64/2stages,K4096/rank128.
+8192x8192 region CUDA events,40samples/variant,16launches/sample,unlocked clocks.
+First session factorial (mean_ms median_ms p95_ms):
+self: 1.429472 1.425760 1.455619
+control: 5.313954 5.314752 5.319760
+leader_wait: 6.991614 6.990942 6.993686
+slots4: 5.231165 5.231040 5.231990
+slots4_leader: 6.982129 6.981878 6.984518
+leader_arrive: 5.487032 5.486652 5.488771
+leader_handoff: 7.331244 7.330880 7.332941
+Leader polling variants excluded: leader_wait produced racecheck errors despite bit-exact output.
+slots4_leader not separately racechecked; not treated as a valid candidate.
+Second matched session:
+self: 1.429751 1.431001 1.452886
+control: 5.316520 5.314397 5.319940
+batch_reduce: 3.509243 3.508864 3.510912
+control:64 static IMMA instructions;40 bytes stack frame, 36 bytes spill stores, 44 bytes spill loads
+slots4:64 static IMMA instructions;40 bytes stack frame, 36 bytes spill stores, 44 bytes spill loads
+batch_reduce:64 static IMMA instructions;48 bytes stack frame, 44 bytes spill stores, 44 bytes spill loads
+All consumers168registers/thread,1CTA/SM. slots4 uses77376B shared vs63120B otherwise.
+Source payload traffic unchanged:1152tasks/CTA,512Bstore+512Bload/task=1179648B/CTA.
+Per full K4096 CTA:4608 warp REDUX total. Self distributes512 to each of9warps;
+consumer concentrates all4608 plus state addressing and writes into1warp.
+Single-slot handoff:producer waits free(seq-1) before publication(seq).
+Four-slot handoff:producer waits free(seq-4); removes within-fold slot reuse waits.
+Four slots improve1.56% only; backpressure alone does not explain3.7x slowdown.
+Batch reduction source change:four full-warp REDUX before one lane0 state update region.
+Matched time decreases33.99%,5.316520->3.509243ms;still2.45x self.
+SASS direct-path REDUX PCs:control3100,31d0,3290,3350;batch3020,3050,3060,3070.
+Both binaries also contain compiler-generated collective fallback paths;not claiming measured dynamic path counts.
+Spill diagnostics do not decrease with batching (36/44->44/44B);whole recompilation changes scheduling.
+Evidence supports consumer reduction/update scheduling as a major avoidable cost,not exact attribution of all time to branches.
+Remaining gap not isolated:single consumer throughput,notification/transport,spills,producer scheduling.
+84 original bit-exact comparisons logged;12 additional batch comparisons PASS.
+No new Nsight counters,PoW validation or full-grid timing;no production changes/live mining.
+Separate racecheck control/slots4/batch_reduce at512x800 seed9876:0hazards/errors/warnings.

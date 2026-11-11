@@ -1,0 +1,71 @@
+{
+  "description": "Offline only. Original instructions and resources; overlap_b2 adds SB1 wait to first B2 IMMA, retains both LDSM completion waits on BAR.ARV.",
+  "variants": {
+    "native": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "104c0c1b265260dea5c9ab0bb174ebbbe7ee9cceb0cf0acebf2a9d1dfa4d50aa",
+      "smem": 69632,
+      "correct": true,
+      "order": [
+        "0x1620",
+        "0x1630",
+        "0x1640",
+        "0x1650",
+        "0x1660",
+        "0x1670",
+        "0x1680",
+        "0x1690",
+        "0x16a0",
+        "0x16b0",
+        "0x16c0",
+        "0x16d0",
+        "0x16e0",
+        "0x16f0"
+      ]
+    },
+    "id_late": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "17cc12ebba546e4c162b4e6dc4c7530fa1a489e30b8e5e807e9fe04f7061aae6",
+      "smem": 69632,
+      "correct": true,
+      "order": [
+        "0x1630",
+        "0x1640",
+        "0x1650",
+        "0x1660",
+        "0x1670",
+        "0x1680",
+        "0x1690",
+        "0x16a0",
+        "0x16b0",
+        "0x1620",
+        "0x16c0",
+        "0x16d0",
+        "0x16e0",
+        "0x16f0"
+      ]
+    },
+    "overlap_b2": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "3e0888839caf8fd3f9117c34695295fb4f9455237094c8a9b252e28dc005940e",
+      "smem": 69632,
+      "correct": true,
+      "order": [
+        "0x1630",
+        "0x1640",
+        "0x1650",
+        "0x1660",
+        "0x1670",
+        "0x1680",
+        "0x1690",
+        "0x16a0",
+        "0x16b0",
+        "0x1620",
+        "0x16c0",
+        "0x16e0",
+        "0x16f0",
+        "0x16d0"
+      ]
+    }
+  }
+}

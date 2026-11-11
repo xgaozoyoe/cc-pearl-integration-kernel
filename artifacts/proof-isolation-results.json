@@ -1,0 +1,30 @@
+[
+  {
+    "mode": "thread",
+    "wall_seconds": 2.5984475389122963,
+    "main_max_gap_ms": 961.3709710538387,
+    "heartbeat_count": 9,
+    "bit_exact": true
+  },
+  {
+    "mode": "process",
+    "wall_seconds": 2.911025879904628,
+    "main_max_gap_ms": 6.7948829382658005,
+    "heartbeat_count": 571,
+    "bit_exact": true
+  },
+  {
+    "mode": "process",
+    "wall_seconds": 2.7951689660549164,
+    "main_max_gap_ms": 6.807319819927216,
+    "heartbeat_count": 551,
+    "bit_exact": true
+  },
+  {
+    "mode": "thread",
+    "wall_seconds": 2.7072184812277555,
+    "main_max_gap_ms": 966.2532899528742,
+    "heartbeat_count": 9,
+    "bit_exact": true
+  }
+]

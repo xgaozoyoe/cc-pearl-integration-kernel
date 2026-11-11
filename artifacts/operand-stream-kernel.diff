@@ -1,0 +1,59 @@
+diff --git a/tmp/fold-before-operand-stream.cuh b/tests/fold_ops.cuh
+index ccb855c..ff9100f 100644
+--- a/tmp/fold-before-operand-stream.cuh
++++ b/tests/fold_ops.cuh
+@@ -154,7 +154,7 @@ cute_pearl_fold(int M, int N, int K, int R,
+             if (knext < k_tiles) stage_copy(knext,ww);
+             cp_async_fence();
+         }
+-        if constexpr (Schedule != 5 && Schedule != 7 && Schedule != 8) {
++        if constexpr (Schedule != 5 && Schedule != 7 && Schedule != 8 && Schedule < 9) {
+             copy(s2r_A, tXsA(_,_,_,wr), tXrA);
+             copy(s2r_B, tXsB(_,_,_,wr), tXrB);
+         }
+@@ -162,7 +162,44 @@ cute_pearl_fold(int M, int N, int K, int R,
+             if (knext < k_tiles) stage_copy(knext,ww);
+             cp_async_fence();
+         }
+-        if constexpr (Schedule == 7 || Schedule == 8) {
++        if constexpr (Schedule == 9) {
++            static_assert(decltype(size<1>(tXrB))::value*2 == decltype(size<2>(tCrC))::value);
++            // Hold one K32 A slice; consume each B atom across all row groups.
++            CUTE_UNROLL
++            for(int kk=0; kk<size<2>(tCrA); ++kk) {
++                copy(s2r_A,tXsA(_,_,kk,wr),tXrA(_,_,kk));
++                CUTE_UNROLL
++                for(int bn=0; bn<size<1>(tXrB); ++bn) {
++                    // One B copy group covers both 8-column MMA halves.
++                    copy(s2r_B,tXsB(_,bn,kk,wr),tXrB(_,bn,kk));
++                    CUTE_UNROLL
++                    for(int half=0; half<2; ++half) {
++                    int tn=2*bn+half;
++                    CUTE_UNROLL
++                    for(int tm=0; tm<size<1>(tCrC); ++tm)
++                        gemm(tiled_mma,tCrC(_,tm,tn),tCrA(_,tm,kk),tCrB(_,tn,kk),tCrC(_,tm,tn));
++                    }
++                }
++            }
++        } else if constexpr (Schedule == 11) {
++            static_assert(decltype(size<1>(tXrB))::value*2 == decltype(size<2>(tCrC))::value);
++            // Stream both operands: fewer live registers, but B reloads.
++            CUTE_UNROLL
++            for(int kk=0; kk<size<2>(tCrA); ++kk)
++            CUTE_UNROLL
++            for(int tm=0; tm<size<1>(tCrC); ++tm) {
++                copy(s2r_A,tXsA(_,tm,kk,wr),tXrA(_,tm,kk));
++                CUTE_UNROLL
++                for(int bn=0; bn<size<1>(tXrB); ++bn) {
++                    copy(s2r_B,tXsB(_,bn,kk,wr),tXrB(_,bn,kk));
++                    CUTE_UNROLL
++                    for(int half=0; half<2; ++half) {
++                    int tn=2*bn+half;
++                    gemm(tiled_mma,tCrC(_,tm,tn),tCrA(_,tm,kk),tCrB(_,tn,kk),tCrC(_,tm,tn));
++                    }
++                }
++            }
++        } else if constexpr (Schedule == 7 || Schedule == 8) {
+             static_assert(bK == 64);
+             // Load K32(0), then hide K32(1) loads behind independent
+             // accumulator groups. Shared stage lifetime remains unchanged.

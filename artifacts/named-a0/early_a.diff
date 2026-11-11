@@ -1,0 +1,83 @@
+--- source_control
++++ early_a
+@@ -1,6 +1,6 @@
+ #include <cuda_runtime.h>
+ #include <cstdint>
+-namespace arrival_order_source_control {
++namespace named_a0_early_a {
+ constexpr int BM=256, BN=192, THREADS=384;
+ constexpr int WORDS=(BM/16)*(BN/16)*16;
+ struct Fragment { unsigned v[4]; };
+@@ -97,7 +97,9 @@
+     for(int j=0;j<3;++j) if(threadIdx.x+j*THREADS<BM*64/16) {
+         bool valid=true;
+         const signed char* src=a+offA;
+-        asm volatile("cp.async.cg.shared.global [%0],[%1],16,%2;" :: "r"(dstA),"l"(src),"r"(valid?16:0));
++        // Copied before the previous iteration's handoff for this one region.
++        if(!(kt>=2 && threadIdx.x>=128 && threadIdx.x<256 && j==0))
++            asm volatile("cp.async.cg.shared.global [%0],[%1],16,%2;" :: "r"(dstA),"l"(src),"r"(valid?16:0));
+         grA+=THREADS/4;offA+=unsigned(THREADS/4)*unsigned(k);dstA+=THREADS*16;
+     }
+     #pragma unroll
+@@ -110,6 +112,18 @@
+     asm volatile("cp.async.commit_group;");
+ }
+ 
++// Offline experiment only; consult validation records before use.
++__device__ __forceinline__ void early_a32_64(const signed char* a,signed char* stage,
++                                          int cm,int copy_k,int k) {
++    unsigned t=threadIdx.x;
++    unsigned logical=t^((t>>3)&3u);
++    unsigned row=logical/4,col=(logical%4)*16;
++    unsigned dst=__cvta_generic_to_shared(stage+t*16);
++    const signed char* src=a+(size_t(cm*BM)+row)*k+copy_k*64+col;
++    asm volatile("cp.async.cg.shared.global [%0],[%1],16,16;"
++                 :: "r"(dst),"l"(src) : "memory");
++    // No added commit: the unchanged stage_copy commits all future copies.
++}
+ template<int Lead,int TileK=64,bool Planar=false,bool PackedB=false,bool UnrollCopy=false,bool FixedCopy=false,int Stages=2,bool Wide=false,int Layout=0>
+ __global__ void __launch_bounds__(Wide?256:THREADS,1) kernel(const signed char* a,const signed char* b,int m,int n,int k,int r,unsigned* out) {
+     constexpr int WarpN=Wide?96:64, Groups=WarpN/16, Threads=Wide?256:THREADS;
+@@ -139,6 +153,16 @@
+     __syncthreads();
+     unsigned own_bar=4u+unsigned(threadIdx.x>=256);
+     for(int kt=0;kt<(k+TileK-1)/TileK;++kt) {
++        if(kt>0) {
++            if(kt+1<k/64 && warp>=4 && warp<8) {
++                unsigned free_id=1u+unsigned((kt-1)&1);
++                asm volatile("barrier.cta.sync %0,192;" :: "r"(free_id) : "memory");
++                early_a32_64(a,sa+((kt+1)&1)*BM*TileK,cm,kt+1,k);
++            }
++            // Same previous-round handoff, now after this one early copy.
++            asm volatile("bar.sync %0,384;" :: "r"(own_bar) : "memory");
++            own_bar^=2u;
++        }
+         // IDs4/5 and6/7 alternate. Same two-group protocol; no division,
+         // parity shift or add is needed to select the barriers each iteration.
+         const unsigned peer_bar=own_bar^1u;
+@@ -217,6 +241,12 @@
+         // Publish this group's completed future copies and old-stage reads.
+         asm volatile("cp.async.wait_group 0;" ::: "memory");
+         asm volatile("bar.arrive %0, 384;" :: "r"(peer_bar) : "memory");
++        // Only read-only participants publish here. W4 is also a writer and
++        // contributes exactly once, via next-round sync, never both forms.
++        if(kt+2<k/64 && (warp==0 || warp==8)) {
++            unsigned free_id=1u+unsigned(kt&1);
++            asm volatile("barrier.cta.arrive %0,192;" :: "r"(free_id) : "memory");
++        }
+         if constexpr(TileK==64) {
+         if((kt+1)%2==0) {
+             unsigned rb=unsigned((kt+1)/2-1);
+@@ -240,9 +270,9 @@
+             }
+         }
+         }
+-        asm volatile("bar.sync %0, 384;" :: "r"(own_bar) : "memory");
+-        own_bar^=2u;
+-    }
++    }
++    // Drain the last original handoff; no K64/K65 copies or free publications.
++    asm volatile("bar.sync %0,384;" :: "r"(own_bar) : "memory");
+     __syncthreads();
+     for(int i=threadIdx.x;i<WORDS;i+=Threads) {
+         int tile=i/16,gr=cm*(BM/16)+tile/(BN/16),gc=cn*(BN/16)+tile%(BN/16);

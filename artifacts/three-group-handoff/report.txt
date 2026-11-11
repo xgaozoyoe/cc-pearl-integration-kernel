@@ -1,0 +1,27 @@
+Three-group handoff experiment: GPU0 only, offline.
+8192x8192 region,K4096,rank128. CUDA events,not full-grid or pool throughput.
+Each run:200samples/variant,16launches/sample,10rotating blocks; clocks unlocked.
+Run1:
+variant mean_ms median_ms p95_ms time_delta_vs_native_pct
+native           1.022447 1.017280 1.048579 +0.0000
+source_control   1.074736 1.072545 1.100655 +5.1141
+three_groups     1.082450 1.079521 1.112256 +5.8685
+three_early      1.037137 1.030464 1.068535 +1.4368
+Three early vs three late time: -4.1861%
+Run2:
+variant mean_ms median_ms p95_ms time_delta_vs_native_pct
+native           1.021933 1.017375 1.050039 +0.0000
+source_control   1.074103 1.068406 1.107267 +5.1050
+three_groups     1.078990 1.073408 1.112255 +5.5832
+three_early      1.032425 1.023909 1.068472 +1.0266
+Three early vs three late time: -4.3157%
+48 transcript and24 full transcript+PoW comparisons PASS; racecheck0 hazards/errors/warnings.
+Native/source_control168regs; three_groups/three_early167regs; all0local,69632B dynamic shared,384threads,1CTA/SM. No spills.
+All kernels64 static IMMA and16 LDSM; same data, CTA/warp shape and copy mapping. No additional operand traffic by design (L2 traffic not measured).
+Three groups reduce own-group tail rendezvous from8+4 to4+4+4, but add one early arrival per warp/K and additional ID state updates.
+source_control is recompiled late8+4; three_groups is recompiled late4+4+4; three_early uses the same three_groups machine instructions with both arrivals relocated before tail16MMA and explicit finalLDSM completion waits.
+Native is frozen optimized8+4. Its instruction schedule/register mapping differ from compiled three-group candidate; cannot attribute slowdown solely to barrier instruction cost.
+Result: current three-group design does not outperform fastest native. Keep production and fastest baseline unchanged.
+No live mining, Nsight counters or full-grid benchmark this round, because kernel candidate was slower.
+Files:source_control.diff,three_groups.diff,three_early.diff; protocol.txt records safety conditions and phase reuse.
+ptxas reserves16 barriers for dynamic-ID source kernels; distinguish reserved metadata from IDs actually selected.

@@ -1,0 +1,174 @@
+--- /dev/null
++++ tools/build_rank128_ablation.py
+@@ -0,0 +1,52 @@
++"""Compile frozen R128 full/pure controls without modifying mining libraries."""
++from pathlib import Path
++import subprocess
++root=Path(__file__).resolve().parents[1]
++s=(root/'artifacts/ada-rank-frozen-source.cu').read_text()
++s=s[s.index('namespace pearl_rank128'):s.index('void launch_pearl_blake3')]
++
++def remove_block(source,needle):
++    start=source.index(needle);opening=source.index('{',start);depth=1;end=opening+1
++    while depth:
++        depth+=(source[end]=='{')-(source[end]=='}');end+=1
++    return source[:start]+source[end:]
++
++parts=['#include <cuda_runtime.h>\n#include <cstdint>\n']
++parts.append(s.replace('pearl_rank128','rank128_full'))
++pure=remove_block(s,'            if constexpr(TileK!=64) {\n        if(group==Groups-1')
++pure=remove_block(pure,'        if constexpr(TileK==64) {')
++start=pure.index('    __syncthreads();\n    for(int i=threadIdx.x;i<WORDS;')
++end=pure.index('\n}\ntemplate<int Lead',start)
++pure=pure[:start]+'''
++    // Consume EVERY MMA accumulator. One observable uint32 per lane/CTA.
++    unsigned checksum=0;
++    #pragma unroll
++    for(int row=0;row<4;++row)
++    #pragma unroll
++    for(int group=0;group<Groups;++group)
++    #pragma unroll
++    for(int half=0;half<2;++half)
++    #pragma unroll
++    for(int v=0;v<4;++v) checksum^=c[row][group][half][v];
++    out[(blockIdx.x+gridDim.x*blockIdx.y)*Threads+threadIdx.x]=checksum;
++'''+pure[end:]
++parts.append(pure.replace('pearl_rank128','rank128_pure'))
++parts.append('''
++extern "C" int ablation(int v,const int8_t* a,const int8_t* b,int m,int n,unsigned* out,int* info) {
++ if(v==0)return rank128_full::launch<2,64,false,true,false,false,2,false,6>(a,b,m,n,4096,128,out,info,0);
++ if(v==1)return rank128_pure::launch<2,64,false,true,false,false,2,false,6>(a,b,m,n,4096,128,out,info,0);
++ return cudaErrorInvalidValue;
++}
++extern "C" int event_time(int v,const int8_t* a,const int8_t* b,int m,int n,unsigned* out,int repeats,float* ms) {
++ cudaEvent_t begin,end;cudaEventCreate(&begin);cudaEventCreate(&end);
++ cudaEventRecord(begin);
++ for(int i=0;i<repeats;++i){auto e=ablation(v,a,b,m,n,out,nullptr);if(e)return e;}
++ cudaEventRecord(end);auto e=cudaEventSynchronize(end);
++ if(e==cudaSuccess)e=cudaEventElapsedTime(ms,begin,end);
++ cudaEventDestroy(begin);cudaEventDestroy(end);return e;
++}
++''')
++generated=Path('/tmp/rank128-ablation.cu');generated.write_text('\n'.join(parts))
++subprocess.run(['/usr/local/cuda-12.6/bin/nvcc','-std=c++20','-O3','-lineinfo',
++ '-gencode','arch=compute_89,code=sm_89','-Xcompiler','-fPIC','--ptxas-options=-v',
++ '-shared',str(generated),'-o','/tmp/libpearl-rank128-ablation.so'],check=True)
+--- /dev/null
++++ tests/bench_rank128_ablation.py
+@@ -0,0 +1,83 @@
++"""GPU0 offline R128 fold ablation, same inputs/mapping/staging in both modes."""
++import os
++os.environ['CUDA_VISIBLE_DEVICES']='0'
++import argparse,ctypes as C,json,re,statistics,sys,time
++from pathlib import Path
++import numpy as np
++root=Path(__file__).resolve().parents[1];sys.path.insert(0,str(root/'python'))
++import cuda_capi as cc
++import miner_capi as miner
++import pool_common
++p=argparse.ArgumentParser();p.add_argument('mode',choices=['validate','bench','profile']);p.add_argument('--variant',type=int,default=0);args=p.parse_args()
++P,I=C.c_void_p,C.c_int
++lib=C.CDLL('/tmp/libpearl-rank128-ablation.so')
++lib.ablation.argtypes=[I,P,P,I,I,P,P]
++lib.event_time.argtypes=[I,P,P,I,I,P,I,P]
++def launch(v,a,b,m,n,out):cc._chk(lib.ablation(v,a.ptr,b.ptr,m,n,out.ptr,None),'ablation')
++resources={}
++for v in (0,1):
++ info=np.zeros(5,np.int32);cc._chk(lib.ablation(v,None,None,8192,8192,None,info.ctypes.data),'info');resources[v]=info.tolist()
++print('resources',resources,flush=True)
++
++if args.mode=='validate':
++ ref=C.CDLL(str(root/'artifacts/libpearl-rank.so'));ref.rank_fold.argtypes=[I,P,P,I,I,P,P]
++ for seed in (42,1234):
++  rng=np.random.default_rng(seed);m,n=256,384
++  a=rng.integers(-128,128,(m,4096),np.int8);b=rng.integers(-128,128,(n,4096),np.int8)
++  da,db,out=cc.DBuf(a.nbytes),cc.DBuf(b.nbytes),cc.DBuf(m*n//256*64)
++  da.from_host(a);db.from_host(b)
++  expected=np.empty(m*n//256*16,np.uint32);actual=np.empty_like(expected)
++  cc._chk(ref.rank_fold(128,da.ptr,db.ptr,m,n,out.ptr,None),'frozen');out.to_host(expected)
++  out.memset(0xa5);launch(0,da,db,m,n,out);out.to_host(actual)
++  assert np.array_equal(expected,actual),'full transcript changed'
++  out.memset(0xa5);launch(1,da,db,m,n,out);out.to_host(actual)
++  sink=actual[:((m+255)//256)*((n+191)//192)*384]
++  expected_xor=np.bitwise_xor.reduce((a.astype(np.int32)@b.astype(np.int32).T).view(np.uint32).ravel())
++  assert np.bitwise_xor.reduce(sink)==expected_xor,'pure accumulator checksum'
++  print('PASS frozen transcript + CPU final-accumulator checksum',seed,flush=True)
++  for x in (da,db,out):x.free()
++else:
++ m=n=8192;da,db,out=cc.DBuf(m*4096),cc.DBuf(n*4096),cc.DBuf(m*n//256*64)
++ rng=np.random.default_rng(42)
++ da.from_host(rng.integers(-128,128,(m,4096),np.int8));db.from_host(rng.integers(-128,128,(n,4096),np.int8))
++ if args.mode=='profile':
++  for _ in range(40):launch(args.variant,da,db,m,n,out);cc.sync()
++  sys.exit(0)
++ results=[]
++ for repeat in range(2):
++  for v in ((0,1) if repeat==0 else (1,0)):
++   for _ in range(40):launch(v,da,db,m,n,out)
++   cc.sync();values=[]
++   for _ in range(40):
++    ms=C.c_float();cc._chk(lib.event_time(v,da.ptr,db.ptr,m,n,out.ptr,16,C.byref(ms)),'events');values.append(ms.value/16)
++   row=dict(type='kernel_events',variant=v,repeat=repeat,median_ms=statistics.median(values),mean_ms=statistics.mean(values),p95_ms=float(np.percentile(values,95)),region=8192)
++   results.append(row);print(json.dumps(row),flush=True)
++ for x in (da,db,out):x.free()
++ miner.PROOF_PROCESS=False;miner.R=pool_common.R=128
++ class Pool:
++  def check_newer_job(self,job):return None
++ class Scheduler:
++  mode='user'
++  def __init__(self):self.grids=0
++  def note(self,elapsed):pass
++  def maybe_switch(self):self.grids+=1;return self.grids>=44
++ original_setup=cc.setup_job
++ for repeat in range(2):
++  for v in ((0,1) if repeat==0 else (1,0)):
++   scheduler=Scheduler();times=[];bufs=miner.Bufs(8192)
++   cc.setup_job=lambda *a:original_setup(*a[:-1],202610070000+scheduler.grids)
++   # PoW/jackpot disabled in BOTH controls; same setup/noise/region loop.
++   cc.pearl_pow_split=lambda a,b,m,n,k,r,key,target,t,dig,found,coord,variant:launch(v,a,b,m,n,t)
++   def log(line):
++    match=re.search(r'grid wall: ([\d.]+) s',line)
++    if match:times.append(float(match[1])*1000)
++   miner.mine_job(Pool(),pool_common.real_config(),bytes(80),0,'offline',8192,0,scheduler,bufs,dict(user=0,dev=0),None,log)
++   values=times[4:];mean=statistics.mean(values)
++   row=dict(type='grid_no_pow',variant=v,repeat=repeat,median_ms=statistics.median(values),mean_ms=mean,p95_ms=float(np.percentile(values,95)),grids_sec=1000/mean,equivalent_ths=(2**46/1e12)*1000/mean)
++   results.append(row);print(json.dumps(row),flush=True)
++   for value in vars(bufs).values():
++    if isinstance(value,cc.DBuf):value.free()
++    elif isinstance(value,list):
++     for x in value:
++      if isinstance(x,cc.DBuf):x.free()
++ Path('artifacts/rank128-ablation-results.json').write_text(json.dumps(dict(resources=resources,measurements=results),indent=2)+'\n')
+--- /dev/null
++++ tools/profile_rank128_ablation.sh
+@@ -0,0 +1,30 @@
++#!/usr/bin/env bash
++# Offline GPU0 only: accepted R128 transcript vs same GEMM with transcript compiled out.
++# Requires counter access. Validated for Nsight Compute2024.3.2 CLI.
++set -euo pipefail
++cd "$(dirname "$0")/.."
++export CUDA_VISIBLE_DEVICES=0
++
++PROFILE_OUT="${PROFILE_OUT:-/tmp/pearl-rank128-ablation-profile}"
++mkdir -p "$PROFILE_OUT"
++METRICS='gpu__time_duration.sum,dram__bytes.sum,lts__t_bytes.sum,sm__sass_data_bytes_mem_shared_op_ldsm.sum,lts__throughput.avg.pct_of_peak_sustained_elapsed,smsp__warp_issue_stalled_barrier_per_warp_active.pct,smsp__warp_issue_stalled_long_scoreboard_per_warp_active.pct,smsp__warp_issue_stalled_short_scoreboard_per_warp_active.pct,smsp__warp_issue_stalled_math_pipe_throttle_per_warp_active.pct,sm__pipe_tensor_op_imma_cycles_active_v2.avg.pct_of_peak_sustained_active'
++for VARIANT in 0 1; do
++  REPORT="$PROFILE_OUT/v$VARIANT"
++  if [[ ! -s "$REPORT.ncu-rep" ]]; then
++  /usr/local/cuda/bin/ncu --devices 0 --clock-control none \
++    --replay-mode application --cache-control none --kernel-name-base demangled \
++    --kernel-name 'regex:.*rank128_.*::kernel.*' \
++    --launch-skip 32 --launch-count 3 --metrics "$METRICS" \
++    --section SourceCounters --section SchedulerStats --section WarpStateStats \
++    --warp-sampling-interval auto --warp-sampling-max-passes 5 --import-source yes \
++    -o "$REPORT" /home/xgao/pearl-official/.venv/bin/python tests/bench_rank128_ablation.py profile --variant "$VARIANT" \
++    > "$REPORT.log" 2>&1
++  else
++    printf 'Reusing existing report: %s\n' "$REPORT.ncu-rep"
++  fi
++  /usr/local/cuda/bin/ncu --import "$REPORT.ncu-rep" --page raw --print-units base --csv > "$REPORT.raw.csv"
++  /usr/local/cuda/bin/ncu --import "$REPORT.ncu-rep" --page source --print-source sass --csv > "$REPORT.sass.csv"
++done
++/home/xgao/pearl-official/.venv/bin/python tools/analyze_instruction_stalls.py "$PROFILE_OUT"/v*.sass.csv --output "$PROFILE_OUT/pc-stalls.json"
++/home/xgao/pearl-official/.venv/bin/python tools/analyze_ada_ws.py "$PROFILE_OUT" --variants 0 1 --useful-mma 67108864
++printf 'Reports: %s\n' "$PROFILE_OUT"

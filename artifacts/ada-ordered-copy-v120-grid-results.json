@@ -1,0 +1,248 @@
+{
+  "baseline": 110,
+  "baseline_library": "/tmp/libpearl-ada-bpack-fixedk.so",
+  "candidate_library": "/tmp/libpearl-ada-ordered-copy.so",
+  "warmup_per_block": 2,
+  "stable_grids_per_variant": 20,
+  "results": [
+    {
+      "variant": 0,
+      "name": "production",
+      "times": [
+        0.4277,
+        0.4238,
+        0.4312,
+        0.4285,
+        0.4292,
+        0.4319,
+        0.4288,
+        0.4329,
+        0.428,
+        0.4323,
+        0.4292,
+        0.4289
+      ],
+      "median_seconds_excluding_first": 0.4292,
+      "grids_per_second": 2.3299161230195713,
+      "effective_THS": 163.95327161617894,
+      "reported_search_THS": [
+        171.08,
+        172.26,
+        169.13,
+        170.59,
+        170.22,
+        169.19,
+        170.43,
+        168.72,
+        170.56,
+        168.95,
+        170.35,
+        170.23
+      ],
+      "median_reported_search_THS": 170.23
+    },
+    {
+      "variant": 110,
+      "name": "MMA-packed B x4",
+      "times": [
+        0.345,
+        0.3526,
+        0.3557,
+        0.3536,
+        0.3537,
+        0.3548,
+        0.3557,
+        0.3527,
+        0.3548,
+        0.3533,
+        0.3538,
+        0.3538
+      ],
+      "median_seconds_excluding_first": 0.3538,
+      "grids_per_second": 2.826455624646693,
+      "effective_THS": 198.89413278028263,
+      "reported_search_THS": [
+        213.41,
+        208.91,
+        206.8,
+        208.2,
+        208.14,
+        207.56,
+        206.94,
+        208.71,
+        207.49,
+        208.43,
+        208.19,
+        208.06
+      ],
+      "median_reported_search_THS": 208.14
+    },
+    {
+      "variant": 120,
+      "name": "ordered async producer lanes",
+      "times": [
+        0.3472,
+        0.3536,
+        0.3574,
+        0.3554,
+        0.3559,
+        0.3583,
+        0.3567,
+        0.3553,
+        0.3569,
+        0.3587,
+        0.355,
+        0.3564
+      ],
+      "median_seconds_excluding_first": 0.3564,
+      "grids_per_second": 2.8058361391694726,
+      "effective_THS": 197.44316548166105,
+      "reported_search_THS": [
+        211.73,
+        208.08,
+        205.94,
+        207.17,
+        206.81,
+        205.13,
+        206.07,
+        207.16,
+        205.99,
+        205.0,
+        207.11,
+        206.42
+      ],
+      "median_reported_search_THS": 206.42
+    },
+    {
+      "variant": 120,
+      "name": "ordered async producer lanes",
+      "times": [
+        0.3482,
+        0.3546,
+        0.3565,
+        0.3571,
+        0.3571,
+        0.3566,
+        0.3566,
+        0.3531,
+        0.3558,
+        0.3576,
+        0.356,
+        0.3554
+      ],
+      "median_seconds_excluding_first": 0.3565,
+      "grids_per_second": 2.805049088359046,
+      "effective_THS": 197.38778170452736,
+      "reported_search_THS": [
+        211.24,
+        207.6,
+        206.2,
+        205.89,
+        206.07,
+        206.43,
+        206.4,
+        208.5,
+        206.79,
+        205.76,
+        206.55,
+        206.97
+      ],
+      "median_reported_search_THS": 206.43
+    },
+    {
+      "variant": 110,
+      "name": "MMA-packed B x4",
+      "times": [
+        0.3456,
+        0.3532,
+        0.3548,
+        0.3562,
+        0.3535,
+        0.3543,
+        0.3537,
+        0.3525,
+        0.3529,
+        0.3532,
+        0.3538,
+        0.3547
+      ],
+      "median_seconds_excluding_first": 0.3537,
+      "grids_per_second": 2.827254735651682,
+      "effective_THS": 198.95036521816226,
+      "reported_search_THS": [
+        212.77,
+        208.22,
+        207.45,
+        206.66,
+        208.38,
+        207.69,
+        208.22,
+        208.85,
+        208.55,
+        208.44,
+        208.15,
+        207.58
+      ],
+      "median_reported_search_THS": 208.22
+    },
+    {
+      "variant": 0,
+      "name": "production",
+      "times": [
+        0.4207,
+        0.4285,
+        0.4346,
+        0.4271,
+        0.4355,
+        0.4284,
+        0.4289,
+        0.4211,
+        0.4307,
+        0.4317,
+        0.43,
+        0.433
+      ],
+      "median_seconds_excluding_first": 0.43,
+      "grids_per_second": 2.3255813953488373,
+      "effective_THS": 163.6482422736372,
+      "reported_search_THS": [
+        173.43,
+        170.5,
+        168.16,
+        170.92,
+        167.75,
+        170.59,
+        170.42,
+        173.45,
+        169.63,
+        169.17,
+        169.93,
+        168.75
+      ],
+      "median_reported_search_THS": 169.93
+    }
+  ],
+  "summary": {
+    "0": {
+      "median_ms": 429.6,
+      "mean_ms": 430.095,
+      "p95_ms": 434.6449999999999,
+      "grids_per_second": 2.3277467411545625,
+      "effective_THS": 163.80061493869644
+    },
+    "110": {
+      "median_ms": 353.8,
+      "mean_ms": 354.075,
+      "p95_ms": 355.72499999999997,
+      "grids_per_second": 2.8264556246466928,
+      "effective_THS": 198.89413278028263
+    },
+    "120": {
+      "median_ms": 356.54999999999995,
+      "mean_ms": 356.39,
+      "p95_ms": 358.32,
+      "grids_per_second": 2.8046557285093257,
+      "effective_THS": 197.3601014658926
+    }
+  }
+}

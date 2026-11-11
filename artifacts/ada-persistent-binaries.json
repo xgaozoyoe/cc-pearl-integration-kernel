@@ -1,0 +1,10 @@
+{
+  "/home/xgao/pearl-4090/tools/build_ada_persistent.py": "258617f899746b8e2e11e694329c0b9c9954ffe0b399ce389c60e2e801f99cb5",
+  "/home/xgao/pearl-4090/tests/bench_ada_persistent.py": "3f344f98aa7637bdb7d15785d67b3c6e9cc60482da5472ac33c79e6610a99269",
+  "/home/xgao/pearl-4090/tools/profile_ada_persistent.sh": "93a365bd2320d9853de055523323b83e4263a3220621c0d5af06f2f6b0fb75c3",
+  "/home/xgao/pearl-4090/tools/analyze_ada_ws.py": "89aeaa5d1e123e4adf67943a0cb89e32059778165bbb57bb25a34218e4823aca",
+  "/tmp/libpearl-persistent.so": "c559699b72530abbe3ea0e27c308cc7468c2537c30224b19393e6231d045f2fe",
+  "/home/xgao/pearl-4090/libp40cuda.so": "dd21041b17312d177aac619875bbad5d32703da7827d042185a7a783f8531ce6",
+  "/home/xgao/pearl-4090/csrc/gemm/pearl-gemm-ada-v2.cu": "a3ffac35f19f080906d418b45537a17ac4f19192225bba9a6e2a9d23e3effbf8",
+  "/tmp/libpearl-ada-linear-copy.so": "d502d16187e953510303275f9a3ebf62010eba8f6fc277708282389ed36c9e66"
+}

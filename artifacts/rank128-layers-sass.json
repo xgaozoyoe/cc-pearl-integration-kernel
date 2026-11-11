@@ -1,0 +1,44 @@
+{
+  "_ZN13layers_shared6kernelILi2ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj": {
+    "loop_start": "0x1290",
+    "loop_end": "0x1810",
+    "static_loop_instructions": 89,
+    "loop_opcodes": {
+      "IMMA": 64,
+      "LDSM": 16,
+      "LDGSTS": 0,
+      "DEPBAR": 0,
+      "BAR": 0,
+      "LDL": 0,
+      "STL": 0
+    }
+  },
+  "_ZN11layers_full6kernelILi2ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj": {
+    "loop_start": "0xe50",
+    "loop_end": "0x1a30",
+    "static_loop_instructions": 191,
+    "loop_opcodes": {
+      "IMMA": 64,
+      "LDSM": 16,
+      "LDGSTS": 2,
+      "DEPBAR": 1,
+      "BAR": 1,
+      "LDL": 0,
+      "STL": 0
+    }
+  },
+  "_Z9imma_roofPKjPjPyS1_i": {
+    "loop_start": "0x680",
+    "loop_end": "0xaa0",
+    "static_loop_instructions": 67,
+    "loop_opcodes": {
+      "IMMA": 64,
+      "LDSM": 0,
+      "LDGSTS": 0,
+      "DEPBAR": 0,
+      "BAR": 0,
+      "LDL": 0,
+      "STL": 0
+    }
+  }
+}

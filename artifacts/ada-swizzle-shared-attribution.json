@@ -1,0 +1,68 @@
+{
+  "110": {
+    "other": {
+      "excess": 0.0,
+      "ideal": 0.0
+    },
+    "LDSM": {
+      "excess": 0.0,
+      "ideal": 17301504.0
+    },
+    "LDGSTS": {
+      "excess": 4981313.333333334,
+      "ideal": 5046272.0
+    },
+    "STS": {
+      "excess": 0.0,
+      "ideal": 1081344.0
+    },
+    "LDS": {
+      "excess": 0.0,
+      "ideal": 32768.0
+    }
+  },
+  "117": {
+    "other": {
+      "excess": 0.0,
+      "ideal": 0.0
+    },
+    "LDSM": {
+      "excess": 0.0,
+      "ideal": 17301504.0
+    },
+    "LDGSTS": {
+      "excess": 4981408.000000001,
+      "ideal": 5046272.0
+    },
+    "STS": {
+      "excess": 0.0,
+      "ideal": 1081344.0
+    },
+    "LDS": {
+      "excess": 0.0,
+      "ideal": 32768.0
+    }
+  },
+  "121": {
+    "other": {
+      "excess": 0.0,
+      "ideal": 0.0
+    },
+    "LDSM": {
+      "excess": 0.0,
+      "ideal": 17301504.0
+    },
+    "LDGSTS": {
+      "excess": 4981121.333333333,
+      "ideal": 5046272.0
+    },
+    "STS": {
+      "excess": 0.0,
+      "ideal": 1081344.0
+    },
+    "LDS": {
+      "excess": 0.0,
+      "ideal": 32768.0
+    }
+  }
+}

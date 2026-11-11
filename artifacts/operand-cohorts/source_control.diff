@@ -1,0 +1,15 @@
+--- source8
++++ source_control
+@@ -1,4 +1,4 @@
+-namespace fold_defer_source8 {
++namespace operand_source_control {
+ constexpr int BM=256, BN=192, THREADS=384;
+ constexpr int WORDS=(BM/16)*(BN/16)*16;
+ struct Fragment { unsigned v[4]; };
+@@ -247,3 +247,6 @@
+         if(gr<m/16 && gc<n/16) out[((size_t)gr*(n/16)+gc)*16+i%16]=transcript[i];
+     }
+ }
++
++template __global__ void kernel<1,64,false,true,false,false,2,false,6>(const signed char*,const signed char*,int,int,int,int,unsigned*);
++}

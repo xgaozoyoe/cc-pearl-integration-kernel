@@ -1,0 +1,29 @@
+--- A-stream baseline
++++ tail1
+@@ -213,6 +213,17 @@
+         if constexpr(TileK==64) {
+         if((kt+1)%2==0) {
+             int rb=(kt+1)/2-1;
++            unsigned early[1]={};
++            if(lane==0 && rb>=16) {
++                #pragma unroll
++                for(int j=0;j<1;++j) {
++                    int idx=((wm*4+3)*(BN/16)+wn*Groups+Groups-1+j)*16+(rb%16);
++                    unsigned addr=__cvta_generic_to_shared(transcript+idx);
++                    // Real memory load, deliberately issued before the fold body.
++                    asm volatile("ld.shared.u32 %0,[%1];" : "=r"(early[j]) : "r"(addr) : "memory");
++                }
++            }
++
+             #pragma unroll
+             for(int row=0;row<4;++row) {
+                 #pragma unroll
+@@ -227,7 +238,7 @@
+                     if(lane==0) {
+                         int idx=((wm*4+row)*(BN/16)+wn*Groups+group)*16+(rb%16);
+                         if(rb<16) transcript[idx]=x;
+-                        else { unsigned prev=transcript[idx]; transcript[idx]=((prev<<13)|(prev>>19))^x; }
++                        else { unsigned prev=(row==3 && group>=Groups-1)?early[group-(Groups-1)]:transcript[idx]; transcript[idx]=((prev<<13)|(prev>>19))^x; }
+                     }
+                 }
+             }

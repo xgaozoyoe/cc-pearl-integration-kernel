@@ -1,0 +1,55 @@
+--- validated-handoff_lean_toggle
++++ hoist
+@@ -108,6 +108,26 @@
+     asm volatile("cp.async.commit_group;");
+ }
+ 
++
++__device__ __forceinline__ void copy_cursor(const signed char* a,const signed char* b,
++ signed char* sa,signed char* sb,unsigned offA,unsigned offB,int grB,int n) {
++    unsigned dstA=__cvta_generic_to_shared(sa+threadIdx.x*16);
++    unsigned dstB=__cvta_generic_to_shared(sb+threadIdx.x*16);
++    #pragma unroll
++    for(int j=0;j<3;++j) if(threadIdx.x+j*THREADS<BM*64/16) {
++        const signed char* src=a+offA;
++        asm volatile("cp.async.cg.shared.global [%0],[%1],16,16;" :: "r"(dstA),"l"(src));
++        offA+=96u*4096u;dstA+=THREADS*16;
++    }
++    #pragma unroll
++    for(int j=0;j<2;++j) {
++        bool valid=grB<n;
++        const signed char* src=b+(valid?offB:0u);
++        asm volatile("cp.async.cg.shared.global [%0],[%1],16,%2;" :: "r"(dstB),"l"(src),"r"(valid?16:0));
++        grB+=96;offB+=96u*4096u;dstB+=THREADS*16;
++    }
++    asm volatile("cp.async.commit_group;");
++}
+ template<int Lead,int TileK=64,bool Planar=false,bool PackedB=false,bool UnrollCopy=false,bool FixedCopy=false,int Stages=2,bool Wide=false,int Layout=0>
+ __global__ void __launch_bounds__(Wide?256:THREADS,1) kernel(const signed char* a,const signed char* b,int m,int n,int k,int r,unsigned* out) {
+     constexpr int WarpN=Wide?96:64, Groups=WarpN/16, Threads=Wide?256:THREADS;
+@@ -128,9 +148,13 @@
+     // column=2*(lane%4) (+1 for c1,c3). Two halves form a16x16 tile.
+     unsigned c[4][Groups][2][4]={};
+     Fragment ar[4], br[Lead+1];
+-    #pragma unroll
+-    for(int p=0;p<Stages-1;++p)
+-        stage_copy<TileK,Planar,UnrollCopy,FixedCopy,Layout>(a,b,sa+p*BM*TileK,sb+p*BN*TileK,cm,cn,p,m,n,k);
++    static_assert(PackedB && !Planar && Layout==6 && TileK==64 && Stages==2 && !Wide);
++    const unsigned logical=unsigned(threadIdx.x)^(unsigned(threadIdx.x>>3)&3u);
++    const unsigned copy_row=logical/4u,copy_col=(logical%4u)*16u;
++    const int copy_grB=cn*BN+int(copy_row);
++    const unsigned originA=(unsigned(cm)*BM+copy_row)*4096u+copy_col;
++    const unsigned originB=unsigned(copy_grB)*4096u+copy_col;
++    copy_cursor(a,b,sa,sb,originA,originB,copy_grB,n);
+     static_assert(Stages==2 && TileK==64 && !Wide);
+     // Initial stage publication is prologue-only, not a per-iteration branch.
+     asm volatile("cp.async.wait_group 0;" ::: "memory");
+@@ -142,7 +166,7 @@
+         const unsigned peer_bar=own_bar^1u;
+         int current=kt%Stages,next=(kt+Stages-1)%Stages;
+         if(kt+Stages-1<(k+TileK-1)/TileK)
+-            stage_copy<TileK,Planar,UnrollCopy,FixedCopy,Layout>(a,b,sa+next*BM*TileK,sb+next*BN*TileK,cm,cn,kt+Stages-1,m,n,k);
++            copy_cursor(a,b,sa+next*BM*TileK,sb+next*BN*TileK,originA+unsigned((kt+1)*64),originB+unsigned((kt+1)*64),copy_grB,n);
+         signed char* aa=sa+current*BM*TileK;
+         signed char* bb=sb+current*BN*TileK;
+         if constexpr(Lead==0 || Lead==3) {

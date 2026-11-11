@@ -1,0 +1,44 @@
+[
+  {
+    "function": "_ZN21rank128_interior_tail6kernelILi2ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+    "instructions": 936,
+    "counts": {
+      "IMMA": 64,
+      "LDSM": 16,
+      "LDGSTS": 4,
+      "ISETP": 35,
+      "SEL": 4,
+      "IMAD": 159,
+      "LDL": 0,
+      "STL": 0
+    }
+  },
+  {
+    "function": "_ZN21rank128_interior_full6kernelILi2ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+    "instructions": 920,
+    "counts": {
+      "IMMA": 64,
+      "LDSM": 16,
+      "LDGSTS": 4,
+      "ISETP": 31,
+      "SEL": 0,
+      "IMAD": 156,
+      "LDL": 0,
+      "STL": 0
+    }
+  },
+  {
+    "function": "_ZN25rank128_interior_baseline6kernelILi2ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+    "instructions": 928,
+    "counts": {
+      "IMMA": 64,
+      "LDSM": 16,
+      "LDGSTS": 4,
+      "ISETP": 35,
+      "SEL": 4,
+      "IMAD": 156,
+      "LDL": 0,
+      "STL": 0
+    }
+  }
+]

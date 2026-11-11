@@ -1,0 +1,100 @@
+{
+  "state-prefetch": {
+    "tail2": {
+      "static_instructions": 904,
+      "mma_sites": 64,
+      "ldsm_sites": 16,
+      "fold_reconvergence": 2,
+      "prefetch_before_first_redux": [
+        [
+          "18d0",
+          "LDS R98, [R97.X4+0xe980]"
+        ],
+        [
+          "18e0",
+          "LDS R96, [R97.X4+0xe9c0]"
+        ]
+      ],
+      "first_redux": [
+        "1a30",
+        "REDUX.XOR UR4, R139"
+      ]
+    },
+    "tail1": {
+      "static_instructions": 904,
+      "mma_sites": 64,
+      "ldsm_sites": 16,
+      "fold_reconvergence": 2,
+      "prefetch_before_first_redux": [
+        [
+          "18b0",
+          "LDS R96, [R96.X4+0xe9c0]"
+        ]
+      ],
+      "first_redux": [
+        "1a00",
+        "REDUX.XOR UR4, R137"
+      ]
+    },
+    "baseline": {
+      "static_instructions": 880,
+      "mma_sites": 64,
+      "ldsm_sites": 16,
+      "fold_reconvergence": 1,
+      "prefetch_before_first_redux": [],
+      "first_redux": [
+        "18e0",
+        "REDUX.XOR UR5, R137"
+      ]
+    }
+  },
+  "state-prefetch-pred": {
+    "tail2": {
+      "static_instructions": 888,
+      "mma_sites": 64,
+      "ldsm_sites": 16,
+      "fold_reconvergence": 1,
+      "prefetch_before_first_redux": [
+        [
+          "1910",
+          "@P0 LDS R98, [R96+0xe980]"
+        ],
+        [
+          "1920",
+          "@P0 LDS R97, [R96+0xe9c0]"
+        ]
+      ],
+      "first_redux": [
+        "1960",
+        "REDUX.XOR UR4, R139"
+      ]
+    },
+    "tail1": {
+      "static_instructions": 888,
+      "mma_sites": 64,
+      "ldsm_sites": 16,
+      "fold_reconvergence": 1,
+      "prefetch_before_first_redux": [
+        [
+          "18f0",
+          "@P0 LDS R96, [R97+0xe9c0]"
+        ]
+      ],
+      "first_redux": [
+        "1930",
+        "REDUX.XOR UR4, R137"
+      ]
+    },
+    "baseline": {
+      "static_instructions": 880,
+      "mma_sites": 64,
+      "ldsm_sites": 16,
+      "fold_reconvergence": 1,
+      "prefetch_before_first_redux": [],
+      "first_redux": [
+        "18e0",
+        "REDUX.XOR UR5, R137"
+      ]
+    }
+  }
+}

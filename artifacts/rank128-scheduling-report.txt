@@ -1,0 +1,38 @@
+R128 LDSM/IMMA scheduling controls — 2026-10-08
+GPU0 only. GPU2 live miner and both accepted libraries unchanged.
+CTA256x192,warp64x64,K64,2stages,R128,Layout6,region8192 unchanged.
+Both controls retain all MMA accumulator state in registers.
+
+Experiment1:row-paired MMA, keeping Lead2 Bprefetch and placing Bload after two
+MMA in each group. Source-level next-A loads spread after each pair.
+Generated SASS is EXACTLY identical to baseline:928 instruction lines including
+instruction encodings. Compiler canonicalizes this source reordering.
+Baseline mean331.185/331.8175ms;candidate330.2975/331.6925ms.
+Small differences are measurement variation, not an optimization.
+
+Experiment2:reduce Bprefetch Lead2->Lead1 and explicitly stage next A fragment
+before the second half-MMA, releasing old fragment after last use.
+Resources stay168regs,69632shared,384threads,1CTA/SM,zero local/spill.
+SASS actually differs but emitted LDSM placements almost match baseline:
+MMA ordinals at LDSM baseline:
+0,0,0,0,0,8,16,24,28,30,31,32,32,32,40,53.
+Candidate:
+0,0,0,0,0,8,16,24,28,29,31,32,32,32,40,53.
+Thus this does not achieve a fundamentally different software pipeline.
+Both64IMMA/16LDSM/4LDGSTS static instruction sites.
+Baseline means331.825/331.1575ms;candidate331.2575/331.9575ms.
+Across-run means331.49125 vs331.60750ms, candidate0.035% slower.
+Candidate wins one ordering, loses the other: no repeatable benefit (~212TH/s).
+
+Each experiment:12 bit-exact transcript/digest comparisons against frozen R128
+for two seeds and32x48,256x384,8192x8192 shapes. All PASS.
+Each benchmark:4warmup+40samples pervariant perrun,2runs reversedorder,
+real setup/V3/noise/GEMM/transcript/PoW,zero target,no proof/pool work.
+Clocks not locked. No candidate promoted; no live candidate test necessary.
+Counter scripts retained for reproducibility, not requested for no-gain variants.
+
+Conclusion:source loop ordering is largely undone by compiler scheduling; no
+speedup from these changes. Further scheduling work needs a real change in
+cross-K operand/stage lifetime rather than cosmetic source instruction order.
+Earlier wide-warp and occupancy experiments should not be repeated without a
+specific new R128 hypothesis. Existing evidence does not establish a path to300.

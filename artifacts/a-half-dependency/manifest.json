@@ -1,0 +1,23 @@
+{
+  "warning": "Incorrect Pearl arithmetic except native. A operand uses complete current B quartet only on half0 MMA. Half1 retains real A. Keep all memory work.",
+  "variants": {
+    "native": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "104c0c1b265260dea5c9ab0bb174ebbbe7ee9cceb0cf0acebf2a9d1dfa4d50aa",
+      "smem": 69632,
+      "correct": true
+    },
+    "b_as_a_half": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "5bf80a250b47ab31616aab29c65e71b077ff3fe317da77d185daf342cfedf5c0",
+      "smem": 69632,
+      "correct": false
+    },
+    "b_as_a_half_release": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "bcbc2d371f2342612ff5b6db06836271c718e326b56a93041c44a85cee1702f1",
+      "smem": 69632,
+      "correct": false
+    }
+  }
+}

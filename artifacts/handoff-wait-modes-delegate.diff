@@ -1,0 +1,15 @@
+--- validated-transcript_handoff_overlap
++++ delegate
+@@ -247,7 +247,11 @@
+             }
+         }
+         }
+-        handoff_wait(handoff_bar,unsigned(kt&1));
++        // All 384 threads still arrive and publish cp.async completion.
++        // Warp0 acquires that completion; CTA barrier propagates visibility
++        // and prevents any next-iteration overwrite before all readers finish.
++        if(threadIdx.x<32) handoff_wait(handoff_bar,unsigned(kt&1));
++        __syncthreads();
+     }
+     __syncthreads();
+     if(threadIdx.x==0) asm volatile("mbarrier.inval.shared.b64 [%0];" :: "r"(handoff_bar) : "memory");

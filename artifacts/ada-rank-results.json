@@ -1,0 +1,42 @@
+[
+  {
+    "rank": 256,
+    "repeat": 0,
+    "samples": 40,
+    "median_ms": 318.35,
+    "mean_ms": 318.1675,
+    "p95_ms": 319.51,
+    "raw_ths": 221.1688628714875,
+    "consensus_equivalent_ths": 110.58443143574375
+  },
+  {
+    "rank": 128,
+    "repeat": 0,
+    "samples": 40,
+    "median_ms": 329.95000000000005,
+    "mean_ms": 329.8775,
+    "p95_ms": 331.605,
+    "raw_ths": 213.31780487503391,
+    "consensus_equivalent_ths": 213.31780487503391
+  },
+  {
+    "rank": 128,
+    "repeat": 1,
+    "samples": 40,
+    "median_ms": 327.95000000000005,
+    "mean_ms": 328.415,
+    "p95_ms": 330.575,
+    "raw_ths": 214.2677532319291,
+    "consensus_equivalent_ths": 214.2677532319291
+  },
+  {
+    "rank": 256,
+    "repeat": 1,
+    "samples": 40,
+    "median_ms": 318.25,
+    "mean_ms": 317.935,
+    "p95_ms": 319.71,
+    "raw_ths": 221.33059958061867,
+    "consensus_equivalent_ths": 110.66529979030933
+  }
+]

@@ -1,0 +1,20 @@
+{
+  "baseline": {
+    "IMMA": 64,
+    "LDSM": 16,
+    "exact_control_instruction_match": true
+  },
+  "control": {
+    "IMMA": 64,
+    "LDSM": 16,
+    "exact_control_instruction_match": true
+  },
+  "padded": {
+    "IMMA": 64,
+    "LDSM": 16
+  },
+  "rolling": {
+    "IMMA": 64,
+    "LDSM": 16
+  }
+}

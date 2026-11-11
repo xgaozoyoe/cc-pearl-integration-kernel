@@ -1,0 +1,20 @@
+--- current-A-stream
++++ latecopy
+@@ -139,8 +139,6 @@
+         }
+         __syncthreads();
+         int current=kt%Stages,next=(kt+Stages-1)%Stages;
+-        if(kt+Stages-1<(k+TileK-1)/TileK)
+-            stage_copy<TileK,Planar,UnrollCopy,FixedCopy,Layout>(a,b,sa+next*BM*TileK,sb+next*BN*TileK,cm,cn,kt+Stages-1,m,n,k);
+         signed char* aa=sa+current*BM*TileK;
+         signed char* bb=sb+current*BN*TileK;
+         if constexpr(Lead==0 || Lead==3) {
+@@ -233,6 +231,8 @@
+             }
+         }
+         }
++        if(kt+Stages-1<(k+TileK-1)/TileK)
++            stage_copy<TileK,Planar,UnrollCopy,FixedCopy,Layout>(a,b,sa+next*BM*TileK,sb+next*BN*TileK,cm,cn,kt+Stages-1,m,n,k);
+     }
+     __syncthreads();
+     for(int i=threadIdx.x;i<WORDS;i+=Threads) {

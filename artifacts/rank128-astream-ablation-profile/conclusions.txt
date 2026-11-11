@@ -1,0 +1,57 @@
+Latest capture: /tmp/pearl-astream-ablation.ppIqHd (2026-10-08 22:38-22:39).
+Input source/library SHA256 verified; three kernels/profile, no missing requested
+summary metrics. v1 and v4 use identical kernel machine code, runtime fold off/on.
+
+                     Original v0    Matched full v4     Disabled v1
+Kernel ms            1.040245       1.049344            0.955605
+Tensor active %      78.750         78.117              84.793
+L2 B/useful MMA      37.75823        37.75862            37.53999
+Barrier stall %      12.793         12.937              13.400
+Short scoreboard %   7.333          7.460               6.797
+Long scoreboard %    2.890          2.857               3.060
+Math throttle %      45.390         45.080              48.187
+Issued warp/cycle    0.22           0.22                0.17
+
+Matched delta0.093739ms,8.933% of full kernel time. Original-vs-disabled8.135%.
+Tensor metric is active-cycle IMMA utilization,not elapsed-time Nsight Systems
+Tensor Active. Profiler timings differ from unprofiled CUDA events and are not
+new full-grid or live-mining throughput results.
+
+Execution validation: v1 fold region has zero dynamically executed instructions.
+Main/setup dynamic warp instructions identical v1/v4:637676928 over three launches.
+Full fold adds246491136 dynamic warp instructions (per three launches),plus output
+path differences. This is instruction volume,not a wall-time fraction.
+
+Full v4 sample shares:fold5.684%,epilogue0.932%,main/setup93.384%.
+PC samples are not additive wall-clock costs. v1 even has1328 samples attributed
+to skipped fold-start S2R despite zero executed instructions there: attribution
+skew is visible. Do not use these shares to claim an exact millisecond cost split.
+
+Within v4 fold SHORT-SCOREBOARD samples (13912 total):
+ - IMAD.U32 consuming uniform registers from REDUX:5056 (36.34%).
+ - SHF.L.W consuming old transcript LDS values:4576 (32.89%).
+ - LDS PCs:1568; LOP3 PCs:1973; thread-index SHF:739.
+These percentages refer only to fold short-scoreboard samples,not overall runtime.
+Example final state update:0x2280 LDS R97 ->0x2290 SHF rotate13 -> XOR -> STS.
+0x2290 has1506 short-scoreboard samples;0x2280 has1290. This is a concrete
+shared-state read/use dependency to target. Earlier state reads are already
+interleaved,so indiscriminate prefetching is not justified.
+REDUX result moves e.g.0x2920 IMAD.U32 R139,RZ,RZ,UR18 and0x2980 IMAD.U32 R143,
+RZ,RZ,UR5 also have samples; REDUX itself having zero short-scoreboard samples
+does NOT mean reduction latency is zero.
+
+Full131461 barrier samples:129322 at mainloop branch after CTA barrier (~98.37%);
+2139 in exit region. Disabled remains124967 at mainloop. Barrier percent rises
+when transcript is disabled while runtime falls; no evidence that removing a
+transcript CTA barrier explains most of the speedup. Likewise math-throttle
+percentage rising on a faster kernel is not a regression.
+
+Conclusion: transcript execution interrupts the useful IMMA schedule and adds
+integer/reduction/state work. The data confirms remaining ~8-9% kernel headroom,
+but does not provide an exact causal XOR/REDUX/store time decomposition. The
+clearest new actionable dependency is old shared transcript state consumption,
+followed by uniform reduction-result consumption. Next controlled experiment:
+move only late old-state loads earlier within the fold,keep one/few additional
+values live,retain native REDUX and local XOR. Reject spills; inspect SASS and
+benchmark bit-exact offline before claiming gain. No new optimization deployed.
+Full register-state relocation is not automatically beneficial at168regs/thread.

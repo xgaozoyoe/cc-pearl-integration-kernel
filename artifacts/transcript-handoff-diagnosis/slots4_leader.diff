@@ -1,0 +1,79 @@
+--- cta192
++++ slots4_leader
+@@ -1,6 +1,6 @@
+ #include <cuda_runtime.h>
+ #include <cstdint>
+-namespace transcript_cta192_consumer {
++namespace handoff_diagnosis_slots4_leader {
+ constexpr int BM=192, BN=192, THREADS=288;
+ constexpr int WORDS=(BM/16)*(BN/16)*16;
+ struct Fragment { unsigned v[4]; };
+@@ -85,8 +85,11 @@
+ 
+ 
+ __device__ __forceinline__ void task_wait(unsigned bar,unsigned phase) {
++ if((threadIdx.x&31)==0) {
+  unsigned ok;
+  do { asm volatile("{ .reg .pred p; mbarrier.test_wait.parity.shared.b64 p,[%1],%2; selp.u32 %0,1,0,p; }" : "=r"(ok) : "r"(bar),"r"(phase) : "memory"); } while(!ok);
++ }
++ __syncwarp();
+ }
+ __device__ __forceinline__ void task_arrive(unsigned bar) {
+  asm volatile("mbarrier.arrive.shared.b64 _,[%0];" :: "r"(bar) : "memory");
+@@ -111,8 +114,8 @@
+     // column=2*(lane%4) (+1 for c1,c3). Two halves form a16x16 tile.
+ 
+     unsigned* tasks=reinterpret_cast<unsigned*>(shared+58368);
+-    unsigned barbase=(unsigned)__cvta_generic_to_shared(shared+58368+4608);
+-    if(threadIdx.x<18) {
++    unsigned barbase=(unsigned)__cvta_generic_to_shared(shared+58368+18432);
++    if(threadIdx.x<72) {
+         unsigned addr=barbase+8*threadIdx.x;
+         asm volatile("mbarrier.init.shared.b64 [%0],32;" :: "r"(addr) : "memory");
+     }
+@@ -123,11 +126,11 @@
+         for(unsigned seq=0;seq<128;++seq) {
+             unsigned rb=seq/4,group=seq%4;
+             for(unsigned producer=0;producer<9;++producer) {
+-                task_wait(barbase+producer*16,seq&1u);
++                task_wait(barbase+(producer*4+group)*16,rb&1u);
+                 unsigned values[4];
+                 #pragma unroll
+-                for(int row=0;row<4;++row) values[row]=tasks[producer*128+row*32+lane];
+-                task_arrive(barbase+producer*16+8);
++                for(int row=0;row<4;++row) values[row]=tasks[(producer*4+group)*128+row*32+lane];
++                task_arrive(barbase+(producer*4+group)*16+8);
+                 #pragma unroll
+                 for(int row=0;row<4;++row) {
+                     unsigned x=__reduce_xor_sync(0xffffffffu,values[row]);
+@@ -204,7 +207,7 @@
+             if(slice==1 && (kt+1)%2==0) {
+ 
+             unsigned seq=unsigned((kt+1)/2-1)*4+group;
+-            if(seq)task_wait(barbase+warp*16+8,(seq-1)&1u);
++            if(seq>=4)task_wait(barbase+(warp*4+group)*16+8,((seq/4)-1)&1u);
+             #pragma unroll
+             for(int row=0;row<4;++row) {
+                 unsigned x=0;
+@@ -213,9 +216,9 @@
+                     #pragma unroll
+                     for(int v=0;v<4;++v)x^=c[row][group][half][v];
+                 }
+-                tasks[warp*128+row*32+lane]=x;
+-            }
+-            task_arrive(barbase+warp*16);
++                tasks[(warp*4+group)*128+row*32+lane]=x;
++            }
++            task_arrive(barbase+(warp*4+group)*16);
+ 
+             }
+             if constexpr(TileK!=64) {
+@@ -252,7 +255,7 @@
+     }
+     } // producer path
+     __syncthreads();
+-    if(threadIdx.x<18) {
++    if(threadIdx.x<72) {
+         unsigned addr=barbase+8*threadIdx.x;
+         asm volatile("mbarrier.inval.shared.b64 [%0];" :: "r"(addr) : "memory");
+     }

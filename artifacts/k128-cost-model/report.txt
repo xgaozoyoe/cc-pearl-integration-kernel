@@ -1,0 +1,27 @@
+GPU0 attributes queried from CUDA driver;no kernels or performance measurements.
+{'sm_major': 8, 'sm_minor': 9, 'shared_per_sm': 102400, 'regs_per_sm': 65536, 'shared_optin_per_cta': 101376}
+M N K stages operands transcript total fits
+256 192 64 2 57344 12288 69632 True
+256 192 128 2 114688 12288 126976 False
+256 192 128 1 57344 12288 69632 True
+256 192 64 3 86016 12288 98304 True
+192 192 128 2 98304 9216 107520 False
+256 128 128 2 98304 8192 106496 False
+192 128 128 2 81920 6144 88064 True
+Current shared transcript format:16uint32words per16x16tile,12288B for256x192.
+Plain K128 doublebuffer256x192 needs126976B,exceeds101376B CTA limit by25600B.
+Even eliminating shared transcript entirely leaves114688B operands,still exceeds limit.
+K128 singlebuffer fits69632B,butsafe reuse needs all readers done BEFORE next copies and all copies done BEFORE next reads.
+Thus simple singlebuffer requires two logical cross-warp handoffs per128 chunk (~64 total atK4096),and forfeits copy/compute overlap.
+These are protocol events,not measured stall time or SASS instruction counts. Prologue/epilogue may change counts.
+Two-K64 source loop unrolling does not remove the64physical stage handoffs.
+Three K64 slots fit98304B;cannot hold currentK128 plus full futureK128 simultaneously.
+A3slot/asymmetric protocol could overlap a futureK64,butrequires partial publication/reuse sync;no guaranteed2x reduction.
+Reg-staging an extraK64 operand tile would be28672B (7168 INT32regs) acrossCTA before layout duplication,vs1024nominal free regs at384x168.
+Register operand staging cannot simply be added without reducing existing live storage;no spill-free claim.
+K128 doublebuffer192x128 fits88064B;changesCTA/operandreuse:ideal bytes/MAC increases42.86% vs256x192.
+A same-size K64 control would be needed for any smallerCTA experiment;not part of this cost-only stage.
+Historical checked:build_rank128_stages.py isK64 stages2vs3;build_fold_pair_reduce.py pairsK64 iterations but retains innerhandoff.
+No maintained-fastest K128 doublebuffer implementation found in these checked scripts;not claiming an exhaustive repository history.
+Conclusion:do not implement naive256x192 K128 doublebuffer;hardware-infeasible. No synchronization speedup claimed.
+Production libraries and mining path untouched.

@@ -1,0 +1,13 @@
+Capture: /tmp/pearl-barrier-removal.pWO1Gt
+All captured input hashes match. 3 warmed launches per variant; all dynamic IMMA counts67,633,152.
+NCU base-clock policy; cycle-normalized throughput is the primary DVFS-resistant comparison.
+Mean region kernel ms: 1.143381333 -> 1.071808000; reduction 6.25980%.
+IMMA/SM elapsed cycle: 0.208634829 -> 0.222152562; gain 6.47914%.
+Tensor utilization85.7933->91.3100%; barrier stall14.2733->1.2400%; math throttle40.92->56.9633%.
+L2bytes2,534,011,232->2,533,941,067 (essentially unchanged); active warps/scheduler3.0->3.0; eligible0.36->0.39.
+Main barrier PC2a30 samples130207->0; final barrier PC2a70 samples1242->10315; total barrier samples132070->11142.
+Residual short-scoreboard at16d0 NOP8092->7339: LDSM wait mask was retained even when BAR.ARV opcode was removed.
+Interpretation: synchronization removal changes warp phasing enough to increase real per-cycle IMMA throughput by>5%, with unchanged compute and approximately unchanged L2 traffic. Not merely clock uplift or fewer MMA.
+Math throttle increases alongside higher Tensor throughput; its stall percentage alone is not an optimization objective.
+Limitation: missing named barriers cause shared-memory races and wrong operands/results. This is a diagnostic opportunity signal, neither isolated intrinsic barrier latency nor a guaranteed recoverable6.48%correct-mining speedup.
+Keep production unchanged. Next causal observation should identify per-warp copy completion / publish / wait timing while retaining the original loop and synchronization; no speculative structural redesign from this result alone.

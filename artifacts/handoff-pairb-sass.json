@@ -1,0 +1,185 @@
+{
+  "control": {
+    "IMMA": 64,
+    "LDSM": 16,
+    "local_instructions": [],
+    "B_first_use": [
+      {
+        "load_pc": "10c0",
+        "first_imma_pc": "1120",
+        "instruction_gap": 5
+      },
+      {
+        "load_pc": "11d0",
+        "first_imma_pc": "11e0",
+        "instruction_gap": 0
+      },
+      {
+        "load_pc": "1280",
+        "first_imma_pc": "1290",
+        "instruction_gap": 0
+      },
+      {
+        "load_pc": "1340",
+        "first_imma_pc": "1350",
+        "instruction_gap": 0
+      },
+      {
+        "load_pc": "14a0",
+        "first_imma_pc": "1530",
+        "instruction_gap": 8
+      },
+      {
+        "load_pc": "1520",
+        "first_imma_pc": "1580",
+        "instruction_gap": 5
+      },
+      {
+        "load_pc": "1650",
+        "first_imma_pc": "16c0",
+        "instruction_gap": 6
+      },
+      {
+        "load_pc": "16a0",
+        "first_imma_pc": "1700",
+        "instruction_gap": 5
+      }
+    ]
+  },
+  "paired": {
+    "IMMA": 64,
+    "LDSM": 16,
+    "local_instructions": [
+      [
+        "0830",
+        "STL [R1+0x4], R12"
+      ],
+      [
+        "08e0",
+        "STL [R1+0x18], R13"
+      ],
+      [
+        "0930",
+        "STL [R1+0x1c], R12"
+      ],
+      [
+        "0960",
+        "STL [R1+0xc], R11"
+      ],
+      [
+        "09a0",
+        "STL [R1+0x8], R4"
+      ],
+      [
+        "0a10",
+        "STL [R1+0x14], R12"
+      ],
+      [
+        "0a80",
+        "STL [R1], R10"
+      ],
+      [
+        "0c10",
+        "STL [R1+0x20], R8"
+      ],
+      [
+        "0c30",
+        "STL [R1+0x10], R2"
+      ],
+      [
+        "0c80",
+        "LDL R155, [R1]"
+      ],
+      [
+        "0e10",
+        "LDL R43, [R1+0x18]"
+      ],
+      [
+        "0e20",
+        "LDL R41, [R1+0x1c]"
+      ],
+      [
+        "0e30",
+        "LDL R109, [R1+0x14]"
+      ],
+      [
+        "17d0",
+        "LDL R45, [R1+0x20]"
+      ],
+      [
+        "19f0",
+        "LDL R164, [R1+0x10]"
+      ],
+      [
+        "1e20",
+        "LDL R165, [R1+0xc]"
+      ],
+      [
+        "2820",
+        "LDL R45, [R1+0xc]"
+      ],
+      [
+        "2f40",
+        "STL [R1+0x10], R164"
+      ],
+      [
+        "30d0",
+        "LDL R12, [R1+0x8]"
+      ],
+      [
+        "30e0",
+        "LDL R11, [R1+0x4]"
+      ],
+      [
+        "33a0",
+        "LDL R28, [R1+0x8]"
+      ],
+      [
+        "33b0",
+        "LDL R26, [R1+0x4]"
+      ]
+    ],
+    "B_first_use": [
+      {
+        "load_pc": "1180",
+        "first_imma_pc": "1220",
+        "instruction_gap": 9
+      },
+      {
+        "load_pc": "1410",
+        "first_imma_pc": "1420",
+        "instruction_gap": 0
+      },
+      {
+        "load_pc": "15b0",
+        "first_imma_pc": "15d0",
+        "instruction_gap": 1
+      },
+      {
+        "load_pc": "15c0",
+        "first_imma_pc": "15f0",
+        "instruction_gap": 2
+      },
+      {
+        "load_pc": "1920",
+        "first_imma_pc": "19d0",
+        "instruction_gap": 10
+      },
+      {
+        "load_pc": "18b0",
+        "first_imma_pc": "1a80",
+        "instruction_gap": 28
+      },
+      {
+        "load_pc": "1a20",
+        "first_imma_pc": "1ae0",
+        "instruction_gap": 11
+      },
+      {
+        "load_pc": "1ba0",
+        "first_imma_pc": "1bc0",
+        "instruction_gap": 1
+      }
+    ]
+  }
+}

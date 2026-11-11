@@ -1,0 +1,320 @@
+{
+  "0": {
+    "launches": 3,
+    "metrics": {
+      "kernel_ns": {
+        "mean": 1145749.3333333333,
+        "values": [
+          1149024.0,
+          1148192.0,
+          1140032.0
+        ],
+        "unit": "ns"
+      },
+      "tensor_pct": {
+        "mean": 85.8,
+        "values": [
+          85.79,
+          85.83,
+          85.78
+        ],
+        "unit": "%"
+      },
+      "l2_util_pct": {
+        "mean": 48.733333333333334,
+        "values": [
+          48.69,
+          48.7,
+          48.81
+        ],
+        "unit": "%"
+      },
+      "l2_bytes": {
+        "mean": 2533907562.6666665,
+        "values": [
+          2533865024.0,
+          2533895360.0,
+          2533962304.0
+        ],
+        "unit": "byte"
+      },
+      "barrier_pct": {
+        "mean": 14.263333333333334,
+        "values": [
+          14.27,
+          14.25,
+          14.27
+        ],
+        "unit": "%"
+      },
+      "long_scoreboard_pct": {
+        "mean": 2.8233333333333333,
+        "values": [
+          2.82,
+          2.82,
+          2.83
+        ],
+        "unit": "%"
+      },
+      "short_scoreboard_pct": {
+        "mean": 7.683333333333334,
+        "values": [
+          7.69,
+          7.68,
+          7.68
+        ],
+        "unit": "%"
+      },
+      "math_throttle_pct": {
+        "mean": 40.92333333333333,
+        "values": [
+          40.93,
+          40.92,
+          40.92
+        ],
+        "unit": "%"
+      },
+      "eligible_warps_per_scheduler": {
+        "mean": 0.36,
+        "values": [
+          0.36,
+          0.36,
+          0.36
+        ],
+        "unit": "warp"
+      },
+      "active_warps_per_scheduler": {
+        "mean": 3.0,
+        "values": [
+          3.0,
+          3.0,
+          3.0
+        ],
+        "unit": "warp"
+      },
+      "issued_warps_per_cycle": {
+        "mean": 0.24,
+        "values": [
+          0.24,
+          0.24,
+          0.24
+        ],
+        "unit": ""
+      }
+    },
+    "missing": [],
+    "l2_bytes_per_useful_mma": 37.75816504160563
+  },
+  "1": {
+    "launches": 3,
+    "metrics": {
+      "kernel_ns": {
+        "mean": 1147178.6666666667,
+        "values": [
+          1149376.0,
+          1143232.0,
+          1148928.0
+        ],
+        "unit": "ns"
+      },
+      "tensor_pct": {
+        "mean": 85.06333333333333,
+        "values": [
+          85.06,
+          85.06,
+          85.07
+        ],
+        "unit": "%"
+      },
+      "l2_util_pct": {
+        "mean": 48.486666666666665,
+        "values": [
+          48.41,
+          48.62,
+          48.43
+        ],
+        "unit": "%"
+      },
+      "l2_bytes": {
+        "mean": 2534010368.0,
+        "values": [
+          2534078656.0,
+          2533973472.0,
+          2533978976.0
+        ],
+        "unit": "byte"
+      },
+      "barrier_pct": {
+        "mean": 14.34,
+        "values": [
+          14.35,
+          14.34,
+          14.33
+        ],
+        "unit": "%"
+      },
+      "long_scoreboard_pct": {
+        "mean": 2.8033333333333332,
+        "values": [
+          2.8,
+          2.8,
+          2.81
+        ],
+        "unit": "%"
+      },
+      "short_scoreboard_pct": {
+        "mean": 6.833333333333333,
+        "values": [
+          6.83,
+          6.83,
+          6.84
+        ],
+        "unit": "%"
+      },
+      "math_throttle_pct": {
+        "mean": 40.306666666666665,
+        "values": [
+          40.3,
+          40.31,
+          40.31
+        ],
+        "unit": "%"
+      },
+      "eligible_warps_per_scheduler": {
+        "mean": 0.36,
+        "values": [
+          0.36,
+          0.36,
+          0.36
+        ],
+        "unit": "warp"
+      },
+      "active_warps_per_scheduler": {
+        "mean": 3.0,
+        "values": [
+          3.0,
+          3.0,
+          3.0
+        ],
+        "unit": "warp"
+      },
+      "issued_warps_per_cycle": {
+        "mean": 0.24,
+        "values": [
+          0.24,
+          0.24,
+          0.24
+        ],
+        "unit": ""
+      }
+    },
+    "missing": [],
+    "l2_bytes_per_useful_mma": 37.75969696044922
+  },
+  "2": {
+    "launches": 3,
+    "metrics": {
+      "kernel_ns": {
+        "mean": 1145418.6666666667,
+        "values": [
+          1144608.0,
+          1142112.0,
+          1149536.0
+        ],
+        "unit": "ns"
+      },
+      "tensor_pct": {
+        "mean": 85.08333333333333,
+        "values": [
+          85.09,
+          85.09,
+          85.07
+        ],
+        "unit": "%"
+      },
+      "l2_util_pct": {
+        "mean": 48.53666666666667,
+        "values": [
+          48.54,
+          48.67,
+          48.4
+        ],
+        "unit": "%"
+      },
+      "l2_bytes": {
+        "mean": 2533962037.3333335,
+        "values": [
+          2533876960.0,
+          2534029408.0,
+          2533979744.0
+        ],
+        "unit": "byte"
+      },
+      "barrier_pct": {
+        "mean": 14.316666666666666,
+        "values": [
+          14.32,
+          14.31,
+          14.32
+        ],
+        "unit": "%"
+      },
+      "long_scoreboard_pct": {
+        "mean": 2.8066666666666666,
+        "values": [
+          2.8,
+          2.81,
+          2.81
+        ],
+        "unit": "%"
+      },
+      "short_scoreboard_pct": {
+        "mean": 6.83,
+        "values": [
+          6.83,
+          6.83,
+          6.83
+        ],
+        "unit": "%"
+      },
+      "math_throttle_pct": {
+        "mean": 40.32,
+        "values": [
+          40.32,
+          40.31,
+          40.33
+        ],
+        "unit": "%"
+      },
+      "eligible_warps_per_scheduler": {
+        "mean": 0.36,
+        "values": [
+          0.36,
+          0.36,
+          0.36
+        ],
+        "unit": "warp"
+      },
+      "active_warps_per_scheduler": {
+        "mean": 3.0,
+        "values": [
+          3.0,
+          3.0,
+          3.0
+        ],
+        "unit": "warp"
+      },
+      "issued_warps_per_cycle": {
+        "mean": 0.24,
+        "values": [
+          0.24,
+          0.24,
+          0.24
+        ],
+        "unit": ""
+      }
+    },
+    "missing": [],
+    "l2_bytes_per_useful_mma": 37.758976777394615
+  }
+}

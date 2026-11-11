@@ -1,0 +1,6 @@
+Latest available capture: /tmp/pearl-copy-bypass.aF9h4j, 2026-10-09 17:37-17:38.
+Verified all input hashes: this is a repeat of copy-bypass, not transcript-handoff.
+Barrier removal cycle-normalized IMMA throughput gain: 11.4073%.
+Tensor active-cycle utilization85.11% ->94.8567%, reproducing prior capture.
+No transcript-handoff capture pointer or newer workspace/tmp report found.
+Required next capture: sudo bash tools/profile_transcript_handoff.sh 2270585

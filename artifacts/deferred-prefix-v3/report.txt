@@ -1,0 +1,26 @@
+Frozen baseline deferred-blocking experiment, GPU0 only, production unchanged.
+Continuing path:termination check -> original named sync -> original predicate instruction -> ID toggle ->33instruction next-prefix -> branch to dc0.
+Relocated control has an extra BRA before prefix; candidate replaces exactly that BRA with NOP.
+Last iteration preserves original barrier/exit path. First iteration uses original prefix once.
+Candidate removes a branch before33prefix instructions; whether blocking actually defers across all33requiresPCsampling.
+All64sync arrivals per warp remain, paired early arrivals remain; shared accesses still follow the final branch.
+Prefix executes64times total; IMMA64static/warp/K64,LDSM16,copies,transcript unchanged.
+168regs,69632dynamic shared bytes,0local bytes,384threads,1CTA/SM unchanged.
+Compare with native to include extra branch/predicate and code-layout overhead, not just relocated control.
+Candidate/control comparison changes a branch as well as where deferred wait blocks: not pure barrier latency.
+
+Failure isolation:
+Grow-only,loop-branch,bar-relocation-only,and guarded-exit-only controls passed.
+v2 full control timed out. v3 restores original PLOP3 between BAR.SYNC and ID toggle and passes.
+This is evidence of a machine-scheduling sensitivity; precise hardware cause not established (code layout also shifts).
+Old P2 clobber also corrected: prepared next-round P2 goes directly to dc0, not back through2a10.
+
+Unlocked region8192x8192,K4096.200samples/variant,16launches/sample,10rotating blocks.
+native {"samples": 200, "mean_ms": 1.0243480986356734, "median_ms": 1.0184190273284912, "p95_ms": 1.0486400127410889} time_change_vs_native_pct=+0.000000 time_change_vs_control_pct=-0.400191
+relocated_control {"samples": 200, "mean_ms": 1.0284639203548431, "median_ms": 1.0257790088653564, "p95_ms": 1.0562624514102936} time_change_vs_native_pct=+0.401799 time_change_vs_control_pct=+0.000000
+deferred_prefix {"samples": 200, "mean_ms": 1.0286373788118361, "median_ms": 1.0240960121154785, "p95_ms": 1.057747232913971} time_change_vs_native_pct=+0.418733 time_change_vs_control_pct=+0.016866
+========= RACECHECK SUMMARY: 0 hazards displayed (0 errors, 0 warnings)
+Full transcript+PoW:18cases PASS.
+native fixed-clock-policy {"imma_per_SM_elapsed_cycle": 0.20881383863137284, "imma_per_SMSP_elapsed_cycle": 0.05220345965784321, "tensor_Ginst_sec": 59.5843496330627, "kernel_ms": 1.1350826666666667} IMMA_per_cycle_change_pct=+0.000000
+relocated_control fixed-clock-policy {"imma_per_SM_elapsed_cycle": 0.2080588513276159, "imma_per_SMSP_elapsed_cycle": 0.052014712831903974, "tensor_Ginst_sec": 58.92690153123975, "kernel_ms": 1.1477866666666665} IMMA_per_cycle_change_pct=-0.361560
+deferred_prefix fixed-clock-policy {"imma_per_SM_elapsed_cycle": 0.20696867711089323, "imma_per_SMSP_elapsed_cycle": 0.05174216927772331, "tensor_Ginst_sec": 58.618467450935285, "kernel_ms": 1.153824} IMMA_per_cycle_change_pct=-0.883639

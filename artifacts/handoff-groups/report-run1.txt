@@ -1,0 +1,26 @@
+GPU0 offline named-barrier cohort sweep; no Nsight used.
+CTA256x192 K64 stages2;384threads;168regs;69632B shared;1CTA/SM;0local.
+All IMMA/copy/shared addresses and hot-loop instructions unchanged from parent.
+Only prologue warp-cohort threshold differs from id16. Known-good production unchanged.
+Unfixed clocks; balanced rotation across6batches. Event samples120/variant,16launches/sample.
+Full offline grids60/variant,12/batch discardfirst2; setup/noise/Merkle/transcript/PoW included.
+Equivalent TH/s=2**46 / grid_seconds /1e12; excludes networking/proof delivery.
+variant event_mean_ms grid_mean_ms grid_median_ms grid_p95_ms grids/sec equivTH/s
+tail9 1.045911 297.072 296.450 301.620 3.36619 236.875
+id16 1.031576 296.275 295.850 301.805 3.37524 237.512
+group4 1.048535 299.890 299.900 304.750 3.33456 234.649
+group8 1.024955 293.772 294.100 298.605 3.40400 239.536
+group3 1.102713 313.638 312.900 318.325 3.18839 224.363
+group9 1.114046 314.833 314.400 319.405 3.17628 223.511
+Compared to tail9:
+id16: time -0.268%, throughput +0.269%, paired time changes% -0.202, -0.172, -0.333, -0.289, -0.222, -0.390
+group4: time +0.949%, throughput -0.940%, paired time changes% +1.214, +1.000, +0.770, +0.935, +0.990, +0.783
+group8: time -1.111%, throughput +1.123%, paired time changes% -0.884, -1.030, -1.197, -1.272, -1.104, -1.177
+group3: time +5.577%, throughput -5.282%, paired time changes% +5.782, +5.428, +5.468, +5.686, +5.516, +5.581
+group9: time +5.979%, throughput -5.642%, paired time changes% +6.308, +5.906, +5.821, +5.824, +6.209, +5.806
+Compared to id16:
+tail9: time +0.269%, throughput -0.268%, paired time changes% +0.203, +0.172, +0.334, +0.290, +0.223, +0.392
+group4: time +1.220%, throughput -1.205%, paired time changes% +1.420, +1.174, +1.107, +1.228, +1.215, +1.178
+group8: time -0.845%, throughput +0.852%, paired time changes% -0.683, -0.860, -0.867, -0.985, -0.884, -0.790
+group3: time +5.861%, throughput -5.536%, paired time changes% +5.996, +5.609, +5.820, +5.993, +5.751, +5.994
+group9: time +6.264%, throughput -5.895%, paired time changes% +6.524, +6.088, +6.175, +6.131, +6.446, +6.220

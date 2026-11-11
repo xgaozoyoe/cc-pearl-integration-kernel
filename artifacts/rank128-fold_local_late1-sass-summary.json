@@ -1,0 +1,1142 @@
+[
+  {
+    "function": "_ZN29rank128_fold_local_late1_fast6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+    "instructions": 864,
+    "mma": 64,
+    "redux_after_imma": [
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64
+    ],
+    "local_xor": [
+      {
+        "after_mma": 59,
+        "instruction": "@P2 LOP3.LUT R136, R44, R45, R46, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 60,
+        "instruction": "@P2 LOP3.LUT R137, R47, R40, R41, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 60,
+        "instruction": "@P2 LOP3.LUT R136, R136, R42, R43, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 60,
+        "instruction": "@P2 LOP3.LUT R98, R68, R69, R70, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 61,
+        "instruction": "@P2 LOP3.LUT R96, R112, R113, R114, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 61,
+        "instruction": "@P2 LOP3.LUT R99, R71, R64, R65, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 61,
+        "instruction": "@P2 LOP3.LUT R97, R115, R108, R109, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 61,
+        "instruction": "@P2 LOP3.LUT R98, R98, R66, R67, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 62,
+        "instruction": "@P2 LOP3.LUT R96, R96, R110, R111, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 62,
+        "instruction": "@P2 LOP3.LUT R159, R98, R99, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 62,
+        "instruction": "@P2 LOP3.LUT R158, R136, R137, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 62,
+        "instruction": "@P2 LOP3.LUT R160, R96, R97, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R34, R33, R32, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R96, R132, R133, R134, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R98, R16, R35, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R135, R100, R101, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R96, R96, R102, R103, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R98, R18, R17, R98, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R137, R96, R97, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R138, R19, R98, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R130, R129, R128, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R124, R131, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R99, R62, R61, R60, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R98, R126, R125, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R122, R121, R120, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R98, R127, R98, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R116, R123, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R99, R48, R63, R99, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R136, R118, R117, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R30, R29, R28, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R136, R119, R136, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R12, R31, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R140, R50, R49, R99, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R138, R14, R13, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R106, R105, R104, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R138, R15, R138, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R88, R107, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R99, R22, R21, R20, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R98, R90, R89, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R86, R85, R84, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R98, R91, R98, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R72, R87, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R99, R4, R23, R99, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R136, R74, R73, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R26, R25, R24, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R136, R75, R136, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R8, R27, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R142, R6, R5, R99, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R138, R10, R9, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R82, R81, R80, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R138, R11, R138, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R76, R83, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R142, R7, R142, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R98, R78, R77, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R99, R38, R37, R36, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R98, R79, R98, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R140, R51, R140, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R99, R92, R39, R99, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "@!P2 LOP3.LUT R141, R141, R146, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R98, R58, R57, R56, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R98, R52, R59, R98, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R98, R54, R53, R98, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R140, R55, R98, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "@!P2 LOP3.LUT R145, R136, R145, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "@!P2 LOP3.LUT R139, R97, R144, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R144, R94, R93, R99, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R144, R95, R144, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "@!P2 LOP3.LUT R147, R138, R147, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "@!P2 LOP3.LUT R149, R137, R140, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "@!P2 LOP3.LUT R143, R143, R144, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "@!P2 LOP3.LUT R145, R142, R145, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "@!P2 LOP3.LUT R97, R97, R144, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "@!P2 LOP3.LUT R141, R142, R147, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "@!P2 LOP3.LUT R99, R98, R99, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "@!P2 LOP3.LUT R143, R136, R143, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "@!P2 LOP3.LUT R137, R137, R98, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "@!P2 LOP3.LUT R139, R139, R136, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "@!P2 LOP3.LUT R97, R138, R145, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "@!P2 LOP3.LUT R99, R140, R147, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R97, R98, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R130, R129, R128, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R124, R131, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R98, R126, R125, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R122, R121, R120, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R98, R127, R98, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R116, R123, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R136, R118, R117, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R30, R29, R28, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R136, R119, R136, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R12, R31, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R138, R14, R13, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R106, R105, R104, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R138, R15, R138, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R88, R107, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R98, R90, R89, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R86, R85, R84, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R98, R91, R98, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R72, R87, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R136, R74, R73, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R26, R25, R24, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R136, R75, R136, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R8, R27, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R138, R10, R9, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R82, R81, R80, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R138, R11, R138, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R76, R83, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R98, R78, R77, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R62, R61, R60, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R98, R79, R98, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R48, R63, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R136, R50, R49, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R22, R21, R20, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R136, R51, R136, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R4, R23, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R138, R6, R5, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R58, R57, R56, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R138, R7, R138, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R52, R59, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R98, R54, R53, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R38, R37, R36, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R98, R55, R98, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R92, R39, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R136, R94, R93, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R136, R95, R136, RZ, 0x3c, !PT ;"
+      }
+    ],
+    "local_spill_instructions": 0
+  },
+  {
+    "function": "_ZN33rank128_fold_local_late1_baseline6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+    "instructions": 880,
+    "mma": 64,
+    "redux_after_imma": [
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64,
+      64
+    ],
+    "local_xor": [
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R96, R34, R33, R32, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R96, R16, R35, R96, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R96, R18, R17, R96, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R137, R19, R96, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R122, R121, R120, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R99, R114, R113, R112, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R116, R123, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R99, R108, R115, R99, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R98, R118, R117, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R106, R105, R104, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R98, R119, R98, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R80, R107, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R136, R110, R109, R99, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R138, R82, R81, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R30, R29, R28, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R136, R111, R136, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R12, R31, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R138, R83, R138, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R140, R14, R13, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R90, R89, R88, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R84, R91, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R140, R15, R140, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R98, R86, R85, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R78, R77, R76, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R98, R87, R98, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R64, R79, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R99, R22, R21, R20, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R136, R66, R65, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R62, R61, R60, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R136, R67, R136, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R56, R63, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R137, R126, R125, R124, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R138, R58, R57, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R26, R25, R24, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R138, R59, R138, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R8, R27, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R99, R4, R23, R99, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R98, R10, R9, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R74, R73, R72, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R98, R11, R98, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R68, R75, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R137, R128, R127, R137, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R136, R70, R69, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R54, R53, R52, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R136, R71, R136, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R48, R55, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R142, R130, R129, R137, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R138, R50, R49, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R46, R45, R44, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R138, R51, R138, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R40, R47, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R136, R6, R5, R99, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R140, R42, R41, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R137, R38, R37, R36, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R43, R140, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R136, R7, R136, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R99, R131, R142, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R137, R92, R39, R137, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R134, R133, R132, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R144, R94, R93, R137, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R144, R95, R144, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R136, R100, R135, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "@!P2 LOP3.LUT R141, R98, R141, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R136, R102, R101, R136, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R146, R103, R136, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "@!P2 LOP3.LUT R147, R139, R144, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "@!P2 LOP3.LUT R149, R138, R149, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "@!P2 LOP3.LUT R145, R140, R145, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "@!P2 LOP3.LUT R143, R142, R143, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "@!P2 LOP3.LUT R151, R144, R151, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "@!P2 LOP3.LUT R97, R97, R142, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "@!P2 LOP3.LUT R143, R98, R145, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "@!P2 LOP3.LUT R99, R136, R99, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "@!P2 LOP3.LUT R137, R137, R98, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "@!P2 LOP3.LUT R145, R142, R147, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "@!P2 LOP3.LUT R141, R141, R98, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "@!P2 LOP3.LUT R139, R139, R136, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "@!P2 LOP3.LUT R97, R138, R97, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "@!P2 LOP3.LUT R99, R140, R147, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R97, R98, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R122, R121, R120, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R99, R114, R113, R112, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R116, R123, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R99, R108, R115, R99, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R98, R118, R117, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R106, R105, R104, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R98, R119, R98, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R80, R107, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R136, R110, R109, R99, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R138, R82, R81, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R30, R29, R28, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R136, R111, R136, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R12, R31, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R138, R83, R138, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R140, R14, R13, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R90, R89, R88, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R140, R15, R140, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R84, R91, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R98, R86, R85, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R78, R77, R76, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R98, R87, R98, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R64, R79, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R136, R66, R65, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R62, R61, R60, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R136, R67, R136, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R56, R63, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R138, R58, R57, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R26, R25, R24, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R138, R59, R138, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R8, R27, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R98, R10, R9, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R74, R73, R72, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R98, R11, R98, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R68, R75, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R136, R70, R69, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R54, R53, R52, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R136, R71, R136, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R48, R55, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R138, R50, R49, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R46, R45, R44, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R138, R51, R138, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R40, R47, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R98, R42, R41, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R22, R21, R20, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R98, R43, R98, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R4, R23, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R136, R6, R5, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R126, R125, R124, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R136, R7, R136, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R128, R127, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R138, R130, R129, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R38, R37, R36, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R138, R131, R138, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R92, R39, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R98, R94, R93, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R134, R133, R132, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R98, R95, R98, RZ, 0x3c, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R97, R100, R135, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R136, R102, R101, R97, 0x96, !PT ;"
+      },
+      {
+        "after_mma": 64,
+        "instruction": "LOP3.LUT R136, R103, R136, RZ, 0x3c, !PT ;"
+      }
+    ],
+    "local_spill_instructions": 0
+  }
+]

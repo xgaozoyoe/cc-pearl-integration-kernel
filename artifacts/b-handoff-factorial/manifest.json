@@ -1,0 +1,45 @@
+{
+  "warning": "Offline altered arithmetic; safe waiting relocation with final handoff preserved. Shared memory accesses remain after the stage barrier.",
+  "variants": {
+    "native": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "104c0c1b265260dea5c9ab0bb174ebbbe7ee9cceb0cf0acebf2a9d1dfa4d50aa",
+      "smem": 69632,
+      "correct": true,
+      "b_wait_release": false,
+      "late_handoff": false
+    },
+    "control": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "02b4e92b582b4f07d4121a71e64c680a646745d3996fbd22f3b9675011e6330f",
+      "smem": 69632,
+      "correct": false,
+      "b_wait_release": false,
+      "late_handoff": false
+    },
+    "b_only": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "bc0bcb2d879a1f3216f4ca92ba2810f14371435c23412ba28493d9bf32e2b0ef",
+      "smem": 69632,
+      "correct": false,
+      "b_wait_release": true,
+      "late_handoff": false
+    },
+    "handoff_only": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "f074e5a2ad4af70a6622c2b67d4b8929acce93bc63aca835ac849807f6637daf",
+      "smem": 69632,
+      "correct": false,
+      "b_wait_release": false,
+      "late_handoff": true
+    },
+    "both": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "54af39c2c3d0d389e78b119497c31d94d13311685101027065e1c47cf3f2c482",
+      "smem": 69632,
+      "correct": false,
+      "b_wait_release": true,
+      "late_handoff": true
+    }
+  }
+}

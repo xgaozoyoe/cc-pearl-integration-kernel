@@ -1,0 +1,42 @@
+Small cross-iteration fragment pipeline experiment, GPU0 only,2026-10-08.
+
+Baseline: current A-stream,CTA256x192,warp64x64,12warps/CTA,K64,
+2stages,K4096,R128,69632Bshared,1CTA/SM.
+The one-fragment variant defers one16x16 output tile per warp (of16).
+It retains C in registers;it does NOT save whole accumulators to shared/global.
+
+Boundary lifecycle for selected tile:
+ K64 iteration1 completes K128 cumulative state;normal epilogue folds other15
+ tiles,but leaves this C unchanged.
+ Iteration2 issues next future cp.async;captures old C XOR into1scalar/lane
+ before any new MMA;loads operands;executes4new IMMA;reduces saved XOR across
+ warp and updates transcript with rb=kt/2-1. New MMA can overwrite selected C
+ because old boundary has been snapshotted. Remaining main loop continues.
+ This repeats for31boundaries;the final K4096 boundary needs explicit drain.
+ No added CTA barriers. No transcript boundary is omitted or counted twice.
+
+Initial version: final selected boundary handled by a kt==63 exception in
+ normal epilogue. This expands compiled control paths:1096static instructions
+ vs880baseline;168regs,zero spill. REDUX appears after4IMMA plus end-of-loop
+ epilogue;64IMMA/16LDSM main-loop sites unchanged.
+
+Separate-drain version: skip selected tile unconditionally in normal fold;
+ after the K loop,fold its final C once with transcript word15,rotl13(old)^x.
+ Code size944static instructions;168regs,zero spill;REDUX after4IMMA preserved.
+ Static order verifies cross-iteration handoff,not measured cycle overlap.
+
+Two-fragment prototypes rejected before GPU benchmarks:initial48Bstack,
+44Bspill stores/60Bloads;separate-drain32Bstack,28Bstores/28Bloads.
+Performance/correctness tables refer ONLY to baseline and1fragment variants.
+
+For each measured pair:16 full transcript/digest comparisons against accepted
+R128(two seeds,four shapes including8192x8192 and partialNtails).
+Each performance test:8 alternating batches,2warmups+10measured fullgrids
+pervariant/batch=80measurements/variant. Real offline mine_job,region8192,
+M=N=131072,K4096,R128;includes generation,noise,Merkle,V3,transcript,PoW.
+Same deterministic input seed sequence. No network/live submissions.
+Clocks/power not changed or locked;batch-end telemetry saved. Grid log
+precision0.1ms. No new hardware stall-counter capture.
+
+Accepted/current candidate library hashes preserved;production GPU1/GPU2
+untouched. All experimental libraries and source are separate artifacts.

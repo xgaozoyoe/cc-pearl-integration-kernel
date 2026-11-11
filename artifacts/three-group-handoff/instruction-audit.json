@@ -1,0 +1,44 @@
+{
+  "native": {
+    "IMMA.": 64,
+    "LDSM.": 16,
+    "LDGSTS.": 4,
+    "BAR.ARV": 1,
+    "BAR.SYNC": 3,
+    "arrival_pcs": [
+      "16d0"
+    ]
+  },
+  "source_control": {
+    "IMMA.": 64,
+    "LDSM.": 16,
+    "LDGSTS.": 4,
+    "BAR.ARV": 1,
+    "BAR.SYNC": 3,
+    "arrival_pcs": [
+      "17d0"
+    ]
+  },
+  "three_groups": {
+    "IMMA.": 64,
+    "LDSM.": 16,
+    "LDGSTS.": 4,
+    "BAR.ARV": 2,
+    "BAR.SYNC": 3,
+    "arrival_pcs": [
+      "17d0",
+      "17e0"
+    ]
+  },
+  "three_early": {
+    "IMMA.": 64,
+    "LDSM.": 16,
+    "LDGSTS.": 4,
+    "BAR.ARV": 2,
+    "BAR.SYNC": 3,
+    "arrival_pcs": [
+      "16d0",
+      "16e0"
+    ]
+  }
+}

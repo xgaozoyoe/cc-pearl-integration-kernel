@@ -1,0 +1,41 @@
+--- baseline/tests/fold_ops.cuh
++++ tests/fold_ops.cuh
+@@ -215,6 +215,27 @@
+                     }
+                 }
+             }
++        } else if constexpr (Schedule == 19 || Schedule == 20) {
++            // Reorder independent accumulator chains, retaining one load per
++            // operand fragment and the existing group-ahead B prefetch.
++            CUTE_UNROLL
++            for(int kk=0; kk<size<2>(tCrA); ++kk) {
++                copy(s2r_A,tXsA(_,_,kk,wr),tXrA(_,_,kk));
++                copy(s2r_B,tXsB(_,0,kk,wr),tXrB(_,0,kk));
++                CUTE_UNROLL
++                for(int bn=0; bn<size<1>(tXrB); ++bn) {
++                    if(bn+1<size<1>(tXrB))
++                        copy(s2r_B,tXsB(_,bn+1,kk,wr),tXrB(_,bn+1,kk));
++                    CUTE_UNROLL
++                    for(int i=0; i<2*size<1>(tCrC); ++i) {
++                        constexpr int rows=decltype(size<1>(tCrC))::value;
++                        int tm = Schedule == 19 ? (i%rows+bn)%rows : i/2;
++                        int half = Schedule == 19 ? i/rows : i%2;
++                        int tn=2*bn+half;
++                        gemm(tiled_mma,tCrC(_,tm,tn),tCrA(_,tm,kk),tCrB(_,tn,kk),tCrC(_,tm,tn));
++                    }
++                }
++            }
+         } else if constexpr (Schedule == 9) {
+             static_assert(decltype(size<1>(tXrB))::value*2 == decltype(size<2>(tCrC))::value);
+             // Hold one K32 A slice; consume each B atom across all row groups.
+--- baseline/tests/fold_ops.cu
++++ tests/fold_ops.cu
+@@ -140,6 +140,8 @@
+         case 94:return variant<256,192,3,100,false,64,9,4,3,-108,true,false,16>(a,b,m,n,k,r,t,info);
+         case 95:return variant<256,192,2,100,false,64,9,4,3,-108,true,false,17>(a,b,m,n,k,r,t,info);
+         case 96:return variant<256,192,2,100,false,64,9,4,3,-108,true,false,18>(a,b,m,n,k,r,t,info);
++        case 97:return variant<256,192,2,100,false,64,9,4,3,-108,true,false,19>(a,b,m,n,k,r,t,info);
++        case 98:return variant<256,192,2,100,false,64,9,4,3,-108,true,false,20>(a,b,m,n,k,r,t,info);
+ #if !defined(PEARL_FOCUS_SQUARE) && !defined(PEARL_PURE_BENCH_ONLY)
+         case 21:return variant<128,256,4,-1,false,32,4,2,4>(a,b,m,n,k,r,t,info);
+         case 22:return variant<128,256,3,-1,false,64,4,1,8>(a,b,m,n,k,r,t,info);

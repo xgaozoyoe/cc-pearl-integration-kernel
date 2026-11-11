@@ -1,0 +1,98 @@
+[
+  {
+    "warp": 0,
+    "group": 0,
+    "a_vector_instructions": 3,
+    "b_vector_instructions": 2,
+    "bytes_per_warp": 2560,
+    "imma_per_K64": 64
+  },
+  {
+    "warp": 1,
+    "group": 0,
+    "a_vector_instructions": 3,
+    "b_vector_instructions": 2,
+    "bytes_per_warp": 2560,
+    "imma_per_K64": 64
+  },
+  {
+    "warp": 2,
+    "group": 0,
+    "a_vector_instructions": 3,
+    "b_vector_instructions": 2,
+    "bytes_per_warp": 2560,
+    "imma_per_K64": 64
+  },
+  {
+    "warp": 3,
+    "group": 0,
+    "a_vector_instructions": 3,
+    "b_vector_instructions": 2,
+    "bytes_per_warp": 2560,
+    "imma_per_K64": 64
+  },
+  {
+    "warp": 4,
+    "group": 0,
+    "a_vector_instructions": 3,
+    "b_vector_instructions": 2,
+    "bytes_per_warp": 2560,
+    "imma_per_K64": 64
+  },
+  {
+    "warp": 5,
+    "group": 0,
+    "a_vector_instructions": 3,
+    "b_vector_instructions": 2,
+    "bytes_per_warp": 2560,
+    "imma_per_K64": 64
+  },
+  {
+    "warp": 6,
+    "group": 0,
+    "a_vector_instructions": 3,
+    "b_vector_instructions": 2,
+    "bytes_per_warp": 2560,
+    "imma_per_K64": 64
+  },
+  {
+    "warp": 7,
+    "group": 0,
+    "a_vector_instructions": 3,
+    "b_vector_instructions": 2,
+    "bytes_per_warp": 2560,
+    "imma_per_K64": 64
+  },
+  {
+    "warp": 8,
+    "group": 1,
+    "a_vector_instructions": 2,
+    "b_vector_instructions": 2,
+    "bytes_per_warp": 2048,
+    "imma_per_K64": 64
+  },
+  {
+    "warp": 9,
+    "group": 1,
+    "a_vector_instructions": 2,
+    "b_vector_instructions": 2,
+    "bytes_per_warp": 2048,
+    "imma_per_K64": 64
+  },
+  {
+    "warp": 10,
+    "group": 1,
+    "a_vector_instructions": 2,
+    "b_vector_instructions": 2,
+    "bytes_per_warp": 2048,
+    "imma_per_K64": 64
+  },
+  {
+    "warp": 11,
+    "group": 1,
+    "a_vector_instructions": 2,
+    "b_vector_instructions": 2,
+    "bytes_per_warp": 2048,
+    "imma_per_K64": 64
+  }
+]

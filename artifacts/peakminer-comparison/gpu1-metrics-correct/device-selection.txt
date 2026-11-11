@@ -1,0 +1,1 @@
+Physical GPU 1 PCI 00000000:22:00.0 -> Nsight metrics device 3

@@ -1,0 +1,272 @@
+diff --git a/tools/build_handoff_backoff.py b/tools/build_handoff_backoff.py
+new file mode 100644
+index 0000000..4996b28
+--- /dev/null
++++ b/tools/build_handoff_backoff.py
+@@ -0,0 +1,33 @@
++"""Controlled nanosleep backoff in the validated SM89 split barrier wait."""
++from pathlib import Path
++import subprocess,difflib
++root=Path(__file__).resolve().parents[1]
++source=(root/'artifacts/transcript-handoff-source.cu').read_text()
++def section(ns):
++ a=source.index('namespace '+ns);b=source.index('// namespace '+ns,a)+len('// namespace '+ns)
++ return source[a:b]
++base=section('transcript_handoff_baseline');overlap=section('transcript_handoff_overlap')
++names=['baseline','spin','sleep32','sleep128'];parts=['#include <cuda_runtime.h>\n#include <cstdint>\n']
++for name in names:
++ old=base if name=='baseline' else overlap
++ new=old
++ if name.startswith('sleep'):
++  point='    } while(!done);'
++  assert new.count(point)==1
++  new=new.replace(point,'        if(!done) __nanosleep('+name[5:]+');\n'+point)
++ ns='transcript_handoff_baseline' if name=='baseline' else 'transcript_handoff_overlap'
++ parts.append(new.replace(ns,'handoff_backoff_'+name))
++ (root/f'artifacts/handoff-backoff-{name}.diff').write_text(''.join(difflib.unified_diff(old.splitlines(True),new.splitlines(True),fromfile='validated-'+ns,tofile=name)))
++parts.append('''void launch_pearl_blake3(const uint32_t*,int,int,const uint32_t*,const uint32_t*,uint8_t*,int*,int*,cudaStream_t);
++extern "C" int handoff_backoff_fold(int v,const int8_t* a,const int8_t* b,int m,int n,uint32_t* t,int* info) {
++if(m<=0 || n<=0 || m%256 || n%16 || m>1048576 || n>1048576)return cudaErrorInvalidValue;
++''')
++for v,name in enumerate(names):parts.append(f'if(v=={v})return handoff_backoff_{name}::launch<1,64,false,true,false,false,2,false,6>(a,b,m,n,4096,128,t,info,nullptr);')
++parts.append('''return cudaErrorInvalidValue;
++}
++extern "C" int handoff_backoff_pow(int v,const int8_t* a,const int8_t* b,int m,int n,const uint32_t* key,const uint32_t* target,uint32_t* t,uint8_t* dig,int* found,int* coord) {
++auto e=handoff_backoff_fold(v,a,b,m,n,t,nullptr);if(e)return e;
++launch_pearl_blake3(t,(m/16)*(n/16),n,key,target,dig,found,coord,nullptr);return cudaGetLastError();
++}''')
++p=root/'artifacts/handoff-backoff-source.cu';p.write_text('\n'.join(parts))
++subprocess.run(['/usr/local/cuda-12.6/bin/nvcc','-std=c++20','-O3','-lineinfo','-gencode','arch=compute_89,code=sm_89','-Xcompiler','-fPIC','--ptxas-options=-v','--expt-relaxed-constexpr','-I/home/xgao/cutlass/include','-Icsrc','-Icsrc/gemm','-shared',str(p),str(root/'csrc/gemm/pearl_blake3_sm61.cu'),'-o',str(root/'artifacts/libpearl-handoff-backoff.so')],check=True)
+diff --git a/tools/build_handoff_poll_ptx.py b/tools/build_handoff_poll_ptx.py
+new file mode 100644
+index 0000000..a3bfeb9
+--- /dev/null
++++ b/tools/build_handoff_poll_ptx.py
+@@ -0,0 +1,37 @@
++"""Controlled nanosleep backoff in the validated SM89 split barrier wait."""
++from pathlib import Path
++import subprocess,difflib
++root=Path(__file__).resolve().parents[1]
++source=(root/'artifacts/transcript-handoff-source.cu').read_text()
++def section(ns):
++ a=source.index('namespace '+ns);b=source.index('// namespace '+ns,a)+len('// namespace '+ns)
++ return source[a:b]
++base=section('transcript_handoff_baseline');overlap=section('transcript_handoff_overlap')
++names=['baseline','spin','ptx'];parts=['#include <cuda_runtime.h>\n#include <cstdint>\n']
++for name in names:
++ old=base if name=='baseline' else overlap
++ new=old
++ if name=='ptx':
++  begin=new.index('__device__ __forceinline__ void handoff_wait(')
++  end=new.index('\ntemplate<int Lead',begin)
++  new=new[:begin]+'''__device__ __forceinline__ void handoff_wait(unsigned bar,unsigned phase) {
++    asm volatile("{ .reg .pred ready; handoff_poll: mbarrier.test_wait.parity.shared.b64 ready, [%0], %1; @!ready bra handoff_poll; }"
++                 :: "r"(bar),"r"(phase) : "memory");
++}
++'''+new[end:]
++ ns='transcript_handoff_baseline' if name=='baseline' else 'transcript_handoff_overlap'
++ parts.append(new.replace(ns,'handoff_poll_ptx_'+name))
++ (root/f'artifacts/handoff-poll-ptx-{name}.diff').write_text(''.join(difflib.unified_diff(old.splitlines(True),new.splitlines(True),fromfile='validated-'+ns,tofile=name)))
++parts.append('''void launch_pearl_blake3(const uint32_t*,int,int,const uint32_t*,const uint32_t*,uint8_t*,int*,int*,cudaStream_t);
++extern "C" int handoff_poll_ptx_fold(int v,const int8_t* a,const int8_t* b,int m,int n,uint32_t* t,int* info) {
++if(m<=0 || n<=0 || m%256 || n%16 || m>1048576 || n>1048576)return cudaErrorInvalidValue;
++''')
++for v,name in enumerate(names):parts.append(f'if(v=={v})return handoff_poll_ptx_{name}::launch<1,64,false,true,false,false,2,false,6>(a,b,m,n,4096,128,t,info,nullptr);')
++parts.append('''return cudaErrorInvalidValue;
++}
++extern "C" int handoff_poll_ptx_pow(int v,const int8_t* a,const int8_t* b,int m,int n,const uint32_t* key,const uint32_t* target,uint32_t* t,uint8_t* dig,int* found,int* coord) {
++auto e=handoff_poll_ptx_fold(v,a,b,m,n,t,nullptr);if(e)return e;
++launch_pearl_blake3(t,(m/16)*(n/16),n,key,target,dig,found,coord,nullptr);return cudaGetLastError();
++}''')
++p=root/'artifacts/handoff-poll-ptx-source.cu';p.write_text('\n'.join(parts))
++subprocess.run(['/usr/local/cuda-12.6/bin/nvcc','-std=c++20','-O3','-lineinfo','-gencode','arch=compute_89,code=sm_89','-Xcompiler','-fPIC','--ptxas-options=-v','--expt-relaxed-constexpr','-I/home/xgao/cutlass/include','-Icsrc','-Icsrc/gemm','-shared',str(p),str(root/'csrc/gemm/pearl_blake3_sm61.cu'),'-o',str(root/'artifacts/libpearl-handoff-poll-ptx.so')],check=True)
+diff --git a/tools/build_handoff_poll_nop.py b/tools/build_handoff_poll_nop.py
+new file mode 100644
+index 0000000..7afcb6d
+--- /dev/null
++++ b/tools/build_handoff_poll_nop.py
+@@ -0,0 +1,20 @@
++"""Preserve sleep32's shorter register polling schedule; replace only sleep with NOP."""
++from pathlib import Path
++import json,struct,re,hashlib,subprocess
++root=Path(__file__).resolve().parents[1];out=root/'artifacts/handoff-poll-nop';binary=(out/'handoff-backoff-source.sm_89.cubin').read_bytes();sass=(root/'artifacts/handoff-backoff.sass').read_text()
++shoff=struct.unpack_from('<Q',binary,40)[0];size,count,strings=struct.unpack_from('<HHH',binary,58);hs=[struct.unpack_from('<IIQQQQIIQQ',binary,shoff+i*size) for i in range(count)];h=hs[strings];names=binary[h[4]:h[4]+h[5]];sections={names[h[0]:].split(b'\0')[0].decode():h for h in hs}
++manifest=dict(variants={},caveat='Correct arithmetic experiment. Only a non-synchronizing sleep is replaced by NOP; shorter polling schedule preserved.')
++for name,orig in [('baseline','baseline'),('spin','spin'),('poll_nop','sleep32')]:
++ sec=next(x for x in sass.split('Function : ')[1:] if 'handoff_backoff_'+orig+'6kernel' in x.splitlines()[0]);entry=sec.splitlines()[0].strip();offset=sections['.text.'+entry][4];rows={int(pc,16):ins for pc,ins in re.findall(r'/\*([0-9a-f]+)\*/\s+(.*?)\s*;',sec)};data=bytearray(binary)
++ if name=='poll_nop':
++  sleeps=[pc for pc,ins in rows.items() if ins=='NANOSLEEP 0x20'];assert sleeps==[0x2b60]
++  pc=sleeps[0];npc=next(pc for pc,ins in rows.items() if ins=='NOP');mask=((1<<17)-1)<<105
++  old=int.from_bytes(data[offset+pc:offset+pc+16],'little');nop=int.from_bytes(data[offset+npc:offset+npc+16],'little');new=(nop&~mask)|(old&mask)
++  data[offset+pc:offset+pc+16]=new.to_bytes(16,'little')
++  assert [i for i,(a,b) in enumerate(zip(data,binary)) if a!=b] and all(offset+pc<=i<offset+pc+16 for i,(a,b) in enumerate(zip(data,binary)) if a!=b)
++ path=out/(name+'.cubin');path.write_bytes(data)
++ dump=subprocess.check_output(['/usr/local/cuda-12.6/bin/cuobjdump','--dump-sass',str(path)],text=True);(out/(name+'.sass')).write_text(dump)
++ sec2=dump.split('Function : '+entry)[1].split('Function : ')[0];got={int(pc,16):ins for pc,ins in re.findall(r'/\*([0-9a-f]+)\*/\s+(.*?)\s*;',sec2)}
++ assert got=={pc:('NOP' if name=='poll_nop' and pc==0x2b60 else ins) for pc,ins in rows.items()}
++ manifest['variants'][name]=dict(entry=entry,smem=69632 if name=='baseline' else 69640,sha256=hashlib.sha256(data).hexdigest())
++(out/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n');print(json.dumps(manifest,indent=2))
+diff --git a/tests/bench_handoff_poll_nop.py b/tests/bench_handoff_poll_nop.py
+new file mode 100644
+index 0000000..eeab737
+--- /dev/null
++++ b/tests/bench_handoff_poll_nop.py
+@@ -0,0 +1,85 @@
++"""GPU0-only correct-arithmetic cubin polling experiment, never a mining backend."""
++import os
++os.environ['CUDA_VISIBLE_DEVICES']='0'
++from pathlib import Path
++import ctypes as C,json,subprocess,sys,argparse,time,hashlib
++import numpy as np
++root=Path(__file__).resolve().parents[1];out=root/'artifacts/handoff-poll-nop';sys.path.insert(0,str(root/'python'))
++p=argparse.ArgumentParser();p.add_argument('mode',choices=['validate','bench','profile']);p.add_argument('--variant',type=int,default=0,choices=range(3));p.add_argument('--allow-supervisor-pid',type=int,default=0);p.add_argument('--unpatched-control',action='store_true',help='Validate original sleep32 cubin to isolate patch-related racecheck reports');args=p.parse_args()
++if args.unpatched_control and args.mode!='validate':p.error('--unpatched-control is validation-only')
++sys.path.insert(0,str(root/'tools'))
++from check_gpu0_idle import check_gpu0_idle
++if args.mode!='profile':check_gpu0_idle(args.allow_supervisor_pid)
++import cuda_capi as cc
++P,I,U=C.c_void_p,C.c_int,C.c_uint
++# Force runtime primary-context creation before using the driver API.
++init=cc.DBuf(4)
++drv=C.CDLL('libcuda.so.1');drv.cuInit.argtypes=[U];drv.cuModuleLoad.argtypes=[C.POINTER(P),C.c_char_p];drv.cuModuleGetFunction.argtypes=[C.POINTER(P),P,C.c_char_p]
++drv.cuFuncSetAttribute.argtypes=[P,I,I];drv.cuFuncGetAttribute.argtypes=[C.POINTER(I),I,P];drv.cuOccupancyMaxActiveBlocksPerMultiprocessor.argtypes=[C.POINTER(I),P,I,C.c_size_t]
++drv.cuLaunchKernel.argtypes=[P,U,U,U,U,U,U,U,P,C.POINTER(P),P]
++def check(x):
++ if x:raise RuntimeError('CUDA driver status '+str(x))
++check(drv.cuInit(0));manifest=json.loads((out/'manifest.json').read_text());names=list(manifest['variants']);mods=[];funcs=[];resources={}
++for name in names:
++ assert hashlib.sha256((out/(name+'.cubin')).read_bytes()).hexdigest()==manifest['variants'][name]['sha256']
++ path=out/('baseline.cubin' if args.unpatched_control and name=='poll_nop' else name+'.cubin')
++ mod,f=P(),P();check(drv.cuModuleLoad(C.byref(mod),str(path).encode()));check(drv.cuModuleGetFunction(C.byref(f),mod,manifest['variants'][name]['entry'].encode()))
++ check(drv.cuFuncSetAttribute(f,8,manifest['variants'][name]['smem']));check(drv.cuFuncSetAttribute(f,9,100))
++ info=[]
++ for key in (4,3,1):
++  val=I();check(drv.cuFuncGetAttribute(C.byref(val),key,f));info.append(val.value)
++ active=I();check(drv.cuOccupancyMaxActiveBlocksPerMultiprocessor(C.byref(active),f,384,manifest['variants'][name]['smem']));info.append(active.value)
++ assert info==[168,0,0,1],info
++ resources[name]=info;mods.append(mod);funcs.append(f)
++print('resources [registers,local,static_shared,CTAs/SM]',resources,flush=True)
++def launch(v,a,b,m,n,t):
++ vals=[P(a.ptr.value if isinstance(a.ptr,P) else a.ptr),P(b.ptr.value if isinstance(b.ptr,P) else b.ptr),I(m),I(n),I(4096),I(128),P(t.ptr.value if isinstance(t.ptr,P) else t.ptr)]
++ pars=(P*len(vals))(*[C.cast(C.byref(x),P) for x in vals]);check(drv.cuLaunchKernel(funcs[v],(m+255)//256,(n+191)//192,1,384,1,1,manifest['variants'][names[v]]['smem'],None,pars,None))
++ref=C.CDLL(str(root/'artifacts/libpearl-rank.so'));ref.rank_fold.argtypes=[I,P,P,I,I,P,P]
++if args.mode=='validate':
++ rows=[]
++ for m,n in ((256,384),(256,400),(512,768),(512,800)):
++  for seed in (42,1234,9876):
++   rng=np.random.default_rng(seed);ah=rng.integers(-128,128,(m,4096),np.int8);bh=rng.integers(-128,128,(n,4096),np.int8)
++   a,b,t=cc.DBuf(ah.nbytes),cc.DBuf(bh.nbytes),cc.DBuf(m*n//256*64);a.from_host(ah);b.from_host(bh)
++   cc._chk(ref.rank_fold(128,a.ptr,b.ptr,m,n,t.ptr,None),'reference');expected=np.empty(m*n//256*16,np.uint32);t.to_host(expected)
++   for v,name in enumerate(names):
++    t.memset(0xa5);launch(v,a,b,m,n,t);got=np.empty_like(expected);t.to_host(got)
++    exp=expected
++    assert np.array_equal(got,exp),(name,m,n,seed,np.flatnonzero(got!=exp)[:8])
++    row=dict(name=name,unpatched_control=args.unpatched_control,m=m,n=n,seed=seed,expected_probe_semantics_pass=True,transcript_bit_exact=True);rows.append(row);print(row,flush=True)
++   for buf in (a,b,t):buf.free()
++ (out/('validation-unpatched.json' if args.unpatched_control else 'validation.json')).write_text(json.dumps(rows,indent=2)+'\n')
++else:
++ m=n=8192;a,b,t=cc.DBuf(m*4096),cc.DBuf(n*4096),cc.DBuf(m*n//256*64);rng=np.random.default_rng(42)
++ for buf in (a,b):buf.from_host(rng.integers(-128,128,(m,4096),np.int8))
++ if args.mode=='profile':
++  for _ in range(40):launch(args.variant,a,b,m,n,t);cc.sync()
++  sys.exit(0)
++ cc._chk(ref.rank_fold(128,a.ptr,b.ptr,m,n,t.ptr,None),'reference');expected=np.empty(m*n//256*16,np.uint32);t.to_host(expected)
++ for v in range(len(names)):
++  launch(v,a,b,m,n,t);got=np.empty_like(expected);t.to_host(got);assert np.array_equal(got,expected),names[v]
++ runtime=C.CDLL('/usr/local/cuda-12.6/lib64/libcudart.so');runtime.cudaEventCreate.argtypes=[C.POINTER(P)];runtime.cudaEventRecord.argtypes=[P,P];runtime.cudaEventSynchronize.argtypes=[P];runtime.cudaEventElapsedTime.argtypes=[C.POINTER(C.c_float),P,P];runtime.cudaEventDestroy.argtypes=[P]
++ start,end=P(),P();cc._chk(runtime.cudaEventCreate(C.byref(start)),'event');cc._chk(runtime.cudaEventCreate(C.byref(end)),'event')
++ warm=time.perf_counter()
++ while time.perf_counter()-warm<3:
++  for _ in range(16):launch(0,a,b,m,n,t)
++  cc.sync()
++ rows=[]
++ for repeat in range(10):
++  for j in range(len(names)):
++   v=(repeat+j)%len(names)
++   for _ in range(100):launch(v,a,b,m,n,t)
++   cc.sync();values=[]
++   for _ in range(20):
++    cc._chk(runtime.cudaEventRecord(start,None),'event')
++    for _ in range(16):launch(v,a,b,m,n,t)
++    cc._chk(runtime.cudaEventRecord(end,None),'event');cc._chk(runtime.cudaEventSynchronize(end),'event');ms=C.c_float();cc._chk(runtime.cudaEventElapsedTime(C.byref(ms),start,end),'event');values.append(ms.value/16)
++   row=dict(name=names[v],variant=v,repeat=repeat,samples_ms=values,mean_ms=float(np.mean(values)),median_ms=float(np.median(values)),p95_ms=float(np.percentile(values,95)))
++   row['telemetry_end']=subprocess.check_output(['nvidia-smi','-i','0','--query-gpu=clocks.sm,clocks.mem,power.draw,temperature.gpu','--format=csv,noheader'],text=True).strip();rows.append(row);print(json.dumps({k:x for k,x in row.items() if k!='samples_ms'}),flush=True)
++ result=dict(resources=resources,measurements=rows,summaries={})
++ for name in names:
++  vals=np.array([x for r in rows if r['name']==name for x in r['samples_ms']]);result['summaries'][name]=dict(samples=len(vals),mean_ms=float(vals.mean()),median_ms=float(np.median(vals)),p95_ms=float(np.percentile(vals,95)))
++ (out/'events.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result['summaries'],indent=2),flush=True)
++ for x in (start,end):cc._chk(runtime.cudaEventDestroy(x),'event destroy')
++ for buf in (a,b,t):buf.free()
+diff --git a/tools/profile_handoff_poll_nop.sh b/tools/profile_handoff_poll_nop.sh
+new file mode 100644
+index 0000000..d74eb73
+--- /dev/null
++++ b/tools/profile_handoff_poll_nop.sh
+@@ -0,0 +1,49 @@
++#!/usr/bin/env bash
++# Offline GPU0 only: Correct-arithmetic short-polling SASS controls; diagnostic only.
++# Requires counter access. Validated for Nsight Compute2024.3.2 CLI.
++set -euo pipefail
++echo "Blocked: short-loop candidate has unresolved racecheck errors; inspect artifacts/handoff-poll-nop/racecheck.log." >&2
++exit 1
++cd "$(dirname "$0")/.."
++if [[ $EUID -ne 0 ]]; then
++ echo 'Hardware counters require root: sudo bash tools/profile_handoff_poll_nop.sh' >&2
++ exit 1
++fi
++.venv/bin/python tools/check_gpu0_idle.py --allow-supervisor-pid "${1:-0}"
++export CUDA_VISIBLE_DEVICES=0
++
++PROFILE_OUT="${PROFILE_OUT:-$(mktemp -d /tmp/pearl-handoff-poll-nop.XXXXXX)}"
++printf '%s\n' "$PROFILE_OUT" > /tmp/pearl-handoff-poll-nop-last.txt
++chmod 644 /tmp/pearl-handoff-poll-nop-last.txt
++mkdir -p "$PROFILE_OUT"
++if compgen -G "$PROFILE_OUT/v*.ncu-rep" > /dev/null; then
++ echo 'Use a fresh PROFILE_OUT directory; existing reports must not mix with changed binaries.' >&2
++ exit 1
++fi
++sha256sum artifacts/handoff-poll-nop/manifest.json artifacts/handoff-poll-nop/*.cubin > "$PROFILE_OUT/inputs.sha256"
++nvidia-smi -i 0 --query-gpu=uuid,name,driver_version,clocks.sm,clocks.mem,power.limit,temperature.gpu --format=csv > "$PROFILE_OUT/gpu-before.csv"
++/usr/local/cuda/bin/ncu --version > "$PROFILE_OUT/ncu-version.txt"
++METRICS='sm__cycles_elapsed.sum,smsp__cycles_elapsed.sum,smsp__inst_executed_pipe_tensor_v2.sum,smsp__inst_executed_pipe_tensor_v2.avg.per_cycle_elapsed,gpu__time_duration.sum,dram__bytes.sum,lts__t_bytes.sum,sm__sass_data_bytes_mem_shared_op_ldsm.sum,lts__throughput.avg.pct_of_peak_sustained_elapsed,smsp__warp_issue_stalled_barrier_per_warp_active.pct,smsp__warp_issue_stalled_long_scoreboard_per_warp_active.pct,smsp__warp_issue_stalled_short_scoreboard_per_warp_active.pct,smsp__warp_issue_stalled_math_pipe_throttle_per_warp_active.pct,sm__pipe_tensor_op_imma_cycles_active_v2.avg.pct_of_peak_sustained_active'
++for VARIANT in 0 1 2; do
++  REPORT="$PROFILE_OUT/v$VARIANT"
++  if [[ ! -s "$REPORT.ncu-rep" ]]; then
++  /usr/local/cuda/bin/ncu --devices 0 --clock-control none \
++    --replay-mode application --cache-control none --kernel-name-base demangled \
++    --kernel-name 'regex:.*handoff_backoff_.*::kernel.*' \
++    --launch-skip 32 --launch-count 3 --metrics "$METRICS" \
++    --section SourceCounters --section SchedulerStats --section WarpStateStats \
++    --warp-sampling-interval auto --warp-sampling-max-passes 5 --import-source yes \
++    -o "$REPORT" "$PWD/.venv/bin/python" tests/bench_handoff_poll_nop.py profile --variant "$VARIANT" \
++    > "$REPORT.log" 2>&1
++  else
++    printf 'Reusing existing report: %s\n' "$REPORT.ncu-rep"
++  fi
++  /usr/local/cuda/bin/ncu --import "$REPORT.ncu-rep" --page raw --print-units base --csv > "$REPORT.raw.csv"
++  /usr/local/cuda/bin/ncu --import "$REPORT.ncu-rep" --page source --print-source sass --csv > "$REPORT.sass.csv"
++done
++"$PWD/.venv/bin/python" tools/analyze_instruction_stalls.py "$PROFILE_OUT"/v*.sass.csv --output "$PROFILE_OUT/pc-stalls.json"
++"$PWD/.venv/bin/python" tools/analyze_ada_ws.py "$PROFILE_OUT" --variants 0 1 2 --useful-mma 67108864
++nvidia-smi -i 0 --query-gpu=uuid,name,driver_version,clocks.sm,clocks.mem,power.limit,temperature.gpu --format=csv > "$PROFILE_OUT/gpu-after.csv"
++"$PWD/.venv/bin/python" tools/analyze_imma_issue.py "$PROFILE_OUT" --variants 0 1 2
++chmod -R a+rX "$PROFILE_OUT"
++printf 'Reports: %s\n' "$PROFILE_OUT"
+diff --git a/tools/report_handoff_poll_nop.py b/tools/report_handoff_poll_nop.py
+new file mode 100644
+index 0000000..6c620a7
+--- /dev/null
++++ b/tools/report_handoff_poll_nop.py
+@@ -0,0 +1,12 @@
++"""Report bounded backoff and polling-chain experiments without promotion."""
++from pathlib import Path
++import json,numpy as np
++root=Path(__file__).resolve().parents[1];p=root/'artifacts/handoff-poll-nop';s=json.loads((p/'events.json').read_text())['summaries'];back=json.loads((root/'artifacts/handoff-backoff-events.json').read_text())
++lines=['GPU0 polling-cost experiments; production libraries unchanged.', '', 'Experiment1: requested32/128ns nanosleep only after a failed wait test; 240 CUDA event samples/variant.']
++for v,n in enumerate(['baseline','spin','sleep32','sleep128']):
++ a=np.array([x for r in back['measurements'] if r['variant']==v for x in r['samples_ms']]);lines.append(f'{n:10} mean={a.mean():.6f} median={np.median(a):.6f} p95={np.percentile(a,95):.6f}ms')
++lines+=['Sleep variants lose substantially; requested nanosleep durations are hints, not exact delays.', 'PTX reference: https://docs.nvidia.com/cuda/pdf/ptx_isa_8.5.pdf', '32 complete transcript+PoW digest comparisons passed, including full8192x8192 inputs.', '', 'Experiment2: source inline-PTX wait loop still compiled to6-instruction polling chain.', 'Compiled and inspected only; not benchmarked because it did not produce intended simplification.', '', 'Experiment3: retain sleep32 machine scheduling/register allocation, replace exactly one NANOSLEEP with NOP.', 'Arithmetic-preserving isolated cubin; synchronization validation unresolved; 200 CUDA event samples/variant,16 launches/sample,rotated blocks.', 'variant       mean_ms    median_ms   p95_ms']
++for name,r in s.items():lines.append(f"{name:12} {r['mean_ms']:.6f}   {r['median_ms']:.6f}   {r['p95_ms']:.6f}")
++b,o,n=[s[k]['mean_ms'] for k in ['baseline','spin','poll_nop']]
++lines +=['',f'Short loop time reduction vs old spin={100*(1-n/o):.3f}%. Still slower than baseline by{100*(n/b-1):.3f}%.', 'Short repeated loop: NOP,LDS,LOP3(predicate),NOP,BRA. Old loop:LDS,R2UR,ULOP3,PLOP3,NOP,BRA.', 'Source readiness condition and arrivals preserved; racecheck reports hazards in the short-loop variant, so synchronization correctness is NOT established.', '168 registers/thread,zero local memory,1CTA/SM; shared69632 baseline/69640 candidates.', 'All64IMMA and16LDSM remain; no operand substitution or incorrect arithmetic.', '36 small/edge transcript comparisons PASS;8192x8192 transcript preflight passes all3 variants.', 'Memcheck2025.2.1:0errors. Racecheck2025.2.1 FAILED:30 reported error groups in poll_nop; baseline and spin emitted no hazards. Numerical equality does not establish race freedom.', 'Unpatched original sleep32 also reports the same class of shared-memory hazards in racecheck-unpatched.log. This rules out attributing the reports solely to the NOP patch; actual race versus instrumentation limitation remains unresolved. No live mining or production changes. No end-to-end throughput improvement claimed.', 'DVFS not locked; timing is diagnostic only, NOT a validated optimization.', '', 'Next step: resolve racecheck failures before further performance profiling or promotion.', 'Capture variant0=baseline,1=old spin,2=short loop (symbol still sayssleep32 but its NANOSLEEP is NOP; hashes/disassembly verify it).', 'Compare dynamic check count,IMMA/SMcycle,short-scoreboard and Tensor active utilization.', 'Do not infer checking-frequency reduction from fewer instructions per check without counters.']
++(p/'report.txt').write_text('\n'.join(lines)+'\n');print('\n'.join(lines))

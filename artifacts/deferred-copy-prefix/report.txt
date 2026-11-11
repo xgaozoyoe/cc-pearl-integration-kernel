@@ -1,0 +1,29 @@
+GPU0 only;8192x8192 region,K4096,rank128. Unlocked-clock CUDA event measurements,not grid/pool throughput.
+Two independent runs;200samples/variant/run,16launches/sample,10rotating blocks.
+Run1
+variant mean_ms median_ms p95_ms delta_native_pct delta_control_pct
+native             1.023612 1.021529 1.048643 +0.0000 +0.6866
+matched_control    1.016632 1.009950 1.047488 -0.6819 +0.0000
+late_copy_sync     1.019352 1.020798 1.047054 -0.4162 +0.2676
+Run2
+variant mean_ms median_ms p95_ms delta_native_pct delta_control_pct
+native             1.023242 1.020232 1.048450 +0.0000 +0.7329
+matched_control    1.015798 1.010850 1.041316 -0.7276 +0.0000
+late_copy_sync     1.014596 1.011235 1.037885 -0.8450 -0.1183
+Offline full-grid wall time:name n mean_ms median_ms p95_ms equivalent_TH/s
+native 60 292.503333 292.850000 297.905000 240.574162
+matched_control 60 291.416667 291.500000 296.320000 241.471241
+late_copy_sync 60 291.561667 291.150000 296.020000 241.351152
+matched_control grid time delta vs native:-0.3715%; paired batches:-0.3016, -0.4336, -0.3627, -0.3553, -0.5669, -0.2085
+late_copy_sync grid time delta vs native:-0.3219%; paired batches:-0.1336, -0.6555, -0.2943, -0.2665, -0.3791, -0.2017
+Late vs matched control grid time delta:+0.0498%
+36transcript+18transcript/PoW comparisons PASS;racecheck0 hazards/errors/warnings.
+All168regs,0local,69632B dynamicshared,384threads,1CTA/SM. Same MMA and operand copy work.
+matched_control: old handoff packet ->33common-prefix instructions -> copy-skip branch ->23copy-preparation instructions -> first shared write0xf40.
+late_copy_sync:33prefix -> copy-skip branch ->23copy preparation -> old handoff packet -> first shared write0xf40.
+No-copy path:common prefix then synchronization before first LDSM0x1090. Final-exit path preserves original sync without executing next prefix.
+Actual candidate shared reads/writes remain after handoff; @!PT LDS placeholders never execute. Constant loads and address arithmetic may run before handoff.
+Old barrier ID consumed before toggle. DummyP6 instruction preserves packet scheduling without clobbering copy predicates. Native prefix waitmask6 retains transcript-store register lifetime protection.
+All early arrivals,64late syncs,initial/final CTA barriers,cp.wait and shared accesses retained; no extra CTA sync.
+Trampoline branches/guard instructions add overhead versus frozen native; matched control shares the branch structure. No claim of pure synchronization latency.
+No production changes, live mining or hardware-counter collection this round.

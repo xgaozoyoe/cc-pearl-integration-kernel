@@ -1,0 +1,194 @@
+{
+  "astream1": [
+    {
+      "function": "_ZN21rank128_astream1_fast6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "instructions": 880,
+      "mma": 64,
+      "ldsm_after_mma": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        8,
+        16,
+        24,
+        31,
+        31,
+        32,
+        32,
+        32,
+        32,
+        44,
+        48
+      ]
+    },
+    {
+      "function": "_ZN25rank128_astream1_baseline6kernelILi2ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "instructions": 888,
+      "mma": 64,
+      "ldsm_after_mma": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        8,
+        16,
+        24,
+        31,
+        32,
+        32,
+        32,
+        32,
+        32,
+        44,
+        48
+      ]
+    }
+  ],
+  "astream2": [
+    {
+      "function": "_ZN21rank128_astream2_fast6kernelILi2ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "instructions": 888,
+      "mma": 64,
+      "ldsm_after_mma": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        8,
+        16,
+        24,
+        31,
+        32,
+        32,
+        32,
+        32,
+        32,
+        44,
+        48
+      ]
+    },
+    {
+      "function": "_ZN25rank128_astream2_baseline6kernelILi2ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "instructions": 888,
+      "mma": 64,
+      "ldsm_after_mma": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        8,
+        16,
+        24,
+        31,
+        32,
+        32,
+        32,
+        32,
+        32,
+        44,
+        48
+      ]
+    }
+  ],
+  "aheadrow1": [
+    {
+      "function": "_ZN22rank128_aheadrow1_fast6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "instructions": 880,
+      "mma": 64,
+      "ldsm_after_mma": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        8,
+        16,
+        24,
+        30,
+        31,
+        31,
+        32,
+        32,
+        32,
+        44,
+        48
+      ]
+    },
+    {
+      "function": "_ZN26rank128_aheadrow1_baseline6kernelILi2ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "instructions": 888,
+      "mma": 64,
+      "ldsm_after_mma": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        8,
+        16,
+        24,
+        31,
+        32,
+        32,
+        32,
+        32,
+        32,
+        44,
+        48
+      ]
+    }
+  ],
+  "aheadrow2": [
+    {
+      "function": "_ZN22rank128_aheadrow2_fast6kernelILi2ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "instructions": 880,
+      "mma": 64,
+      "ldsm_after_mma": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        8,
+        16,
+        24,
+        32,
+        32,
+        32,
+        32,
+        32,
+        32,
+        44,
+        48
+      ]
+    },
+    {
+      "function": "_ZN26rank128_aheadrow2_baseline6kernelILi2ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "instructions": 888,
+      "mma": 64,
+      "ldsm_after_mma": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        8,
+        16,
+        24,
+        31,
+        32,
+        32,
+        32,
+        32,
+        32,
+        44,
+        48
+      ]
+    }
+  ]
+}

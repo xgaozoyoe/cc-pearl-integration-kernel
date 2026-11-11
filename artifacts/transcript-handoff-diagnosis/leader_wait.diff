@@ -1,0 +1,22 @@
+--- cta192
++++ leader_wait
+@@ -1,6 +1,6 @@
+ #include <cuda_runtime.h>
+ #include <cstdint>
+-namespace transcript_cta192_consumer {
++namespace handoff_diagnosis_leader_wait {
+ constexpr int BM=192, BN=192, THREADS=288;
+ constexpr int WORDS=(BM/16)*(BN/16)*16;
+ struct Fragment { unsigned v[4]; };
+@@ -85,8 +85,11 @@
+ 
+ 
+ __device__ __forceinline__ void task_wait(unsigned bar,unsigned phase) {
++ if((threadIdx.x&31)==0) {
+  unsigned ok;
+  do { asm volatile("{ .reg .pred p; mbarrier.test_wait.parity.shared.b64 p,[%1],%2; selp.u32 %0,1,0,p; }" : "=r"(ok) : "r"(bar),"r"(phase) : "memory"); } while(!ok);
++ }
++ __syncwarp();
+ }
+ __device__ __forceinline__ void task_arrive(unsigned bar) {
+  asm volatile("mbarrier.arrive.shared.b64 _,[%0];" :: "r"(bar) : "memory");

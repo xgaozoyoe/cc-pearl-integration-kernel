@@ -1,0 +1,29 @@
+LDSM work + dependency bypass (GPU0 only)
+
+All 64 IMMA retained. AB-zero operand semantics in all diagnostic variants.
+no_b: replace 8 B LDSM with NOP. no_ab: replace all 16 A/B LDSM with NOP.
+Removed load write-scoreboard producers and downstream waits attributable to them.
+Fixed stalls/yield and other wait bits unchanged; copy pipeline, CTA barriers, accumulator C dependencies and transcript code unchanged.
+This removes both shared load work and operand dependencies; it is NOT a pure latency isolation.
+
+Variant    mean_ms    median_ms  p95_ms    time_reduction_vs_ABzero
+baseline   1.073832   1.068608   1.102652   -6.342%
+ab_zero    1.009787   1.009008   1.012480   +0.000%
+no_b       1.007840   1.008000   1.009037   +0.193%
+no_ab      0.982482   0.982848   0.983315   +2.704%
+
+200 samples/variant, 16 launches/sample, rotated blocks, 8192x8192x4096 input region.
+48 expected-output checks PASS; 8192-region pre-benchmark outputs also match expected semantics.
+Baseline matches known-good transcript. All diagnostic variants intentionally produce zeros, invalid for mining.
+Memcheck 0 errors; racecheck 0 hazards, 0 errors, 0 warnings.
+168 registers/thread, 69632 shared bytes/CTA, 1 CTA/SM unchanged. No production library modified.
+GPU2 mining continued. GPU0 held an idle supervisor context (PID2270585) verified by command line and supervisor implementation.
+No other GPU0 compute PID allowed. Core frequency not locked; do not interpret raw baseline-vs-zero timings as dependency benefit.
+
+Provisional: B-only bypass saves 0.193% event time; bypassing both A/B saves 2.704%.
+The incremental A removal is conditional on B already being removed, not an independently additive A cost.
+Global copy/stage synchronization and accumulator dependencies remain. Result does not exclude those dependencies.
+Need cycle-normalized NCU results and confirmation of dynamic IMMA/LDSM counts, before interpreting architectural impact.
+Profile: sudo bash tools/profile_ldsm_bypass.sh 2270585
+The optional PID only permits this verified non-GPU0 supervisor context; absent PID means no exception.
+If supervisor restarts with a different PID, the guard stops instead of guessing.

@@ -1,0 +1,71 @@
+Early named-barrier publication: GPU0 offline controls
+Unmodified production library. Unlocked-clock event/grid timings; distinguish from optional fixed-clock counters.
+
+events-run1.json
+variant mean_ms median_ms p95_ms time_change_vs_baseline
+baseline 1.068901 1.066042 1.093955 +0.000%
+tail5 1.048193 1.044416 1.075302 -1.937%
+tail9 1.038938 1.035101 1.066854 -2.803%
+events-run2.json
+variant mean_ms median_ms p95_ms time_change_vs_baseline
+baseline 1.067747 1.061528 1.100231 +0.000%
+tail5 1.047447 1.045312 1.077110 -1.901%
+tail9 1.038812 1.035072 1.068288 -2.710%
+
+Full-grid wall times: includes setup/noise/Merkle/PoW, excludes network/proof delivery.
+variant n mean_ms median_ms p95_ms grids_per_sec consensus_equivalent_THs
+baseline 60 303.758 303.550 309.130 3.29209 231.660
+tail5 60 298.987 298.500 303.510 3.34463 235.357
+tail9 60 296.993 296.700 301.700 3.36708 236.937
+tail5 vs baseline: time -1.571%, throughput +1.596%
+Paired batch time changes: -1.445%, -1.604%, -1.414%, -1.484%, -1.666%, -1.812%
+tail9 vs baseline: time -2.227%, throughput +2.278%
+Paired batch time changes: -2.000%, -2.302%, -2.105%, -2.347%, -2.270%, -2.338%
+
+Fixed-clock capture: /tmp/pearl-handoff-arrive-tail.aHXWMM
+{
+  "baseline": {
+    "gpu__time_duration.sum": 1213845.3333333333,
+    "sm__cycles_elapsed.avg.per_second": 2228875680.85,
+    "smsp__inst_executed_pipe_alu.sum": 121569664.0,
+    "smsp__inst_executed_pipe_tensor_v2.sum": 67633152.0,
+    "sm__cycles_elapsed.sum": 346303854.0,
+    "sm__pipe_tensor_op_imma_cycles_active_v2.avg.pct_of_peak_sustained_active": 80.17666666666666,
+    "smsp__warps_eligible.avg.per_cycle_active": 0.36,
+    "smsp__warp_issue_stalled_barrier_per_warp_active.pct": 10.123333333333333,
+    "smsp__warp_issue_stalled_math_pipe_throttle_per_warp_active.pct": 49.10333333333333,
+    "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.pct": 6.2,
+    "imma_per_sm_cycle": 0.19530006377320372
+  },
+  "tail5": {
+    "gpu__time_duration.sum": 1182517.3333333333,
+    "sm__cycles_elapsed.avg.per_second": 2228942030.9166665,
+    "smsp__inst_executed_pipe_alu.sum": 121569664.0,
+    "smsp__inst_executed_pipe_tensor_v2.sum": 67633152.0,
+    "sm__cycles_elapsed.sum": 337375406.0,
+    "sm__pipe_tensor_op_imma_cycles_active_v2.avg.pct_of_peak_sustained_active": 82.35666666666667,
+    "smsp__warps_eligible.avg.per_cycle_active": 0.36,
+    "smsp__warp_issue_stalled_barrier_per_warp_active.pct": 10.58,
+    "smsp__warp_issue_stalled_math_pipe_throttle_per_warp_active.pct": 48.75333333333333,
+    "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.pct": 6.583333333333333,
+    "imma_per_sm_cycle": 0.20046855735472954
+  },
+  "tail9": {
+    "gpu__time_duration.sum": 1170730.6666666667,
+    "sm__cycles_elapsed.avg.per_second": 2227808139.5933332,
+    "smsp__inst_executed_pipe_alu.sum": 121569664.0,
+    "smsp__inst_executed_pipe_tensor_v2.sum": 67633152.0,
+    "sm__cycles_elapsed.sum": 333842966.0,
+    "sm__pipe_tensor_op_imma_cycles_active_v2.avg.pct_of_peak_sustained_active": 83.25666666666666,
+    "smsp__warps_eligible.avg.per_cycle_active": 0.36,
+    "smsp__warp_issue_stalled_barrier_per_warp_active.pct": 10.4,
+    "smsp__warp_issue_stalled_math_pipe_throttle_per_warp_active.pct": 48.96,
+    "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.pct": 6.486666666666667,
+    "imma_per_sm_cycle": 0.2025897711743942
+  }
+}
+
+All variants:168 registers/thread,69632B shared,384threads,1CTA/SM,0local;64 static IMMA,16LDSM.
+Instruction words and MMA order retained exactly; original BAR.ARV moved earlier by5 or9 IMMA.
+Transcript and PoW validation passed; racecheck,memcheck,synccheck0errors on edge suite.
+No claim of live-pool hashrate increase until mining deployment and acceptance; no deployment performed.

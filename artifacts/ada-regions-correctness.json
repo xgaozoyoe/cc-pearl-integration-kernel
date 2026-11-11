@@ -1,0 +1,23 @@
+[
+  {
+    "region": 8192,
+    "tiles": 262144,
+    "subregions": 4,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "region": 16384,
+    "tiles": 1048576,
+    "subregions": 16,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "region": 32768,
+    "tiles": 4194304,
+    "subregions": 64,
+    "transcript_pass": true,
+    "digest_pass": true
+  }
+]

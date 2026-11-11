@@ -1,0 +1,17 @@
+R128 operand scheduling experiment; 2026-10-08
+
+GPU0 only. Offline miner.mine_job; actual A/B, noise, Merkle/V3 and PoW. Region8192, M=N=131072,K4096,R128. Each variant: 8 interleaved batches, 2 warmup +10 measured grids per batch (80 measured). Same job seed sequence. No live submissions. Timings are logged full-grid wall times (0.1ms precision), not isolated kernel timings. Clocks were not locked; batch-end telemetry is in results JSON.
+
+stable copywalk-fulla: mean 314.11875 ms; median 313.650; p95 318.555; 3.18351 grids/s; 224.01956 TH/s equivalent.
+A stream Lead1: mean 310.30625 ms; median 309.900; p95 315.315; 3.22262 grids/s; 226.77192 TH/s equivalent.
+A stream + delayed B copy: mean 310.60750 ms; median 310.250; p95 315.405; 3.21950 grids/s; 226.55198 TH/s equivalent.
+
+Selected A-stream: +1.2286% throughput, 3.8125ms lower mean wall time; faster in all8 paired batches. Combined delayed B does not add benefit. Earlier independent 2x40 A-stream comparison improved ~0.96%; aheadrow1 only ~0.29%; Lead2 rewrite produced identical SASS and was skipped.
+
+Changes: row-paired MMA order, next A fragment prefetched before final old-fragment uses, B prefetch trigger row2 -> row1; launch Lead2 -> Lead1. Same register accumulators, CTA256x192,K64,12warps,2stages,168registers/thread,69632Bshared,1CTA/SM,12activewarps/SM,zero spill. Candidate880 static SASS instructions vs888 baseline. No new hardware-counter capture: cannot claim Tensor Active increased.
+
+Validation: 24 full transcript/digest comparisons for three variants against accepted R128. Packaged ABI:16 comparisons across two seeds and four shapes including8192x8192; small-shape memcheck zero errors and racecheck zero hazards. Packaged measured-kernel SASS880instructions exactly matches benchmark. Initial duplicate namespace registration/initialization conflict when both DSOs were loaded resolved by unique package CUDA namespace; revalidation passed. This is offline correctness, not live-share validation.
+
+Library: artifacts/libpearl-rank128-astream-candidate.so; hash: artifacts/rank128-astream-candidate.sha256. Build: .venv/bin/python tools/package_rank128_astream.py. Isolated opt-in ABI supports R128, positive M divisible256,N divisible16, M/N<=1048576; intended one selected GPU per process. Previous copywalk-fulla candidate and accepted production libraries preserved; hashes verified. No production changes, no commits, no mining worker changes.
+
+Review: rank128-astream-kernel.diff isolates normalized-namespace kernel-body changes; full source package diff in rank128-astream-package.diff includes launch Lead change and ABI. Sources and all benchmark/correctness logs retained in artifacts.

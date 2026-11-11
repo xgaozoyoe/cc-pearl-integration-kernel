@@ -1,0 +1,39 @@
+{
+  "entry": "_ZN24handoff_control_baseline6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+  "variants": {
+    "baseline": {
+      "sha256": "3be626ab702bb0c460b09f0c34e32c671756465f3a950be111405152e6d8019c",
+      "wait_moves": 0
+    },
+    "ab_zero": {
+      "sha256": "1be57066bcac886d4cf67bd88a65dac6e67aecf252f41c665b7ea2a1cbd4f536",
+      "wait_moves": 0
+    },
+    "ab_wait2": {
+      "sha256": "6258419030576eeaf82ee6a5bb48bd17b0fe0cb38ddb8091d7b9dabfacbe95f8",
+      "wait_moves": 2
+    },
+    "ab_wait3": {
+      "sha256": "5a4f55940581b395b83323c45070b84c8be050eaab5c85336298e02afaee6093",
+      "wait_moves": 3
+    }
+  },
+  "moves": [
+    {
+      "producer": "0x1190",
+      "old_wait": "0x11a0",
+      "new_wait": "0x11e0"
+    },
+    {
+      "producer": "0x1240",
+      "old_wait": "0x1250",
+      "new_wait": "0x1290"
+    },
+    {
+      "producer": "0x1300",
+      "old_wait": "0x1310",
+      "new_wait": "0x1420"
+    }
+  ],
+  "warning": "Wrong arithmetic diagnostic. Only three first-half B waits relocated; not complete dependency removal."
+}

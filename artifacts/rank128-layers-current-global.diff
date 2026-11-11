@@ -1,0 +1,11 @@
+--- same-kernel transcript-off
++++ global
+@@ -227,7 +227,7 @@
+     #pragma unroll
+     for(int half=0;half<2;++half)
+     #pragma unroll
+-    for(int v=0;v<4;++v) final_xor^=c[row][group][half][v];
++    for(int v=0;v<4;++v) final_xor+=c[row][group][half][v];
+     out[(blockIdx.x+gridDim.x*blockIdx.y)*Threads+threadIdx.x]=final_xor;
+     }
+ }

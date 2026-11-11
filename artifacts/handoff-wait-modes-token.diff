@@ -1,0 +1,44 @@
+--- validated-transcript_handoff_overlap
++++ token
+@@ -109,15 +109,17 @@
+ }
+ 
+ 
+-__device__ __forceinline__ void handoff_arrive(unsigned bar) {
++__device__ __forceinline__ unsigned long long handoff_arrive(unsigned bar) {
+     asm volatile("cp.async.mbarrier.arrive.noinc.shared.b64 [%0];" :: "r"(bar) : "memory");
+-    asm volatile("mbarrier.arrive.shared.b64 _, [%0];" :: "r"(bar) : "memory");
+-}
+-__device__ __forceinline__ void handoff_wait(unsigned bar,unsigned phase) {
++    unsigned long long token;
++    asm volatile("mbarrier.arrive.shared.b64 %0, [%1];" : "=l"(token) : "r"(bar) : "memory");
++    return token;
++}
++__device__ __forceinline__ void handoff_wait(unsigned bar,unsigned long long token) {
+     unsigned done;
+     do {
+-        asm volatile("{ .reg .pred p; mbarrier.test_wait.parity.shared.b64 p, [%1], %2; selp.u32 %0, 1, 0, p; }"
+-                     : "=r"(done) : "r"(bar),"r"(phase) : "memory");
++        asm volatile("{ .reg .pred p; mbarrier.test_wait.shared.b64 p, [%1], %2; selp.u32 %0, 1, 0, p; }"
++                     : "=r"(done) : "r"(bar),"l"(token) : "memory");
+     } while(!done);
+ }
+ template<int Lead,int TileK=64,bool Planar=false,bool PackedB=false,bool UnrollCopy=false,bool FixedCopy=false,int Stages=2,bool Wide=false,int Layout=0>
+@@ -223,7 +225,7 @@
+             }
+         }
+         }
+-        handoff_arrive(handoff_bar);
++        unsigned long long token=handoff_arrive(handoff_bar);
+         if constexpr(TileK==64) {
+         if((kt+1)%2==0) {
+             int rb=(kt+1)/2-1;
+@@ -247,7 +249,7 @@
+             }
+         }
+         }
+-        handoff_wait(handoff_bar,unsigned(kt&1));
++        handoff_wait(handoff_bar,token);
+     }
+     __syncthreads();
+     if(threadIdx.x==0) asm volatile("mbarrier.inval.shared.b64 [%0];" :: "r"(handoff_bar) : "memory");

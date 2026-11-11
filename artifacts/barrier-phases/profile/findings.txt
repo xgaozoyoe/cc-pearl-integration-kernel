@@ -1,0 +1,16 @@
+Capture:/tmp/pearl-barrier-phases.NB60dz
+Hashes verified.3profiled launches/variant; cycle-normalized comparisons use predicate_control.
+native: {"imma_per_SM_elapsed_cycle": 0.20881436278088097, "imma_per_SMSP_elapsed_cycle": 0.052203590695220244, "tensor_Ginst_sec": 59.5057462037921, "kernel_ms": 1.1365866666666666} IMMA/cycle_gain_pct=+0.081311 time_reduction_pct=+0.654503
+barrier_samples={"0xc60": 625.0, "0x2a30": 130035.0, "0x2a70": 1245.0} metrics={"tensor_pct": 85.79333333333334, "barrier_pct": 14.266666666666666, "math_throttle_pct": 40.916666666666664, "l2_bytes": 2534036458.6666665}
+predicate_control: {"imma_per_SM_elapsed_cycle": 0.2086447107987673, "imma_per_SMSP_elapsed_cycle": 0.05216117769969183, "tensor_Ginst_sec": 59.1186858626794, "kernel_ms": 1.1440746666666668} IMMA/cycle_gain_pct=+0.000000 time_reduction_pct=+0.000000
+barrier_samples={"0xc60": 600.0, "0x2a30": 129971.0, "0x2a70": 1242.0} metrics={"tensor_pct": 85.79, "barrier_pct": 14.27, "math_throttle_pct": 40.92333333333333, "l2_bytes": 2533942005.3333335}
+no_plain_handoff: {"imma_per_SM_elapsed_cycle": 0.21348788799072765, "imma_per_SMSP_elapsed_cycle": 0.05337197199768191, "tensor_Ginst_sec": 60.35609945011837, "kernel_ms": 1.1205866666666666} IMMA/cycle_gain_pct=+2.321256 time_reduction_pct=+2.053013
+barrier_samples={"0xc60": 690.0, "0x2a30": 83591.0, "0x2a70": 1078.0} metrics={"tensor_pct": 87.81, "barrier_pct": 9.463333333333335, "math_throttle_pct": 47.50666666666667, "l2_bytes": 2533947669.3333335}
+no_fold_handoff: {"imma_per_SM_elapsed_cycle": 0.21390972271340233, "imma_per_SMSP_elapsed_cycle": 0.05347743067835058, "tensor_Ginst_sec": 60.7045526753224, "kernel_ms": 1.1141653333333335} IMMA/cycle_gain_pct=+2.523434 time_reduction_pct=+2.614282
+barrier_samples={"0xc60": 607.0, "0x2a30": 83849.0, "0x2a70": 2219.0} metrics={"tensor_pct": 87.96666666666667, "barrier_pct": 9.633333333333335, "math_throttle_pct": 46.376666666666665, "l2_bytes": 2533980970.6666665}
+Predicate control differs from native by only~0.081%IMMA/cycle, not a material multi-percent effect.
+Prior unlocked ranking is NOT confirmed: phase-removal gains are comparable,2.32%plain vs2.52%fold. Three launches do not justify strongly ranking the0.20percentage-point difference.
+Both phases contribute; no evidence that transcript rounds alone dominate barrier cost.
+Main-barrier samples remain~84k vs130k although half of rendezvous rounds are skipped. Aggregate sampling cannot identify which warp is late or recover independent per-event latency.
+No arithmetic correctness claim for ablations. Removing waits changes cross-iteration phasing and operand values; gains are not additive or guaranteed recoverable.
+No new GPU launch or production mutation in this analysis. LogicalIDs4/5 and6/7 have been tested as pairs; single-group/individual-opcode effects remain unmeasured.

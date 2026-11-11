@@ -1,0 +1,8 @@
+Possible --gpu-metrics-devices values are:
+	0: NVIDIA GeForce RTX 4090 PCI[0000:41:00.0]
+	1: NVIDIA GeForce RTX 4090 PCI[0000:43:00.0]
+	2: NVIDIA GeForce RTX 4090 PCI[0000:21:00.0]
+	3: NVIDIA GeForce RTX 4090 PCI[0000:22:00.0]
+	all: Select all supported GPUs
+	cuda-visible: Select GPUs that match CUDA_VISIBLE_DEVICES
+	none: Disable GPU Metrics [Default]

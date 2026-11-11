@@ -1,0 +1,62 @@
+{
+  "version": "isolated variant 20, warp2x4 register BK64 s3",
+  "steady_grids": 5,
+  "mean_wall_ms": 390.76,
+  "rows": [
+    {
+      "stage": "GEMM + transcript fold",
+      "mean_ms": 346.2944578000002,
+      "wall_percent": 88.62075386426457
+    },
+    {
+      "stage": "Noise GEMM",
+      "mean_ms": 8.415721599999998,
+      "wall_percent": 2.1536804176476605
+    },
+    {
+      "stage": "Random A/B generation",
+      "mean_ms": 7.474022999999999,
+      "wall_percent": 1.9126888627290406
+    },
+    {
+      "stage": "Merkle roots",
+      "mean_ms": 4.0689506,
+      "wall_percent": 1.0412914832633842
+    },
+    {
+      "stage": "PoW BLAKE3",
+      "mean_ms": 3.9559748000000052,
+      "wall_percent": 1.012379670385916
+    },
+    {
+      "stage": "Matrix transpose",
+      "mean_ms": 3.1874316,
+      "wall_percent": 0.8157005834783498
+    },
+    {
+      "stage": "Noise seed expansion",
+      "mean_ms": 0.09516920000000001,
+      "wall_percent": 0.02435489814720033
+    },
+    {
+      "stage": "V3 bind_roots",
+      "mean_ms": 0.003725,
+      "wall_percent": 0.0009532705496980244
+    },
+    {
+      "stage": "Other kernels",
+      "mean_ms": 0.0,
+      "wall_percent": 0.0
+    },
+    {
+      "stage": "GPU copies / memset",
+      "mean_ms": 0.0257858,
+      "wall_percent": 0.006598884225611629
+    },
+    {
+      "stage": "Unattributed wall time",
+      "mean_ms": 17.238760599999807,
+      "wall_percent": 4.4115980653085805
+    }
+  ]
+}

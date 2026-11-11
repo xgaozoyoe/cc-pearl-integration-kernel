@@ -1,0 +1,26 @@
+[
+  {
+    "nsight_id": 3,
+    "pci": "0000:22:00.0",
+    "uuid": "e2bcf3ea-ca6c-49ce-c8ff-220481820348",
+    "cuda_device": 1
+  },
+  {
+    "nsight_id": 2,
+    "pci": "0000:21:00.0",
+    "uuid": "bc4647cc-3c0d-7e2c-f040-5708ef283454",
+    "cuda_device": 0
+  },
+  {
+    "nsight_id": 1,
+    "pci": "0000:43:00.0",
+    "uuid": "0d240d77-bc84-3f07-56f4-83f1538710e8",
+    "cuda_device": 3
+  },
+  {
+    "nsight_id": 0,
+    "pci": "0000:41:00.0",
+    "uuid": "d402e695-a15b-4d5a-3137-548c14cab612",
+    "cuda_device": 2
+  }
+]

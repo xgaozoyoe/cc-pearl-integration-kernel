@@ -1,0 +1,54 @@
+{
+  "state-register": {
+    "tail2": {
+      "instructions": 888,
+      "mma_sites": 64,
+      "ldsm_sites": 16,
+      "lds_sites": 14,
+      "sts_sites": 29,
+      "bssy": 3
+    },
+    "tail1": {
+      "instructions": 896,
+      "mma_sites": 64,
+      "ldsm_sites": 16,
+      "lds_sites": 15,
+      "sts_sites": 31,
+      "bssy": 4
+    },
+    "baseline": {
+      "instructions": 880,
+      "mma_sites": 64,
+      "ldsm_sites": 16,
+      "lds_sites": 16,
+      "sts_sites": 32,
+      "bssy": 1
+    }
+  },
+  "state-register-select": {
+    "tail2": {
+      "instructions": 888,
+      "mma_sites": 64,
+      "ldsm_sites": 16,
+      "lds_sites": 14,
+      "sts_sites": 29,
+      "bssy": 3
+    },
+    "tail1": {
+      "instructions": 896,
+      "mma_sites": 64,
+      "ldsm_sites": 16,
+      "lds_sites": 15,
+      "sts_sites": 31,
+      "bssy": 4
+    },
+    "baseline": {
+      "instructions": 880,
+      "mma_sites": 64,
+      "ldsm_sites": 16,
+      "lds_sites": 16,
+      "sts_sites": 32,
+      "bssy": 1
+    }
+  }
+}

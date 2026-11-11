@@ -1,0 +1,26 @@
+{
+  "variants": {
+    "control": {
+      "entry": "_ZN29transcript_wait_probe_control6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "3640533c9343165abeb5db1515545602b90d73673b254c1c9d81b7e2857e51a5",
+      "threads": 320,
+      "smem": 63120,
+      "correct": true
+    },
+    "timed": {
+      "entry": "_ZN27transcript_wait_probe_timed6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "2270c4da1971af1cf5a9423789bdc3a77a1baad73165bc0ce485f3529160a486",
+      "threads": 320,
+      "smem": 63120,
+      "correct": true
+    },
+    "ready_any": {
+      "entry": "_ZN31transcript_wait_probe_ready_any6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "c3e5c0d7b26c8f5214085e6c744dcfded62a10ee9661df969077b8d77da30b25",
+      "threads": 320,
+      "smem": 63120,
+      "correct": true,
+      "safety_status": "EXCLUDED:racecheck reported shared read/write hazards"
+    }
+  }
+}

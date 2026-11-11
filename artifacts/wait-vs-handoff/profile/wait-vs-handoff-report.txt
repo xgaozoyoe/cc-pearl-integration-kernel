@@ -1,0 +1,34 @@
+Offline wrong-arithmetic 2x2 diagnostic; exact frozen binary, no code motion/recompilation.
+Factor1 replaces16c0 DEPBAR.LE SB0,0 (main-loop cp.async.wait_group0) withNOP.
+Factor2 replaces16d0 BAR.ARV and2a00 BAR.SYNC withNOP.
+All async copies/commits, LDSM, IMMA, prologue wait/barrier, final CTA barrier, transcript and loop retained.
+Registers168, shared69632,384threads,1CTA/SM unchanged. Static stalls/wait masks retained; removed BAR producer annotations cleared.
+Removing copy completion does not remove implicit queue throttling or all address/register waits.
+Wrong data/races can change numerical switching and warp phasing; these timings are not safe optimization gains.
+No per-warp arrival timestamps collected. This compares the two synchronization mechanisms and their interaction.
+
+Unlocked events:200samples/variant,16launches/sample,10rotating blocks. Region8192x8192x4096, not full mining grid.
+native {"samples": 200, "mean_ms": 1.0278941017389298, "median_ms": 1.0288640260696411, "p95_ms": 1.050569200515747}
+no_copy_wait {"samples": 200, "mean_ms": 1.0150891715288162, "median_ms": 1.0111360549926758, "p95_ms": 1.0294002890586853}
+no_barrier {"samples": 200, "mean_ms": 0.9809235838055611, "median_ms": 0.9782319962978363, "p95_ms": 0.9981092900037765}
+both {"samples": 200, "mean_ms": 0.9836288717389107, "median_ms": 0.9842240214347839, "p95_ms": 1.004035198688507}
+unlocked ms: {"native": 1.0278941017389298, "no_copy_wait": 1.0150891715288162, "no_barrier": 0.9809235838055611, "both": 0.9836288717389107}
+Copy-wait removal gain with barriers 1.2457%; without barriers -0.2758%.
+Barrier removal gain original copy wait 4.5696%; removed copy wait 3.0993%.
+Interaction (T00-T10)-(T01-T11):0.015510218 unlocked ms; 1.5089% of native. Positive means part of copy-wait-removal benefit overlaps barrier-removal benefit.
+native {"imma_per_SM_elapsed_cycle": 0.20864008713809687, "imma_per_SMSP_elapsed_cycle": 0.05216002178452422, "tensor_Ginst_sec": 59.30070487910326, "kernel_ms": 1.140512}
+{"kernel_ns": 1140512.0, "tensor_pct": 85.77, "l2_util_pct": 48.79666666666667, "l2_bytes": 2533928352.0, "barrier_pct": 14.28, "long_scoreboard_pct": 2.8233333333333333, "short_scoreboard_pct": 7.683333333333334, "math_throttle_pct": 40.92, "eligible_warps_per_scheduler": 0.36, "active_warps_per_scheduler": 3.0, "issued_warps_per_cycle": 0.24}
+no_copy_wait {"imma_per_SM_elapsed_cycle": 0.20862392741083619, "imma_per_SMSP_elapsed_cycle": 0.052155981852709046, "tensor_Ginst_sec": 59.15383324028547, "kernel_ms": 1.14336}
+{"kernel_ns": 1143360.0, "tensor_pct": 85.78333333333333, "l2_util_pct": 48.776666666666664, "l2_bytes": 2533982240.0, "barrier_pct": 14.273333333333333, "long_scoreboard_pct": 2.8233333333333333, "short_scoreboard_pct": 7.683333333333334, "math_throttle_pct": 40.92, "eligible_warps_per_scheduler": 0.36, "active_warps_per_scheduler": 3.0, "issued_warps_per_cycle": 0.24}
+no_barrier {"imma_per_SM_elapsed_cycle": 0.2222764634509019, "imma_per_SMSP_elapsed_cycle": 0.05556911586272548, "tensor_Ginst_sec": 63.20242797463487, "kernel_ms": 1.0701333333333334}
+{"kernel_ns": 1070133.3333333333, "tensor_pct": 91.32333333333334, "l2_util_pct": 52.11333333333333, "l2_bytes": 2534010976.0, "barrier_pct": 1.24, "long_scoreboard_pct": 1.3933333333333333, "short_scoreboard_pct": 6.78, "math_throttle_pct": 56.97, "eligible_warps_per_scheduler": 0.39, "active_warps_per_scheduler": 3.0, "issued_warps_per_cycle": 0.25}
+both {"imma_per_SM_elapsed_cycle": 0.22224399965019395, "imma_per_SMSP_elapsed_cycle": 0.05556099991254849, "tensor_Ginst_sec": 63.232364784838694, "kernel_ms": 1.0696106666666667}
+{"kernel_ns": 1069610.6666666667, "tensor_pct": 91.32, "l2_util_pct": 52.07, "l2_bytes": 2533936096.0, "barrier_pct": 1.2366666666666666, "long_scoreboard_pct": 1.4066666666666665, "short_scoreboard_pct": 6.78, "math_throttle_pct": 56.96333333333333, "eligible_warps_per_scheduler": 0.39, "active_warps_per_scheduler": 3.0, "issued_warps_per_cycle": 0.25}
+base-clock ms: {"native": 1.140512, "no_copy_wait": 1.14336, "no_barrier": 1.0701333333333334, "both": 1.0696106666666667}
+Copy-wait removal gain with barriers -0.2497%; without barriers 0.0488%.
+Barrier removal gain original copy wait 6.1708%; removed copy wait 6.4502%.
+Interaction (T00-T10)-(T01-T11):-0.003370667 base-clock ms; -0.2955% of native. Positive means part of copy-wait-removal benefit overlaps barrier-removal benefit.
+SM elapsed cycles per IMMA: {"native": 4.792942783512689, "no_copy_wait": 4.793314038378413, "no_barrier": 4.498901883153668, "both": 4.499559050295949}
+Copy-wait removal gain with barriers -0.0077%; without barriers -0.0146%.
+Barrier removal gain original copy wait 6.1349%; removed copy wait 6.1284%.
+Interaction (T00-T10)-(T01-T11):0.000285912 SM elapsed cycles per IMMA; 0.0060% of native. Positive means part of copy-wait-removal benefit overlaps barrier-removal benefit.

@@ -1,0 +1,18 @@
+Offline wrong-arithmetic diagnostic, no code motion/recompilation. Frozen fastest cubin.
+Factor1 removes third A LDGSTS at1020. Warps0..7 lose one16B/lane transfer; all warps now execute4copy instructions per copied stage.
+A stage loses4096B/28672B=14.286% logical transfer traffic. The actual L2 change must be measured.
+Factor2 removes16d0 BAR.ARV and2a00 BAR.SYNC; other synchronization retained.
+All IMMA/LDSM, loop, registers/shared allocation, waits and fixed stall slots remain.
+Skipped shared regions can be stale/uninitialized, but values only enter arithmetic, never address generation. Output is invalid.
+This tests a candidate contribution and its interaction with barriers; it does NOT establish which warp arrived last.
+Less traffic and different numerical switching are confounds. A positive interaction is a clue, not proof of copy imbalance as cause.
+
+Unlocked events:200samples/variant,16launches/sample,10rotating blocks. Region8192x8192x4096, not full mining grid.
+native {"samples": 200, "mean_ms": 1.0245886820554733, "median_ms": 1.0180480480194092, "p95_ms": 1.0488928437232972}
+equal_copy {"samples": 200, "mean_ms": 0.9931330516934395, "median_ms": 0.9897429943084717, "p95_ms": 1.0023655116558075}
+no_barrier {"samples": 200, "mean_ms": 0.9840356212854385, "median_ms": 0.9835519790649414, "p95_ms": 1.0139183342456817}
+both {"samples": 200, "mean_ms": 0.9612016892433166, "median_ms": 0.9558040201663971, "p95_ms": 0.9777499079704285}
+unlocked ms: {"native": 1.0245886820554733, "equal_copy": 0.9931330516934395, "no_barrier": 0.9840356212854385, "both": 0.9612016892433166}
+Copy removal gain with barriers 3.0701%; without barriers 2.3204%.
+Barrier removal gain original copy 3.9580%; equal copy 3.2152%.
+Interaction (T00-T10)-(T01-T11):0.008621698 unlocked ms; 0.8415% of native. Positive means part of copy-removal benefit overlaps barrier-removal benefit.

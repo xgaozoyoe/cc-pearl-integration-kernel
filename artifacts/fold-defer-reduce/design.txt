@@ -1,0 +1,45 @@
+Cross-K delayed reduction, not whole-fold deferral.
+
+Historical crossloop experiment delayed reading C itself until next K. Historical
+handoff experiment moved whole fold after next copy. This experiment instead
+reads all C elements at their correct boundary and saves only local XOR for N
+last-row tiles. No full accumulator snapshot, no altered MMA arithmetic.
+
+Each warp holds N local partials per lane (N registers/thread before compiler
+allocation), not N values total across the warp.
+At boundary k=1,3,...63, localXOR of row3/groups(4-N)..3 is saved; other tiles fold
+normally. At next k=2,4,...62, deferred REDUX and transcript update consume saved
+partials. New MMA can safely overwrite C because its old values have been read.
+Final k=63 pending results drain after loop, before original CTA output barrier.
+rb at drain is k/2-1; final drain rb31. First16folds store, next16rotate13+xor.
+
+native: unchanged current best8+4+fold-preamble compact cubin.
+source8: source recompile, same unsigned index and8+4 handoff, no delayed result.
+defer2_copy: REDUX/store of2tiles after next iteration copy commit, beforeLDSM.
+defer2_mma: REDUX/store of2tiles after first two rows' second IMMA in next K.
+defer4_mma: REDUX/store of4tiles after first four rows' second IMMA in next K.
+defer1_mma: narrow follow-up, one tile after first row's second IMMA.
+
+SASS confirms:
+- Every source variant has64staticIMMA and16LDSM.
+- defer2_copy: LDGDEPBAR0xef0 then prior-result REDUX0x1010, before firstLDSM0x1350.
+- defer2_mma: firstIMMA0x1210/0x1230, prior-result REDUX0x12a0.
+- defer4_mma: firstIMMA0x1230/0x1250, prior-result REDUX0x12c0.
+- Prior local XOR carried in registers across backedge; see sass-audit.txt.
+This proves instruction interleaving, not measured cycle-level simultaneous issue.
+
+Material confound: source recompilation sinks BAR.ARV to end of MMA, unlike native's
+16remainingIMMA. source8 has same publication limitation and gives an additional
+comparison. These are implementable prototypes, not fixed-SASS single-factor ablations.
+
+PTXAS:
+source8/defer2_copy:168registers,0stack,0spill.
+defer2_mma:168registers,24Bstack,32Bspillstores/32Bspillloads.
+defer4_mma:168registers,40Bstack,52Bspillstores/52Bspillloads.
+defer1_mma:168registers,48Bstack,56Bspillstores/60Bspillloads.
+Those spill bytes are compiler static statistics, not measured grid traffic.
+All use384threads,69632B shared,1CTA/SM.
+Extra pending guard, boundary/address calculation and control flow remain real costs.
+No claim that spill alone explains performance, or all cross-K schemes are invalid.
+
+Only GPU0 offline; no Nsight; no proof/seed/target production changes; no deployment.

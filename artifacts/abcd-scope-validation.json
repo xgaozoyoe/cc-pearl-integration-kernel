@@ -1,0 +1,242 @@
+[
+  {
+    "variant": "A",
+    "m": 256,
+    "n": 48,
+    "seed": 42,
+    "transcript_pass": true,
+    "prepared_values_pass": false
+  },
+  {
+    "variant": "B",
+    "m": 256,
+    "n": 48,
+    "seed": 42,
+    "transcript_pass": true,
+    "prepared_values_pass": false
+  },
+  {
+    "variant": "B_matched",
+    "m": 256,
+    "n": 48,
+    "seed": 42,
+    "transcript_pass": true,
+    "prepared_values_pass": true
+  },
+  {
+    "variant": "C_replay",
+    "m": 256,
+    "n": 48,
+    "seed": 42,
+    "transcript_pass": true,
+    "prepared_values_pass": true
+  },
+  {
+    "variant": "D_reduced",
+    "m": 256,
+    "n": 48,
+    "seed": 42,
+    "transcript_pass": true,
+    "prepared_values_pass": true
+  },
+  {
+    "variant": "A",
+    "m": 256,
+    "n": 48,
+    "seed": 1234,
+    "transcript_pass": true,
+    "prepared_values_pass": false
+  },
+  {
+    "variant": "B",
+    "m": 256,
+    "n": 48,
+    "seed": 1234,
+    "transcript_pass": true,
+    "prepared_values_pass": false
+  },
+  {
+    "variant": "B_matched",
+    "m": 256,
+    "n": 48,
+    "seed": 1234,
+    "transcript_pass": true,
+    "prepared_values_pass": true
+  },
+  {
+    "variant": "C_replay",
+    "m": 256,
+    "n": 48,
+    "seed": 1234,
+    "transcript_pass": true,
+    "prepared_values_pass": true
+  },
+  {
+    "variant": "D_reduced",
+    "m": 256,
+    "n": 48,
+    "seed": 1234,
+    "transcript_pass": true,
+    "prepared_values_pass": true
+  },
+  {
+    "variant": "A",
+    "m": 256,
+    "n": 384,
+    "seed": 42,
+    "transcript_pass": true,
+    "prepared_values_pass": false
+  },
+  {
+    "variant": "B",
+    "m": 256,
+    "n": 384,
+    "seed": 42,
+    "transcript_pass": true,
+    "prepared_values_pass": false
+  },
+  {
+    "variant": "B_matched",
+    "m": 256,
+    "n": 384,
+    "seed": 42,
+    "transcript_pass": true,
+    "prepared_values_pass": true
+  },
+  {
+    "variant": "C_replay",
+    "m": 256,
+    "n": 384,
+    "seed": 42,
+    "transcript_pass": true,
+    "prepared_values_pass": true
+  },
+  {
+    "variant": "D_reduced",
+    "m": 256,
+    "n": 384,
+    "seed": 42,
+    "transcript_pass": true,
+    "prepared_values_pass": true
+  },
+  {
+    "variant": "A",
+    "m": 256,
+    "n": 384,
+    "seed": 1234,
+    "transcript_pass": true,
+    "prepared_values_pass": false
+  },
+  {
+    "variant": "B",
+    "m": 256,
+    "n": 384,
+    "seed": 1234,
+    "transcript_pass": true,
+    "prepared_values_pass": false
+  },
+  {
+    "variant": "B_matched",
+    "m": 256,
+    "n": 384,
+    "seed": 1234,
+    "transcript_pass": true,
+    "prepared_values_pass": true
+  },
+  {
+    "variant": "C_replay",
+    "m": 256,
+    "n": 384,
+    "seed": 1234,
+    "transcript_pass": true,
+    "prepared_values_pass": true
+  },
+  {
+    "variant": "D_reduced",
+    "m": 256,
+    "n": 384,
+    "seed": 1234,
+    "transcript_pass": true,
+    "prepared_values_pass": true
+  },
+  {
+    "variant": "A",
+    "m": 256,
+    "n": 400,
+    "seed": 42,
+    "transcript_pass": true,
+    "prepared_values_pass": false
+  },
+  {
+    "variant": "B",
+    "m": 256,
+    "n": 400,
+    "seed": 42,
+    "transcript_pass": true,
+    "prepared_values_pass": false
+  },
+  {
+    "variant": "B_matched",
+    "m": 256,
+    "n": 400,
+    "seed": 42,
+    "transcript_pass": true,
+    "prepared_values_pass": true
+  },
+  {
+    "variant": "C_replay",
+    "m": 256,
+    "n": 400,
+    "seed": 42,
+    "transcript_pass": true,
+    "prepared_values_pass": true
+  },
+  {
+    "variant": "D_reduced",
+    "m": 256,
+    "n": 400,
+    "seed": 42,
+    "transcript_pass": true,
+    "prepared_values_pass": true
+  },
+  {
+    "variant": "A",
+    "m": 256,
+    "n": 400,
+    "seed": 1234,
+    "transcript_pass": true,
+    "prepared_values_pass": false
+  },
+  {
+    "variant": "B",
+    "m": 256,
+    "n": 400,
+    "seed": 1234,
+    "transcript_pass": true,
+    "prepared_values_pass": false
+  },
+  {
+    "variant": "B_matched",
+    "m": 256,
+    "n": 400,
+    "seed": 1234,
+    "transcript_pass": true,
+    "prepared_values_pass": true
+  },
+  {
+    "variant": "C_replay",
+    "m": 256,
+    "n": 400,
+    "seed": 1234,
+    "transcript_pass": true,
+    "prepared_values_pass": true
+  },
+  {
+    "variant": "D_reduced",
+    "m": 256,
+    "n": 400,
+    "seed": 1234,
+    "transcript_pass": true,
+    "prepared_values_pass": true
+  }
+]

@@ -1,0 +1,21 @@
+Follow-up on validated copywalk-fulla R128 kernel, GPU0 only,2026-10-08.
+
+No additional large gain this round. Keep packaged copywalk-fulla candidate as the profiling/reference candidate. Production and live workers unchanged.
+
+Experiments:
+1. Defer future-stage B copies until16IMMA:24-byte stack,20-byte spill stores/36loads. Rejected before GPU benchmarks.
+2. Defer future-stage B copies until32IMMA:167registers,zero spills,69632shared,1CTA/SM. Both A and B complete before commit_group; wait_group0 and CTA barrier on next stage unchanged. Full transcript/digest16comparisons PASS. Two runs x40stable full grids:baseline312.215ms,225.3855TH/s;candidate310.09125ms,226.9292TH/s,+0.6849%. Both orders positive, but clocks unlocked; small gain remains experimental.
+3. Unroll2 adjacent K64 iterations with simplified copies:128-byte stack,132spill stores/152loads. Rejected before GPU benchmarks.
+4. Specialize B first round when N%192==0 or>=96:168registers,zero spills. First96B rows are then always valid, so first copy predicate can be removed; second remains bounded. Other N remainders use current baseline.24transcript/digestcomparisons including remainders48,80,96,0,16,128 PASS. Two runs x40grids:314.25875->314.75875ms,223.9198->223.5641TH/s,-0.1589%; rejected.
+
+SASS verification: interleaved variant future A LDGSTS precedes MMA; future B LDGSTS at0x1650/0x1670 and LDGDEPBAR0x1680 follow exactly32IMMA. Baseline all future copies/commit precede firstIMMA. This is an actual machine-schedule change, not just source rearrangement. Still same64IMMA/16LDSM perK64, matrix dimensions, operand reuse and transcript.
+Small-shape memcheck/racecheck logs stored as rank128-copycadence4-{memcheck,racecheck}.log. Experimental library artifacts/libpearl-rank128-copycadence4-experimental.so has benchmark ABI only, no mining rank_pow entrypoint; restricted to M divisible by256. Not promoted or used for live shares.
+
+Reported TH/s values are matched offline complete-grid R128 rates including production setup/noise/V3/transcript/PoW, target0(no hits/proofs/network). Different sessions run at different temperatures/clocks;226.9 is not a claimed universal speed or a6.8%gain over an unrelated historical221result. The matched incremental improvement is0.685%.
+
+Next needed evidence: PC-sampled stalls for original accepted R128 vs validated copywalk-fulla (~224TH/s) kernel. Global Tensor Active alone does not say whether remaining gaps are wait/barrier, LDSM scoreboard, or IMMA throttle/dependencies.
+Prepared script: sudo bash tools/profile_copyfinal_stalls.sh
+Uses GPU0 only, aborts if GPU0 has an existing compute process, skips32warmups then samples3kernels/variant; NsightCompute application replay,SourceCounters/SchedulerStats/WarpStateStats, memory/tensor metrics and SASS-PC export. This host's hardware-counter permissions require sudo. Source files and libraries already built. Script syntax checked; new counter capture not executed in this turn. Does not restart/touch GPU1/GPU2 miners.
+Captures have their own per-active-cycle metrics; do not numerically equate NsightCompute IMMA-active% with prior NsightSystems elapsed Tensor Active%.
+Output pointer: /tmp/pearl-copyfinal-stalls-last.txt
+Review diff: artifacts/rank128-cadence-follow.patch

@@ -1,0 +1,20 @@
+--- volatile-control.cu
++++ nonvolatile-control.cu
+@@ -490,7 +490,7 @@
+                 for(int group=0;group<Groups;++group) {
+                     unsigned x;
+                     // Four serial logical ops; same asm boundary and eight input constraints.
+-                    asm volatile("{ .reg .b32 p,q,r; "
++                    asm("{ .reg .b32 p,q,r; "
+                         "lop3.b32 p,%1,%2,%3,0x96; "
+                         "lop3.b32 q,p,%4,%5,0x96; "
+                         "lop3.b32 r,q,%6,%7,0x96; "
+@@ -764,7 +764,7 @@
+                 for(int group=0;group<Groups;++group) {
+                     unsigned x;
+                     // Four logical ops, but two dependency levels:3+3+2 ->3.
+-                    asm volatile("{ .reg .b32 p,q,r; "
++                    asm("{ .reg .b32 p,q,r; "
+                         "lop3.b32 p,%1,%2,%3,0x96; "
+                         "lop3.b32 q,%4,%5,%6,0x96; "
+                         "xor.b32 r,%7,%8; "

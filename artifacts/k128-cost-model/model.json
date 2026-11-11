@@ -1,0 +1,102 @@
+{
+  "device": {
+    "sm_major": 8,
+    "sm_minor": 9,
+    "shared_per_sm": 102400,
+    "regs_per_sm": 65536,
+    "shared_optin_per_cta": 101376
+  },
+  "models": [
+    {
+      "M": 256,
+      "N": 192,
+      "K": 64,
+      "stages": 2,
+      "operand_bytes": 57344,
+      "transcript_bytes": 12288,
+      "shared_bytes": 69632,
+      "fits": true,
+      "K_iterations": 64,
+      "ideal_operand_bytes_per_MAC": 0.009114583333333334,
+      "extra_operand_traffic_vs_baseline": 0.0
+    },
+    {
+      "M": 256,
+      "N": 192,
+      "K": 128,
+      "stages": 2,
+      "operand_bytes": 114688,
+      "transcript_bytes": 12288,
+      "shared_bytes": 126976,
+      "fits": false,
+      "K_iterations": 32,
+      "ideal_operand_bytes_per_MAC": 0.009114583333333334,
+      "extra_operand_traffic_vs_baseline": 0.0
+    },
+    {
+      "M": 256,
+      "N": 192,
+      "K": 128,
+      "stages": 1,
+      "operand_bytes": 57344,
+      "transcript_bytes": 12288,
+      "shared_bytes": 69632,
+      "fits": true,
+      "K_iterations": 32,
+      "ideal_operand_bytes_per_MAC": 0.009114583333333334,
+      "extra_operand_traffic_vs_baseline": 0.0
+    },
+    {
+      "M": 256,
+      "N": 192,
+      "K": 64,
+      "stages": 3,
+      "operand_bytes": 86016,
+      "transcript_bytes": 12288,
+      "shared_bytes": 98304,
+      "fits": true,
+      "K_iterations": 64,
+      "ideal_operand_bytes_per_MAC": 0.009114583333333334,
+      "extra_operand_traffic_vs_baseline": 0.0
+    },
+    {
+      "M": 192,
+      "N": 192,
+      "K": 128,
+      "stages": 2,
+      "operand_bytes": 98304,
+      "transcript_bytes": 9216,
+      "shared_bytes": 107520,
+      "fits": false,
+      "K_iterations": 32,
+      "ideal_operand_bytes_per_MAC": 0.010416666666666666,
+      "extra_operand_traffic_vs_baseline": 0.1428571428571428
+    },
+    {
+      "M": 256,
+      "N": 128,
+      "K": 128,
+      "stages": 2,
+      "operand_bytes": 98304,
+      "transcript_bytes": 8192,
+      "shared_bytes": 106496,
+      "fits": false,
+      "K_iterations": 32,
+      "ideal_operand_bytes_per_MAC": 0.01171875,
+      "extra_operand_traffic_vs_baseline": 0.2857142857142856
+    },
+    {
+      "M": 192,
+      "N": 128,
+      "K": 128,
+      "stages": 2,
+      "operand_bytes": 81920,
+      "transcript_bytes": 6144,
+      "shared_bytes": 88064,
+      "fits": true,
+      "K_iterations": 32,
+      "ideal_operand_bytes_per_MAC": 0.013020833333333334,
+      "extra_operand_traffic_vs_baseline": 0.4285714285714286
+    }
+  ]
+}

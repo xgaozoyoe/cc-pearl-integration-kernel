@@ -1,0 +1,476 @@
+{
+  "window_ns": [
+    10000000000,
+    30000000000
+  ],
+  "captures": {
+    "baseline": [
+      {
+        "physical_gpu": 1,
+        "nsight_device": 3,
+        "pci": "0000:22:00.0",
+        "uuid": "e2bcf3ea-ca6c-49ce-c8ff-220481820348",
+        "metrics": [
+          {
+            "name": "Sync Copy Engine Active [Throughput %]",
+            "samples": 20000,
+            "mean": 0,
+            "median": 0.0
+          },
+          {
+            "name": "Async Copy Engine Active 0 [Throughput %]",
+            "samples": 20000,
+            "mean": 0,
+            "median": 0.0
+          },
+          {
+            "name": "Async Copy Engine Active 1 [Throughput %]",
+            "samples": 20000,
+            "mean": 0,
+            "median": 0.0
+          },
+          {
+            "name": "Async Copy Engine Active 2 [Throughput %]",
+            "samples": 20000,
+            "mean": 0,
+            "median": 0.0
+          },
+          {
+            "name": "GR Active [Throughput %]",
+            "samples": 20000,
+            "mean": 99.76585,
+            "median": 100.0
+          },
+          {
+            "name": "Sync Compute in Flight [Throughput %]",
+            "samples": 20000,
+            "mean": 0,
+            "median": 0.0
+          },
+          {
+            "name": "Async Compute in Flight [Throughput %]",
+            "samples": 20000,
+            "mean": 99.7555,
+            "median": 100.0
+          },
+          {
+            "name": "SMs Active [Throughput %]",
+            "samples": 20000,
+            "mean": 99.6103,
+            "median": 100.0
+          },
+          {
+            "name": "SM Issue [Throughput %]",
+            "samples": 20000,
+            "mean": 12.9675,
+            "median": 13.0
+          },
+          {
+            "name": "Tensor Active [Throughput %]",
+            "samples": 20000,
+            "mean": 97.32185,
+            "median": 98.0
+          },
+          {
+            "name": "Vertex/Tess/Geometry Warps in Flight [Throughput %]",
+            "samples": 20000,
+            "mean": 0,
+            "median": 0.0
+          },
+          {
+            "name": "Pixel Warps in Flight [Throughput %]",
+            "samples": 20000,
+            "mean": 0,
+            "median": 0.0
+          },
+          {
+            "name": "Compute Warps in Flight [Throughput %]",
+            "samples": 20000,
+            "mean": 17.04815,
+            "median": 17.0
+          },
+          {
+            "name": "Unallocated Warps in Active SMs [Throughput %]",
+            "samples": 20000,
+            "mean": 82.56105,
+            "median": 83.0
+          },
+          {
+            "name": "DRAM Read Bandwidth [Throughput %]",
+            "samples": 20000,
+            "mean": 7.16195,
+            "median": 4.0
+          },
+          {
+            "name": "DRAM Write Bandwidth [Throughput %]",
+            "samples": 20000,
+            "mean": 0.65815,
+            "median": 1.0
+          },
+          {
+            "name": "PCIe RX Throughput [Throughput %]",
+            "samples": 20000,
+            "mean": 0.9027,
+            "median": 1.0
+          },
+          {
+            "name": "PCIe TX Throughput [Throughput %]",
+            "samples": 20000,
+            "mean": 1,
+            "median": 1.0
+          }
+        ]
+      },
+      {
+        "physical_gpu": 0,
+        "nsight_device": 2,
+        "pci": "0000:21:00.0",
+        "uuid": "bc4647cc-3c0d-7e2c-f040-5708ef283454",
+        "metrics": [
+          {
+            "name": "Sync Copy Engine Active [Throughput %]",
+            "samples": 20000,
+            "mean": 0,
+            "median": 0.0
+          },
+          {
+            "name": "Async Copy Engine Active 0 [Throughput %]",
+            "samples": 20000,
+            "mean": 0,
+            "median": 0.0
+          },
+          {
+            "name": "Async Copy Engine Active 1 [Throughput %]",
+            "samples": 20000,
+            "mean": 0.0119,
+            "median": 0.0
+          },
+          {
+            "name": "Async Copy Engine Active 2 [Throughput %]",
+            "samples": 20000,
+            "mean": 0,
+            "median": 0.0
+          },
+          {
+            "name": "GR Active [Throughput %]",
+            "samples": 20000,
+            "mean": 99.16365,
+            "median": 100.0
+          },
+          {
+            "name": "Sync Compute in Flight [Throughput %]",
+            "samples": 20000,
+            "mean": 0,
+            "median": 0.0
+          },
+          {
+            "name": "Async Compute in Flight [Throughput %]",
+            "samples": 20000,
+            "mean": 99.0084,
+            "median": 100.0
+          },
+          {
+            "name": "SMs Active [Throughput %]",
+            "samples": 20000,
+            "mean": 96.36265,
+            "median": 97.0
+          },
+          {
+            "name": "SM Issue [Throughput %]",
+            "samples": 20000,
+            "mean": 22.74765,
+            "median": 24.0
+          },
+          {
+            "name": "Tensor Active [Throughput %]",
+            "samples": 20000,
+            "mean": 64.14705,
+            "median": 69.0
+          },
+          {
+            "name": "Vertex/Tess/Geometry Warps in Flight [Throughput %]",
+            "samples": 20000,
+            "mean": 0,
+            "median": 0.0
+          },
+          {
+            "name": "Pixel Warps in Flight [Throughput %]",
+            "samples": 20000,
+            "mean": 0,
+            "median": 0.0
+          },
+          {
+            "name": "Compute Warps in Flight [Throughput %]",
+            "samples": 20000,
+            "mean": 26.40505,
+            "median": 25.0
+          },
+          {
+            "name": "Unallocated Warps in Active SMs [Throughput %]",
+            "samples": 20000,
+            "mean": 69.95755,
+            "median": 72.0
+          },
+          {
+            "name": "DRAM Read Bandwidth [Throughput %]",
+            "samples": 20000,
+            "mean": 3.6886,
+            "median": 3.0
+          },
+          {
+            "name": "DRAM Write Bandwidth [Throughput %]",
+            "samples": 20000,
+            "mean": 1.7448,
+            "median": 1.0
+          },
+          {
+            "name": "PCIe RX Throughput [Throughput %]",
+            "samples": 20000,
+            "mean": 0.9431,
+            "median": 1.0
+          },
+          {
+            "name": "PCIe TX Throughput [Throughput %]",
+            "samples": 20000,
+            "mean": 1,
+            "median": 1.0
+          }
+        ]
+      }
+    ],
+    "candidate": [
+      {
+        "physical_gpu": 1,
+        "nsight_device": 3,
+        "pci": "0000:22:00.0",
+        "uuid": "e2bcf3ea-ca6c-49ce-c8ff-220481820348",
+        "metrics": [
+          {
+            "name": "Sync Copy Engine Active [Throughput %]",
+            "samples": 20000,
+            "mean": 0,
+            "median": 0.0
+          },
+          {
+            "name": "Async Copy Engine Active 0 [Throughput %]",
+            "samples": 20000,
+            "mean": 0,
+            "median": 0.0
+          },
+          {
+            "name": "Async Copy Engine Active 1 [Throughput %]",
+            "samples": 20000,
+            "mean": 0,
+            "median": 0.0
+          },
+          {
+            "name": "Async Copy Engine Active 2 [Throughput %]",
+            "samples": 20000,
+            "mean": 0,
+            "median": 0.0
+          },
+          {
+            "name": "GR Active [Throughput %]",
+            "samples": 20000,
+            "mean": 99.73645,
+            "median": 100.0
+          },
+          {
+            "name": "Sync Compute in Flight [Throughput %]",
+            "samples": 20000,
+            "mean": 0,
+            "median": 0.0
+          },
+          {
+            "name": "Async Compute in Flight [Throughput %]",
+            "samples": 20000,
+            "mean": 99.7259,
+            "median": 100.0
+          },
+          {
+            "name": "SMs Active [Throughput %]",
+            "samples": 20000,
+            "mean": 99.59345,
+            "median": 100.0
+          },
+          {
+            "name": "SM Issue [Throughput %]",
+            "samples": 20000,
+            "mean": 12.97305,
+            "median": 13.0
+          },
+          {
+            "name": "Tensor Active [Throughput %]",
+            "samples": 20000,
+            "mean": 97.4674,
+            "median": 98.0
+          },
+          {
+            "name": "Vertex/Tess/Geometry Warps in Flight [Throughput %]",
+            "samples": 20000,
+            "mean": 0,
+            "median": 0.0
+          },
+          {
+            "name": "Pixel Warps in Flight [Throughput %]",
+            "samples": 20000,
+            "mean": 0,
+            "median": 0.0
+          },
+          {
+            "name": "Compute Warps in Flight [Throughput %]",
+            "samples": 20000,
+            "mean": 16.9619,
+            "median": 17.0
+          },
+          {
+            "name": "Unallocated Warps in Active SMs [Throughput %]",
+            "samples": 20000,
+            "mean": 82.6321,
+            "median": 83.0
+          },
+          {
+            "name": "DRAM Read Bandwidth [Throughput %]",
+            "samples": 20000,
+            "mean": 7.2665,
+            "median": 4.0
+          },
+          {
+            "name": "DRAM Write Bandwidth [Throughput %]",
+            "samples": 20000,
+            "mean": 0.6461,
+            "median": 1.0
+          },
+          {
+            "name": "PCIe RX Throughput [Throughput %]",
+            "samples": 20000,
+            "mean": 0.89875,
+            "median": 1.0
+          },
+          {
+            "name": "PCIe TX Throughput [Throughput %]",
+            "samples": 20000,
+            "mean": 1,
+            "median": 1.0
+          }
+        ]
+      },
+      {
+        "physical_gpu": 0,
+        "nsight_device": 2,
+        "pci": "0000:21:00.0",
+        "uuid": "bc4647cc-3c0d-7e2c-f040-5708ef283454",
+        "metrics": [
+          {
+            "name": "Sync Copy Engine Active [Throughput %]",
+            "samples": 20000,
+            "mean": 0,
+            "median": 0.0
+          },
+          {
+            "name": "Async Copy Engine Active 0 [Throughput %]",
+            "samples": 20000,
+            "mean": 0,
+            "median": 0.0
+          },
+          {
+            "name": "Async Copy Engine Active 1 [Throughput %]",
+            "samples": 20000,
+            "mean": 0.01265,
+            "median": 0.0
+          },
+          {
+            "name": "Async Copy Engine Active 2 [Throughput %]",
+            "samples": 20000,
+            "mean": 0,
+            "median": 0.0
+          },
+          {
+            "name": "GR Active [Throughput %]",
+            "samples": 20000,
+            "mean": 99.09515,
+            "median": 100.0
+          },
+          {
+            "name": "Sync Compute in Flight [Throughput %]",
+            "samples": 20000,
+            "mean": 0,
+            "median": 0.0
+          },
+          {
+            "name": "Async Compute in Flight [Throughput %]",
+            "samples": 20000,
+            "mean": 98.9944,
+            "median": 100.0
+          },
+          {
+            "name": "SMs Active [Throughput %]",
+            "samples": 20000,
+            "mean": 96.25485,
+            "median": 97.0
+          },
+          {
+            "name": "SM Issue [Throughput %]",
+            "samples": 20000,
+            "mean": 19.8543,
+            "median": 21.0
+          },
+          {
+            "name": "Tensor Active [Throughput %]",
+            "samples": 20000,
+            "mean": 68.29695,
+            "median": 74.0
+          },
+          {
+            "name": "Vertex/Tess/Geometry Warps in Flight [Throughput %]",
+            "samples": 20000,
+            "mean": 0,
+            "median": 0.0
+          },
+          {
+            "name": "Pixel Warps in Flight [Throughput %]",
+            "samples": 20000,
+            "mean": 0,
+            "median": 0.0
+          },
+          {
+            "name": "Compute Warps in Flight [Throughput %]",
+            "samples": 20000,
+            "mean": 26.56705,
+            "median": 25.0
+          },
+          {
+            "name": "Unallocated Warps in Active SMs [Throughput %]",
+            "samples": 20000,
+            "mean": 69.715,
+            "median": 72.0
+          },
+          {
+            "name": "DRAM Read Bandwidth [Throughput %]",
+            "samples": 20000,
+            "mean": 3.7671,
+            "median": 3.0
+          },
+          {
+            "name": "DRAM Write Bandwidth [Throughput %]",
+            "samples": 20000,
+            "mean": 1.81575,
+            "median": 1.0
+          },
+          {
+            "name": "PCIe RX Throughput [Throughput %]",
+            "samples": 20000,
+            "mean": 0.9469,
+            "median": 1.0
+          },
+          {
+            "name": "PCIe TX Throughput [Throughput %]",
+            "samples": 20000,
+            "mean": 1,
+            "median": 1.0
+          }
+        ]
+      }
+    ]
+  }
+}

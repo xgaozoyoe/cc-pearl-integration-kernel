@@ -1,0 +1,31 @@
+GPU0-only region-reuse experiment; no mining backend replacement.
+8192x8192 region,K4096,rank128,CTA256x192,384threads,K64,2stages.
+Two independent runs,40CUDA-event samples/variant/run,16launches/sample;3second warmup plus100launch warmups per block. Unlocked clocks;end-of-block telemetry in logs.
+NOT full-grid wall time or pool hashrate. No hardware-counter measurements.
+
+Protocol:2whole-stage ready mbarriers(count384),14free mbarriers(7regions x2slots). A4regions eachcount96;B3regions eachcount128. Every warp publishes its A/B region read completion via2arrivals. Per-copy free waits use old-stage parity((copiedK-2)/2)&1;ready wait remains before MMA.
+early_wait and deferred use the same logical regions/arrival counts/wait calls:early waits for all4or5destination regions before copying;deferred interleaves each wait with its corresponding copy. Compiler schedules differ, so not an instruction-identical latency test.
+Phase reuse is bounded by whole-stage ready rendezvous:all384threads must publish intervening-stage copies before all readers can progress through another reuse of the same slot. No unrestricted producer lap is allowed.
+
+Run variant mean_ms median_ms p95_ms
+1 native 1.033896 1.041569 1.048896
+1 source_control 1.065425 1.062274 1.084188
+1 region_early_wait 1.204029 1.195744 1.238191
+1 region_deferred 1.221863 1.219646 1.244179
+2 native 1.036430 1.045312 1.049036
+2 source_control 1.071968 1.062470 1.100803
+2 region_early_wait 1.208018 1.207293 1.231190
+2 region_deferred 1.212414 1.207454 1.244336
+
+Combined80samples pervariant:variant mean_ms median_ms p95_ms change_vs_native
+native 1.035163 1.041632 1.048896 +0.000%
+source_control 1.068696 1.062332 1.100675 +3.239%
+region_early_wait 1.206024 1.202336 1.233402 +16.506%
+region_deferred 1.217139 1.208411 1.244336 +17.579%
+
+Resources: native/source168registers;early167;deferred168;all0local/spills,1CTA/SM,12warps/CTA. Shared69632Bnative/source,69760Bregionvariants.
+Correctness: initial48transcript comparisons PASS (4variants x4shapes x3seeds), including N boundary400/800;racecheck24experimental comparisons PASS,0hazards/errors/warnings. Benchmark8192region also bit-exact checked in bothruns. No new PoW/live validation, since no promotion.
+SASS: region_deferred0x0f30..0x0f80 illustrates LDS/YIELD/LOP3/NOP/backbranch/BSYNC polling;ATOMS.ARRIVE at0x2290 and0x2300,each preceded byMEMBAR.ALL.CTA. Main64IMMA and16LDSM preserved. Static instruction changes are not dynamic stall attribution.
+Both source prototypes publish region-free signals after all64staticIMMA;native publishes after48. Therefore this experiment does not isolate the ideal performance of fine-grained reuse under native scheduling.
+Conclusion:tested implementation regresses;no production replacement,no full-grid benchmark needed for this clearly slower candidate. It does not prove every region protocol unprofitable. Polling/address/control overhead and changed scheduling remain confounds;do not blame registers/occupancy,which did not deteriorate.
+Files:tools/build_region_free.py;tests/bench_region_free.py;region_deferred.diff;region_early_wait.diff. No commits or destructive edits.

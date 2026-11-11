@@ -1,0 +1,20 @@
+Verified latest capture /tmp/pearl-copywalk-tensor.sllt6o, 2026-10-08.
+PCI mapping confirms physicalGPU0 Open-Pearl andphysicalGPU1 PeakMiner. Captured library hashes match original accepted R128 and packaged copywalk-fulla candidate. Common10..30s metrics window,20000samples perdevice/capture. Nsight Systems elapsed-cycle Tensor Active, not Nsight Compute active-cycle IMMA metric.
+
+                             Old GPU0    New GPU0    PeakGPU1(old/new capture)
+TensorActive mean            64.14705    68.29695    97.32185 /97.46740
+TensorActive median          69          74          98 /98
+TensorActive whenSM>=95%      66.01800    70.32905    97.96574 /97.99047
+SMsActive mean               96.363      96.255      99.610 /99.593
+SMIssue mean                 22.748      19.854      12.967 /12.973
+DRAMread throughput            3.689       3.767       7.162 /7.266
+DRAMwrite throughput           1.745       1.816       0.658 /0.646
+
+TensorActive improvement +4.14990 percentage points,+6.47% relative. Conditional active-SM improvement+4.31points supports improvement during busy execution, beyond reducing host idle time. SM issue decreases12.72% relatively while TensorActive increases, consistent with fewer address/control issue cycles. This does not isolate barrier/LDSM/address latency or establish dynamic MMA counts from counters alone.
+
+Profile log indices20:80 (60grids,not exactly aligned to10..30s metric window):old336.235ms/209.284TH/s,new318.090ms/221.223TH/s,+5.70% rate. Profile/startup/teardown conditions differ from prior unprofiled80grid direct comparison333.25625->314.46250ms,211.155->223.775TH/s,+5.9765%. Do not present either as the other's timing measurement.
+
+Peak tensor activity stable near97.4%; our candidate still~29.2points lower. Hardware activity does not imply equal instruction shapes/useful work or guarantee a remaining42.7% realizable speedup. Tensor duty cycle improvement is now measured, but root attribution of remaining stalls requires PC-level profiling of new kernel.
+
+Clocks not locked. Endpoint GPU0 old2505MHz81C,new2550MHz84C,450W-class load. Starting old captureGPU0 idle/cold; fixed10s warmup crop helps but does not prove equal operating conditions. Endpoint samples are not continuous in-window clock traces. PeakGPU1 remained2445MHz. Avoid claiming clock-normalized results.
+No production/live miner changed; no additional GPU benchmarks launched during this analysis. Nsight reports and small metadata copied here; original SQLite retained in capture directory.

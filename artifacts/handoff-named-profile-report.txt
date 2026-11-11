@@ -1,0 +1,65 @@
+Capture:/tmp/pearl-handoff-named.hMMYUd
+All input hashes match current experiment;3 launches/variant;67,633,152 executed IMMA each.
+
+variant kernel_ms Tensor% IMMA/SMcycle barrier% shortSB% longSB% math% L2B/usefulMMA
+baseline  1.035733 78.747 0.191619729 12.790 7.330 2.890 45.387 37.758563
+late      1.088235 74.180 0.180618338 14.140 6.913 3.400 43.537 37.759001
+overlap   1.040085 78.620 0.191306359 8.950 7.280 2.947 49.060 37.759345
+
+Overlap IMMA/cycle vs baseline:-0.1635%; vs late:+5.9175%.
+Overlap kernel time vs baseline:+0.4202%.
+Effective SM GHz baseline/late/overlap:2.662331/2.688223/2.655534.
+Dynamic instructions baseline/late/overlap:298571136/319607424/318550656.
+Overlap instructions vs baseline:+6.6917% (old spin capture was+28%).
+
+Dynamic opcode deltas, overlap minus baseline (warp instruction executions/kernel):
+LOP3.LUT                  +7314816
+IMAD.SHL.U32              +3120768
+ULOP3.LUT                 +2113536
+IADD3                     +2097024
+BRA                       +1056768
+ISETP.NE.AND              +1056768
+USHF.L.U32                +1056768
+SHF.R.U32.HI              +1056768
+BAR.ARV                   +1056768
+BAR.SYNC.DEFER_BLOCKING   +16512
+DEPBAR.LE                 +16512
+IMAD.WIDE.U32             +16512
+
+Region boundaries are first/last IMMA and main loop backedge; compiler motion can move work across them:
+prologue        3005184 -> 2873088
+header/copy     92269056 -> 101812992
+MMA/operand     112017408 -> 117301248
+fold/tail       86374272 -> 91658112
+output          4905216 -> 4905216
+
+PC attribution:
+baseline: math samples on IMMA=98.385%
+stall_barrier: [{'pc': '0xd90', 'instruction': '@P2   BRA 0x7940bd268260', 'samples': 126520.0}, {'pc': '0x29f0', 'instruction': '@P0   EXIT', 'samples': 2187.0}]
+stall_short_sb: [{'pc': '0x1500', 'instruction': 'IMMA.16832.S8.S8 R120, R144.ROW, R148.COL, R120', 'samples': 14673.0}, {'pc': '0x11a0', 'instruction': 'IMMA.16832.S8.S8 R112, R144.ROW, R148.COL, R112', 'samples': 11844.0}]
+stall_long_sb: [{'pc': '0xfd0', 'instruction': '@!P2  IADD3 R137, R137, 0x1800, RZ', 'samples': 13500.0}, {'pc': '0xf50', 'instruction': 'IMAD R98, R157, 0x1000, R143', 'samples': 9931.0}]
+stall_math: [{'pc': '0x1210', 'instruction': 'IMMA.16832.S8.S8 R64, R140.ROW, R150.COL, R64', 'samples': 82635.0}, {'pc': '0x1500', 'instruction': 'IMMA.16832.S8.S8 R120, R144.ROW, R148.COL, R120', 'samples': 76310.0}]
+late: math samples on IMMA=96.452%
+stall_barrier: [{'pc': '0x2a90', 'instruction': '@!P2  CALL.REL.NOINC 0x7d72c72618b0', 'samples': 150418.0}, {'pc': '0xd80', 'instruction': '@P3   BRA 0x7d72c725fe50', 'samples': 631.0}]
+stall_short_sb: [{'pc': '0x1530', 'instruction': 'IMMA.16832.S8.S8 R4, R148.ROW, R116.COL, R4', 'samples': 15691.0}, {'pc': '0x11b0', 'instruction': 'IMMA.16832.S8.S8 R64, R144.ROW, R148.COL, R64', 'samples': 10689.0}]
+stall_long_sb: [{'pc': '0xfc0', 'instruction': '@!P2  IADD3 R145, R145, 0x1800, RZ', 'samples': 14301.0}, {'pc': '0xf40', 'instruction': 'IMAD R104, R3, 0x1000, R116', 'samples': 10320.0}]
+stall_math: [{'pc': '0x1530', 'instruction': 'IMMA.16832.S8.S8 R4, R148.ROW, R116.COL, R4', 'samples': 94756.0}, {'pc': '0x1220', 'instruction': 'IMMA.16832.S8.S8 R36, R116.ROW, R150.COL, R36', 'samples': 81385.0}]
+overlap: math samples on IMMA=97.490%
+stall_barrier: [{'pc': '0x2a80', 'instruction': '@!P2  CALL.REL.NOINC 0x734a6f25d7a0', 'samples': 89121.0}, {'pc': '0xd80', 'instruction': '@P3   BRA 0x734a6f25bd50', 'samples': 670.0}]
+stall_short_sb: [{'pc': '0x1550', 'instruction': 'IMMA.16832.S8.S8 R4, R148.ROW, R116.COL, R4', 'samples': 14947.0}, {'pc': '0x11d0', 'instruction': 'IMMA.16832.S8.S8 R64, R144.ROW, R148.COL, R64', 'samples': 10611.0}]
+stall_long_sb: [{'pc': '0xfc0', 'instruction': '@!P2  IADD3 R145, R145, 0x1800, RZ', 'samples': 9630.0}, {'pc': '0xf40', 'instruction': 'IMAD R104, R3, 0x1000, R116', 'samples': 9240.0}]
+stall_math: [{'pc': '0x16a0', 'instruction': 'IMMA.16832.S8.S8 R32, R108.ROW, R118.COL, R32', 'samples': 81559.0}, {'pc': '0x1240', 'instruction': 'IMMA.16832.S8.S8 R36, R116.ROW, R150.COL, R36', 'samples': 66546.0}]
+
+Interpretation:
+1. Earlier arrival improves the named-barrier design relative to its late control, but NOT relative to production baseline.
+2. Barrier stall falls12.79->8.95%; math throttle rises45.39->49.06%. These are scheduler/sample metrics, not additive wall-time costs.
+3. Useful IMMA/cycle and Tensor utilization do not rise relative to baseline. Do not claim improved Tensor density versus production.
+4. Named overlap has no shared readiness polling loop; operand LDS/LDSM are still present. L2 bytes/usefulMMA and occupancy are preserved.
+5. Extra instructions are spread across loop header/copy, operand/MMA and tail. Do not attribute the full+6.7% solely to barrier ID arithmetic.
+6. In overlap, DEPBAR1690 precedes IMMA16a0. The following PC has81559 math-throttle samples; this is not evidence for81559 copy-wait samples.
+7. Main receiving barrier stalls are sampled at2a80 after BAR.SYNC2a60:89121/90188 barrier samples. No new dominant long/short scoreboard spike.
+8. Higher ready-warps (.32->.37) and issued-warps (.22->.23) coexist with flat useful MMA throughput; this does not prove phase bunching causally.
+Next bounded experiment: reduce recurring control/address work while preserving this validated handoff, then repeat matched IMMA/cycle and full-grid timing.
+Check barrier-ID invariants and operand-address recalculation in SASS first; do not add artificial warp delay or claim math-throttle reduction alone is a win.
+Previous offline full grids:baseline308.535ms/228.074TH/s;overlap309.763ms/227.169TH/s. No production promotion.
+No kernel or production changes in this analysis.

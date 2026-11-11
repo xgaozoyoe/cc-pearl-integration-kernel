@@ -1,0 +1,59 @@
+--- batch_reduce
++++ phases
+@@ -1,6 +1,6 @@
+ #include <cuda_runtime.h>
+ #include <cstdint>
+-namespace handoff_diagnosis_batch_reduce {
++namespace consumer_phases_phases {
+ constexpr int BM=192, BN=192, THREADS=288;
+ constexpr int WORDS=(BM/16)*(BN/16)*16;
+ struct Fragment { unsigned v[4]; };
+@@ -91,6 +91,7 @@
+ __device__ __forceinline__ void task_arrive(unsigned bar) {
+  asm volatile("mbarrier.arrive.shared.b64 _,[%0];" :: "r"(bar) : "memory");
+ }
++__device__ __forceinline__ unsigned tick() {unsigned t; asm volatile("mov.u32 %0, %%clock;" : "=r"(t) :: "memory");return t;}
+ template<int Lead,int TileK=64,bool Planar=false,bool PackedB=false,bool UnrollCopy=false,bool FixedCopy=false,int Stages=2,bool Wide=false,int Layout=0>
+ __global__ void __launch_bounds__(320,1) kernel(const signed char* a,const signed char* b,int m,int n,int k,int r,unsigned* out) {
+     constexpr int WarpN=Wide?96:64, Groups=WarpN/16, Threads=Wide?256:THREADS;
+@@ -118,18 +119,24 @@
+     }
+     __syncthreads();
+     if(warp==9) {
++        unsigned start=tick(),wr=0,ld=0,fr=0,rx=0,up=0,count=0;
+         // Sequence order prevents waiting for a future task while older tasks
+         // hold producer slots. Each wait targets one producer and4tiles only.
+         for(unsigned seq=0;seq<128;++seq) {
+             unsigned rb=seq/4,group=seq%4;
+             for(unsigned producer=0;producer<9;++producer) {
++                unsigned t0=tick();
+                 task_wait(barbase+producer*16,seq&1u);
++                unsigned t1=tick();
+                 unsigned values[4];
+                 #pragma unroll
+                 for(int row=0;row<4;++row) values[row]=tasks[producer*128+row*32+lane];
++                unsigned t2=tick();
+                 task_arrive(barbase+producer*16+8);
++                unsigned t3=tick();
+                 #pragma unroll
+                 for(int row=0;row<4;++row) values[row]=__reduce_xor_sync(0xffffffffu,values[row]);
++                unsigned t4=tick();
+                 if(lane==0) {
+                     #pragma unroll
+                     for(int row=0;row<4;++row) {
+@@ -138,7 +145,14 @@
+                         else {unsigned prev=transcript[idx];transcript[idx]=((prev<<13)|(prev>>19))^values[row];}
+                     }
+                 }
+-            }
++                unsigned t5=tick();
++                wr+=t1-t0;ld+=t2-t1;fr+=t3-t2;rx+=t4-t3;up+=t5-t4;++count;
++            }
++        }
++        unsigned end=tick();
++        if(lane==0) {
++            unsigned* dst=out+size_t(m)*n/256*16+(size_t(blockIdx.x)+size_t(gridDim.x)*blockIdx.y)*80+72;
++            dst[0]=end-start;dst[1]=wr;dst[2]=ld;dst[3]=fr;dst[4]=rx;dst[5]=up;dst[6]=count;dst[7]=0;
+         }
+     } else {
+     unsigned c[4][Groups][2][4]={};

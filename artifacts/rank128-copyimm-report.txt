@@ -1,0 +1,20 @@
+Targeted source/shared-address dependency experiment,2026-10-08,GPU0 only.
+Baseline: validated packaged copywalk-fulla(~224TH/s),not original accepted R128.
+Hypothesis from PC profile: cp.async consumingR141 followed by in-place IADD3 ofR141 may create avoidable register reuse waits. New PTX uses invariant shared base plus immediate offsets0,6144,12288. Separate variant also expresses global offsets0,393216,786432 as PTX immediates for fixedK4096.
+
+Initial direct rewrite removed redundant tid predicates but spilled48bytes/thread. Rejected without GPU timing. Preserving original predicates/source-offset progression produced167registers,0spills,69632shared,1CTA/SM,12residentwarps for both final variants. Baseline168registers,otherwise same. No accumulator spills.
+
+Results: eachvariant/control80full measured grids,2reversed-order runs,4warmups/batch,real generation/noise/V3/transcript/PoW,R128,region8192,M=N131072,K4096,offline target0.
+Shared destination immediates:
+ baseline313.10375ms,224.7458TH/s ->candidate314.42625ms,223.8005TH/s (-0.4206%).Both runs slower.
+Shared+global source immediates:
+ baseline313.86625ms,224.1998TH/s ->candidate315.74750ms,222.8640TH/s (-0.5958%).Both runs slower.
+Clocks unlocked; smallregressions not claimed cycle-exact. Neither produces demonstrated gain.
+
+Both finalvariants pass16fulltranscript/BLAKE3digest comparisons against frozen accepted R128 across2seeds and4shapes includingpartialN/8192square. OfflineABI restrictedtoalignedM and32bitregionaloffsetrange. No production/live path updated.
+SASS: baseline888staticinstructions,shared-immediate872,both-immediate880. Shared offsets appear in LDGSTS address operands. Compiler assigneddifferent physical shared-base registers atsomecopies; eliminating source-levelmutation doesnot force one physical register. Global PTX offsets lower to address-building instructions/registers,not a demonstrated nativeglobal-immediate optimization. Allretain64IMMA/16LDSM andsamecopybytes.
+
+Conclusion: these address-expression rewrites do not turn the sampled dependency into a throughput gain. This doesnot prove address dependencies havezero cost; rescheduling/registerlifetime changes remain coupled. Do not add stallpercentages or treat fewer staticinstructions as realized performance.
+Keep artifacts/libpearl-rank128-copywalk-fulla-candidate.so unchanged. Its originalacceptedlib and libp40cuda.so hashes also unchanged.GPU1Peak/GPU2Open-Pearl notmodified. No newcountercapture orlive shares for these rejectedcandidates.
+Files: rank128-copyimm-summary.json,rank128-{copyimm,copybothimm}-{source.cu,sass,results.json,correctness.json,build.log},rank128-copyimm.patch.
+Next direction should focus on operand-ready/MMA cadence or a measured stage-handoff redesign, not more equivalent address-syntax rewrites. Existing3stage,WS,andwidewarp negative results must be considered before revisiting.

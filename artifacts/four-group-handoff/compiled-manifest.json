@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "native": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "104c0c1b265260dea5c9ab0bb174ebbbe7ee9cceb0cf0acebf2a9d1dfa4d50aa",
+      "smem": 69632,
+      "correct": true
+    },
+    "source_control": {
+      "entry": "_ZN28three_handoff_source_control6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "94d6aae5a7fc75fba95aa058ed7fa347c577e010603f6d096af5139035c5d8e3",
+      "smem": 69632,
+      "correct": true
+    },
+    "contiguous4": {
+      "entry": "_ZN24four_handoff_contiguous46kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "66d7236545cf66d7586e91ae3a2cc9c60f28cef1449ece66aae3555ec8321cb9",
+      "smem": 69632,
+      "correct": true
+    },
+    "interleaved4": {
+      "entry": "_ZN25four_handoff_interleaved46kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "764ba2280728d2effdca584c37e34c4795d307a9120945e843aa4167312cdbf0",
+      "smem": 69632,
+      "correct": true
+    }
+  }
+}

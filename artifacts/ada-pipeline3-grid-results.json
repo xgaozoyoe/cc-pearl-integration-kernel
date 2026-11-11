@@ -1,0 +1,248 @@
+{
+  "baseline": 110,
+  "baseline_library": "/tmp/libpearl-ada-bpack-fixedk.so",
+  "candidate_library": "/tmp/libpearl-ada-wide96.so",
+  "warmup_per_block": 2,
+  "stable_grids_per_variant": 20,
+  "results": [
+    {
+      "variant": 0,
+      "name": "production",
+      "times": [
+        0.4296,
+        0.4246,
+        0.434,
+        0.4267,
+        0.4286,
+        0.4304,
+        0.4277,
+        0.4338,
+        0.4282,
+        0.4324,
+        0.4312,
+        0.4294
+      ],
+      "median_seconds_excluding_first": 0.4294,
+      "grids_per_second": 2.328830926874709,
+      "effective_THS": 163.87690772627852,
+      "reported_search_THS": [
+        170.35,
+        172.12,
+        168.06,
+        171.34,
+        170.29,
+        169.75,
+        170.65,
+        168.23,
+        170.65,
+        168.79,
+        169.34,
+        170.11
+      ],
+      "median_reported_search_THS": 170.11
+    },
+    {
+      "variant": 110,
+      "name": "MMA-packed B x4",
+      "times": [
+        0.3457,
+        0.3512,
+        0.3559,
+        0.3538,
+        0.3526,
+        0.3567,
+        0.3543,
+        0.3533,
+        0.3547,
+        0.3555,
+        0.3531,
+        0.3551
+      ],
+      "median_seconds_excluding_first": 0.3543,
+      "grids_per_second": 2.822466836014677,
+      "effective_THS": 198.61344673345752,
+      "reported_search_THS": [
+        212.82,
+        209.61,
+        206.85,
+        208.1,
+        208.54,
+        206.11,
+        207.53,
+        208.19,
+        207.52,
+        207.15,
+        208.5,
+        207.33
+      ],
+      "median_reported_search_THS": 207.53
+    },
+    {
+      "variant": 113,
+      "name": "packed B three stages",
+      "times": [
+        0.3479,
+        0.3554,
+        0.3585,
+        0.3575,
+        0.3558,
+        0.3576,
+        0.356,
+        0.3554,
+        0.356,
+        0.3558,
+        0.3571,
+        0.3565
+      ],
+      "median_seconds_excluding_first": 0.356,
+      "grids_per_second": 2.808988764044944,
+      "effective_THS": 197.66501173501123,
+      "reported_search_THS": [
+        211.33,
+        207.06,
+        205.3,
+        205.71,
+        206.61,
+        205.76,
+        206.8,
+        207.12,
+        206.84,
+        206.76,
+        206.18,
+        206.46
+      ],
+      "median_reported_search_THS": 206.61
+    },
+    {
+      "variant": 113,
+      "name": "packed B three stages",
+      "times": [
+        0.3474,
+        0.3538,
+        0.3588,
+        0.3577,
+        0.3541,
+        0.3573,
+        0.3574,
+        0.3556,
+        0.3558,
+        0.3553,
+        0.3557,
+        0.353
+      ],
+      "median_seconds_excluding_first": 0.3557,
+      "grids_per_second": 2.81135788585887,
+      "effective_THS": 197.8317238618611,
+      "reported_search_THS": [
+        211.72,
+        208.04,
+        205.02,
+        205.81,
+        207.9,
+        205.92,
+        206.01,
+        207.15,
+        206.69,
+        207.18,
+        206.88,
+        208.68
+      ],
+      "median_reported_search_THS": 206.88
+    },
+    {
+      "variant": 110,
+      "name": "MMA-packed B x4",
+      "times": [
+        0.3453,
+        0.3523,
+        0.3558,
+        0.3532,
+        0.3509,
+        0.3558,
+        0.3535,
+        0.3529,
+        0.3546,
+        0.3531,
+        0.3538,
+        0.3548
+      ],
+      "median_seconds_excluding_first": 0.3535,
+      "grids_per_second": 2.828854314002829,
+      "effective_THS": 199.06292553794626,
+      "reported_search_THS": [
+        212.97,
+        208.77,
+        206.77,
+        208.13,
+        209.82,
+        206.76,
+        208.36,
+        208.7,
+        207.6,
+        208.58,
+        208.15,
+        207.52
+      ],
+      "median_reported_search_THS": 208.15
+    },
+    {
+      "variant": 0,
+      "name": "production",
+      "times": [
+        0.4203,
+        0.4285,
+        0.436,
+        0.4278,
+        0.4332,
+        0.4289,
+        0.4302,
+        0.4318,
+        0.4263,
+        0.4299,
+        0.4284,
+        0.4306
+      ],
+      "median_seconds_excluding_first": 0.4299,
+      "grids_per_second": 2.3261223540358222,
+      "effective_THS": 163.68630885709234,
+      "reported_search_THS": [
+        173.57,
+        170.42,
+        167.58,
+        170.72,
+        168.64,
+        170.27,
+        169.81,
+        169.08,
+        171.43,
+        169.74,
+        170.61,
+        169.62
+      ],
+      "median_reported_search_THS": 169.81
+    }
+  ],
+  "summary": {
+    "0": {
+      "median_ms": 430.05,
+      "mean_ms": 430.275,
+      "p95_ms": 434.09999999999997,
+      "grids_per_second": 2.325311010347634,
+      "effective_THS": 163.62921562065807
+    },
+    "110": {
+      "median_ms": 354.05,
+      "mean_ms": 354.17,
+      "p95_ms": 355.93999999999994,
+      "grids_per_second": 2.824459822059031,
+      "effective_THS": 198.75369065856233
+    },
+    "113": {
+      "median_ms": 356.0,
+      "mean_ms": 356.345,
+      "p95_ms": 358.515,
+      "grids_per_second": 2.808988764044944,
+      "effective_THS": 197.66501173501123
+    }
+  }
+}

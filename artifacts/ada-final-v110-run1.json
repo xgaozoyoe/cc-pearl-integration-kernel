@@ -1,0 +1,248 @@
+{
+  "baseline": 104,
+  "baseline_library": "/tmp/libpearl-ada-v2-retest.so",
+  "candidate_library": "/tmp/libpearl-ada-bpack-fixedk.so",
+  "warmup_per_block": 2,
+  "stable_grids_per_variant": 20,
+  "results": [
+    {
+      "variant": 0,
+      "name": "production",
+      "times": [
+        0.4219,
+        0.4219,
+        0.4291,
+        0.426,
+        0.4261,
+        0.4329,
+        0.4273,
+        0.4317,
+        0.4268,
+        0.4298,
+        0.4286,
+        0.4287
+      ],
+      "median_seconds_excluding_first": 0.4286,
+      "grids_per_second": 2.333177788147457,
+      "effective_THS": 164.18279089515633,
+      "reported_search_THS": [
+        173.57,
+        173.13,
+        170.18,
+        171.49,
+        171.47,
+        168.87,
+        170.95,
+        169.18,
+        171.38,
+        169.88,
+        170.51,
+        170.32
+      ],
+      "median_reported_search_THS": 170.51
+    },
+    {
+      "variant": 104,
+      "name": "hand Ada v2 lead2",
+      "times": [
+        0.3613,
+        0.3659,
+        0.3702,
+        0.3668,
+        0.3662,
+        0.3685,
+        0.3675,
+        0.364,
+        0.3685,
+        0.368,
+        0.3665,
+        0.3684
+      ],
+      "median_seconds_excluding_first": 0.3675,
+      "grids_per_second": 2.7210884353741496,
+      "effective_THS": 191.47957599364355,
+      "reported_search_THS": [
+        203.47,
+        200.96,
+        198.46,
+        200.31,
+        200.64,
+        199.49,
+        200.09,
+        201.99,
+        199.41,
+        199.9,
+        200.54,
+        199.47
+      ],
+      "median_reported_search_THS": 200.09
+    },
+    {
+      "variant": 110,
+      "name": "MMA-packed B x4",
+      "times": [
+        0.3451,
+        0.3519,
+        0.3537,
+        0.3532,
+        0.3529,
+        0.353,
+        0.3543,
+        0.3526,
+        0.3519,
+        0.3535,
+        0.3524,
+        0.3528
+      ],
+      "median_seconds_excluding_first": 0.3529,
+      "grids_per_second": 2.8336639274582036,
+      "effective_THS": 199.40137199678097,
+      "reported_search_THS": [
+        213.19,
+        209.32,
+        207.92,
+        208.35,
+        208.58,
+        208.36,
+        207.87,
+        208.66,
+        209.36,
+        208.17,
+        208.94,
+        208.44
+      ],
+      "median_reported_search_THS": 208.44
+    },
+    {
+      "variant": 110,
+      "name": "MMA-packed B x4",
+      "times": [
+        0.3451,
+        0.3514,
+        0.356,
+        0.3527,
+        0.3508,
+        0.3541,
+        0.3528,
+        0.3517,
+        0.3531,
+        0.3533,
+        0.3527,
+        0.3536
+      ],
+      "median_seconds_excluding_first": 0.3528,
+      "grids_per_second": 2.834467120181406,
+      "effective_THS": 199.45789166004533,
+      "reported_search_THS": [
+        213.15,
+        209.36,
+        206.75,
+        208.8,
+        209.91,
+        207.73,
+        208.72,
+        209.22,
+        208.61,
+        208.58,
+        208.61,
+        207.99
+      ],
+      "median_reported_search_THS": 208.61
+    },
+    {
+      "variant": 104,
+      "name": "hand Ada v2 lead2",
+      "times": [
+        0.3604,
+        0.3665,
+        0.3699,
+        0.3667,
+        0.3667,
+        0.3675,
+        0.3678,
+        0.3619,
+        0.369,
+        0.3666,
+        0.3676,
+        0.369
+      ],
+      "median_seconds_excluding_first": 0.3675,
+      "grids_per_second": 2.7210884353741496,
+      "effective_THS": 191.47957599364355,
+      "reported_search_THS": [
+        203.71,
+        200.59,
+        198.64,
+        200.55,
+        200.51,
+        199.99,
+        199.74,
+        203.29,
+        199.17,
+        200.41,
+        200.1,
+        199.24
+      ],
+      "median_reported_search_THS": 200.1
+    },
+    {
+      "variant": 0,
+      "name": "production",
+      "times": [
+        0.4189,
+        0.4261,
+        0.4363,
+        0.4253,
+        0.4318,
+        0.4305,
+        0.4277,
+        0.4297,
+        0.429,
+        0.4306,
+        0.4301,
+        0.429
+      ],
+      "median_seconds_excluding_first": 0.4297,
+      "grids_per_second": 2.3272050267628575,
+      "effective_THS": 163.76249517724924,
+      "reported_search_THS": [
+        174.22,
+        171.37,
+        167.36,
+        171.71,
+        169.01,
+        169.84,
+        170.7,
+        170.11,
+        170.36,
+        169.67,
+        169.79,
+        170.15
+      ],
+      "median_reported_search_THS": 170.11
+    }
+  ],
+  "summary": {
+    "0": {
+      "median_ms": 429.04999999999995,
+      "mean_ms": 429.35,
+      "p95_ms": 433.07,
+      "grids_per_second": 2.330730684069456,
+      "effective_THS": 164.01059125431536
+    },
+    "104": {
+      "median_ms": 367.54999999999995,
+      "mean_ms": 367.365,
+      "p95_ms": 369.915,
+      "grids_per_second": 2.720718269623181,
+      "effective_THS": 191.4535278946103
+    },
+    "110": {
+      "median_ms": 352.95,
+      "mean_ms": 353.055,
+      "p95_ms": 354.385,
+      "grids_per_second": 2.8332625017707893,
+      "effective_THS": 199.37312417527696
+    }
+  }
+}

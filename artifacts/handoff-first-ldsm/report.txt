@@ -1,0 +1,23 @@
+GPU0 only;8192x8192 region,K4096,rank128. CUDA event kernel times, not full-grid or pool throughput.
+Each run:200 samples/variant,16 launches/sample,10 rotating-order blocks,unlocked clocks.
+Run1: name mean_ms median_ms p95_ms delta_native_pct
+native     1.028500 1.028800 1.050056 +0.0000
+first_a    1.020431 1.015295 1.046843 -0.7846
+first_ab   1.020671 1.016763 1.046426 -0.7612
+Run2: name mean_ms median_ms p95_ms delta_native_pct
+native     1.025392 1.022912 1.048705 +0.0000
+first_a    1.022190 1.021219 1.045411 -0.3122
+first_ab   1.021263 1.022490 1.039293 -0.4027
+Full offline grids: name n mean_ms median_ms p95_ms grids/sec equivalent_TH/s
+native     60 292.075000 292.200000 297.320000 3.423778 240.926968
+first_a    60 292.416667 292.550000 297.705000 3.419778 240.645463
+first_ab   60 292.543333 293.000000 297.815000 3.418297 240.541267
+first_a grid time delta:+0.1170%; paired batch deltas:+0.3259,-0.0376,-0.0240,+0.1677,+0.1849,+0.0855
+first_ab grid time delta:+0.1603%; paired batch deltas:+0.3808,+0.0820,+0.1748,+0.0411,+0.2842,+0.0000
+36 transcript +18 transcript/PoW comparisons PASS;racecheck0 hazards/errors/warnings.
+All168regs,0local,69632B dynamic shared,384threads,1CTA/SM. All64named handoffs retained.
+first_a: original1090 LDSM moved to dc0;first_ab: original1090+10c0 moved to dc0+dd0.
+Both remain AFTER original synchronization. Reads target current buffer; copies target future buffer.
+Exact instruction permutation; copy-skip branch retargeted; no added instructions,branches,registers or shared stores.
+No hardware counters collected; timing cannot establish specific stall causality or tensor utilization.
+No production changes or live mining. Equivalent TH/s is offline work rate, not measured pool throughput.

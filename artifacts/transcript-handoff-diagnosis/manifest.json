@@ -1,0 +1,63 @@
+{
+  "variants": {
+    "self": {
+      "entry": "_ZN22handoff_diagnosis_self6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "99f6f73d924fd2759ef92d6650da27aa04dd181c76ba663e2cc61e2d3145c346",
+      "threads": 288,
+      "smem": 58368,
+      "correct": true
+    },
+    "control": {
+      "entry": "_ZN25handoff_diagnosis_control6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "890a0f56f58847de406aa7ffa8d4aa7f336df76f7751f2fd4ce12d34d6926235",
+      "threads": 320,
+      "smem": 63120,
+      "correct": true
+    },
+    "leader_wait": {
+      "entry": "_ZN29handoff_diagnosis_leader_wait6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "4f120c26741f7a39ec7a60d9f1ad514c3e1d321c2315a44d188cd8d5e51efebb",
+      "threads": 320,
+      "smem": 63120,
+      "correct": true,
+      "safety_status": "excluded: leader polling racecheck failure or unvalidated related variant"
+    },
+    "slots4": {
+      "entry": "_ZN24handoff_diagnosis_slots46kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "6db9fc5350a60e54aef79a0d82e43da155742b00c560b77d528e7c237e6a2617",
+      "threads": 320,
+      "smem": 77376,
+      "correct": true
+    },
+    "slots4_leader": {
+      "entry": "_ZN31handoff_diagnosis_slots4_leader6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "d54350247ed7378991a111e8a54fe353377414fb7ad53cd3699850e36e3b2880",
+      "threads": 320,
+      "smem": 77376,
+      "correct": true,
+      "safety_status": "excluded: leader polling racecheck failure or unvalidated related variant"
+    },
+    "leader_arrive": {
+      "entry": "_ZN31handoff_diagnosis_leader_arrive6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "cc049b8d1f2a65dc29044843c72c207c8d2914a4124ff8e6c6e2592c1322583d",
+      "threads": 320,
+      "smem": 63120,
+      "correct": true
+    },
+    "leader_handoff": {
+      "entry": "_ZN32handoff_diagnosis_leader_handoff6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "44826f1dc03d666340f02d865fb2a801556e32aadc608e902b07f965e9e27a7b",
+      "threads": 320,
+      "smem": 63120,
+      "correct": true,
+      "safety_status": "excluded: leader polling racecheck failure or unvalidated related variant"
+    },
+    "batch_reduce": {
+      "entry": "_ZN30handoff_diagnosis_batch_reduce6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "6e10fe7be169bf43735e0e8650fc3a553b990048040b3046e2ae02f00c712e30",
+      "threads": 320,
+      "smem": 63120,
+      "correct": true
+    }
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "0": {
+    "launches": [
+      {
+        "tensor_instructions": 67633152.0,
+        "expected_sass_IMMA": 67633152,
+        "count_matches_sass": true,
+        "imma_per_SM_elapsed_cycle": 0.2088599621697905,
+        "imma_per_SMSP_elapsed_cycle": 0.052214990542447624,
+        "tensor_Ginst_sec": 59.66564096773283,
+        "kernel_ms": 1.133536
+      },
+      {
+        "tensor_instructions": 67633152.0,
+        "expected_sass_IMMA": 67633152,
+        "count_matches_sass": true,
+        "imma_per_SM_elapsed_cycle": 0.2088243649717915,
+        "imma_per_SMSP_elapsed_cycle": 0.05220609124294787,
+        "tensor_Ginst_sec": 59.588260170853424,
+        "kernel_ms": 1.135008
+      },
+      {
+        "tensor_instructions": 67633152.0,
+        "expected_sass_IMMA": 67633152,
+        "count_matches_sass": true,
+        "imma_per_SM_elapsed_cycle": 0.2088164423771376,
+        "imma_per_SMSP_elapsed_cycle": 0.0522041105942844,
+        "tensor_Ginst_sec": 59.588260170853424,
+        "kernel_ms": 1.135008
+      }
+    ],
+    "means": {
+      "imma_per_SM_elapsed_cycle": 0.2088335898395732,
+      "imma_per_SMSP_elapsed_cycle": 0.0522083974598933,
+      "tensor_Ginst_sec": 59.614053769813225,
+      "kernel_ms": 1.1345173333333334
+    }
+  },
+  "1": {
+    "launches": [
+      {
+        "tensor_instructions": 67633152.0,
+        "expected_sass_IMMA": 67633152,
+        "count_matches_sass": true,
+        "imma_per_SM_elapsed_cycle": 0.20872465814049768,
+        "imma_per_SMSP_elapsed_cycle": 0.05218116453512442,
+        "tensor_Ginst_sec": 59.31567130669062,
+        "kernel_ms": 1.140224
+      },
+      {
+        "tensor_instructions": 67633152.0,
+        "expected_sass_IMMA": 67633152,
+        "count_matches_sass": true,
+        "imma_per_SM_elapsed_cycle": 0.20857841980162517,
+        "imma_per_SMSP_elapsed_cycle": 0.05214460495040629,
+        "tensor_Ginst_sec": 59.29071170084439,
+        "kernel_ms": 1.140704
+      },
+      {
+        "tensor_instructions": 67633152.0,
+        "expected_sass_IMMA": 67633152,
+        "count_matches_sass": true,
+        "imma_per_SM_elapsed_cycle": 0.20888066184442386,
+        "imma_per_SMSP_elapsed_cycle": 0.052220165461105965,
+        "tensor_Ginst_sec": 59.6101083032491,
+        "kernel_ms": 1.134592
+      }
+    ],
+    "means": {
+      "imma_per_SM_elapsed_cycle": 0.20872791326218224,
+      "imma_per_SMSP_elapsed_cycle": 0.05218197831554556,
+      "tensor_Ginst_sec": 59.405497103594705,
+      "kernel_ms": 1.1385066666666666
+    }
+  }
+}

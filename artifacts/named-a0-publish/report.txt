@@ -1,0 +1,31 @@
+GPU0-only early A-region publication test; no production deployment.
+Change from named-a0/early_a: move the SAME192-thread regional BAR.ARV to after g3, where all A fragment LDSM loads are issued; no change to region,participants,barrier IDs,copy count or transcript math.
+Region A32:64,2KiB;W0,W8publish,W4..7wait/copy;IDs1/2alternate. Original8+4 handoff retained.
+8192x8192 region,K4096,rank128,CTA256x192,384threads,K64/2stages. CUDA events,not fullgrid wall time or pool hashrate.
+2independent runs x120samples/variant,16launches/sample,6rotatingblocks;3s warmup plus100launch/block;unlocked clocks and telemetry in logs.
+
+Run variant mean_ms median_ms p95_ms
+1 native 1.019552 1.012928 1.048373
+1 source_control 1.069033 1.063296 1.094902
+1 early_a 1.172504 1.166944 1.201728
+1 publish_after_a 1.087131 1.083840 1.117253
+2 native 1.018544 1.011387 1.048440
+2 source_control 1.064183 1.062333 1.079187
+2 early_a 1.173114 1.168408 1.201465
+2 publish_after_a 1.087013 1.077896 1.117187
+
+Combined240samples:variant mean_ms median_ms p95_ms
+native 1.019048 1.011997 1.048387
+source_control 1.066608 1.062464 1.091830
+early_a 1.172809 1.167582 1.201603
+publish_after_a 1.087072 1.080573 1.117248
+publish_after_a time change vs early_a: -7.310%
+publish_after_a time change vs source_control: +1.919%
+publish_after_a time change vs native: +6.675%
+
+SASS:regional BAR.ARV at0x1a10 after32IMMA,original384-thread BAR.ARV0x1d30 after64IMMA;the0x3cf0regionalBAR is compiler fallback code,not an extra intended dynamic arrival. Prior experiment regional publication after64,originalafter59;nativeoriginalafter48.
+All64IMMA/16LDSM preserved;noATOMS.ARRIVE or polling. New167regs vs prior168;both0spill/local,69632Bdynamicshared,1CTA/SM. No improved occupancy. Codegen changed,so cannot attribute entire gain solely to barrier timestamp.
+Correctness:12new transcript shape/seed comparisons PASS;512x800 seed9876 racecheck0hazards/errors/warnings. All4variant8192outputs checked before timing in bothruns. No new PoW,live or fullgrid validation,as candidate still slower than baseline.
+Conclusion:repeatable recovery within experimental regional scheme (~7%time decrease),NOT a production speedup. Remains slower than both source baseline and frozen fastest. Preserve this experimental result for further work but do not deploy.
+Next bounded question:can added synchronization/address/control costs be reduced while preserving this actual early publication? Moving more work without verifying SASS would confound it again.
+Artifacts:publish_after_a.diff,validation.log,racecheck.log,events-run1/2.json,bench-run1/2.log. Build:tools/build_named_a0_publish.py. Test:tests/bench_named_a0_publish.py. Production unchanged.

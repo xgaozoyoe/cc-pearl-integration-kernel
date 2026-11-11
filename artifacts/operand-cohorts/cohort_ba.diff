@@ -1,0 +1,110 @@
+--- source8
++++ cohort_ba
+@@ -1,4 +1,4 @@
+-namespace fold_defer_source8 {
++namespace operand_cohort_ba {
+ constexpr int BM=256, BN=192, THREADS=384;
+ constexpr int WORDS=(BM/16)*(BN/16)*16;
+ struct Fragment { unsigned v[4]; };
+@@ -54,56 +54,29 @@
+ template<int TileK,bool Planar,bool UnrollCopy=false,bool FixedCopy=false,int Layout=0>
+ __device__ __forceinline__ void stage_copy(const signed char* a,const signed char* b,
+         signed char* sa,signed char* sb,int cm,int cn,int kt,int m,int n,int k) {
+-    if constexpr(FixedCopy) {
+-        static_assert(TileK==64 && !Planar);
+-        // Exact 384-thread assignment: A has 2 full rounds plus 256 lanes;
+-        // B has 2 full rounds. No dynamically bounded copy loops.
+-        #pragma unroll
+-        for(int j=0;j<3;++j) {
+-            if(j<2 || threadIdx.x<256) {
+-                int i=threadIdx.x+j*THREADS;
+-                int row=i/4,col=(i%4)*16,gr=cm*BM+row;
+-                const signed char* src=a+(size_t)(gr<m?gr:0)*k+kt*64+col;
+-                unsigned dst=__cvta_generic_to_shared(sa+swizzle<Layout>(row*64+col));
+-                int valid=gr<m?16:0;
+-                asm volatile("cp.async.cg.shared.global [%0],[%1],16,%2;" :: "r"(dst),"l"(src),"r"(valid));
+-            }
+-        }
+-        #pragma unroll
+-        for(int j=0;j<2;++j) {
+-            int i=threadIdx.x+j*THREADS;
+-            int row=i/4,col=(i%4)*16,gr=cn*BN+row;
+-            const signed char* src=b+(size_t)(gr<n?gr:0)*k+kt*64+col;
+-            unsigned dst=__cvta_generic_to_shared(sb+swizzle<Layout>(row*64+col));
+-            int valid=gr<n?16:0;
+-            asm volatile("cp.async.cg.shared.global [%0],[%1],16,%2;" :: "r"(dst),"l"(src),"r"(valid));
+-        }
+-        asm volatile("cp.async.commit_group;");
+-        return;
+-    }
+ 
+     static_assert(TileK==64 && Layout==6 && !Planar);
+-    // 384 is a multiple of128: the swizzled low7 chunk bits never change.
+-    int logical=int(threadIdx.x)^(int(threadIdx.x>>3)&3);
+-    int row=logical/4,col=(logical%4)*16;
+-    unsigned dstA=__cvta_generic_to_shared(sa+threadIdx.x*16);
+-    unsigned dstB=__cvta_generic_to_shared(sb+threadIdx.x*16);
+-    int grA=cm*BM+row,grB=cn*BN+row;
+-    unsigned offA=unsigned(grA)*unsigned(k)+unsigned(kt*64+col);
+-    unsigned offB=unsigned(grB)*unsigned(k)+unsigned(kt*64+col);
++    const unsigned warp=threadIdx.x/32, lane=threadIdx.x%32;
++    const unsigned wm=warp%4,wn=warp/4;
++    // A64x64: 256 vectors distributed over its 3 consumer warps.
+     #pragma unroll
+-    for(int j=0;j<3;++j) if(threadIdx.x+j*THREADS<BM*64/16) {
+-        bool valid=true;
+-        const signed char* src=a+offA;
+-        asm volatile("cp.async.cg.shared.global [%0],[%1],16,%2;" :: "r"(dstA),"l"(src),"r"(valid?16:0));
+-        grA+=THREADS/4;offA+=unsigned(THREADS/4)*unsigned(k);dstA+=THREADS*16;
+-    }
++    for(unsigned j=0;j<3;++j) {
++        unsigned i=wn*32+lane+j*96;
++        if(i<256) {
++            unsigned row=wm*64+i/4,col=(i%4)*16;
++            unsigned dst=__cvta_generic_to_shared(sa+swizzle<Layout>(row*64+col));
++            const signed char* src=a+(size_t)(cm*BM+row)*k+kt*64+col;
++            asm volatile("cp.async.cg.shared.global [%0],[%1],16,16;" :: "r"(dst),"l"(src));
++        }
++    }
++    // B64x64: 256 vectors distributed over its 4 consumer warps.
+     #pragma unroll
+-    for(int j=0;j<2;++j) {
+-        bool valid=grB<n;
+-        const signed char* src=b+(valid?offB:0u);
+-        asm volatile("cp.async.cg.shared.global [%0],[%1],16,%2;" :: "r"(dstB),"l"(src),"r"(valid?16:0));
+-        grB+=THREADS/4;offB+=unsigned(THREADS/4)*unsigned(k);dstB+=THREADS*16;
++    for(unsigned j=0;j<2;++j) {
++        unsigned i=wm*32+lane+j*128;
++        unsigned row=wn*64+i/4,col=(i%4)*16,gr=cn*BN+row;
++        unsigned dst=__cvta_generic_to_shared(sb+swizzle<Layout>(row*64+col));
++        const signed char* src=b+(size_t)(gr<unsigned(n)?gr:0)*k+kt*64+col;
++        asm volatile("cp.async.cg.shared.global [%0],[%1],16,%2;" :: "r"(dst),"l"(src),"r"(gr<unsigned(n)?16:0));
+     }
+     asm volatile("cp.async.commit_group;");
+ }
+@@ -214,7 +187,7 @@
+         }
+         // Publish this group's completed future copies and old-stage reads.
+         asm volatile("cp.async.wait_group 0;" ::: "memory");
+-        asm volatile("bar.arrive %0, 384;" :: "r"(peer_bar) : "memory");
++
+         if constexpr(TileK==64) {
+         if((kt+1)%2==0) {
+             unsigned rb=unsigned((kt+1)/2-1);
+@@ -238,7 +211,8 @@
+             }
+         }
+         }
+-        asm volatile("bar.sync %0, 384;" :: "r"(own_bar) : "memory");
++        asm volatile("bar.sync %0, 128;" :: "r"(unsigned(5+wn)) : "memory");
++        asm volatile("bar.sync %0, 96;" :: "r"(unsigned(1+wm)) : "memory");
+         own_bar^=2u;
+     }
+     __syncthreads();
+@@ -247,3 +221,6 @@
+         if(gr<m/16 && gc<n/16) out[((size_t)gr*(n/16)+gc)*16+i%16]=transcript[i];
+     }
+ }
++
++template __global__ void kernel<1,64,false,true,false,false,2,false,6>(const signed char*,const signed char*,int,int,int,int,unsigned*);
++}

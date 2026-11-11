@@ -1,0 +1,1953 @@
+15:49:42   grid wall: 0.3350 s, 2.985 grids/sec                                   
+15:49:42   grid 108 done: 0 hits over 256 regions (220.53 TH/s)                   
+15:49:42   grid wall: 0.3364 s, 2.973 grids/sec                                   
+15:49:42   grid 109 done: 0 hits over 256 regions (219.46 TH/s)                   
+15:49:43   grid wall: 0.3351 s, 2.984 grids/sec                                   
+15:49:43   grid 110 done: 0 hits over 256 regions (220.49 TH/s)                   
+15:49:43   grid wall: 0.3354 s, 2.981 grids/sec                                   
+15:49:43   grid 111 done: 0 hits over 256 regions (220.38 TH/s)                   
+15:49:43   newer job (grid 112, 64 regions, 0 hits this grid)                     
+15:49:43 job e34c19fb_3028274 target=2^202 factor=1048576 bound=2^222             
+15:49:43   grid wall: 0.3328 s, 3.005 grids/sec                                   
+15:49:43   grid 1 done: 0 hits over 256 regions (221.93 TH/s)                     
+15:49:43   compute wall: 209.86 TH/s; effective wall: 209.86 TH/s over 60.0 s (rank=128, includes HIT/setup pauses)                                                  
+15:49:44   grid wall: 0.3351 s, 2.984 grids/sec                                   
+15:49:44   grid 2 done: 0 hits over 256 regions (220.17 TH/s)                     
+15:49:44   grid wall: 0.3351 s, 2.984 grids/sec                                   
+15:49:44   grid 3 done: 0 hits over 256 regions (220.49 TH/s)                     
+15:49:44   grid wall: 0.3333 s, 3.000 grids/sec                                   
+15:49:44   grid 4 done: 0 hits over 256 regions (221.52 TH/s)                     
+15:49:45   grid wall: 0.3356 s, 2.980 grids/sec                                   
+15:49:45   grid 5 done: 0 hits over 256 regions (220.02 TH/s)                     
+15:49:45   grid wall: 0.3349 s, 2.986 grids/sec                                   
+15:49:45   grid 6 done: 0 hits over 256 regions (220.61 TH/s)                     
+15:49:45   grid wall: 0.3330 s, 3.003 grids/sec                                   
+15:49:45   grid 7 done: 0 hits over 256 regions (222.11 TH/s)                     
+15:49:46   grid wall: 0.3351 s, 2.985 grids/sec                                   
+15:49:46   grid 8 done: 0 hits over 256 regions (220.54 TH/s)                     
+15:49:46   grid wall: 0.3364 s, 2.972 grids/sec                                   
+15:49:46   grid 9 done: 0 hits over 256 regions (219.67 TH/s)                     
+15:49:46   grid wall: 0.3336 s, 2.998 grids/sec                                   
+15:49:46   grid 10 done: 0 hits over 256 regions (221.61 TH/s)                    
+15:49:47   grid wall: 0.3357 s, 2.979 grids/sec                                   
+15:49:47   grid 11 done: 0 hits over 256 regions (220.15 TH/s)                    
+15:49:47   grid wall: 0.3348 s, 2.987 grids/sec                                   
+15:49:47   grid 12 done: 0 hits over 256 regions (220.62 TH/s)                    
+15:49:47   grid wall: 0.3346 s, 2.988 grids/sec                                   
+15:49:47   grid 13 done: 0 hits over 256 regions (220.47 TH/s)                    
+15:49:48   grid wall: 0.3353 s, 2.982 grids/sec                                   
+15:49:48   grid 14 done: 0 hits over 256 regions (220.29 TH/s)                    
+15:49:48   grid wall: 0.3355 s, 2.981 grids/sec                                   
+15:49:48   grid 15 done: 0 hits over 256 regions (220.23 TH/s)                    
+15:49:48   grid wall: 0.3347 s, 2.988 grids/sec                                   
+15:49:48   grid 16 done: 0 hits over 256 regions (220.56 TH/s)                    
+15:49:49   grid wall: 0.3342 s, 2.992 grids/sec                                   
+15:49:49   grid 17 done: 0 hits over 256 regions (221.12 TH/s)                    
+15:49:49   grid wall: 0.3328 s, 3.004 grids/sec                                   
+15:49:49   grid 18 done: 0 hits over 256 regions (221.70 TH/s)                    
+15:49:49   grid wall: 0.3351 s, 2.984 grids/sec                                   
+15:49:49   grid 19 done: 0 hits over 256 regions (220.45 TH/s)                    
+15:49:50   grid wall: 0.3353 s, 2.982 grids/sec                                   
+15:49:50   grid 20 done: 0 hits over 256 regions (220.43 TH/s)                    
+15:49:50   grid wall: 0.3348 s, 2.987 grids/sec                                   
+15:49:50   grid 21 done: 0 hits over 256 regions (220.75 TH/s)                    
+15:49:50   grid wall: 0.3347 s, 2.988 grids/sec                                   
+15:49:50   grid 22 done: 0 hits over 256 regions (220.49 TH/s)                    
+15:49:51   grid wall: 0.3363 s, 2.973 grids/sec                                   
+15:49:51   grid 23 done: 0 hits over 256 regions (219.69 TH/s)                    
+15:49:51   grid wall: 0.3363 s, 2.973 grids/sec                                   
+15:49:51   grid 24 done: 0 hits over 256 regions (219.67 TH/s)                    
+15:49:51   grid wall: 0.3339 s, 2.995 grids/sec                                   
+15:49:51   grid 25 done: 0 hits over 256 regions (221.12 TH/s)                    
+15:49:52   grid wall: 0.3347 s, 2.988 grids/sec                                   
+15:49:52   grid 26 done: 0 hits over 256 regions (220.72 TH/s)                    
+15:49:52   grid wall: 0.3354 s, 2.982 grids/sec                                   
+15:49:52   grid 27 done: 0 hits over 256 regions (220.44 TH/s)                    
+15:49:52   grid wall: 0.3359 s, 2.977 grids/sec                                   
+15:49:52   grid 28 done: 0 hits over 256 regions (219.72 TH/s)                    
+15:49:53   grid wall: 0.3357 s, 2.979 grids/sec                                   
+15:49:53   grid 29 done: 0 hits over 256 regions (220.28 TH/s)                    
+15:49:53   grid wall: 0.3347 s, 2.987 grids/sec                                   
+15:49:53   grid 30 done: 0 hits over 256 regions (220.74 TH/s)                    
+15:49:53   grid wall: 0.3359 s, 2.977 grids/sec                                   
+15:49:53   grid 31 done: 0 hits over 256 regions (219.87 TH/s)                    
+15:49:54   grid wall: 0.3350 s, 2.985 grids/sec                                   
+15:49:54   grid 32 done: 0 hits over 256 regions (220.53 TH/s)                    
+15:49:54   grid wall: 0.3351 s, 2.984 grids/sec                                   
+15:49:54   grid 33 done: 0 hits over 256 regions (220.29 TH/s)                    
+15:49:54   grid wall: 0.3341 s, 2.994 grids/sec                                   
+15:49:54   grid 34 done: 0 hits over 256 regions (220.88 TH/s)                    
+15:49:55   grid wall: 0.3349 s, 2.986 grids/sec                                   
+15:49:55   grid 35 done: 0 hits over 256 regions (220.71 TH/s)                    
+15:49:55   grid wall: 0.3346 s, 2.989 grids/sec                                   
+15:49:55   grid 36 done: 0 hits over 256 regions (220.56 TH/s)                    
+15:49:55   grid wall: 0.3343 s, 2.991 grids/sec                                   
+15:49:55   grid 37 done: 0 hits over 256 regions (220.99 TH/s)                    
+15:49:56   grid wall: 0.3344 s, 2.990 grids/sec                                   
+15:49:56   grid 38 done: 0 hits over 256 regions (220.71 TH/s)                    
+15:49:56   grid wall: 0.3353 s, 2.982 grids/sec                                   
+15:49:56   grid 39 done: 0 hits over 256 regions (220.29 TH/s)                    
+15:49:56   grid wall: 0.3330 s, 3.003 grids/sec                                   
+15:49:56   grid 40 done: 0 hits over 256 regions (221.64 TH/s)                    
+15:49:57   grid wall: 0.3354 s, 2.982 grids/sec                                   
+15:49:57   grid 41 done: 0 hits over 256 regions (220.20 TH/s)                    
+15:49:57   grid wall: 0.3359 s, 2.977 grids/sec                                   
+15:49:57   grid 42 done: 0 hits over 256 regions (220.02 TH/s)                    
+15:49:57   grid wall: 0.3346 s, 2.988 grids/sec                                   
+15:49:57   grid 43 done: 0 hits over 256 regions (220.93 TH/s)                    
+15:49:58   grid wall: 0.3360 s, 2.976 grids/sec                                   
+15:49:58   grid 44 done: 0 hits over 256 regions (219.99 TH/s)                    
+15:49:58   grid wall: 0.3353 s, 2.983 grids/sec                                   
+15:49:58   grid 45 done: 0 hits over 256 regions (220.41 TH/s)                    
+15:49:58   grid wall: 0.3346 s, 2.989 grids/sec                                   
+15:49:58   grid 46 done: 0 hits over 256 regions (220.84 TH/s)                    
+15:49:59   grid wall: 0.3356 s, 2.980 grids/sec                                   
+15:49:59   grid 47 done: 0 hits over 256 regions (220.03 TH/s)                    
+15:49:59   grid wall: 0.3357 s, 2.979 grids/sec                                   
+15:49:59   grid 48 done: 0 hits over 256 regions (220.04 TH/s)                    
+15:49:59   grid wall: 0.3353 s, 2.982 grids/sec                                   
+15:49:59   grid 49 done: 0 hits over 256 regions (220.15 TH/s)                    
+15:50:00   grid wall: 0.3355 s, 2.981 grids/sec                                   
+15:50:00   grid 50 done: 0 hits over 256 regions (220.30 TH/s)                    
+15:50:00   grid wall: 0.3337 s, 2.997 grids/sec                                   
+15:50:00   grid 51 done: 0 hits over 256 regions (221.32 TH/s)                    
+15:50:00   grid wall: 0.3353 s, 2.983 grids/sec                                   
+15:50:00   grid 52 done: 0 hits over 256 regions (220.22 TH/s)                    
+15:50:01   grid wall: 0.3343 s, 2.992 grids/sec                                   
+15:50:01   grid 53 done: 0 hits over 256 regions (220.86 TH/s)                    
+15:50:01   grid wall: 0.3356 s, 2.979 grids/sec                                   
+15:50:01   grid 54 done: 0 hits over 256 regions (220.16 TH/s)                    
+15:50:01   grid wall: 0.3339 s, 2.995 grids/sec                                   
+15:50:01   grid 55 done: 0 hits over 256 regions (221.09 TH/s)                    
+15:50:02   grid wall: 0.3369 s, 2.969 grids/sec                                   
+15:50:02   grid 56 done: 0 hits over 256 regions (219.78 TH/s)                    
+15:50:02   grid wall: 0.3363 s, 2.974 grids/sec                                   
+15:50:02   grid 57 done: 0 hits over 256 regions (219.82 TH/s)                    
+15:50:02   grid wall: 0.3344 s, 2.990 grids/sec                                   
+15:50:02   grid 58 done: 0 hits over 256 regions (221.10 TH/s)                    
+15:50:03   grid wall: 0.3346 s, 2.989 grids/sec                                   
+15:50:03   grid 59 done: 0 hits over 256 regions (220.98 TH/s)                    
+15:50:03   grid wall: 0.3360 s, 2.977 grids/sec                                   
+15:50:03   grid 60 done: 0 hits over 256 regions (219.89 TH/s)                    
+15:50:03   compute wall: 209.92 TH/s; effective wall: 209.92 TH/s over 60.1 s (rank=128, includes HIT/setup pauses)                                                  
+15:50:03   grid wall: 0.3359 s, 2.977 grids/sec                                   
+15:50:03   grid 61 done: 0 hits over 256 regions (220.09 TH/s)                    
+15:50:04   grid wall: 0.3341 s, 2.993 grids/sec                                   
+15:50:04   grid 62 done: 0 hits over 256 regions (221.24 TH/s)                    
+15:50:04   grid wall: 0.3319 s, 3.013 grids/sec                                   
+15:50:04   grid 63 done: 0 hits over 256 regions (222.44 TH/s)                    
+15:50:04   grid wall: 0.3319 s, 3.013 grids/sec                                   
+15:50:04   grid 64 done: 0 hits over 256 regions (222.37 TH/s)                    
+15:50:05   grid wall: 0.3316 s, 3.016 grids/sec                                   
+15:50:05   grid 65 done: 0 hits over 256 regions (222.66 TH/s)                    
+15:50:05   grid wall: 0.3329 s, 3.004 grids/sec                                   
+15:50:05   grid 66 done: 0 hits over 256 regions (221.64 TH/s)                    
+15:50:05   grid wall: 0.3342 s, 2.992 grids/sec                                   
+15:50:05   grid 67 done: 0 hits over 256 regions (220.79 TH/s)                    
+15:50:06   grid wall: 0.3342 s, 2.992 grids/sec                                   
+15:50:06   grid 68 done: 0 hits over 256 regions (221.25 TH/s)                    
+15:50:06   grid wall: 0.3348 s, 2.987 grids/sec                                   
+15:50:06   grid 69 done: 0 hits over 256 regions (220.41 TH/s)                    
+15:50:06   grid wall: 0.3351 s, 2.984 grids/sec                                   
+15:50:06   grid 70 done: 0 hits over 256 regions (220.86 TH/s)                    
+15:50:07   grid wall: 0.3336 s, 2.997 grids/sec                                   
+15:50:07   grid 71 done: 0 hits over 256 regions (221.27 TH/s)                    
+15:50:07   grid wall: 0.3359 s, 2.977 grids/sec                                   
+15:50:07   grid 72 done: 0 hits over 256 regions (219.94 TH/s)                    
+15:50:07   grid wall: 0.3352 s, 2.984 grids/sec                                   
+15:50:07   grid 73 done: 0 hits over 256 regions (220.42 TH/s)                    
+15:50:08   grid wall: 0.3343 s, 2.992 grids/sec                                   
+15:50:08   grid 74 done: 0 hits over 256 regions (221.29 TH/s)                    
+15:50:08   grid wall: 0.3353 s, 2.982 grids/sec                                   
+15:50:08   grid 75 done: 0 hits over 256 regions (220.35 TH/s)                    
+15:50:08   grid wall: 0.3352 s, 2.983 grids/sec                                   
+15:50:08   grid 76 done: 0 hits over 256 regions (220.59 TH/s)                    
+15:50:09   grid wall: 0.3348 s, 2.987 grids/sec                                   
+15:50:09   grid 77 done: 0 hits over 256 regions (220.79 TH/s)                    
+15:50:09   grid wall: 0.3345 s, 2.990 grids/sec                                   
+15:50:09   grid 78 done: 0 hits over 256 regions (220.81 TH/s)                    
+15:50:10   grid wall: 0.3360 s, 2.976 grids/sec                                   
+15:50:10   grid 79 done: 0 hits over 256 regions (219.91 TH/s)                    
+15:50:10   grid wall: 0.3361 s, 2.975 grids/sec                                   
+15:50:10   grid 80 done: 0 hits over 256 regions (219.94 TH/s)                    
+15:50:10   grid wall: 0.3346 s, 2.988 grids/sec                                   
+15:50:10   grid 81 done: 0 hits over 256 regions (220.84 TH/s)                    
+15:50:11   grid wall: 0.3349 s, 2.986 grids/sec                                   
+15:50:11   grid 82 done: 0 hits over 256 regions (220.43 TH/s)                    
+15:50:11   grid wall: 0.3348 s, 2.987 grids/sec                                   
+15:50:11   grid 83 done: 0 hits over 256 regions (220.60 TH/s)                    
+15:50:11   grid wall: 0.3358 s, 2.978 grids/sec                                   
+15:50:11   grid 84 done: 0 hits over 256 regions (220.15 TH/s)                    
+15:50:12   grid wall: 0.3348 s, 2.987 grids/sec                                   
+15:50:12   grid 85 done: 0 hits over 256 regions (220.75 TH/s)                    
+15:50:12   grid wall: 0.3344 s, 2.991 grids/sec                                   
+15:50:12   grid 86 done: 0 hits over 256 regions (221.07 TH/s)                    
+15:50:12   grid wall: 0.3345 s, 2.989 grids/sec                                   
+15:50:12   grid 87 done: 0 hits over 256 regions (220.89 TH/s)                    
+15:50:13   grid wall: 0.3351 s, 2.984 grids/sec                                   
+15:50:13   grid 88 done: 0 hits over 256 regions (220.59 TH/s)                    
+15:50:13   grid wall: 0.3350 s, 2.985 grids/sec                                   
+15:50:13   grid 89 done: 0 hits over 256 regions (220.71 TH/s)                    
+15:50:13   grid wall: 0.3341 s, 2.993 grids/sec                                   
+15:50:13   grid 90 done: 0 hits over 256 regions (221.12 TH/s)                    
+15:50:14   grid wall: 0.3345 s, 2.990 grids/sec                                   
+15:50:14   grid 91 done: 0 hits over 256 regions (221.08 TH/s)                    
+15:50:14   grid wall: 0.3354 s, 2.982 grids/sec                                   
+15:50:14   grid 92 done: 0 hits over 256 regions (220.34 TH/s)                    
+15:50:14   grid wall: 0.3344 s, 2.990 grids/sec                                   
+15:50:14   grid 93 done: 0 hits over 256 regions (220.76 TH/s)                    
+15:50:15   grid wall: 0.3348 s, 2.987 grids/sec                                   
+15:50:15   grid 94 done: 0 hits over 256 regions (220.77 TH/s)                    
+15:50:15   grid wall: 0.3348 s, 2.987 grids/sec                                   
+15:50:15   grid 95 done: 0 hits over 256 regions (220.79 TH/s)                    
+15:50:15   grid wall: 0.3353 s, 2.982 grids/sec                                   
+15:50:15   grid 96 done: 0 hits over 256 regions (220.43 TH/s)                    
+15:50:16   grid wall: 0.3344 s, 2.990 grids/sec                                   
+15:50:16   grid 97 done: 0 hits over 256 regions (221.10 TH/s)                    
+15:50:16   grid wall: 0.3349 s, 2.986 grids/sec                                   
+15:50:16   grid 98 done: 0 hits over 256 regions (220.36 TH/s)                    
+15:50:16   grid wall: 0.3343 s, 2.992 grids/sec                                   
+15:50:16   grid 99 done: 0 hits over 256 regions (221.10 TH/s)                    
+15:50:17   grid wall: 0.3350 s, 2.985 grids/sec                                   
+15:50:17   grid 100 done: 0 hits over 256 regions (220.55 TH/s)                   
+15:50:17   grid wall: 0.3359 s, 2.977 grids/sec                                   
+15:50:17   grid 101 done: 0 hits over 256 regions (219.77 TH/s)                   
+15:50:17   grid wall: 0.3337 s, 2.997 grids/sec                                   
+15:50:17   grid 102 done: 0 hits over 256 regions (221.45 TH/s)                   
+15:50:18   grid wall: 0.3336 s, 2.998 grids/sec                                   
+15:50:18   grid 103 done: 0 hits over 256 regions (221.36 TH/s)                   
+15:50:18   grid wall: 0.3357 s, 2.978 grids/sec                                   
+15:50:18   grid 104 done: 0 hits over 256 regions (220.08 TH/s)                   
+15:50:18   grid wall: 0.3351 s, 2.984 grids/sec                                   
+15:50:18   grid 105 done: 0 hits over 256 regions (220.53 TH/s)                   
+15:50:19   grid wall: 0.3339 s, 2.995 grids/sec                                   
+15:50:19   grid 106 done: 0 hits over 256 regions (221.54 TH/s)                   
+15:50:19   grid wall: 0.3367 s, 2.970 grids/sec                                   
+15:50:19   grid 107 done: 0 hits over 256 regions (219.17 TH/s)                   
+15:50:19   grid wall: 0.3364 s, 2.972 grids/sec                                   
+15:50:19   grid 108 done: 0 hits over 256 regions (219.51 TH/s)                   
+15:50:20   grid wall: 0.3319 s, 3.013 grids/sec                                   
+15:50:20   grid 109 done: 0 hits over 256 regions (222.48 TH/s)                   
+15:50:20   grid wall: 0.3347 s, 2.988 grids/sec                                   
+15:50:20   grid 110 done: 0 hits over 256 regions (220.45 TH/s)                   
+15:50:20   grid wall: 0.3362 s, 2.974 grids/sec                                   
+15:50:20   grid 111 done: 0 hits over 256 regions (219.83 TH/s)                   
+15:50:21   grid wall: 0.3357 s, 2.979 grids/sec                                   
+15:50:21   grid 112 done: 0 hits over 256 regions (220.25 TH/s)                   
+15:50:21   grid wall: 0.3346 s, 2.988 grids/sec                                   
+15:50:21   grid 113 done: 0 hits over 256 regions (220.62 TH/s)                   
+15:50:21   grid wall: 0.3356 s, 2.980 grids/sec                                   
+15:50:21   grid 114 done: 0 hits over 256 regions (220.15 TH/s)                   
+15:50:22   grid wall: 0.3338 s, 2.996 grids/sec                                   
+15:50:22   grid 115 done: 0 hits over 256 regions (221.39 TH/s)                   
+15:50:22   grid wall: 0.3347 s, 2.988 grids/sec                                   
+15:50:22   grid 116 done: 0 hits over 256 regions (220.79 TH/s)                   
+15:50:22   grid wall: 0.3355 s, 2.981 grids/sec                                   
+15:50:22   grid 117 done: 0 hits over 256 regions (220.05 TH/s)                   
+15:50:23   grid wall: 0.3349 s, 2.986 grids/sec                                   
+15:50:23   grid 118 done: 0 hits over 256 regions (220.47 TH/s)                   
+15:50:23   grid wall: 0.3343 s, 2.991 grids/sec                                   
+15:50:23   grid 119 done: 0 hits over 256 regions (221.16 TH/s)                   
+15:50:23   HIT tile (row=30800, col=108112) grid 120; proof async                 
+15:50:23   share snapshot wall: 0.064 s  
+15:50:23   proof queue wait: 0.000 s     
+15:50:23   grid wall: 0.3940 s, 2.538 grids/sec                                   
+15:50:23   grid 120 done: 1 hits over 256 regions (186.24 TH/s)                   
+15:50:24   compute wall: 209.81 TH/s; effective wall: 209.81 TH/s over 60.0 s (rank=128, includes HIT/setup pauses)                                                  
+15:50:24   grid wall: 0.3270 s, 3.058 grids/sec                                   
+15:50:24   grid 121 done: 0 hits over 256 regions (225.73 TH/s)                   
+15:50:24   grid wall: 0.3299 s, 3.031 grids/sec                                   
+15:50:24   grid 122 done: 0 hits over 256 regions (223.68 TH/s)                   
+15:50:24   grid wall: 0.3358 s, 2.978 grids/sec                                   
+15:50:24   grid 123 done: 0 hits over 256 regions (219.79 TH/s)                   
+15:50:25   grid wall: 0.3294 s, 3.036 grids/sec                                   
+15:50:25   grid 124 done: 0 hits over 256 regions (224.20 TH/s)                   
+15:50:25   grid wall: 0.3303 s, 3.028 grids/sec                                   
+15:50:25   grid 125 done: 0 hits over 256 regions (223.51 TH/s)                   
+15:50:25   grid wall: 0.3347 s, 2.988 grids/sec                                   
+15:50:25   grid 126 done: 0 hits over 256 regions (220.56 TH/s)                   
+15:50:26   grid wall: 0.3301 s, 3.029 grids/sec                                   
+15:50:26   grid 127 done: 0 hits over 256 regions (223.73 TH/s)                   
+15:50:26   grid wall: 0.3305 s, 3.026 grids/sec                                   
+15:50:26   grid 128 done: 0 hits over 256 regions (223.38 TH/s)                   
+15:50:26   proof build wall: 2.882 s     
+15:50:26   submitting share (179180 B) for job e34c19fb_3028274...                
+15:50:26   newer job (grid 129, 128 regions, 0 hits this grid)                    
+15:50:26 job adfa0ada_3028274 target=2^202 factor=1048576 bound=2^222             
+15:50:26   grid wall: 0.3341 s, 2.993 grids/sec                                   
+15:50:26   grid 1 done: 0 hits over 256 regions (220.90 TH/s)                     
+15:50:27   grid wall: 0.3320 s, 3.012 grids/sec                                   
+15:50:27   grid 2 done: 0 hits over 256 regions (222.47 TH/s)                     
+15:50:27   share submit wall: 1.149 s    
+15:50:27   POOL RESPONSE: {"error": null, "id": 122, "result": true}              
+15:50:27   *** SHARE ACCEPTED (you) *** you=1557 dev=123                          
+15:50:27   grid wall: 0.3365 s, 2.972 grids/sec                                   
+15:50:27   grid 3 done: 0 hits over 256 regions (219.21 TH/s)                     
+15:50:27   grid wall: 0.3348 s, 2.987 grids/sec                                   
+15:50:27   grid 4 done: 0 hits over 256 regions (220.80 TH/s)                     
+15:50:28   grid wall: 0.3334 s, 2.999 grids/sec                                   
+15:50:28   grid 5 done: 0 hits over 256 regions (221.73 TH/s)                     
+15:50:28   grid wall: 0.3364 s, 2.973 grids/sec                                   
+15:50:28   grid 6 done: 0 hits over 256 regions (219.74 TH/s)                     
+15:50:28   grid wall: 0.3350 s, 2.985 grids/sec                                   
+15:50:28   grid 7 done: 0 hits over 256 regions (220.77 TH/s)                     
+15:50:29   grid wall: 0.3335 s, 2.998 grids/sec                                   
+15:50:29   grid 8 done: 0 hits over 256 regions (221.44 TH/s)                     
+15:50:29   grid wall: 0.3357 s, 2.979 grids/sec                                   
+15:50:29   grid 9 done: 0 hits over 256 regions (220.14 TH/s)                     
+15:50:29   grid wall: 0.3341 s, 2.993 grids/sec                                   
+15:50:29   grid 10 done: 0 hits over 256 regions (221.18 TH/s)                    
+15:50:30   grid wall: 0.3345 s, 2.990 grids/sec                                   
+15:50:30   grid 11 done: 0 hits over 256 regions (221.01 TH/s)                    
+15:50:30   grid wall: 0.3352 s, 2.984 grids/sec                                   
+15:50:30   grid 12 done: 0 hits over 256 regions (220.25 TH/s)                    
+15:50:30   grid wall: 0.3348 s, 2.987 grids/sec                                   
+15:50:30   grid 13 done: 0 hits over 256 regions (220.80 TH/s)                    
+15:50:31   grid wall: 0.3350 s, 2.985 grids/sec                                   
+15:50:31   grid 14 done: 0 hits over 256 regions (220.72 TH/s)                    
+15:50:31   newer job (grid 15, 64 regions, 0 hits this grid)                      
+15:50:31 job e3d2298c_3028274 target=2^202 factor=1048576 bound=2^222             
+15:50:31   grid wall: 0.3345 s, 2.989 grids/sec                                   
+15:50:31   grid 1 done: 0 hits over 256 regions (220.80 TH/s)                     
+15:50:32   grid wall: 0.3348 s, 2.987 grids/sec                                   
+15:50:32   grid 2 done: 0 hits over 256 regions (220.87 TH/s)                     
+15:50:32   grid wall: 0.3355 s, 2.981 grids/sec                                   
+15:50:32   grid 3 done: 0 hits over 256 regions (219.98 TH/s)                     
+15:50:32   grid wall: 0.3349 s, 2.986 grids/sec                                   
+15:50:32   grid 4 done: 0 hits over 256 regions (220.58 TH/s)                     
+15:50:33   grid wall: 0.3336 s, 2.998 grids/sec                                   
+15:50:33   grid 5 done: 0 hits over 256 regions (221.35 TH/s)                     
+15:50:33   grid wall: 0.3354 s, 2.982 grids/sec                                   
+15:50:33   grid 6 done: 0 hits over 256 regions (220.37 TH/s)                     
+15:50:33   grid wall: 0.3350 s, 2.985 grids/sec                                   
+15:50:33   grid 7 done: 0 hits over 256 regions (220.35 TH/s)                     
+15:50:34   grid wall: 0.3344 s, 2.990 grids/sec                                   
+15:50:34   grid 8 done: 0 hits over 256 regions (220.90 TH/s)                     
+15:50:34   grid wall: 0.3355 s, 2.981 grids/sec                                   
+15:50:34   grid 9 done: 0 hits over 256 regions (220.26 TH/s)                     
+15:50:34   grid wall: 0.3345 s, 2.989 grids/sec                                   
+15:50:34   grid 10 done: 0 hits over 256 regions (220.86 TH/s)                    
+15:50:35   grid wall: 0.3350 s, 2.985 grids/sec                                   
+15:50:35   grid 11 done: 0 hits over 256 regions (220.53 TH/s)                    
+15:50:35   grid wall: 0.3355 s, 2.981 grids/sec                                   
+15:50:35   grid 12 done: 0 hits over 256 regions (220.31 TH/s)                    
+15:50:35   grid wall: 0.3336 s, 2.998 grids/sec                                   
+15:50:35   grid 13 done: 0 hits over 256 regions (221.51 TH/s)                    
+15:50:36   grid wall: 0.3343 s, 2.991 grids/sec                                   
+15:50:36   grid 14 done: 0 hits over 256 regions (220.86 TH/s)                    
+15:50:36   grid wall: 0.3346 s, 2.988 grids/sec                                   
+15:50:36   grid 15 done: 0 hits over 256 regions (220.78 TH/s)                    
+15:50:36   grid wall: 0.3341 s, 2.993 grids/sec                                   
+15:50:36   grid 16 done: 0 hits over 256 regions (221.16 TH/s)                    
+15:50:37   grid wall: 0.3348 s, 2.987 grids/sec                                   
+15:50:37   grid 17 done: 0 hits over 256 regions (220.72 TH/s)                    
+15:50:37   grid wall: 0.3351 s, 2.984 grids/sec                                   
+15:50:37   grid 18 done: 0 hits over 256 regions (220.51 TH/s)                    
+15:50:37   grid wall: 0.3346 s, 2.989 grids/sec                                   
+15:50:37   grid 19 done: 0 hits over 256 regions (220.82 TH/s)                    
+15:50:38   grid wall: 0.3334 s, 3.000 grids/sec                                   
+15:50:38   grid 20 done: 0 hits over 256 regions (221.52 TH/s)                    
+15:50:38   grid wall: 0.3355 s, 2.981 grids/sec                                   
+15:50:38   grid 21 done: 0 hits over 256 regions (220.32 TH/s)                    
+15:50:38   grid wall: 0.3353 s, 2.982 grids/sec                                   
+15:50:38   grid 22 done: 0 hits over 256 regions (220.40 TH/s)                    
+15:50:39   grid wall: 0.3338 s, 2.996 grids/sec                                   
+15:50:39   grid 23 done: 0 hits over 256 regions (221.15 TH/s)                    
+15:50:39   grid wall: 0.3357 s, 2.979 grids/sec                                   
+15:50:39   grid 24 done: 0 hits over 256 regions (220.11 TH/s)                    
+15:50:39   grid wall: 0.3350 s, 2.985 grids/sec                                   
+15:50:39   grid 25 done: 0 hits over 256 regions (220.54 TH/s)                    
+15:50:40   grid wall: 0.3351 s, 2.984 grids/sec                                   
+15:50:40   grid 26 done: 0 hits over 256 regions (220.25 TH/s)                    
+15:50:40   grid wall: 0.3352 s, 2.983 grids/sec                                   
+15:50:40   grid 27 done: 0 hits over 256 regions (220.32 TH/s)                    
+15:50:40   grid wall: 0.3336 s, 2.998 grids/sec                                   
+15:50:40   grid 28 done: 0 hits over 256 regions (221.49 TH/s)                    
+15:50:41   grid wall: 0.3347 s, 2.988 grids/sec                                   
+15:50:41   grid 29 done: 0 hits over 256 regions (220.83 TH/s)                    
+15:50:41   grid wall: 0.3352 s, 2.984 grids/sec                                   
+15:50:41   grid 30 done: 0 hits over 256 regions (220.41 TH/s)                    
+15:50:41   grid wall: 0.3337 s, 2.997 grids/sec                                   
+15:50:41   grid 31 done: 0 hits over 256 regions (221.43 TH/s)                    
+15:50:42   grid wall: 0.3354 s, 2.981 grids/sec                                   
+15:50:42   grid 32 done: 0 hits over 256 regions (220.28 TH/s)                    
+15:50:42   grid wall: 0.3349 s, 2.986 grids/sec                                   
+15:50:42   grid 33 done: 0 hits over 256 regions (220.57 TH/s)                    
+15:50:42   grid wall: 0.3352 s, 2.983 grids/sec                                   
+15:50:42   grid 34 done: 0 hits over 256 regions (220.36 TH/s)                    
+15:50:43   grid wall: 0.3348 s, 2.987 grids/sec                                   
+15:50:43   grid 35 done: 0 hits over 256 regions (220.72 TH/s)                    
+15:50:43   grid wall: 0.3346 s, 2.988 grids/sec                                   
+15:50:43   grid 36 done: 0 hits over 256 regions (220.58 TH/s)                    
+15:50:43   grid wall: 0.3348 s, 2.987 grids/sec                                   
+15:50:43   grid 37 done: 0 hits over 256 regions (220.62 TH/s)                    
+15:50:44   compute wall: 209.99 TH/s; effective wall: 209.99 TH/s over 60.1 s (rank=128, includes HIT/setup pauses)                                                  
+15:50:44   grid wall: 0.3346 s, 2.989 grids/sec                                   
+15:50:44   grid 38 done: 0 hits over 256 regions (220.79 TH/s)                    
+15:50:44   grid wall: 0.3350 s, 2.985 grids/sec                                   
+15:50:44   grid 39 done: 0 hits over 256 regions (220.62 TH/s)                    
+15:50:44   grid wall: 0.3347 s, 2.987 grids/sec                                   
+15:50:44   grid 40 done: 0 hits over 256 regions (220.82 TH/s)                    
+15:50:45   grid wall: 0.3344 s, 2.990 grids/sec                                   
+15:50:45   grid 41 done: 0 hits over 256 regions (220.73 TH/s)                    
+15:50:45   grid wall: 0.3355 s, 2.981 grids/sec                                   
+15:50:45   grid 42 done: 0 hits over 256 regions (220.17 TH/s)                    
+15:50:45   grid wall: 0.3340 s, 2.994 grids/sec                                   
+15:50:45   grid 43 done: 0 hits over 256 regions (221.28 TH/s)                    
+15:50:46   grid wall: 0.3341 s, 2.993 grids/sec                                   
+15:50:46   grid 44 done: 0 hits over 256 regions (221.16 TH/s)                    
+15:50:46   grid wall: 0.3352 s, 2.983 grids/sec                                   
+15:50:46   grid 45 done: 0 hits over 256 regions (220.49 TH/s)                    
+15:50:46   grid wall: 0.3356 s, 2.980 grids/sec                                   
+15:50:46   grid 46 done: 0 hits over 256 regions (220.15 TH/s)                    
+15:50:47   grid wall: 0.3334 s, 2.999 grids/sec                                   
+15:50:47   grid 47 done: 0 hits over 256 regions (221.39 TH/s)                    
+15:50:47   grid wall: 0.3354 s, 2.982 grids/sec                                   
+15:50:47   grid 48 done: 0 hits over 256 regions (220.27 TH/s)                    
+15:50:47   grid wall: 0.3357 s, 2.978 grids/sec                                   
+15:50:47   grid 49 done: 0 hits over 256 regions (219.87 TH/s)                    
+15:50:48   grid wall: 0.3334 s, 2.999 grids/sec                                   
+15:50:48   grid 50 done: 0 hits over 256 regions (221.62 TH/s)                    
+15:50:48   grid wall: 0.3354 s, 2.982 grids/sec                                   
+15:50:48   grid 51 done: 0 hits over 256 regions (220.23 TH/s)                    
+15:50:48   grid wall: 0.3353 s, 2.982 grids/sec                                   
+15:50:48   grid 52 done: 0 hits over 256 regions (220.18 TH/s)                    
+15:50:49   grid wall: 0.3337 s, 2.996 grids/sec                                   
+15:50:49   grid 53 done: 0 hits over 256 regions (221.44 TH/s)                    
+15:50:49   grid wall: 0.3357 s, 2.979 grids/sec                                   
+15:50:49   grid 54 done: 0 hits over 256 regions (220.11 TH/s)                    
+15:50:49   grid wall: 0.3320 s, 3.012 grids/sec                                   
+15:50:49   grid 55 done: 0 hits over 256 regions (222.64 TH/s)                    
+15:50:50   grid wall: 0.3304 s, 3.026 grids/sec                                   
+15:50:50   grid 56 done: 0 hits over 256 regions (223.43 TH/s)                    
+15:50:50   grid wall: 0.3317 s, 3.015 grids/sec                                   
+15:50:50   grid 57 done: 0 hits over 256 regions (222.52 TH/s)                    
+15:50:50   grid wall: 0.3319 s, 3.013 grids/sec                                   
+15:50:50   grid 58 done: 0 hits over 256 regions (222.39 TH/s)                    
+15:50:51   grid wall: 0.3339 s, 2.995 grids/sec                                   
+15:50:51   grid 59 done: 0 hits over 256 regions (221.00 TH/s)                    
+15:50:51   grid wall: 0.3360 s, 2.976 grids/sec                                   
+15:50:51   grid 60 done: 0 hits over 256 regions (219.67 TH/s)                    
+15:50:51   grid wall: 0.3342 s, 2.993 grids/sec                                   
+15:50:51   grid 61 done: 0 hits over 256 regions (220.88 TH/s)                    
+15:50:52   grid wall: 0.3342 s, 2.992 grids/sec                                   
+15:50:52   grid 62 done: 0 hits over 256 regions (220.85 TH/s)                    
+15:50:52   grid wall: 0.3366 s, 2.971 grids/sec                                   
+15:50:52   grid 63 done: 0 hits over 256 regions (219.65 TH/s)                    
+15:50:52   grid wall: 0.3349 s, 2.986 grids/sec                                   
+15:50:52   grid 64 done: 0 hits over 256 regions (220.57 TH/s)                    
+15:50:53   grid wall: 0.3342 s, 2.992 grids/sec                                   
+15:50:53   grid 65 done: 0 hits over 256 regions (221.17 TH/s)                    
+15:50:53   grid wall: 0.3361 s, 2.975 grids/sec                                   
+15:50:53   grid 66 done: 0 hits over 256 regions (219.78 TH/s)                    
+15:50:53   grid wall: 0.3350 s, 2.985 grids/sec                                   
+15:50:53   grid 67 done: 0 hits over 256 regions (220.75 TH/s)                    
+15:50:54   grid wall: 0.3343 s, 2.991 grids/sec                                   
+15:50:54   grid 68 done: 0 hits over 256 regions (220.83 TH/s)                    
+15:50:54   grid wall: 0.3357 s, 2.979 grids/sec                                   
+15:50:54   grid 69 done: 0 hits over 256 regions (220.08 TH/s)                    
+15:50:54   grid wall: 0.3347 s, 2.988 grids/sec                                   
+15:50:54   grid 70 done: 0 hits over 256 regions (220.58 TH/s)                    
+15:50:55   grid wall: 0.3347 s, 2.988 grids/sec                                   
+15:50:55   grid 71 done: 0 hits over 256 regions (220.88 TH/s)                    
+15:50:55   grid wall: 0.3354 s, 2.981 grids/sec                                   
+15:50:55   grid 72 done: 0 hits over 256 regions (220.33 TH/s)                    
+15:50:55   grid wall: 0.3338 s, 2.995 grids/sec                                   
+15:50:55   grid 73 done: 0 hits over 256 regions (221.29 TH/s)                    
+15:50:56   grid wall: 0.3341 s, 2.993 grids/sec                                   
+15:50:56   grid 74 done: 0 hits over 256 regions (221.27 TH/s)                    
+15:50:56   grid wall: 0.3352 s, 2.983 grids/sec                                   
+15:50:56   grid 75 done: 0 hits over 256 regions (220.15 TH/s)                    
+15:50:56   grid wall: 0.3353 s, 2.983 grids/sec                                   
+15:50:56   grid 76 done: 0 hits over 256 regions (220.33 TH/s)                    
+15:50:57   grid wall: 0.3338 s, 2.996 grids/sec                                   
+15:50:57   grid 77 done: 0 hits over 256 regions (221.23 TH/s)                    
+15:50:57   grid wall: 0.3356 s, 2.980 grids/sec                                   
+15:50:57   grid 78 done: 0 hits over 256 regions (219.91 TH/s)                    
+15:50:57   grid wall: 0.3352 s, 2.983 grids/sec                                   
+15:50:57   grid 79 done: 0 hits over 256 regions (220.43 TH/s)                    
+15:50:58   grid wall: 0.3346 s, 2.988 grids/sec                                   
+15:50:58   grid 80 done: 0 hits over 256 regions (220.73 TH/s)                    
+15:50:58   grid wall: 0.3352 s, 2.984 grids/sec                                   
+15:50:58   grid 81 done: 0 hits over 256 regions (220.55 TH/s)                    
+15:50:58   grid wall: 0.3353 s, 2.983 grids/sec                                   
+15:50:58   grid 82 done: 0 hits over 256 regions (220.39 TH/s)                    
+15:50:59   grid wall: 0.3345 s, 2.989 grids/sec                                   
+15:50:59   grid 83 done: 0 hits over 256 regions (220.88 TH/s)                    
+15:50:59   grid wall: 0.3349 s, 2.986 grids/sec                                   
+15:50:59   grid 84 done: 0 hits over 256 regions (220.58 TH/s)                    
+15:50:59   grid wall: 0.3351 s, 2.984 grids/sec                                   
+15:50:59   grid 85 done: 0 hits over 256 regions (220.18 TH/s)                    
+15:51:00   grid wall: 0.3338 s, 2.996 grids/sec                                   
+15:51:00   grid 86 done: 0 hits over 256 regions (221.45 TH/s)                    
+15:51:00   grid wall: 0.3357 s, 2.979 grids/sec                                   
+15:51:00   grid 87 done: 0 hits over 256 regions (220.09 TH/s)                    
+15:51:00   grid wall: 0.3356 s, 2.980 grids/sec                                   
+15:51:00   grid 88 done: 0 hits over 256 regions (219.96 TH/s)                    
+15:51:01   grid wall: 0.3342 s, 2.993 grids/sec                                   
+15:51:01   grid 89 done: 0 hits over 256 regions (221.09 TH/s)                    
+15:51:01   grid wall: 0.3347 s, 2.987 grids/sec                                   
+15:51:01   grid 90 done: 0 hits over 256 regions (220.46 TH/s)                    
+15:51:01   grid wall: 0.3353 s, 2.982 grids/sec                                   
+15:51:01   grid 91 done: 0 hits over 256 regions (220.19 TH/s)                    
+15:51:02   grid wall: 0.3350 s, 2.985 grids/sec                                   
+15:51:02   grid 92 done: 0 hits over 256 regions (220.60 TH/s)                    
+15:51:02   grid wall: 0.3345 s, 2.989 grids/sec                                   
+15:51:02   grid 93 done: 0 hits over 256 regions (220.87 TH/s)                    
+15:51:02   grid wall: 0.3348 s, 2.986 grids/sec                                   
+15:51:02   grid 94 done: 0 hits over 256 regions (220.65 TH/s)                    
+15:51:03   grid wall: 0.3351 s, 2.984 grids/sec                                   
+15:51:03   grid 95 done: 0 hits over 256 regions (220.52 TH/s)                    
+15:51:03   grid wall: 0.3345 s, 2.990 grids/sec                                   
+15:51:03   grid 96 done: 0 hits over 256 regions (220.70 TH/s)                    
+15:51:03   grid wall: 0.3356 s, 2.980 grids/sec                                   
+15:51:03   grid 97 done: 0 hits over 256 regions (220.05 TH/s)                    
+15:51:04   compute wall: 210.00 TH/s; effective wall: 210.00 TH/s over 60.1 s (rank=128, includes HIT/setup pauses)                                                  
+15:51:04   grid wall: 0.3343 s, 2.992 grids/sec                                   
+15:51:04   grid 98 done: 0 hits over 256 regions (221.11 TH/s)                    
+15:51:04   grid wall: 0.3354 s, 2.981 grids/sec                                   
+15:51:04   grid 99 done: 0 hits over 256 regions (220.33 TH/s)                    
+15:51:04   grid wall: 0.3362 s, 2.975 grids/sec                                   
+15:51:04   grid 100 done: 0 hits over 256 regions (219.73 TH/s)                   
+15:51:05   grid wall: 0.3347 s, 2.987 grids/sec                                   
+15:51:05   grid 101 done: 0 hits over 256 regions (220.82 TH/s)                   
+15:51:05   grid wall: 0.3350 s, 2.985 grids/sec                                   
+15:51:05   grid 102 done: 0 hits over 256 regions (220.51 TH/s)                   
+15:51:05   grid wall: 0.3361 s, 2.976 grids/sec                                   
+15:51:05   grid 103 done: 0 hits over 256 regions (219.87 TH/s)                   
+15:51:06   grid wall: 0.3343 s, 2.991 grids/sec                                   
+15:51:06   grid 104 done: 0 hits over 256 regions (221.06 TH/s)                   
+15:51:06   grid wall: 0.3353 s, 2.982 grids/sec                                   
+15:51:06   grid 105 done: 0 hits over 256 regions (220.14 TH/s)                   
+15:51:06   grid wall: 0.3367 s, 2.970 grids/sec                                   
+15:51:06   grid 106 done: 0 hits over 256 regions (219.40 TH/s)                   
+15:51:07   grid wall: 0.3342 s, 2.993 grids/sec                                   
+15:51:07   grid 107 done: 0 hits over 256 regions (220.93 TH/s)                   
+15:51:07   grid wall: 0.3360 s, 2.976 grids/sec                                   
+15:51:07   grid 108 done: 0 hits over 256 regions (219.82 TH/s)                   
+15:51:07   grid wall: 0.3349 s, 2.986 grids/sec                                   
+15:51:07   grid 109 done: 0 hits over 256 regions (220.61 TH/s)                   
+15:51:08   grid wall: 0.3342 s, 2.993 grids/sec                                   
+15:51:08   grid 110 done: 0 hits over 256 regions (221.28 TH/s)                   
+15:51:08   grid wall: 0.3360 s, 2.977 grids/sec                                   
+15:51:08   grid 111 done: 0 hits over 256 regions (219.92 TH/s)                   
+15:51:08   grid wall: 0.3348 s, 2.987 grids/sec                                   
+15:51:08   grid 112 done: 0 hits over 256 regions (220.53 TH/s)                   
+15:51:09   grid wall: 0.3357 s, 2.978 grids/sec                                   
+15:51:09   grid 113 done: 0 hits over 256 regions (220.12 TH/s)                   
+15:51:09   grid wall: 0.3343 s, 2.991 grids/sec                                   
+15:51:09   grid 114 done: 0 hits over 256 regions (221.04 TH/s)                   
+15:51:09   HIT tile (row=75504, col=88288) grid 115; proof async                  
+15:51:09   share snapshot wall: 0.064 s  
+15:51:09   proof queue wait: 0.000 s     
+15:51:09   grid wall: 0.3965 s, 2.522 grids/sec                                   
+15:51:09   grid 115 done: 1 hits over 256 regions (184.97 TH/s)                   
+15:51:10   grid wall: 0.3280 s, 3.049 grids/sec                                   
+15:51:10   grid 116 done: 0 hits over 256 regions (226.23 TH/s)                   
+15:51:10   grid wall: 0.3297 s, 3.033 grids/sec                                   
+15:51:10   grid 117 done: 0 hits over 256 regions (223.91 TH/s)                   
+15:51:10   grid wall: 0.3344 s, 2.990 grids/sec                                   
+15:51:10   grid 118 done: 0 hits over 256 regions (220.61 TH/s)                   
+15:51:11   grid wall: 0.3317 s, 3.015 grids/sec                                   
+15:51:11   grid 119 done: 0 hits over 256 regions (222.69 TH/s)                   
+15:51:11   grid wall: 0.3300 s, 3.031 grids/sec                                   
+15:51:11   grid 120 done: 0 hits over 256 regions (223.74 TH/s)                   
+15:51:11   grid wall: 0.3333 s, 3.001 grids/sec                                   
+15:51:11   grid 121 done: 0 hits over 256 regions (221.46 TH/s)                   
+15:51:12   grid wall: 0.3331 s, 3.003 grids/sec                                   
+15:51:12   grid 122 done: 0 hits over 256 regions (221.68 TH/s)                   
+15:51:12   proof build wall: 2.717 s     
+15:51:12   submitting share (179180 B) for job e3d2298c_3028274...                
+15:51:12   grid wall: 0.3301 s, 3.030 grids/sec                                   
+15:51:12   grid 123 done: 0 hits over 256 regions (223.82 TH/s)                   
+15:51:12   grid wall: 0.3347 s, 2.987 grids/sec                                   
+15:51:12   grid 124 done: 0 hits over 256 regions (220.33 TH/s)                   
+15:51:13   grid wall: 0.3356 s, 2.980 grids/sec                                   
+15:51:13   grid 125 done: 0 hits over 256 regions (220.21 TH/s)                   
+15:51:13   grid wall: 0.3327 s, 3.006 grids/sec                                   
+15:51:13   grid 126 done: 0 hits over 256 regions (221.98 TH/s)                   
+15:51:13   share submit wall: 1.150 s    
+15:51:13   POOL RESPONSE: {"error": null, "id": 123, "result": true}              
+15:51:13   *** SHARE ACCEPTED (you) *** you=1558 dev=123                          
+15:51:13   grid wall: 0.3358 s, 2.978 grids/sec                                   
+15:51:13   grid 127 done: 0 hits over 256 regions (220.01 TH/s)                   
+15:51:14   grid wall: 0.3359 s, 2.977 grids/sec                                   
+15:51:14   grid 128 done: 0 hits over 256 regions (219.95 TH/s)                   
+15:51:14   grid wall: 0.3328 s, 3.005 grids/sec                                   
+15:51:14   grid 129 done: 0 hits over 256 regions (222.04 TH/s)                   
+15:51:14   grid wall: 0.3349 s, 2.986 grids/sec                                   
+15:51:14   grid 130 done: 0 hits over 256 regions (220.41 TH/s)                   
+15:51:15   grid wall: 0.3334 s, 2.999 grids/sec                                   
+15:51:15   grid 131 done: 0 hits over 256 regions (221.43 TH/s)                   
+15:51:15   grid wall: 0.3337 s, 2.997 grids/sec                                   
+15:51:15   grid 132 done: 0 hits over 256 regions (221.11 TH/s)                   
+15:51:15   grid wall: 0.3350 s, 2.985 grids/sec                                   
+15:51:15   grid 133 done: 0 hits over 256 regions (220.31 TH/s)                   
+15:51:16   grid wall: 0.3358 s, 2.978 grids/sec                                   
+15:51:16   grid 134 done: 0 hits over 256 regions (220.09 TH/s)                   
+15:51:16   grid wall: 0.3334 s, 3.000 grids/sec                                   
+15:51:16   grid 135 done: 0 hits over 256 regions (221.65 TH/s)                   
+15:51:16   grid wall: 0.3362 s, 2.974 grids/sec                                   
+15:51:16   grid 136 done: 0 hits over 256 regions (219.74 TH/s)                   
+15:51:17   grid wall: 0.3342 s, 2.992 grids/sec                                   
+15:51:17   grid 137 done: 0 hits over 256 regions (221.15 TH/s)                   
+15:51:17   grid wall: 0.3347 s, 2.988 grids/sec                                   
+15:51:17   grid 138 done: 0 hits over 256 regions (220.77 TH/s)                   
+15:51:17   grid wall: 0.3350 s, 2.985 grids/sec                                   
+15:51:17   grid 139 done: 0 hits over 256 regions (220.31 TH/s)                   
+15:51:18   grid wall: 0.3352 s, 2.984 grids/sec                                   
+15:51:18   grid 140 done: 0 hits over 256 regions (220.25 TH/s)                   
+15:51:18   grid wall: 0.3350 s, 2.985 grids/sec                                   
+15:51:18   grid 141 done: 0 hits over 256 regions (220.69 TH/s)                   
+15:51:18   grid wall: 0.3332 s, 3.001 grids/sec                                   
+15:51:18   grid 142 done: 0 hits over 256 regions (221.54 TH/s)                   
+15:51:19   grid wall: 0.3357 s, 2.979 grids/sec                                   
+15:51:19   grid 143 done: 0 hits over 256 regions (220.08 TH/s)                   
+15:51:19   grid wall: 0.3344 s, 2.991 grids/sec                                   
+15:51:19   grid 144 done: 0 hits over 256 regions (221.13 TH/s)                   
+15:51:19   grid wall: 0.3345 s, 2.989 grids/sec                                   
+15:51:19   grid 145 done: 0 hits over 256 regions (220.61 TH/s)                   
+15:51:20   grid wall: 0.3358 s, 2.978 grids/sec                                   
+15:51:20   grid 146 done: 0 hits over 256 regions (220.12 TH/s)                   
+15:51:20   newer job (grid 147, 192 regions, 0 hits this grid)                    
+15:51:20 job 9c257422_3028274 target=2^202 factor=1048576 bound=2^222             
+15:51:20   grid wall: 0.3339 s, 2.995 grids/sec                                   
+15:51:20   grid 1 done: 0 hits over 256 regions (221.43 TH/s)                     
+15:51:21   grid wall: 0.3373 s, 2.964 grids/sec                                   
+15:51:21   grid 2 done: 0 hits over 256 regions (219.01 TH/s)                     
+15:51:21   grid wall: 0.3353 s, 2.982 grids/sec                                   
+15:51:21   grid 3 done: 0 hits over 256 regions (220.17 TH/s)                     
+15:51:21   grid wall: 0.3334 s, 2.999 grids/sec                                   
+15:51:21   grid 4 done: 0 hits over 256 regions (221.77 TH/s)                     
+15:51:22   grid wall: 0.3360 s, 2.976 grids/sec                                   
+15:51:22   grid 5 done: 0 hits over 256 regions (219.99 TH/s)                     
+15:51:22   grid wall: 0.3350 s, 2.985 grids/sec                                   
+15:51:22   grid 6 done: 0 hits over 256 regions (220.57 TH/s)                     
+15:51:22   grid wall: 0.3344 s, 2.990 grids/sec                                   
+15:51:22   grid 7 done: 0 hits over 256 regions (221.00 TH/s)                     
+15:51:23   grid wall: 0.3353 s, 2.982 grids/sec                                   
+15:51:23   grid 8 done: 0 hits over 256 regions (220.10 TH/s)                     
+15:51:23   grid wall: 0.3343 s, 2.991 grids/sec                                   
+15:51:23   grid 9 done: 0 hits over 256 regions (221.05 TH/s)                     
+15:51:23   grid wall: 0.3324 s, 3.009 grids/sec                                   
+15:51:23   grid 10 done: 0 hits over 256 regions (222.00 TH/s)                    
+15:51:24   compute wall: 210.04 TH/s; effective wall: 210.04 TH/s over 60.1 s (rank=128, includes HIT/setup pauses)                                                  
+15:51:24   grid wall: 0.3357 s, 2.979 grids/sec                                   
+15:51:24   grid 11 done: 0 hits over 256 regions (220.14 TH/s)                    
+15:51:24   grid wall: 0.3358 s, 2.978 grids/sec                                   
+15:51:24   grid 12 done: 0 hits over 256 regions (220.15 TH/s)                    
+15:51:24   grid wall: 0.3343 s, 2.991 grids/sec                                   
+15:51:24   grid 13 done: 0 hits over 256 regions (220.72 TH/s)                    
+15:51:25   grid wall: 0.3355 s, 2.981 grids/sec                                   
+15:51:25   grid 14 done: 0 hits over 256 regions (220.20 TH/s)                    
+15:51:25   grid wall: 0.3339 s, 2.995 grids/sec                                   
+15:51:25   grid 15 done: 0 hits over 256 regions (221.37 TH/s)                    
+15:51:25   grid wall: 0.3344 s, 2.991 grids/sec                                   
+15:51:25   grid 16 done: 0 hits over 256 regions (221.05 TH/s)                    
+15:51:26   grid wall: 0.3344 s, 2.991 grids/sec                                   
+15:51:26   grid 17 done: 0 hits over 256 regions (221.00 TH/s)                    
+15:51:26   grid wall: 0.3349 s, 2.986 grids/sec                                   
+15:51:26   grid 18 done: 0 hits over 256 regions (220.82 TH/s)                    
+15:51:26   grid wall: 0.3354 s, 2.981 grids/sec                                   
+15:51:26   grid 19 done: 0 hits over 256 regions (220.36 TH/s)                    
+15:51:27   grid wall: 0.3354 s, 2.981 grids/sec                                   
+15:51:27   grid 20 done: 0 hits over 256 regions (220.12 TH/s)                    
+15:51:27   grid wall: 0.3357 s, 2.979 grids/sec                                   
+15:51:27   grid 21 done: 0 hits over 256 regions (220.21 TH/s)                    
+15:51:27   grid wall: 0.3352 s, 2.983 grids/sec                                   
+15:51:27   grid 22 done: 0 hits over 256 regions (220.52 TH/s)                    
+15:51:28   grid wall: 0.3361 s, 2.975 grids/sec                                   
+15:51:28   grid 23 done: 0 hits over 256 regions (219.77 TH/s)                    
+15:51:28   grid wall: 0.3340 s, 2.994 grids/sec                                   
+15:51:28   grid 24 done: 0 hits over 256 regions (221.34 TH/s)                    
+15:51:28   grid wall: 0.3353 s, 2.982 grids/sec                                   
+15:51:28   grid 25 done: 0 hits over 256 regions (220.13 TH/s)                    
+15:51:29   grid wall: 0.3362 s, 2.974 grids/sec                                   
+15:51:29   grid 26 done: 0 hits over 256 regions (219.88 TH/s)                    
+15:51:29   grid wall: 0.3338 s, 2.995 grids/sec                                   
+15:51:29   grid 27 done: 0 hits over 256 regions (221.41 TH/s)                    
+15:51:29   grid wall: 0.3357 s, 2.979 grids/sec                                   
+15:51:29   grid 28 done: 0 hits over 256 regions (220.03 TH/s)                    
+15:51:30   grid wall: 0.3362 s, 2.975 grids/sec                                   
+15:51:30   grid 29 done: 0 hits over 256 regions (219.92 TH/s)                    
+15:51:30   grid wall: 0.3346 s, 2.988 grids/sec                                   
+15:51:30   grid 30 done: 0 hits over 256 regions (220.86 TH/s)                    
+15:51:30   grid wall: 0.3358 s, 2.978 grids/sec                                   
+15:51:30   grid 31 done: 0 hits over 256 regions (219.96 TH/s)                    
+15:51:31   grid wall: 0.3357 s, 2.978 grids/sec                                   
+15:51:31   grid 32 done: 0 hits over 256 regions (220.05 TH/s)                    
+15:51:31   grid wall: 0.3359 s, 2.977 grids/sec                                   
+15:51:31   grid 33 done: 0 hits over 256 regions (220.09 TH/s)                    
+15:51:31   grid wall: 0.3352 s, 2.983 grids/sec                                   
+15:51:31   grid 34 done: 0 hits over 256 regions (220.48 TH/s)                    
+15:51:32   grid wall: 0.3357 s, 2.979 grids/sec                                   
+15:51:32   grid 35 done: 0 hits over 256 regions (220.09 TH/s)                    
+15:51:32   grid wall: 0.3351 s, 2.984 grids/sec                                   
+15:51:32   grid 36 done: 0 hits over 256 regions (220.59 TH/s)                    
+15:51:32   grid wall: 0.3348 s, 2.987 grids/sec                                   
+15:51:32   grid 37 done: 0 hits over 256 regions (220.67 TH/s)                    
+15:51:33   grid wall: 0.3361 s, 2.976 grids/sec                                   
+15:51:33   grid 38 done: 0 hits over 256 regions (219.78 TH/s)                    
+15:51:33   HIT tile (row=99728, col=93792) grid 39; proof async                   
+15:51:33   share snapshot wall: 0.064 s  
+15:51:33   proof queue wait: 0.000 s     
+15:51:33   grid wall: 0.3984 s, 2.510 grids/sec                                   
+15:51:33   grid 39 done: 1 hits over 256 regions (183.86 TH/s)                    
+15:51:34   grid wall: 0.3249 s, 3.078 grids/sec                                   
+15:51:34   grid 40 done: 0 hits over 256 regions (227.04 TH/s)                    
+15:51:34   grid wall: 0.3285 s, 3.044 grids/sec                                   
+15:51:34   grid 41 done: 0 hits over 256 regions (224.74 TH/s)                    
+15:51:34   grid wall: 0.3322 s, 3.011 grids/sec                                   
+15:51:34   grid 42 done: 0 hits over 256 regions (222.15 TH/s)                    
+15:51:35   grid wall: 0.3353 s, 2.982 grids/sec                                   
+15:51:35   grid 43 done: 0 hits over 256 regions (220.14 TH/s)                    
+15:51:35   grid wall: 0.3296 s, 3.034 grids/sec                                   
+15:51:35   grid 44 done: 0 hits over 256 regions (224.02 TH/s)                    
+15:51:35   grid wall: 0.3328 s, 3.005 grids/sec                                   
+15:51:35   grid 45 done: 0 hits over 256 regions (221.77 TH/s)                    
+15:51:36   grid wall: 0.3348 s, 2.987 grids/sec                                   
+15:51:36   grid 46 done: 0 hits over 256 regions (220.47 TH/s)                    
+15:51:36   grid wall: 0.3300 s, 3.030 grids/sec                                   
+15:51:36   grid 47 done: 0 hits over 256 regions (223.70 TH/s)                    
+15:51:36   proof build wall: 2.686 s     
+15:51:36   submitting share (179180 B) for job 9c257422_3028274...                
+15:51:36   grid wall: 0.3329 s, 3.004 grids/sec                                   
+15:51:36   grid 48 done: 0 hits over 256 regions (221.62 TH/s)                    
+15:51:37   grid wall: 0.3374 s, 2.964 grids/sec                                   
+15:51:37   grid 49 done: 0 hits over 256 regions (218.96 TH/s)                    
+15:51:37   grid wall: 0.3327 s, 3.005 grids/sec                                   
+15:51:37   grid 50 done: 0 hits over 256 regions (222.07 TH/s)                    
+15:51:37   share submit wall: 1.147 s    
+15:51:37   POOL RESPONSE: {"error": null, "id": 124, "result": true}              
+15:51:37   *** SHARE ACCEPTED (you) *** you=1559 dev=123                          
+15:51:37   grid wall: 0.3348 s, 2.987 grids/sec                                   
+15:51:37   grid 51 done: 0 hits over 256 regions (220.78 TH/s)                    
+15:51:38   grid wall: 0.3364 s, 2.972 grids/sec                                   
+15:51:38   grid 52 done: 0 hits over 256 regions (219.77 TH/s)                    
+15:51:38   grid wall: 0.3354 s, 2.982 grids/sec                                   
+15:51:38   grid 53 done: 0 hits over 256 regions (220.33 TH/s)                    
+15:51:38   grid wall: 0.3353 s, 2.982 grids/sec                                   
+15:51:38   grid 54 done: 0 hits over 256 regions (220.45 TH/s)                    
+15:51:39   grid wall: 0.3366 s, 2.971 grids/sec                                   
+15:51:39   grid 55 done: 0 hits over 256 regions (219.64 TH/s)                    
+15:51:39   grid wall: 0.3349 s, 2.986 grids/sec                                   
+15:51:39   grid 56 done: 0 hits over 256 regions (220.71 TH/s)                    
+15:51:39   grid wall: 0.3350 s, 2.985 grids/sec                                   
+15:51:39   grid 57 done: 0 hits over 256 regions (220.55 TH/s)                    
+15:51:40   grid wall: 0.3359 s, 2.977 grids/sec                                   
+15:51:40   grid 58 done: 0 hits over 256 regions (219.98 TH/s)                    
+15:51:40   grid wall: 0.3342 s, 2.992 grids/sec                                   
+15:51:40   grid 59 done: 0 hits over 256 regions (220.76 TH/s)                    
+15:51:40   grid wall: 0.3346 s, 2.989 grids/sec                                   
+15:51:40   grid 60 done: 0 hits over 256 regions (220.54 TH/s)                    
+15:51:41   grid wall: 0.3358 s, 2.978 grids/sec                                   
+15:51:41   grid 61 done: 0 hits over 256 regions (220.09 TH/s)                    
+15:51:41   grid wall: 0.3359 s, 2.977 grids/sec                                   
+15:51:41   grid 62 done: 0 hits over 256 regions (220.07 TH/s)                    
+15:51:41   grid wall: 0.3345 s, 2.989 grids/sec                                   
+15:51:41   grid 63 done: 0 hits over 256 regions (220.98 TH/s)                    
+15:51:42   grid wall: 0.3359 s, 2.977 grids/sec                                   
+15:51:42   grid 64 done: 0 hits over 256 regions (219.95 TH/s)                    
+15:51:42   grid wall: 0.3352 s, 2.984 grids/sec                                   
+15:51:42   grid 65 done: 0 hits over 256 regions (220.43 TH/s)                    
+15:51:42   grid wall: 0.3344 s, 2.991 grids/sec                                   
+15:51:42   grid 66 done: 0 hits over 256 regions (220.82 TH/s)                    
+15:51:43   grid wall: 0.3357 s, 2.979 grids/sec                                   
+15:51:43   grid 67 done: 0 hits over 256 regions (220.10 TH/s)                    
+15:51:43   grid wall: 0.3359 s, 2.977 grids/sec                                   
+15:51:43   grid 68 done: 0 hits over 256 regions (220.11 TH/s)                    
+15:51:43   grid wall: 0.3354 s, 2.982 grids/sec                                   
+15:51:43   grid 69 done: 0 hits over 256 regions (220.42 TH/s)                    
+15:51:44   grid wall: 0.3355 s, 2.981 grids/sec                                   
+15:51:44   grid 70 done: 0 hits over 256 regions (220.37 TH/s)                    
+15:51:44   compute wall: 209.79 TH/s; effective wall: 209.79 TH/s over 60.0 s (rank=128, includes HIT/setup pauses)                                                  
+15:51:44   grid wall: 0.3350 s, 2.985 grids/sec                                   
+15:51:44   grid 71 done: 0 hits over 256 regions (220.24 TH/s)                    
+15:51:44   grid wall: 0.3359 s, 2.977 grids/sec                                   
+15:51:44   grid 72 done: 0 hits over 256 regions (219.99 TH/s)                    
+15:51:45   grid wall: 0.3353 s, 2.982 grids/sec                                   
+15:51:45   grid 73 done: 0 hits over 256 regions (220.34 TH/s)                    
+15:51:45   grid wall: 0.3347 s, 2.988 grids/sec                                   
+15:51:45   grid 74 done: 0 hits over 256 regions (220.55 TH/s)                    
+15:51:45   grid wall: 0.3354 s, 2.982 grids/sec                                   
+15:51:45   grid 75 done: 0 hits over 256 regions (220.05 TH/s)                    
+15:51:46   grid wall: 0.3353 s, 2.982 grids/sec                                   
+15:51:46   grid 76 done: 0 hits over 256 regions (220.41 TH/s)                    
+15:51:46   grid wall: 0.3349 s, 2.986 grids/sec                                   
+15:51:46   grid 77 done: 0 hits over 256 regions (220.65 TH/s)                    
+15:51:46   grid wall: 0.3353 s, 2.983 grids/sec                                   
+15:51:46   grid 78 done: 0 hits over 256 regions (220.43 TH/s)                    
+15:51:47   grid wall: 0.3347 s, 2.988 grids/sec                                   
+15:51:47   grid 79 done: 0 hits over 256 regions (220.59 TH/s)                    
+15:51:47   grid wall: 0.3353 s, 2.983 grids/sec                                   
+15:51:47   grid 80 done: 0 hits over 256 regions (220.51 TH/s)                    
+15:51:47   grid wall: 0.3354 s, 2.981 grids/sec                                   
+15:51:47   grid 81 done: 0 hits over 256 regions (220.38 TH/s)                    
+15:51:48   grid wall: 0.3352 s, 2.983 grids/sec                                   
+15:51:48   grid 82 done: 0 hits over 256 regions (220.54 TH/s)                    
+15:51:48   grid wall: 0.3357 s, 2.979 grids/sec                                   
+15:51:48   grid 83 done: 0 hits over 256 regions (220.15 TH/s)                    
+15:51:48   grid wall: 0.3355 s, 2.981 grids/sec                                   
+15:51:48   grid 84 done: 0 hits over 256 regions (220.36 TH/s)                    
+15:51:49   grid wall: 0.3349 s, 2.986 grids/sec                                   
+15:51:49   grid 85 done: 0 hits over 256 regions (220.64 TH/s)                    
+15:51:49   grid wall: 0.3344 s, 2.991 grids/sec                                   
+15:51:49   grid 86 done: 0 hits over 256 regions (221.16 TH/s)                    
+15:51:49   grid wall: 0.3351 s, 2.985 grids/sec                                   
+15:51:49   grid 87 done: 0 hits over 256 regions (220.62 TH/s)                    
+15:51:50   grid wall: 0.3351 s, 2.984 grids/sec                                   
+15:51:50   grid 88 done: 0 hits over 256 regions (220.56 TH/s)                    
+15:51:50   grid wall: 0.3348 s, 2.987 grids/sec                                   
+15:51:50   grid 89 done: 0 hits over 256 regions (220.67 TH/s)                    
+15:51:50   grid wall: 0.3356 s, 2.980 grids/sec                                   
+15:51:50   grid 90 done: 0 hits over 256 regions (220.00 TH/s)                    
+15:51:51   grid wall: 0.3357 s, 2.979 grids/sec                                   
+15:51:51   grid 91 done: 0 hits over 256 regions (220.26 TH/s)                    
+15:51:51   grid wall: 0.3355 s, 2.981 grids/sec                                   
+15:51:51   grid 92 done: 0 hits over 256 regions (220.35 TH/s)                    
+15:51:51   grid wall: 0.3349 s, 2.986 grids/sec                                   
+15:51:51   grid 93 done: 0 hits over 256 regions (220.73 TH/s)                    
+15:51:52   grid wall: 0.3343 s, 2.991 grids/sec                                   
+15:51:52   grid 94 done: 0 hits over 256 regions (221.21 TH/s)                    
+15:51:52   grid wall: 0.3356 s, 2.980 grids/sec                                   
+15:51:52   grid 95 done: 0 hits over 256 regions (220.18 TH/s)                    
+15:51:52   grid wall: 0.3362 s, 2.974 grids/sec                                   
+15:51:52   grid 96 done: 0 hits over 256 regions (219.78 TH/s)                    
+15:51:53   grid wall: 0.3355 s, 2.980 grids/sec                                   
+15:51:53   grid 97 done: 0 hits over 256 regions (220.48 TH/s)                    
+15:51:53   grid wall: 0.3344 s, 2.991 grids/sec                                   
+15:51:53   grid 98 done: 0 hits over 256 regions (220.82 TH/s)                    
+15:51:53   grid wall: 0.3357 s, 2.979 grids/sec                                   
+15:51:53   grid 99 done: 0 hits over 256 regions (220.14 TH/s)                    
+15:51:54   grid wall: 0.3347 s, 2.988 grids/sec                                   
+15:51:54   grid 100 done: 0 hits over 256 regions (220.89 TH/s)                   
+15:51:54   grid wall: 0.3353 s, 2.982 grids/sec                                   
+15:51:54   grid 101 done: 0 hits over 256 regions (220.38 TH/s)                   
+15:51:54   grid wall: 0.3362 s, 2.974 grids/sec                                   
+15:51:54   grid 102 done: 0 hits over 256 regions (219.89 TH/s)                   
+15:51:55   grid wall: 0.3354 s, 2.981 grids/sec                                   
+15:51:55   grid 103 done: 0 hits over 256 regions (220.34 TH/s)                   
+15:51:55   grid wall: 0.3350 s, 2.985 grids/sec                                   
+15:51:55   grid 104 done: 0 hits over 256 regions (220.55 TH/s)                   
+15:51:55   grid wall: 0.3356 s, 2.980 grids/sec                                   
+15:51:55   grid 105 done: 0 hits over 256 regions (220.24 TH/s)                   
+15:51:56   grid wall: 0.3350 s, 2.985 grids/sec                                   
+15:51:56   grid 106 done: 0 hits over 256 regions (220.46 TH/s)                   
+15:51:56   grid wall: 0.3343 s, 2.991 grids/sec                                   
+15:51:56   grid 107 done: 0 hits over 256 regions (221.11 TH/s)                   
+15:51:56   grid wall: 0.3357 s, 2.979 grids/sec                                   
+15:51:56   grid 108 done: 0 hits over 256 regions (220.15 TH/s)                   
+15:51:57   grid wall: 0.3354 s, 2.982 grids/sec                                   
+15:51:57   grid 109 done: 0 hits over 256 regions (220.35 TH/s)                   
+15:51:57   grid wall: 0.3343 s, 2.991 grids/sec                                   
+15:51:57   grid 110 done: 0 hits over 256 regions (221.00 TH/s)                   
+15:51:57   grid wall: 0.3343 s, 2.991 grids/sec                                   
+15:51:57   grid 111 done: 0 hits over 256 regions (220.84 TH/s)                   
+15:51:58   grid wall: 0.3354 s, 2.982 grids/sec                                   
+15:51:58   grid 112 done: 0 hits over 256 regions (220.45 TH/s)                   
+15:51:58   grid wall: 0.3351 s, 2.984 grids/sec                                   
+15:51:58   grid 113 done: 0 hits over 256 regions (220.57 TH/s)                   
+15:51:58   grid wall: 0.3356 s, 2.980 grids/sec                                   
+15:51:58   grid 114 done: 0 hits over 256 regions (220.26 TH/s)                   
+15:51:59   grid wall: 0.3358 s, 2.978 grids/sec                                   
+15:51:59   grid 115 done: 0 hits over 256 regions (220.10 TH/s)                   
+15:51:59   grid wall: 0.3344 s, 2.991 grids/sec                                   
+15:51:59   grid 116 done: 0 hits over 256 regions (220.81 TH/s)                   
+15:51:59   grid wall: 0.3350 s, 2.985 grids/sec                                   
+15:51:59   grid 117 done: 0 hits over 256 regions (220.68 TH/s)                   
+15:52:00   grid wall: 0.3346 s, 2.989 grids/sec                                   
+15:52:00   grid 118 done: 0 hits over 256 regions (221.07 TH/s)                   
+15:52:00   grid wall: 0.3348 s, 2.987 grids/sec                                   
+15:52:00   grid 119 done: 0 hits over 256 regions (220.65 TH/s)                   
+15:52:00   grid wall: 0.3353 s, 2.982 grids/sec                                   
+15:52:00   grid 120 done: 0 hits over 256 regions (220.53 TH/s)                   
+15:52:01   grid wall: 0.3357 s, 2.979 grids/sec                                   
+15:52:01   grid 121 done: 0 hits over 256 regions (220.11 TH/s)                   
+15:52:01   grid wall: 0.3349 s, 2.986 grids/sec                                   
+15:52:01   grid 122 done: 0 hits over 256 regions (220.68 TH/s)                   
+15:52:01   grid wall: 0.3347 s, 2.988 grids/sec                                   
+15:52:01   grid 123 done: 0 hits over 256 regions (220.78 TH/s)                   
+15:52:02   grid wall: 0.3349 s, 2.986 grids/sec                                   
+15:52:02   grid 124 done: 0 hits over 256 regions (220.49 TH/s)                   
+15:52:02   grid wall: 0.3352 s, 2.984 grids/sec                                   
+15:52:02   grid 125 done: 0 hits over 256 regions (220.50 TH/s)                   
+15:52:02   grid wall: 0.3353 s, 2.982 grids/sec                                   
+15:52:02   grid 126 done: 0 hits over 256 regions (220.46 TH/s)                   
+15:52:03   grid wall: 0.3358 s, 2.978 grids/sec                                   
+15:52:03   grid 127 done: 0 hits over 256 regions (220.11 TH/s)                   
+15:52:03   grid wall: 0.3341 s, 2.993 grids/sec                                   
+15:52:03   grid 128 done: 0 hits over 256 regions (221.24 TH/s)                   
+15:52:03   grid wall: 0.3349 s, 2.986 grids/sec                                   
+15:52:03   grid 129 done: 0 hits over 256 regions (220.68 TH/s)                   
+15:52:04   compute wall: 209.74 TH/s; effective wall: 209.74 TH/s over 60.1 s (rank=128, includes HIT/setup pauses)                                                  
+15:52:04   grid wall: 0.3359 s, 2.977 grids/sec                                   
+15:52:04   grid 130 done: 0 hits over 256 regions (220.04 TH/s)                   
+15:52:04   grid wall: 0.3345 s, 2.989 grids/sec                                   
+15:52:04   grid 131 done: 0 hits over 256 regions (221.00 TH/s)                   
+15:52:04   grid wall: 0.3354 s, 2.982 grids/sec                                   
+15:52:04   grid 132 done: 0 hits over 256 regions (220.44 TH/s)                   
+15:52:05   grid wall: 0.3357 s, 2.979 grids/sec                                   
+15:52:05   grid 133 done: 0 hits over 256 regions (220.09 TH/s)                   
+15:52:05   grid wall: 0.3348 s, 2.987 grids/sec                                   
+15:52:05   grid 134 done: 0 hits over 256 regions (220.75 TH/s)                   
+15:52:05   grid wall: 0.3351 s, 2.984 grids/sec                                   
+15:52:05   grid 135 done: 0 hits over 256 regions (220.59 TH/s)                   
+15:52:06   grid wall: 0.3359 s, 2.977 grids/sec                                   
+15:52:06   grid 136 done: 0 hits over 256 regions (219.99 TH/s)                   
+15:52:06   grid wall: 0.3345 s, 2.989 grids/sec                                   
+15:52:06   grid 137 done: 0 hits over 256 regions (220.95 TH/s)                   
+15:52:06   grid wall: 0.3349 s, 2.986 grids/sec                                   
+15:52:06   grid 138 done: 0 hits over 256 regions (220.66 TH/s)                   
+15:52:07   grid wall: 0.3361 s, 2.975 grids/sec                                   
+15:52:07   grid 139 done: 0 hits over 256 regions (219.94 TH/s)                   
+15:52:07   grid wall: 0.3342 s, 2.992 grids/sec                                   
+15:52:07   grid 140 done: 0 hits over 256 regions (221.02 TH/s)                   
+15:52:07   grid wall: 0.3345 s, 2.989 grids/sec                                   
+15:52:07   grid 141 done: 0 hits over 256 regions (220.97 TH/s)                   
+15:52:08   grid wall: 0.3355 s, 2.981 grids/sec                                   
+15:52:08   grid 142 done: 0 hits over 256 regions (220.44 TH/s)                   
+15:52:08   grid wall: 0.3345 s, 2.990 grids/sec                                   
+15:52:08   grid 143 done: 0 hits over 256 regions (221.04 TH/s)                   
+15:52:08   grid wall: 0.3354 s, 2.981 grids/sec                                   
+15:52:08   grid 144 done: 0 hits over 256 regions (220.33 TH/s)                   
+15:52:09   grid wall: 0.3343 s, 2.992 grids/sec                                   
+15:52:09   grid 145 done: 0 hits over 256 regions (220.84 TH/s)                   
+15:52:09   grid wall: 0.3344 s, 2.991 grids/sec                                   
+15:52:09   grid 146 done: 0 hits over 256 regions (221.05 TH/s)                   
+15:52:09   grid wall: 0.3359 s, 2.977 grids/sec                                   
+15:52:09   grid 147 done: 0 hits over 256 regions (220.02 TH/s)                   
+15:52:10   grid wall: 0.3350 s, 2.985 grids/sec                                   
+15:52:10   grid 148 done: 0 hits over 256 regions (220.56 TH/s)                   
+15:52:10   grid wall: 0.3353 s, 2.982 grids/sec                                   
+15:52:10   grid 149 done: 0 hits over 256 regions (220.40 TH/s)                   
+15:52:10   grid wall: 0.3345 s, 2.989 grids/sec                                   
+15:52:10   grid 150 done: 0 hits over 256 regions (220.63 TH/s)                   
+15:52:11   grid wall: 0.3355 s, 2.981 grids/sec                                   
+15:52:11   grid 151 done: 0 hits over 256 regions (220.26 TH/s)                   
+15:52:11   grid wall: 0.3355 s, 2.980 grids/sec                                   
+15:52:11   grid 152 done: 0 hits over 256 regions (220.22 TH/s)                   
+15:52:11   grid wall: 0.3355 s, 2.981 grids/sec                                   
+15:52:11   grid 153 done: 0 hits over 256 regions (220.44 TH/s)                   
+15:52:12   grid wall: 0.3349 s, 2.986 grids/sec                                   
+15:52:12   grid 154 done: 0 hits over 256 regions (220.61 TH/s)                   
+15:52:12   grid wall: 0.3352 s, 2.983 grids/sec                                   
+15:52:12   grid 155 done: 0 hits over 256 regions (220.52 TH/s)                   
+15:52:12   grid wall: 0.3352 s, 2.983 grids/sec                                   
+15:52:12   grid 156 done: 0 hits over 256 regions (220.43 TH/s)                   
+15:52:13   grid wall: 0.3357 s, 2.979 grids/sec                                   
+15:52:13   grid 157 done: 0 hits over 256 regions (220.12 TH/s)                   
+15:52:13   grid wall: 0.3346 s, 2.989 grids/sec                                   
+15:52:13   grid 158 done: 0 hits over 256 regions (220.58 TH/s)                   
+15:52:13   grid wall: 0.3360 s, 2.976 grids/sec                                   
+15:52:13   grid 159 done: 0 hits over 256 regions (220.07 TH/s)                   
+15:52:14   grid wall: 0.3351 s, 2.984 grids/sec                                   
+15:52:14   grid 160 done: 0 hits over 256 regions (220.48 TH/s)                   
+15:52:14   grid wall: 0.3356 s, 2.980 grids/sec                                   
+15:52:14   grid 161 done: 0 hits over 256 regions (220.01 TH/s)                   
+15:52:14   grid wall: 0.3345 s, 2.989 grids/sec                                   
+15:52:14   grid 162 done: 0 hits over 256 regions (220.85 TH/s)                   
+15:52:15   grid wall: 0.3350 s, 2.985 grids/sec                                   
+15:52:15   grid 163 done: 0 hits over 256 regions (220.60 TH/s)                   
+15:52:15   grid wall: 0.3346 s, 2.989 grids/sec                                   
+15:52:15   grid 164 done: 0 hits over 256 regions (220.81 TH/s)                   
+15:52:15   grid wall: 0.3348 s, 2.987 grids/sec                                   
+15:52:15   grid 165 done: 0 hits over 256 regions (220.71 TH/s)                   
+15:52:16   newer job (grid 166, 256 regions, 0 hits this grid)                    
+15:52:16 job 3509fb0e_3028274 target=2^202 factor=1048576 bound=2^222             
+15:52:16   grid wall: 0.3346 s, 2.989 grids/sec                                   
+15:52:16   grid 1 done: 0 hits over 256 regions (220.93 TH/s)                     
+15:52:16   grid wall: 0.3356 s, 2.980 grids/sec                                   
+15:52:16   grid 2 done: 0 hits over 256 regions (220.21 TH/s)                     
+15:52:17   grid wall: 0.3353 s, 2.983 grids/sec                                   
+15:52:17   grid 3 done: 0 hits over 256 regions (220.39 TH/s)                     
+15:52:17   grid wall: 0.3347 s, 2.988 grids/sec                                   
+15:52:17   grid 4 done: 0 hits over 256 regions (221.00 TH/s)                     
+15:52:17   grid wall: 0.3345 s, 2.989 grids/sec                                   
+15:52:17   grid 5 done: 0 hits over 256 regions (220.62 TH/s)                     
+15:52:18   grid wall: 0.3357 s, 2.979 grids/sec                                   
+15:52:18   grid 6 done: 0 hits over 256 regions (220.11 TH/s)                     
+15:52:18   grid wall: 0.3343 s, 2.991 grids/sec                                   
+15:52:18   grid 7 done: 0 hits over 256 regions (221.12 TH/s)                     
+15:52:18   grid wall: 0.3357 s, 2.979 grids/sec                                   
+15:52:18   grid 8 done: 0 hits over 256 regions (220.14 TH/s)                     
+15:52:19   grid wall: 0.3349 s, 2.986 grids/sec                                   
+15:52:19   grid 9 done: 0 hits over 256 regions (220.63 TH/s)                     
+15:52:19   grid wall: 0.3345 s, 2.990 grids/sec                                   
+15:52:19   grid 10 done: 0 hits over 256 regions (220.70 TH/s)                    
+15:52:19   grid wall: 0.3356 s, 2.980 grids/sec                                   
+15:52:19   grid 11 done: 0 hits over 256 regions (220.11 TH/s)                    
+15:52:20   grid wall: 0.3346 s, 2.989 grids/sec                                   
+15:52:20   grid 12 done: 0 hits over 256 regions (220.86 TH/s)                    
+15:52:20   grid wall: 0.3335 s, 2.998 grids/sec                                   
+15:52:20   grid 13 done: 0 hits over 256 regions (221.59 TH/s)                    
+15:52:20   grid wall: 0.3342 s, 2.992 grids/sec                                   
+15:52:20   grid 14 done: 0 hits over 256 regions (221.08 TH/s)                    
+15:52:21   grid wall: 0.3361 s, 2.975 grids/sec                                   
+15:52:21   grid 15 done: 0 hits over 256 regions (219.82 TH/s)                    
+15:52:21   grid wall: 0.3346 s, 2.988 grids/sec                                   
+15:52:21   grid 16 done: 0 hits over 256 regions (220.76 TH/s)                    
+15:52:21   grid wall: 0.3335 s, 2.998 grids/sec                                   
+15:52:21   grid 17 done: 0 hits over 256 regions (221.66 TH/s)                    
+15:52:22   grid wall: 0.3355 s, 2.981 grids/sec                                   
+15:52:22   grid 18 done: 0 hits over 256 regions (219.97 TH/s)                    
+15:52:22   grid wall: 0.3348 s, 2.987 grids/sec                                   
+15:52:22   grid 19 done: 0 hits over 256 regions (220.74 TH/s)                    
+15:52:22   grid wall: 0.3345 s, 2.990 grids/sec                                   
+15:52:22   grid 20 done: 0 hits over 256 regions (221.07 TH/s)                    
+15:52:23   grid wall: 0.3355 s, 2.980 grids/sec                                   
+15:52:23   grid 21 done: 0 hits over 256 regions (220.28 TH/s)                    
+15:52:23   HIT tile (row=30176, col=15328) grid 22; proof async                   
+15:52:23   share snapshot wall: 0.064 s  
+15:52:23   proof queue wait: 0.000 s     
+15:52:23   grid wall: 0.3913 s, 2.555 grids/sec                                   
+15:52:23   grid 22 done: 1 hits over 256 regions (187.54 TH/s)                    
+15:52:24   grid wall: 0.3264 s, 3.064 grids/sec                                   
+15:52:24   grid 23 done: 0 hits over 256 regions (226.12 TH/s)                    
+15:52:24   compute wall: 209.67 TH/s; effective wall: 209.67 TH/s over 60.1 s (rank=128, includes HIT/setup pauses)                                                  
+15:52:24   grid wall: 0.3284 s, 3.045 grids/sec                                   
+15:52:24   grid 24 done: 0 hits over 256 regions (224.80 TH/s)                    
+15:52:24   grid wall: 0.3364 s, 2.972 grids/sec                                   
+15:52:24   grid 25 done: 0 hits over 256 regions (219.37 TH/s)                    
+15:52:25   grid wall: 0.3312 s, 3.019 grids/sec                                   
+15:52:25   grid 26 done: 0 hits over 256 regions (223.01 TH/s)                    
+15:52:25   grid wall: 0.3291 s, 3.038 grids/sec                                   
+15:52:25   grid 27 done: 0 hits over 256 regions (224.31 TH/s)                    
+15:52:25   grid wall: 0.3348 s, 2.987 grids/sec                                   
+15:52:25   grid 28 done: 0 hits over 256 regions (220.65 TH/s)                    
+15:52:25   grid wall: 0.3311 s, 3.020 grids/sec                                   
+15:52:25   grid 29 done: 0 hits over 256 regions (223.08 TH/s)                    
+15:52:26   grid wall: 0.3298 s, 3.032 grids/sec                                   
+15:52:26   grid 30 done: 0 hits over 256 regions (223.85 TH/s)                    
+15:52:26   proof build wall: 2.938 s     
+15:52:26   submitting share (179180 B) for job 3509fb0e_3028274...                
+15:52:26   grid wall: 0.3337 s, 2.997 grids/sec                                   
+15:52:26   grid 31 done: 0 hits over 256 regions (221.20 TH/s)                    
+15:52:26   grid wall: 0.3352 s, 2.983 grids/sec                                   
+15:52:26   grid 32 done: 0 hits over 256 regions (220.46 TH/s)                    
+15:52:27   grid wall: 0.3333 s, 3.000 grids/sec                                   
+15:52:27   grid 33 done: 0 hits over 256 regions (221.68 TH/s)                    
+15:52:27   share submit wall: 1.150 s    
+15:52:27   POOL RESPONSE: {"error": null, "id": 125, "result": true}              
+15:52:27   *** SHARE ACCEPTED (you) *** you=1560 dev=123                          
+15:52:27   grid wall: 0.3359 s, 2.977 grids/sec                                   
+15:52:27   grid 34 done: 0 hits over 256 regions (219.76 TH/s)                    
+15:52:27   grid wall: 0.3363 s, 2.974 grids/sec                                   
+15:52:27   grid 35 done: 0 hits over 256 regions (219.72 TH/s)                    
+15:52:28   grid wall: 0.3347 s, 2.988 grids/sec                                   
+15:52:28   grid 36 done: 0 hits over 256 regions (220.72 TH/s)                    
+15:52:28   grid wall: 0.3360 s, 2.976 grids/sec                                   
+15:52:28   grid 37 done: 0 hits over 256 regions (219.84 TH/s)                    
+15:52:29   grid wall: 0.3354 s, 2.982 grids/sec                                   
+15:52:29   grid 38 done: 0 hits over 256 regions (220.26 TH/s)                    
+15:52:29   grid wall: 0.3343 s, 2.991 grids/sec                                   
+15:52:29   grid 39 done: 0 hits over 256 regions (221.08 TH/s)                    
+15:52:29   grid wall: 0.3362 s, 2.974 grids/sec                                   
+15:52:29   grid 40 done: 0 hits over 256 regions (219.50 TH/s)                    
+15:52:30   grid wall: 0.3355 s, 2.981 grids/sec                                   
+15:52:30   grid 41 done: 0 hits over 256 regions (220.21 TH/s)                    
+15:52:30   grid wall: 0.3346 s, 2.988 grids/sec                                   
+15:52:30   grid 42 done: 0 hits over 256 regions (220.90 TH/s)                    
+15:52:30   grid wall: 0.3361 s, 2.975 grids/sec                                   
+15:52:30   grid 43 done: 0 hits over 256 regions (219.75 TH/s)                    
+15:52:31   grid wall: 0.3361 s, 2.976 grids/sec                                   
+15:52:31   grid 44 done: 0 hits over 256 regions (219.82 TH/s)                    
+15:52:31   grid wall: 0.3359 s, 2.977 grids/sec                                   
+15:52:31   grid 45 done: 0 hits over 256 regions (219.99 TH/s)                    
+15:52:31   HIT tile (row=111472, col=92992) grid 46; proof async                  
+15:52:31   share snapshot wall: 0.064 s  
+15:52:31   proof queue wait: 0.000 s     
+15:52:31   grid wall: 0.3990 s, 2.507 grids/sec                                   
+15:52:31   grid 46 done: 1 hits over 256 regions (183.78 TH/s)                    
+15:52:32   grid wall: 0.3244 s, 3.083 grids/sec                                   
+15:52:32   grid 47 done: 0 hits over 256 regions (227.40 TH/s)                    
+15:52:32   grid wall: 0.3277 s, 3.051 grids/sec                                   
+15:52:32   grid 48 done: 0 hits over 256 regions (225.29 TH/s)                    
+15:52:32   grid wall: 0.3329 s, 3.004 grids/sec                                   
+15:52:32   grid 49 done: 0 hits over 256 regions (221.70 TH/s)                    
+15:52:33   grid wall: 0.3347 s, 2.988 grids/sec                                   
+15:52:33   grid 50 done: 0 hits over 256 regions (220.61 TH/s)                    
+15:52:33   grid wall: 0.3305 s, 3.026 grids/sec                                   
+15:52:33   grid 51 done: 0 hits over 256 regions (223.39 TH/s)                    
+15:52:33   grid wall: 0.3319 s, 3.013 grids/sec                                   
+15:52:33   grid 52 done: 0 hits over 256 regions (222.37 TH/s)                    
+15:52:34   grid wall: 0.3338 s, 2.996 grids/sec                                   
+15:52:34   grid 53 done: 0 hits over 256 regions (221.18 TH/s)                    
+15:52:34   grid wall: 0.3305 s, 3.025 grids/sec                                   
+15:52:34   grid 54 done: 0 hits over 256 regions (223.33 TH/s)                    
+15:52:34   proof build wall: 2.841 s     
+15:52:34   submitting share (179180 B) for job 3509fb0e_3028274...                
+15:52:34   grid wall: 0.3327 s, 3.006 grids/sec                                   
+15:52:34   grid 55 done: 0 hits over 256 regions (221.87 TH/s)                    
+15:52:35   grid wall: 0.3661 s, 2.732 grids/sec                                   
+15:52:35   grid 56 done: 0 hits over 256 regions (226.21 TH/s)                    
+15:52:35   grid wall: 0.3269 s, 3.059 grids/sec                                   
+15:52:35   grid 57 done: 0 hits over 256 regions (225.81 TH/s)                    
+15:52:35   share submit wall: 1.151 s    
+15:52:35   POOL RESPONSE: {"error": null, "id": 126, "result": true}              
+15:52:35   *** SHARE ACCEPTED (you) *** you=1561 dev=123                          
+15:52:35   grid wall: 0.3351 s, 2.984 grids/sec                                   
+15:52:35   grid 58 done: 0 hits over 256 regions (220.16 TH/s)                    
+15:52:36   grid wall: 0.3464 s, 2.887 grids/sec                                   
+15:52:36   grid 59 done: 0 hits over 256 regions (212.94 TH/s)                    
+15:52:36   grid wall: 0.3394 s, 2.947 grids/sec                                   
+15:52:36   grid 60 done: 0 hits over 256 regions (217.46 TH/s)                    
+15:52:36   grid wall: 0.3436 s, 2.910 grids/sec                                   
+15:52:36   grid 61 done: 0 hits over 256 regions (215.00 TH/s)                    
+15:52:37   grid wall: 0.3455 s, 2.894 grids/sec                                   
+15:52:37   grid 62 done: 0 hits over 256 regions (213.48 TH/s)                    
+15:52:37   grid wall: 0.3384 s, 2.955 grids/sec                                   
+15:52:37   grid 63 done: 0 hits over 256 regions (218.18 TH/s)                    
+15:52:37   grid wall: 0.3437 s, 2.909 grids/sec                                   
+15:52:37   grid 64 done: 0 hits over 256 regions (214.96 TH/s)                    
+15:52:38   grid wall: 0.3439 s, 2.908 grids/sec                                   
+15:52:38   grid 65 done: 0 hits over 256 regions (214.44 TH/s)                    
+15:52:38   grid wall: 0.3391 s, 2.949 grids/sec                                   
+15:52:38   grid 66 done: 0 hits over 256 regions (217.83 TH/s)                    
+15:52:38   grid wall: 0.3449 s, 2.899 grids/sec                                   
+15:52:38   grid 67 done: 0 hits over 256 regions (214.16 TH/s)                    
+15:52:39   grid wall: 0.3422 s, 2.922 grids/sec                                   
+15:52:39   grid 68 done: 0 hits over 256 regions (215.61 TH/s)                    
+15:52:39   grid wall: 0.3409 s, 2.933 grids/sec                                   
+15:52:39   grid 69 done: 0 hits over 256 regions (216.81 TH/s)                    
+15:52:39   grid wall: 0.3435 s, 2.911 grids/sec                                   
+15:52:39   grid 70 done: 0 hits over 256 regions (215.16 TH/s)                    
+15:52:40   grid wall: 0.3423 s, 2.922 grids/sec                                   
+15:52:40   grid 71 done: 0 hits over 256 regions (215.58 TH/s)                    
+15:52:40   grid wall: 0.3414 s, 2.929 grids/sec                                   
+15:52:40   grid 72 done: 0 hits over 256 regions (216.46 TH/s)                    
+15:52:40   grid wall: 0.3432 s, 2.914 grids/sec                                   
+15:52:40   grid 73 done: 0 hits over 256 regions (215.35 TH/s)                    
+15:52:41   grid wall: 0.3427 s, 2.918 grids/sec                                   
+15:52:41   grid 74 done: 0 hits over 256 regions (215.36 TH/s)                    
+15:52:41   grid wall: 0.3423 s, 2.922 grids/sec                                   
+15:52:41   grid 75 done: 0 hits over 256 regions (215.94 TH/s)                    
+15:52:41   grid wall: 0.3423 s, 2.922 grids/sec                                   
+15:52:41   grid 76 done: 0 hits over 256 regions (215.84 TH/s)                    
+15:52:42   grid wall: 0.3415 s, 2.928 grids/sec                                   
+15:52:42   grid 77 done: 0 hits over 256 regions (216.03 TH/s)                    
+15:52:42   grid wall: 0.3414 s, 2.929 grids/sec                                   
+15:52:42   grid 78 done: 0 hits over 256 regions (216.30 TH/s)                    
+15:52:42   grid wall: 0.3434 s, 2.912 grids/sec                                   
+15:52:42   grid 79 done: 0 hits over 256 regions (214.85 TH/s)                    
+15:52:43   grid wall: 0.3420 s, 2.924 grids/sec                                   
+15:52:43   grid 80 done: 0 hits over 256 regions (216.18 TH/s)                    
+15:52:43   grid wall: 0.3414 s, 2.929 grids/sec                                   
+15:52:43   grid 81 done: 0 hits over 256 regions (216.32 TH/s)                    
+15:52:43   grid wall: 0.3423 s, 2.921 grids/sec                                   
+15:52:43   grid 82 done: 0 hits over 256 regions (215.45 TH/s)                    
+15:52:44   compute wall: 209.08 TH/s; effective wall: 209.08 TH/s over 60.1 s (rank=128, includes HIT/setup pauses)                                                  
+15:52:44   grid wall: 0.3411 s, 2.931 grids/sec                                   
+15:52:44   grid 83 done: 0 hits over 256 regions (216.20 TH/s)                    
+15:52:44   grid wall: 0.3424 s, 2.920 grids/sec                                   
+15:52:44   grid 84 done: 0 hits over 256 regions (215.77 TH/s)                    
+15:52:45   grid wall: 0.3429 s, 2.917 grids/sec                                   
+15:52:45   grid 85 done: 0 hits over 256 regions (215.12 TH/s)                    
+15:52:45   grid wall: 0.3417 s, 2.927 grids/sec                                   
+15:52:45   grid 86 done: 0 hits over 256 regions (216.01 TH/s)                    
+15:52:45   grid wall: 0.3439 s, 2.908 grids/sec                                   
+15:52:45   grid 87 done: 0 hits over 256 regions (214.87 TH/s)                    
+15:52:46   grid wall: 0.3409 s, 2.934 grids/sec                                   
+15:52:46   grid 88 done: 0 hits over 256 regions (216.45 TH/s)                    
+15:52:46   grid wall: 0.3417 s, 2.927 grids/sec                                   
+15:52:46   grid 89 done: 0 hits over 256 regions (216.29 TH/s)                    
+15:52:46   grid wall: 0.3441 s, 2.906 grids/sec                                   
+15:52:46   grid 90 done: 0 hits over 256 regions (214.82 TH/s)                    
+15:52:47   grid wall: 0.3428 s, 2.917 grids/sec                                   
+15:52:47   grid 91 done: 0 hits over 256 regions (215.17 TH/s)                    
+15:52:47   grid wall: 0.3420 s, 2.924 grids/sec                                   
+15:52:47   grid 92 done: 0 hits over 256 regions (216.07 TH/s)                    
+15:52:47   grid wall: 0.3429 s, 2.917 grids/sec                                   
+15:52:47   grid 93 done: 0 hits over 256 regions (215.43 TH/s)                    
+15:52:48   grid wall: 0.3424 s, 2.921 grids/sec                                   
+15:52:48   grid 94 done: 0 hits over 256 regions (215.84 TH/s)                    
+15:52:48   grid wall: 0.3421 s, 2.923 grids/sec                                   
+15:52:48   grid 95 done: 0 hits over 256 regions (216.06 TH/s)                    
+15:52:48   grid wall: 0.3440 s, 2.907 grids/sec                                   
+15:52:48   grid 96 done: 0 hits over 256 regions (214.78 TH/s)                    
+15:52:49   grid wall: 0.3419 s, 2.925 grids/sec                                   
+15:52:49   grid 97 done: 0 hits over 256 regions (216.09 TH/s)                    
+15:52:49   grid wall: 0.3412 s, 2.931 grids/sec                                   
+15:52:49   grid 98 done: 0 hits over 256 regions (216.44 TH/s)                    
+15:52:49   grid wall: 0.3442 s, 2.905 grids/sec                                   
+15:52:49   grid 99 done: 0 hits over 256 regions (214.23 TH/s)                    
+15:52:50   grid wall: 0.3409 s, 2.933 grids/sec                                   
+15:52:50   grid 100 done: 0 hits over 256 regions (216.68 TH/s)                   
+15:52:50   grid wall: 0.3406 s, 2.936 grids/sec                                   
+15:52:50   grid 101 done: 0 hits over 256 regions (216.66 TH/s)                   
+15:52:50   grid wall: 0.3447 s, 2.901 grids/sec                                   
+15:52:50   grid 102 done: 0 hits over 256 regions (213.92 TH/s)                   
+15:52:51   grid wall: 0.3430 s, 2.916 grids/sec                                   
+15:52:51   grid 103 done: 0 hits over 256 regions (215.35 TH/s)                   
+15:52:51   grid wall: 0.3430 s, 2.916 grids/sec                                   
+15:52:51   grid 104 done: 0 hits over 256 regions (215.23 TH/s)                   
+15:52:51   grid wall: 0.3428 s, 2.917 grids/sec                                   
+15:52:51   grid 105 done: 0 hits over 256 regions (215.17 TH/s)                   
+15:52:52   grid wall: 0.3417 s, 2.926 grids/sec                                   
+15:52:52   grid 106 done: 0 hits over 256 regions (215.95 TH/s)                   
+15:52:52   grid wall: 0.3438 s, 2.909 grids/sec                                   
+15:52:52   grid 107 done: 0 hits over 256 regions (214.97 TH/s)                   
+15:52:52   grid wall: 0.3432 s, 2.914 grids/sec                                   
+15:52:52   grid 108 done: 0 hits over 256 regions (214.91 TH/s)                   
+15:52:53   grid wall: 0.3404 s, 2.937 grids/sec                                   
+15:52:53   grid 109 done: 0 hits over 256 regions (217.05 TH/s)                   
+15:52:53   grid wall: 0.3428 s, 2.917 grids/sec                                   
+15:52:53   grid 110 done: 0 hits over 256 regions (215.45 TH/s)                   
+15:52:53   grid wall: 0.3425 s, 2.920 grids/sec                                   
+15:52:53   grid 111 done: 0 hits over 256 regions (215.47 TH/s)                   
+15:52:54   grid wall: 0.3420 s, 2.924 grids/sec                                   
+15:52:54   grid 112 done: 0 hits over 256 regions (216.13 TH/s)                   
+15:52:54   grid wall: 0.3441 s, 2.906 grids/sec                                   
+15:52:54   grid 113 done: 0 hits over 256 regions (214.62 TH/s)                   
+15:52:54   grid wall: 0.3425 s, 2.919 grids/sec                                   
+15:52:54   grid 114 done: 0 hits over 256 regions (215.60 TH/s)                   
+15:52:55   grid wall: 0.3409 s, 2.933 grids/sec                                   
+15:52:55   grid 115 done: 0 hits over 256 regions (216.90 TH/s)                   
+15:52:55   grid wall: 0.3438 s, 2.909 grids/sec                                   
+15:52:55   grid 116 done: 0 hits over 256 regions (214.77 TH/s)                   
+15:52:55   grid wall: 0.3413 s, 2.930 grids/sec                                   
+15:52:55   grid 117 done: 0 hits over 256 regions (216.39 TH/s)                   
+15:52:56   grid wall: 0.3399 s, 2.942 grids/sec                                   
+15:52:56   grid 118 done: 0 hits over 256 regions (217.36 TH/s)                   
+15:52:56   grid wall: 0.3423 s, 2.921 grids/sec                                   
+15:52:56   grid 119 done: 0 hits over 256 regions (215.48 TH/s)                   
+15:52:56   grid wall: 0.3423 s, 2.922 grids/sec                                   
+15:52:56   grid 120 done: 0 hits over 256 regions (215.93 TH/s)                   
+15:52:57   grid wall: 0.3429 s, 2.916 grids/sec                                   
+15:52:57   grid 121 done: 0 hits over 256 regions (215.39 TH/s)                   
+15:52:57   grid wall: 0.3440 s, 2.907 grids/sec                                   
+15:52:57   grid 122 done: 0 hits over 256 regions (214.41 TH/s)                   
+15:52:58   grid wall: 0.3421 s, 2.923 grids/sec                                   
+15:52:58   grid 123 done: 0 hits over 256 regions (215.66 TH/s)                   
+15:52:58   grid wall: 0.3402 s, 2.939 grids/sec                                   
+15:52:58   grid 124 done: 0 hits over 256 regions (217.19 TH/s)                   
+15:52:58   grid wall: 0.3439 s, 2.908 grids/sec                                   
+15:52:58   grid 125 done: 0 hits over 256 regions (214.50 TH/s)                   
+15:52:59   grid wall: 0.3417 s, 2.927 grids/sec                                   
+15:52:59   grid 126 done: 0 hits over 256 regions (216.44 TH/s)                   
+15:52:59   grid wall: 0.3423 s, 2.921 grids/sec                                   
+15:52:59   grid 127 done: 0 hits over 256 regions (215.88 TH/s)                   
+15:52:59   grid wall: 0.3426 s, 2.919 grids/sec                                   
+15:52:59   grid 128 done: 0 hits over 256 regions (215.26 TH/s)                   
+15:53:00   grid wall: 0.3422 s, 2.923 grids/sec                                   
+15:53:00   grid 129 done: 0 hits over 256 regions (215.90 TH/s)                   
+15:53:00   grid wall: 0.3419 s, 2.925 grids/sec                                   
+15:53:00   grid 130 done: 0 hits over 256 regions (215.72 TH/s)                   
+15:53:00   grid wall: 0.3427 s, 2.918 grids/sec                                   
+15:53:00   grid 131 done: 0 hits over 256 regions (215.54 TH/s)                   
+15:53:01   grid wall: 0.3422 s, 2.922 grids/sec                                   
+15:53:01   grid 132 done: 0 hits over 256 regions (216.02 TH/s)                   
+15:53:01   grid wall: 0.3434 s, 2.912 grids/sec                                   
+15:53:01   grid 133 done: 0 hits over 256 regions (215.11 TH/s)                   
+15:53:01   grid wall: 0.3432 s, 2.913 grids/sec                                   
+15:53:01   grid 134 done: 0 hits over 256 regions (215.29 TH/s)                   
+15:53:02   grid wall: 0.3413 s, 2.930 grids/sec                                   
+15:53:02   grid 135 done: 0 hits over 256 regions (216.61 TH/s)                   
+15:53:02   grid wall: 0.3423 s, 2.921 grids/sec                                   
+15:53:02   grid 136 done: 0 hits over 256 regions (215.48 TH/s)                   
+15:53:02   grid wall: 0.3436 s, 2.911 grids/sec                                   
+15:53:02   grid 137 done: 0 hits over 256 regions (215.04 TH/s)                   
+15:53:03   grid wall: 0.3408 s, 2.934 grids/sec                                   
+15:53:03   grid 138 done: 0 hits over 256 regions (216.78 TH/s)                   
+15:53:03   grid wall: 0.3423 s, 2.921 grids/sec                                   
+15:53:03   grid 139 done: 0 hits over 256 regions (215.47 TH/s)                   
+15:53:03   grid wall: 0.3437 s, 2.909 grids/sec                                   
+15:53:03   grid 140 done: 0 hits over 256 regions (214.83 TH/s)                   
+15:53:04   grid wall: 0.3422 s, 2.922 grids/sec                                   
+15:53:04   grid 141 done: 0 hits over 256 regions (215.98 TH/s)                   
+15:53:04   compute wall: 207.56 TH/s; effective wall: 207.56 TH/s over 60.0 s (rank=128, includes HIT/setup pauses)                                                  
+15:53:04   grid wall: 0.3419 s, 2.925 grids/sec                                   
+15:53:04   grid 142 done: 0 hits over 256 regions (215.79 TH/s)                   
+15:53:04   HIT tile (row=94064, col=75440) grid 143; proof async                  
+15:53:04   share snapshot wall: 0.065 s  
+15:53:04   proof queue wait: 0.000 s     
+15:53:04   grid wall: 0.4057 s, 2.465 grids/sec                                   
+15:53:04   grid 143 done: 1 hits over 256 regions (180.65 TH/s)                   
+15:53:05   grid wall: 0.3335 s, 2.999 grids/sec                                   
+15:53:05   grid 144 done: 0 hits over 256 regions (221.22 TH/s)                   
+15:53:05   grid wall: 0.3364 s, 2.973 grids/sec                                   
+15:53:05   grid 145 done: 0 hits over 256 regions (219.36 TH/s)                   
+15:53:05   grid wall: 0.3433 s, 2.913 grids/sec                                   
+15:53:05   grid 146 done: 0 hits over 256 regions (214.79 TH/s)                   
+15:53:06   grid wall: 0.3415 s, 2.929 grids/sec                                   
+15:53:06   grid 147 done: 0 hits over 256 regions (216.12 TH/s)                   
+15:53:06   grid wall: 0.3306 s, 3.024 grids/sec                                   
+15:53:06   grid 148 done: 0 hits over 256 regions (223.29 TH/s)                   
+15:53:06   grid wall: 0.3365 s, 2.972 grids/sec                                   
+15:53:06   grid 149 done: 0 hits over 256 regions (219.25 TH/s)                   
+15:53:07   grid wall: 0.3361 s, 2.976 grids/sec                                   
+15:53:07   grid 150 done: 0 hits over 256 regions (219.66 TH/s)                   
+15:53:07   grid wall: 0.3315 s, 3.017 grids/sec                                   
+15:53:07   grid 151 done: 0 hits over 256 regions (222.71 TH/s)                   
+15:53:07   grid wall: 0.3356 s, 2.980 grids/sec                                   
+15:53:07   grid 152 done: 0 hits over 256 regions (219.78 TH/s)                   
+15:53:08   newer job (grid 153, 128 regions, 0 hits this grid)                    
+15:53:08 job 5e661b71_3028274 target=2^202 factor=1048576 bound=2^222             
+15:53:08   proof build wall: 3.337 s     
+15:53:08   submitting share (179180 B) for job 3509fb0e_3028274...                
+15:53:08   grid wall: 0.3337 s, 2.997 grids/sec                                   
+15:53:08   grid 1 done: 0 hits over 256 regions (221.21 TH/s)                     
+15:53:08   grid wall: 0.3329 s, 3.004 grids/sec                                   
+15:53:08   grid 2 done: 0 hits over 256 regions (221.73 TH/s)                     
+15:53:09   grid wall: 0.3363 s, 2.974 grids/sec                                   
+15:53:09   grid 3 done: 0 hits over 256 regions (219.45 TH/s)                     
+15:53:09   share submit wall: 1.148 s    
+15:53:09   POOL RESPONSE: {"error": null, "id": 127, "result": true}              
+15:53:09   *** SHARE ACCEPTED (you) *** you=1562 dev=123                          
+15:53:09   grid wall: 0.3329 s, 3.004 grids/sec                                   
+15:53:09   grid 4 done: 0 hits over 256 regions (221.79 TH/s)                     
+15:53:09   grid wall: 0.3327 s, 3.005 grids/sec                                   
+15:53:09   grid 5 done: 0 hits over 256 regions (221.81 TH/s)                     
+15:53:10   grid wall: 0.3378 s, 2.960 grids/sec                                   
+15:53:10   grid 6 done: 0 hits over 256 regions (218.49 TH/s)                     
+15:53:10   grid wall: 0.3366 s, 2.970 grids/sec                                   
+15:53:10   grid 7 done: 0 hits over 256 regions (219.17 TH/s)                     
+15:53:10   grid wall: 0.3374 s, 2.964 grids/sec                                   
+15:53:10   grid 8 done: 0 hits over 256 regions (219.00 TH/s)                     
+15:53:11   grid wall: 0.3383 s, 2.956 grids/sec                                   
+15:53:11   grid 9 done: 0 hits over 256 regions (218.17 TH/s)                     
+15:53:11   grid wall: 0.3371 s, 2.966 grids/sec                                   
+15:53:11   grid 10 done: 0 hits over 256 regions (219.17 TH/s)                    
+15:53:11   grid wall: 0.3371 s, 2.966 grids/sec                                   
+15:53:11   grid 11 done: 0 hits over 256 regions (219.24 TH/s)                    
+15:53:12   grid wall: 0.3390 s, 2.950 grids/sec                                   
+15:53:12   grid 12 done: 0 hits over 256 regions (217.94 TH/s)                    
+15:53:12   grid wall: 0.3382 s, 2.957 grids/sec                                   
+15:53:12   grid 13 done: 0 hits over 256 regions (218.50 TH/s)                    
+15:53:12   grid wall: 0.3373 s, 2.965 grids/sec                                   
+15:53:12   grid 14 done: 0 hits over 256 regions (218.97 TH/s)                    
+15:53:13   grid wall: 0.3369 s, 2.968 grids/sec                                   
+15:53:13   grid 15 done: 0 hits over 256 regions (219.34 TH/s)                    
+15:53:13   grid wall: 0.3375 s, 2.963 grids/sec                                   
+15:53:13   grid 16 done: 0 hits over 256 regions (219.04 TH/s)                    
+15:53:13   grid wall: 0.3375 s, 2.963 grids/sec                                   
+15:53:13   grid 17 done: 0 hits over 256 regions (218.89 TH/s)                    
+15:53:14   grid wall: 0.3380 s, 2.959 grids/sec                                   
+15:53:14   grid 18 done: 0 hits over 256 regions (218.59 TH/s)                    
+15:53:14   grid wall: 0.3373 s, 2.965 grids/sec                                   
+15:53:14   grid 19 done: 0 hits over 256 regions (219.04 TH/s)                    
+15:53:14   grid wall: 0.3369 s, 2.969 grids/sec                                   
+15:53:14   grid 20 done: 0 hits over 256 regions (219.38 TH/s)                    
+15:53:15   grid wall: 0.3383 s, 2.956 grids/sec                                   
+15:53:15   grid 21 done: 0 hits over 256 regions (218.31 TH/s)                    
+15:53:15   grid wall: 0.3373 s, 2.964 grids/sec                                   
+15:53:15   grid 22 done: 0 hits over 256 regions (218.77 TH/s)                    
+15:53:15   grid wall: 0.3368 s, 2.969 grids/sec                                   
+15:53:15   grid 23 done: 0 hits over 256 regions (219.36 TH/s)                    
+15:53:16   grid wall: 0.3383 s, 2.956 grids/sec                                   
+15:53:16   grid 24 done: 0 hits over 256 regions (218.39 TH/s)                    
+15:53:16   grid wall: 0.3373 s, 2.965 grids/sec                                   
+15:53:16   grid 25 done: 0 hits over 256 regions (218.94 TH/s)                    
+15:53:16   grid wall: 0.3386 s, 2.953 grids/sec                                   
+15:53:16   grid 26 done: 0 hits over 256 regions (217.95 TH/s)                    
+15:53:17   grid wall: 0.3378 s, 2.961 grids/sec                                   
+15:53:17   grid 27 done: 0 hits over 256 regions (218.70 TH/s)                    
+15:53:17   grid wall: 0.3364 s, 2.973 grids/sec                                   
+15:53:17   grid 28 done: 0 hits over 256 regions (219.54 TH/s)                    
+15:53:17   grid wall: 0.3382 s, 2.956 grids/sec                                   
+15:53:17   grid 29 done: 0 hits over 256 regions (218.39 TH/s)                    
+15:53:18   grid wall: 0.3380 s, 2.958 grids/sec                                   
+15:53:18   grid 30 done: 0 hits over 256 regions (218.61 TH/s)                    
+15:53:18   grid wall: 0.3375 s, 2.963 grids/sec                                   
+15:53:18   grid 31 done: 0 hits over 256 regions (218.85 TH/s)                    
+15:53:18   grid wall: 0.3369 s, 2.968 grids/sec                                   
+15:53:18   grid 32 done: 0 hits over 256 regions (219.33 TH/s)                    
+15:53:19   grid wall: 0.3353 s, 2.983 grids/sec                                   
+15:53:19   grid 33 done: 0 hits over 256 regions (220.01 TH/s)                    
+15:53:19   grid wall: 0.3378 s, 2.961 grids/sec                                   
+15:53:19   grid 34 done: 0 hits over 256 regions (218.77 TH/s)                    
+15:53:19   grid wall: 0.3377 s, 2.962 grids/sec                                   
+15:53:19   grid 35 done: 0 hits over 256 regions (218.60 TH/s)                    
+15:53:20   grid wall: 0.3388 s, 2.951 grids/sec                                   
+15:53:20   grid 36 done: 0 hits over 256 regions (218.12 TH/s)                    
+15:53:20   grid wall: 0.3363 s, 2.974 grids/sec                                   
+15:53:20   grid 37 done: 0 hits over 256 regions (219.44 TH/s)                    
+15:53:20   grid wall: 0.3377 s, 2.961 grids/sec                                   
+15:53:20   grid 38 done: 0 hits over 256 regions (218.87 TH/s)                    
+15:53:21   grid wall: 0.3366 s, 2.971 grids/sec                                   
+15:53:21   grid 39 done: 0 hits over 256 regions (219.60 TH/s)                    
+15:53:21   grid wall: 0.3365 s, 2.972 grids/sec                                   
+15:53:21   grid 40 done: 0 hits over 256 regions (219.48 TH/s)                    
+15:53:21   grid wall: 0.3382 s, 2.956 grids/sec                                   
+15:53:21   grid 41 done: 0 hits over 256 regions (218.54 TH/s)                    
+15:53:22   grid wall: 0.3374 s, 2.964 grids/sec                                   
+15:53:22   grid 42 done: 0 hits over 256 regions (218.87 TH/s)                    
+15:53:22   grid wall: 0.3372 s, 2.965 grids/sec                                   
+15:53:22   grid 43 done: 0 hits over 256 regions (219.07 TH/s)                    
+15:53:22   grid wall: 0.3374 s, 2.964 grids/sec                                   
+15:53:22   grid 44 done: 0 hits over 256 regions (218.72 TH/s)                    
+15:53:23   grid wall: 0.3384 s, 2.955 grids/sec                                   
+15:53:23   grid 45 done: 0 hits over 256 regions (218.47 TH/s)                    
+15:53:23   grid wall: 0.3372 s, 2.966 grids/sec                                   
+15:53:23   grid 46 done: 0 hits over 256 regions (218.90 TH/s)                    
+15:53:23   grid wall: 0.3390 s, 2.950 grids/sec                                   
+15:53:23   grid 47 done: 0 hits over 256 regions (217.86 TH/s)                    
+15:53:24   grid wall: 0.3390 s, 2.950 grids/sec                                   
+15:53:24   grid 48 done: 0 hits over 256 regions (218.01 TH/s)                    
+15:53:24   compute wall: 206.98 TH/s; effective wall: 206.98 TH/s over 60.1 s (rank=128, includes HIT/setup pauses)                                                  
+15:53:24   grid wall: 0.3367 s, 2.970 grids/sec                                   
+15:53:24   grid 49 done: 0 hits over 256 regions (219.50 TH/s)                    
+15:53:24   grid wall: 0.3377 s, 2.961 grids/sec                                   
+15:53:24   grid 50 done: 0 hits over 256 regions (218.77 TH/s)                    
+15:53:25   HIT tile (row=9216, col=115984) grid 51; proof async                   
+15:53:25   share snapshot wall: 0.063 s  
+15:53:25   proof queue wait: 0.000 s     
+15:53:25   grid wall: 0.3943 s, 2.536 grids/sec                                   
+15:53:25   grid 51 done: 1 hits over 256 regions (186.05 TH/s)                    
+15:53:25   grid wall: 0.3286 s, 3.043 grids/sec                                   
+15:53:25   grid 52 done: 0 hits over 256 regions (224.59 TH/s)                    
+15:53:26   grid wall: 0.3321 s, 3.011 grids/sec                                   
+15:53:26   grid 53 done: 0 hits over 256 regions (222.22 TH/s)                    
+15:53:26   grid wall: 0.3387 s, 2.953 grids/sec                                   
+15:53:26   grid 54 done: 0 hits over 256 regions (217.87 TH/s)                    
+15:53:26   grid wall: 0.3317 s, 3.015 grids/sec                                   
+15:53:26   grid 55 done: 0 hits over 256 regions (222.68 TH/s)                    
+15:53:27   grid wall: 0.3331 s, 3.002 grids/sec                                   
+15:53:27   grid 56 done: 0 hits over 256 regions (221.52 TH/s)                    
+15:53:27   grid wall: 0.3373 s, 2.965 grids/sec                                   
+15:53:27   grid 57 done: 0 hits over 256 regions (218.80 TH/s)                    
+15:53:27   grid wall: 0.3332 s, 3.001 grids/sec                                   
+15:53:27   grid 58 done: 0 hits over 256 regions (221.54 TH/s)                    
+15:53:27   proof build wall: 2.815 s     
+15:53:27   submitting share (179180 B) for job 5e661b71_3028274...                
+15:53:28   grid wall: 0.3332 s, 3.001 grids/sec                                   
+15:53:28   grid 59 done: 0 hits over 256 regions (221.45 TH/s)                    
+15:53:28   grid wall: 0.3392 s, 2.948 grids/sec                                   
+15:53:28   grid 60 done: 0 hits over 256 regions (217.43 TH/s)                    
+15:53:28   grid wall: 0.3380 s, 2.959 grids/sec                                   
+15:53:28   grid 61 done: 0 hits over 256 regions (218.65 TH/s)                    
+15:53:29   grid wall: 0.3364 s, 2.973 grids/sec                                   
+15:53:29   grid 62 done: 0 hits over 256 regions (219.63 TH/s)                    
+15:53:29   share submit wall: 1.147 s    
+15:53:29   POOL RESPONSE: {"error": null, "id": 128, "result": true}              
+15:53:29   *** SHARE ACCEPTED (you) *** you=1563 dev=123                          
+15:53:29   newer job (grid 63, 64 regions, 0 hits this grid)                      
+15:53:29 job c83a0106_3571891 target=2^202 factor=1048576 bound=2^222             
+15:53:29   grid wall: 0.3374 s, 2.964 grids/sec                                   
+15:53:29   grid 1 done: 0 hits over 256 regions (218.80 TH/s)                     
+15:53:29   grid wall: 0.3371 s, 2.967 grids/sec                                   
+15:53:29   grid 2 done: 0 hits over 256 regions (218.89 TH/s)                     
+15:53:30   grid wall: 0.3396 s, 2.944 grids/sec                                   
+15:53:30   grid 3 done: 0 hits over 256 regions (217.48 TH/s)                     
+15:53:30   grid wall: 0.3367 s, 2.970 grids/sec                                   
+15:53:30   grid 4 done: 0 hits over 256 regions (219.48 TH/s)                     
+15:53:30   grid wall: 0.3367 s, 2.970 grids/sec                                   
+15:53:30   grid 5 done: 0 hits over 256 regions (219.43 TH/s)                     
+15:53:31   grid wall: 0.3385 s, 2.955 grids/sec                                   
+15:53:31   grid 6 done: 0 hits over 256 regions (218.32 TH/s)                     
+15:53:31   grid wall: 0.3378 s, 2.961 grids/sec                                   
+15:53:31   grid 7 done: 0 hits over 256 regions (218.82 TH/s)                     
+15:53:31   grid wall: 0.3373 s, 2.965 grids/sec                                   
+15:53:31   grid 8 done: 0 hits over 256 regions (219.22 TH/s)                     
+15:53:32   grid wall: 0.3382 s, 2.957 grids/sec                                   
+15:53:32   grid 9 done: 0 hits over 256 regions (218.20 TH/s)                     
+15:53:32   grid wall: 0.3354 s, 2.982 grids/sec                                   
+15:53:32   grid 10 done: 0 hits over 256 regions (220.31 TH/s)                    
+15:53:32   grid wall: 0.3334 s, 3.000 grids/sec                                   
+15:53:32   grid 11 done: 0 hits over 256 regions (221.39 TH/s)                    
+15:53:33   grid wall: 0.3352 s, 2.983 grids/sec                                   
+15:53:33   grid 12 done: 0 hits over 256 regions (220.33 TH/s)                    
+15:53:33   grid wall: 0.3342 s, 2.993 grids/sec                                   
+15:53:33   grid 13 done: 0 hits over 256 regions (220.83 TH/s)                    
+15:53:33   grid wall: 0.3333 s, 3.001 grids/sec                                   
+15:53:33   grid 14 done: 0 hits over 256 regions (221.47 TH/s)                    
+15:53:34   grid wall: 0.3343 s, 2.991 grids/sec                                   
+15:53:34   grid 15 done: 0 hits over 256 regions (220.74 TH/s)                    
+15:53:34   grid wall: 0.3345 s, 2.989 grids/sec                                   
+15:53:34   grid 16 done: 0 hits over 256 regions (220.59 TH/s)                    
+15:53:34   grid wall: 0.3345 s, 2.990 grids/sec                                   
+15:53:34   grid 17 done: 0 hits over 256 regions (220.64 TH/s)                    
+15:53:35   grid wall: 0.3387 s, 2.952 grids/sec                                   
+15:53:35   grid 18 done: 0 hits over 256 regions (217.93 TH/s)                    
+15:53:35   grid wall: 0.3372 s, 2.965 grids/sec                                   
+15:53:35   grid 19 done: 0 hits over 256 regions (219.04 TH/s)                    
+15:53:35   grid wall: 0.3367 s, 2.970 grids/sec                                   
+15:53:35   grid 20 done: 0 hits over 256 regions (219.24 TH/s)                    
+15:53:36   grid wall: 0.3389 s, 2.951 grids/sec                                   
+15:53:36   grid 21 done: 0 hits over 256 regions (217.97 TH/s)                    
+15:53:36   grid wall: 0.3377 s, 2.961 grids/sec                                   
+15:53:36   grid 22 done: 0 hits over 256 regions (218.90 TH/s)                    
+15:53:36   grid wall: 0.3384 s, 2.955 grids/sec                                   
+15:53:36   grid 23 done: 0 hits over 256 regions (218.26 TH/s)                    
+15:53:37   grid wall: 0.3378 s, 2.960 grids/sec                                   
+15:53:37   grid 24 done: 0 hits over 256 regions (218.47 TH/s)                    
+15:53:37   grid wall: 0.3378 s, 2.960 grids/sec                                   
+15:53:37   grid 25 done: 0 hits over 256 regions (218.86 TH/s)                    
+15:53:37   grid wall: 0.3392 s, 2.948 grids/sec                                   
+15:53:37   grid 26 done: 0 hits over 256 regions (217.91 TH/s)                    
+15:53:38   grid wall: 0.3367 s, 2.970 grids/sec                                   
+15:53:38   grid 27 done: 0 hits over 256 regions (219.69 TH/s)                    
+15:53:38   grid wall: 0.3376 s, 2.962 grids/sec                                   
+15:53:38   grid 28 done: 0 hits over 256 regions (218.63 TH/s)                    
+15:53:38   grid wall: 0.3374 s, 2.964 grids/sec                                   
+15:53:38   grid 29 done: 0 hits over 256 regions (219.10 TH/s)                    
+15:53:39   grid wall: 0.3379 s, 2.960 grids/sec                                   
+15:53:39   grid 30 done: 0 hits over 256 regions (218.67 TH/s)                    
+15:53:39   newer job (grid 31, 192 regions, 0 hits this grid)                     
+15:53:39 job 63c68b64_3571891 target=2^202 factor=1048576 bound=2^222             
+15:53:39   grid wall: 0.3371 s, 2.966 grids/sec                                   
+15:53:39   grid 1 done: 0 hits over 256 regions (219.07 TH/s)                     
+15:53:40   grid wall: 0.3378 s, 2.960 grids/sec                                   
+15:53:40   grid 2 done: 0 hits over 256 regions (218.90 TH/s)                     
+15:53:40   grid wall: 0.3382 s, 2.957 grids/sec                                   
+15:53:40   grid 3 done: 0 hits over 256 regions (218.61 TH/s)                     
+15:53:40   grid wall: 0.3374 s, 2.964 grids/sec                                   
+15:53:40   grid 4 done: 0 hits over 256 regions (218.73 TH/s)                     
+15:53:41   grid wall: 0.3370 s, 2.967 grids/sec                                   
+15:53:41   grid 5 done: 0 hits over 256 regions (219.05 TH/s)                     
+15:53:41   grid wall: 0.3391 s, 2.949 grids/sec                                   
+15:53:41   grid 6 done: 0 hits over 256 regions (217.61 TH/s)                     
+15:53:41   grid wall: 0.3384 s, 2.955 grids/sec                                   
+15:53:41   grid 7 done: 0 hits over 256 regions (218.12 TH/s)                     
+15:53:42   grid wall: 0.3385 s, 2.954 grids/sec                                   
+15:53:42   grid 8 done: 0 hits over 256 regions (218.39 TH/s)                     
+15:53:42   grid wall: 0.3370 s, 2.967 grids/sec                                   
+15:53:42   grid 9 done: 0 hits over 256 regions (219.05 TH/s)                     
+15:53:42   grid wall: 0.3379 s, 2.959 grids/sec                                   
+15:53:42   grid 10 done: 0 hits over 256 regions (218.57 TH/s)                    
+15:53:43   grid wall: 0.3374 s, 2.964 grids/sec                                   
+15:53:43   grid 11 done: 0 hits over 256 regions (218.86 TH/s)                    
+15:53:43   grid wall: 0.3378 s, 2.960 grids/sec                                   
+15:53:43   grid 12 done: 0 hits over 256 regions (218.70 TH/s)                    
+15:53:43   grid wall: 0.3369 s, 2.969 grids/sec                                   
+15:53:43   grid 13 done: 0 hits over 256 regions (219.10 TH/s)                    
+15:53:44   grid wall: 0.3377 s, 2.961 grids/sec                                   
+15:53:44   grid 14 done: 0 hits over 256 regions (218.77 TH/s)                    
+15:53:44   compute wall: 207.21 TH/s; effective wall: 207.21 TH/s over 60.0 s (rank=128, includes HIT/setup pauses)                                                  
+15:53:44   grid wall: 0.3385 s, 2.955 grids/sec                                   
+15:53:44   grid 15 done: 0 hits over 256 regions (218.05 TH/s)                    
+15:53:44   grid wall: 0.3369 s, 2.968 grids/sec                                   
+15:53:44   grid 16 done: 0 hits over 256 regions (219.07 TH/s)                    
+15:53:45   grid wall: 0.3369 s, 2.968 grids/sec                                   
+15:53:45   grid 17 done: 0 hits over 256 regions (219.23 TH/s)                    
+15:53:45   grid wall: 0.3373 s, 2.965 grids/sec                                   
+15:53:45   grid 18 done: 0 hits over 256 regions (219.03 TH/s)                    
+15:53:45   grid wall: 0.3374 s, 2.964 grids/sec                                   
+15:53:45   grid 19 done: 0 hits over 256 regions (219.06 TH/s)                    
+15:53:46   grid wall: 0.3375 s, 2.963 grids/sec                                   
+15:53:46   grid 20 done: 0 hits over 256 regions (218.69 TH/s)                    
+15:53:46   grid wall: 0.3382 s, 2.957 grids/sec                                   
+15:53:46   grid 21 done: 0 hits over 256 regions (218.49 TH/s)                    
+15:53:46   grid wall: 0.3371 s, 2.967 grids/sec                                   
+15:53:46   grid 22 done: 0 hits over 256 regions (219.05 TH/s)                    
+15:53:47   grid wall: 0.3369 s, 2.968 grids/sec                                   
+15:53:47   grid 23 done: 0 hits over 256 regions (219.04 TH/s)                    
+15:53:47   grid wall: 0.3340 s, 2.994 grids/sec                                   
+15:53:47   grid 24 done: 0 hits over 256 regions (221.41 TH/s)                    
+15:53:47   grid wall: 0.3344 s, 2.990 grids/sec                                   
+15:53:47   grid 25 done: 0 hits over 256 regions (220.70 TH/s)                    
+15:53:48   grid wall: 0.3348 s, 2.987 grids/sec                                   
+15:53:48   grid 26 done: 0 hits over 256 regions (220.37 TH/s)                    
+15:53:48   grid wall: 0.3361 s, 2.975 grids/sec                                   
+15:53:48   grid 27 done: 0 hits over 256 regions (219.58 TH/s)                    
+15:53:48   grid wall: 0.3381 s, 2.958 grids/sec                                   
+15:53:48   grid 28 done: 0 hits over 256 regions (218.67 TH/s)                    
+15:53:49   grid wall: 0.3398 s, 2.943 grids/sec                                   
+15:53:49   grid 29 done: 0 hits over 256 regions (217.37 TH/s)                    
+15:53:49   grid wall: 0.3369 s, 2.968 grids/sec                                   
+15:53:49   grid 30 done: 0 hits over 256 regions (219.41 TH/s)                    
+15:53:49   grid wall: 0.3375 s, 2.963 grids/sec                                   
+15:53:49   grid 31 done: 0 hits over 256 regions (218.90 TH/s)                    
+15:53:50   grid wall: 0.3381 s, 2.958 grids/sec                                   
+15:53:50   grid 32 done: 0 hits over 256 regions (218.57 TH/s)                    
+15:53:50   grid wall: 0.3366 s, 2.971 grids/sec                                   
+15:53:50   grid 33 done: 0 hits over 256 regions (219.57 TH/s)                    
+15:53:51   grid wall: 0.3379 s, 2.960 grids/sec                                   
+15:53:51   grid 34 done: 0 hits over 256 regions (218.43 TH/s)                    
+15:53:51   grid wall: 0.3397 s, 2.943 grids/sec                                   
+15:53:51   grid 35 done: 0 hits over 256 regions (217.52 TH/s)                    
+15:53:51   grid wall: 0.3376 s, 2.962 grids/sec                                   
+15:53:51   grid 36 done: 0 hits over 256 regions (219.24 TH/s)                    
+15:53:52   grid wall: 0.3381 s, 2.958 grids/sec                                   
+15:53:52   grid 37 done: 0 hits over 256 regions (218.57 TH/s)                    
+15:53:52   grid wall: 0.3381 s, 2.957 grids/sec                                   
+15:53:52   grid 38 done: 0 hits over 256 regions (218.37 TH/s)                    
+15:53:52   grid wall: 0.3370 s, 2.967 grids/sec                                   
+15:53:52   grid 39 done: 0 hits over 256 regions (218.97 TH/s)                    
+15:53:53   grid wall: 0.3372 s, 2.965 grids/sec                                   
+15:53:53   grid 40 done: 0 hits over 256 regions (219.01 TH/s)                    
+15:53:53   grid wall: 0.3396 s, 2.945 grids/sec                                   
+15:53:53   grid 41 done: 0 hits over 256 regions (217.29 TH/s)                    
+15:53:53   grid wall: 0.3379 s, 2.959 grids/sec                                   
+15:53:53   grid 42 done: 0 hits over 256 regions (218.63 TH/s)                    
+15:53:54   grid wall: 0.3366 s, 2.971 grids/sec                                   
+15:53:54   grid 43 done: 0 hits over 256 regions (219.64 TH/s)                    
+15:53:54   grid wall: 0.3381 s, 2.957 grids/sec                                   
+15:53:54   grid 44 done: 0 hits over 256 regions (218.20 TH/s)                    
+15:53:54   grid wall: 0.3375 s, 2.963 grids/sec                                   
+15:53:54   grid 45 done: 0 hits over 256 regions (218.87 TH/s)                    
+15:53:55   grid wall: 0.3365 s, 2.972 grids/sec                                   
+15:53:55   grid 46 done: 0 hits over 256 regions (219.46 TH/s)                    
+15:53:55   grid wall: 0.3397 s, 2.944 grids/sec                                   
+15:53:55   grid 47 done: 0 hits over 256 regions (217.45 TH/s)                    
+15:53:55   grid wall: 0.3364 s, 2.972 grids/sec                                   
+15:53:55   grid 48 done: 0 hits over 256 regions (219.38 TH/s)                    
+15:53:56   grid wall: 0.3372 s, 2.965 grids/sec                                   
+15:53:56   grid 49 done: 0 hits over 256 regions (219.10 TH/s)                    
+15:53:56   grid wall: 0.3375 s, 2.963 grids/sec                                   
+15:53:56   grid 50 done: 0 hits over 256 regions (218.65 TH/s)                    
+15:53:56   grid wall: 0.3378 s, 2.960 grids/sec                                   
+15:53:56   grid 51 done: 0 hits over 256 regions (218.74 TH/s)                    
+15:53:57   grid wall: 0.3372 s, 2.966 grids/sec                                   
+15:53:57   grid 52 done: 0 hits over 256 regions (219.24 TH/s)                    
+15:53:57   grid wall: 0.3384 s, 2.955 grids/sec                                   
+15:53:57   grid 53 done: 0 hits over 256 regions (218.15 TH/s)                    
+15:53:57   grid wall: 0.3379 s, 2.960 grids/sec                                   
+15:53:57   grid 54 done: 0 hits over 256 regions (218.66 TH/s)                    
+15:53:58   grid wall: 0.3365 s, 2.972 grids/sec                                   
+15:53:58   grid 55 done: 0 hits over 256 regions (219.39 TH/s)                    
+15:53:58   grid wall: 0.3375 s, 2.963 grids/sec                                   
+15:53:58   grid 56 done: 0 hits over 256 regions (218.89 TH/s)                    
+15:53:58   grid wall: 0.3370 s, 2.967 grids/sec                                   
+15:53:58   grid 57 done: 0 hits over 256 regions (219.03 TH/s)                    
+15:53:59   grid wall: 0.3388 s, 2.952 grids/sec                                   
+15:53:59   grid 58 done: 0 hits over 256 regions (217.99 TH/s)                    
+15:53:59   grid wall: 0.3386 s, 2.953 grids/sec                                   
+15:53:59   grid 59 done: 0 hits over 256 regions (218.13 TH/s)                    
+15:53:59   grid wall: 0.3380 s, 2.958 grids/sec                                   
+15:53:59   grid 60 done: 0 hits over 256 regions (218.81 TH/s)                    
+15:54:00   grid wall: 0.3377 s, 2.961 grids/sec                                   
+15:54:00   grid 61 done: 0 hits over 256 regions (218.81 TH/s)                    
+15:54:00   grid wall: 0.3380 s, 2.958 grids/sec                                   
+15:54:00   grid 62 done: 0 hits over 256 regions (218.45 TH/s)                    
+15:54:00   grid wall: 0.3378 s, 2.960 grids/sec                                   
+15:54:00   grid 63 done: 0 hits over 256 regions (218.73 TH/s)                    
+15:54:01   grid wall: 0.3381 s, 2.957 grids/sec                                   
+15:54:01   grid 64 done: 0 hits over 256 regions (218.23 TH/s)                    
+15:54:01   grid wall: 0.3378 s, 2.960 grids/sec                                   
+15:54:01   grid 65 done: 0 hits over 256 regions (218.72 TH/s)                    
+15:54:01   grid wall: 0.3385 s, 2.955 grids/sec                                   
+15:54:01   grid 66 done: 0 hits over 256 regions (218.40 TH/s)                    
+15:54:02   grid wall: 0.3372 s, 2.966 grids/sec                                   
+15:54:02   grid 67 done: 0 hits over 256 regions (219.06 TH/s)                    
+15:54:02   grid wall: 0.3373 s, 2.964 grids/sec                                   
+15:54:02   grid 68 done: 0 hits over 256 regions (219.04 TH/s)                    
+15:54:02   grid wall: 0.3374 s, 2.964 grids/sec                                   
+15:54:02   grid 69 done: 0 hits over 256 regions (218.93 TH/s)                    
+15:54:03   grid wall: 0.3394 s, 2.947 grids/sec                                   
+15:54:03   grid 70 done: 0 hits over 256 regions (217.75 TH/s)                    
+15:54:03   grid wall: 0.3387 s, 2.953 grids/sec                                   
+15:54:03   grid 71 done: 0 hits over 256 regions (218.24 TH/s)                    
+15:54:03   grid wall: 0.3370 s, 2.967 grids/sec                                   
+15:54:03   grid 72 done: 0 hits over 256 regions (219.33 TH/s)                    
+15:54:04   grid wall: 0.3381 s, 2.958 grids/sec                                   
+15:54:04   grid 73 done: 0 hits over 256 regions (218.34 TH/s)                    
+15:54:04   compute wall: 208.19 TH/s; effective wall: 208.19 TH/s over 60.1 s (rank=128, includes HIT/setup pauses)                                                  
+15:54:04   grid wall: 0.3379 s, 2.959 grids/sec                                   
+15:54:04   grid 74 done: 0 hits over 256 regions (218.46 TH/s)                    
+15:54:04   grid wall: 0.3373 s, 2.965 grids/sec                                   
+15:54:04   grid 75 done: 0 hits over 256 regions (219.12 TH/s)                    
+15:54:05   grid wall: 0.3390 s, 2.950 grids/sec                                   
+15:54:05   grid 76 done: 0 hits over 256 regions (217.86 TH/s)                    
+15:54:05   grid wall: 0.3365 s, 2.972 grids/sec                                   
+15:54:05   grid 77 done: 0 hits over 256 regions (219.54 TH/s)                    
+15:54:05   grid wall: 0.3377 s, 2.961 grids/sec                                   
+15:54:05   grid 78 done: 0 hits over 256 regions (218.75 TH/s)                    
+15:54:06   grid wall: 0.3369 s, 2.968 grids/sec                                   
+15:54:06   grid 79 done: 0 hits over 256 regions (219.36 TH/s)                    
+15:54:06   grid wall: 0.3376 s, 2.962 grids/sec                                   
+15:54:06   grid 80 done: 0 hits over 256 regions (218.80 TH/s)                    
+15:54:06   grid wall: 0.3380 s, 2.958 grids/sec                                   
+15:54:06   grid 81 done: 0 hits over 256 regions (218.34 TH/s)                    
+15:54:07   grid wall: 0.3376 s, 2.962 grids/sec                                   
+15:54:07   grid 82 done: 0 hits over 256 regions (218.80 TH/s)                    
+15:54:07   grid wall: 0.3370 s, 2.968 grids/sec                                   
+15:54:07   grid 83 done: 0 hits over 256 regions (219.31 TH/s)                    
+15:54:07   grid wall: 0.3374 s, 2.964 grids/sec                                   
+15:54:07   grid 84 done: 0 hits over 256 regions (218.95 TH/s)                    
+15:54:08   grid wall: 0.3370 s, 2.967 grids/sec                                   
+15:54:08   grid 85 done: 0 hits over 256 regions (219.13 TH/s)                    
+15:54:08   grid wall: 0.3378 s, 2.960 grids/sec                                   
+15:54:08   grid 86 done: 0 hits over 256 regions (218.78 TH/s)                    
+15:54:08   grid wall: 0.3392 s, 2.948 grids/sec                                   
+15:54:08   grid 87 done: 0 hits over 256 regions (217.58 TH/s)                    
+15:54:09   grid wall: 0.3379 s, 2.960 grids/sec                                   
+15:54:09   grid 88 done: 0 hits over 256 regions (218.80 TH/s)                    
+15:54:09   grid wall: 0.3364 s, 2.973 grids/sec                                   
+15:54:09   grid 89 done: 0 hits over 256 regions (219.41 TH/s)                    
+15:54:09   grid wall: 0.3382 s, 2.957 grids/sec                                   
+15:54:09   grid 90 done: 0 hits over 256 regions (218.52 TH/s)                    
+15:54:10   grid wall: 0.3375 s, 2.963 grids/sec                                   
+15:54:10   grid 91 done: 0 hits over 256 regions (219.04 TH/s)                    
+15:54:10   grid wall: 0.3367 s, 2.970 grids/sec                                   
+15:54:10   grid 92 done: 0 hits over 256 regions (219.41 TH/s)                    
+15:54:10   grid wall: 0.3380 s, 2.959 grids/sec                                   
+15:54:10   grid 93 done: 0 hits over 256 regions (218.66 TH/s)                    
+15:54:11   grid wall: 0.3369 s, 2.968 grids/sec                                   
+15:54:11   grid 94 done: 0 hits over 256 regions (219.28 TH/s)                    
+15:54:11   grid wall: 0.3377 s, 2.962 grids/sec                                   
+15:54:11   grid 95 done: 0 hits over 256 regions (218.76 TH/s)                    
+15:54:11   grid wall: 0.3368 s, 2.969 grids/sec                                   
+15:54:11   grid 96 done: 0 hits over 256 regions (219.32 TH/s)                    
+15:54:12   grid wall: 0.3374 s, 2.964 grids/sec                                   
+15:54:12   grid 97 done: 0 hits over 256 regions (218.93 TH/s)                    
+15:54:12   grid wall: 0.3377 s, 2.961 grids/sec                                   
+15:54:12   grid 98 done: 0 hits over 256 regions (218.75 TH/s)                    
+15:54:12   grid wall: 0.3389 s, 2.951 grids/sec                                   
+15:54:12   grid 99 done: 0 hits over 256 regions (217.92 TH/s)                    
+15:54:13   grid wall: 0.3374 s, 2.963 grids/sec                                   
+15:54:13   grid 100 done: 0 hits over 256 regions (219.01 TH/s)                   
+15:54:13   grid wall: 0.3367 s, 2.970 grids/sec                                   
+15:54:13   grid 101 done: 0 hits over 256 regions (219.51 TH/s)                   
+15:54:13   grid wall: 0.3375 s, 2.963 grids/sec                                   
+15:54:13   grid 102 done: 0 hits over 256 regions (218.81 TH/s)                   
+15:54:14   grid wall: 0.3375 s, 2.963 grids/sec                                   
+15:54:14   grid 103 done: 0 hits over 256 regions (218.89 TH/s)                   
+15:54:14   grid wall: 0.3362 s, 2.974 grids/sec                                   
+15:54:14   grid 104 done: 0 hits over 256 regions (219.65 TH/s)                   
+15:54:14   grid wall: 0.3371 s, 2.966 grids/sec                                   
+15:54:14   grid 105 done: 0 hits over 256 regions (219.12 TH/s)                   
+15:54:15   grid wall: 0.3375 s, 2.963 grids/sec                                   
+15:54:15   grid 106 done: 0 hits over 256 regions (218.86 TH/s)                   
+15:54:15   grid wall: 0.3382 s, 2.957 grids/sec                                   
+15:54:15   grid 107 done: 0 hits over 256 regions (218.19 TH/s)                   
+15:54:16   grid wall: 0.3373 s, 2.964 grids/sec                                   
+15:54:16   grid 108 done: 0 hits over 256 regions (218.94 TH/s)                   
+15:54:16   grid wall: 0.3372 s, 2.965 grids/sec                                   
+15:54:16   grid 109 done: 0 hits over 256 regions (219.03 TH/s)                   
+15:54:16   grid wall: 0.3382 s, 2.957 grids/sec                                   
+15:54:16   grid 110 done: 0 hits over 256 regions (218.44 TH/s)                   
+15:54:17   grid wall: 0.3367 s, 2.970 grids/sec                                   
+15:54:17   grid 111 done: 0 hits over 256 regions (219.22 TH/s)                   
+15:54:17   grid wall: 0.3378 s, 2.960 grids/sec                                   
+15:54:17   grid 112 done: 0 hits over 256 regions (218.52 TH/s)                   
+15:54:17   grid wall: 0.3371 s, 2.967 grids/sec                                   
+15:54:17   grid 113 done: 0 hits over 256 regions (219.15 TH/s)                   
+15:54:18   grid wall: 0.3373 s, 2.965 grids/sec                                   
+15:54:18   grid 114 done: 0 hits over 256 regions (218.96 TH/s)                   
+15:54:18   grid wall: 0.3380 s, 2.959 grids/sec                                   
+15:54:18   grid 115 done: 0 hits over 256 regions (218.52 TH/s)                   
+15:54:18   grid wall: 0.3393 s, 2.947 grids/sec                                   
+15:54:18   grid 116 done: 0 hits over 256 regions (217.81 TH/s)                   
+15:54:19   grid wall: 0.3377 s, 2.961 grids/sec                                   
+15:54:19   grid 117 done: 0 hits over 256 regions (218.86 TH/s)                   
+15:54:19   grid wall: 0.3369 s, 2.968 grids/sec                                   
+15:54:19   grid 118 done: 0 hits over 256 regions (219.40 TH/s)                   
+15:54:19   grid wall: 0.3376 s, 2.962 grids/sec                                   
+15:54:19   grid 119 done: 0 hits over 256 regions (218.60 TH/s)                   
+15:54:20   grid wall: 0.3378 s, 2.960 grids/sec                                   
+15:54:20   grid 120 done: 0 hits over 256 regions (218.72 TH/s)                   
+15:54:20   grid wall: 0.3383 s, 2.956 grids/sec                                   
+15:54:20   grid 121 done: 0 hits over 256 regions (218.16 TH/s)                   
+15:54:20   grid wall: 0.3368 s, 2.969 grids/sec                                   
+15:54:20   grid 122 done: 0 hits over 256 regions (219.34 TH/s)                   
+15:54:21   grid wall: 0.3377 s, 2.961 grids/sec                                   
+15:54:21   grid 123 done: 0 hits over 256 regions (218.80 TH/s)                   
+15:54:21   grid wall: 0.3379 s, 2.959 grids/sec                                   
+15:54:21   grid 124 done: 0 hits over 256 regions (218.67 TH/s)                   
+15:54:21   grid wall: 0.3369 s, 2.968 grids/sec                                   
+15:54:21   grid 125 done: 0 hits over 256 regions (219.37 TH/s)                   
+15:54:22   grid wall: 0.3367 s, 2.970 grids/sec                                   
+15:54:22   grid 126 done: 0 hits over 256 regions (219.26 TH/s)                   
+15:54:22   grid wall: 0.3385 s, 2.954 grids/sec                                   
+15:54:22   grid 127 done: 0 hits over 256 regions (218.24 TH/s)                   
+15:54:22   grid wall: 0.3374 s, 2.964 grids/sec                                   
+15:54:22   grid 128 done: 0 hits over 256 regions (218.94 TH/s)                   
+15:54:23   grid wall: 0.3377 s, 2.961 grids/sec                                   
+15:54:23   grid 129 done: 0 hits over 256 regions (218.91 TH/s)                   
+15:54:23   grid wall: 0.3374 s, 2.964 grids/sec                                   
+15:54:23   grid 130 done: 0 hits over 256 regions (219.00 TH/s)                   
+15:54:23   grid wall: 0.3371 s, 2.967 grids/sec                                   
+15:54:23   grid 131 done: 0 hits over 256 regions (219.19 TH/s)                   
+15:54:24   grid wall: 0.3377 s, 2.961 grids/sec                                   
+15:54:24   grid 132 done: 0 hits over 256 regions (218.80 TH/s)                   
+15:54:24   compute wall: 208.38 TH/s; effective wall: 208.38 TH/s over 60.0 s (rank=128, includes HIT/setup pauses)                                                  
+15:54:24   grid wall: 0.3393 s, 2.947 grids/sec                                   
+15:54:24   grid 133 done: 0 hits over 256 regions (217.74 TH/s)                   
+15:54:24   grid wall: 0.3371 s, 2.967 grids/sec                                   
+15:54:24   grid 134 done: 0 hits over 256 regions (219.13 TH/s)                   
+15:54:25   grid wall: 0.3366 s, 2.971 grids/sec                                   
+15:54:25   grid 135 done: 0 hits over 256 regions (219.55 TH/s)                   
+15:54:25   grid wall: 0.3385 s, 2.954 grids/sec                                   
+15:54:25   grid 136 done: 0 hits over 256 regions (218.44 TH/s)                   
+15:54:25   grid wall: 0.3373 s, 2.964 grids/sec                                   
+15:54:25   grid 137 done: 0 hits over 256 regions (219.05 TH/s)                   
+15:54:26   grid wall: 0.3370 s, 2.968 grids/sec                                   
+15:54:26   grid 138 done: 0 hits over 256 regions (219.34 TH/s)                   
+15:54:26   grid wall: 0.3377 s, 2.961 grids/sec                                   
+15:54:26   grid 139 done: 0 hits over 256 regions (218.81 TH/s)                   
+15:54:26   grid wall: 0.3382 s, 2.957 grids/sec                                   
+15:54:26   grid 140 done: 0 hits over 256 regions (218.51 TH/s)                   
+15:54:27   grid wall: 0.3379 s, 2.960 grids/sec                                   
+15:54:27   grid 141 done: 0 hits over 256 regions (218.78 TH/s)                   
+15:54:27   grid wall: 0.3372 s, 2.966 grids/sec                                   
+15:54:27   grid 142 done: 0 hits over 256 regions (218.93 TH/s)                   
+15:54:27   grid wall: 0.3380 s, 2.959 grids/sec                                   
+15:54:27   grid 143 done: 0 hits over 256 regions (218.51 TH/s)                   
+15:54:28   grid wall: 0.3379 s, 2.959 grids/sec                                   
+15:54:28   grid 144 done: 0 hits over 256 regions (218.56 TH/s)                   
+15:54:28   grid wall: 0.3369 s, 2.968 grids/sec                                   
+15:54:28   grid 145 done: 0 hits over 256 regions (219.26 TH/s)                   
+15:54:28   grid wall: 0.3391 s, 2.949 grids/sec                                   
+15:54:28   grid 146 done: 0 hits over 256 regions (217.61 TH/s)                   
+15:54:29   grid wall: 0.3375 s, 2.963 grids/sec                                   
+15:54:29   grid 147 done: 0 hits over 256 regions (218.88 TH/s)                   
+15:54:29   grid wall: 0.3367 s, 2.970 grids/sec                                   
+15:54:29   grid 148 done: 0 hits over 256 regions (219.20 TH/s)                   
+15:54:29   grid wall: 0.3381 s, 2.958 grids/sec                                   
+15:54:29   grid 149 done: 0 hits over 256 regions (218.59 TH/s)                   
+15:54:30   grid wall: 0.3390 s, 2.950 grids/sec                                   
+15:54:30   grid 150 done: 0 hits over 256 regions (217.95 TH/s)                   
+15:54:30   grid wall: 0.3374 s, 2.964 grids/sec                                   
+15:54:30   grid 151 done: 0 hits over 256 regions (218.83 TH/s)                   
+15:54:30   grid wall: 0.3378 s, 2.961 grids/sec                                   
+15:54:30   grid 152 done: 0 hits over 256 regions (218.71 TH/s)                   
+15:54:31   grid wall: 0.3385 s, 2.954 grids/sec                                   
+15:54:31   grid 153 done: 0 hits over 256 regions (218.17 TH/s)                   
+15:54:31   grid wall: 0.3368 s, 2.969 grids/sec                                   
+15:54:31   grid 154 done: 0 hits over 256 regions (219.30 TH/s)                   
+15:54:31   grid wall: 0.3363 s, 2.974 grids/sec                                   
+15:54:31   grid 155 done: 0 hits over 256 regions (219.82 TH/s)                   
+15:54:32   grid wall: 0.3390 s, 2.950 grids/sec                                   
+15:54:32   grid 156 done: 0 hits over 256 regions (217.85 TH/s)                   
+15:54:32   grid wall: 0.3372 s, 2.965 grids/sec                                   
+15:54:32   grid 157 done: 0 hits over 256 regions (219.12 TH/s)                   
+15:54:32   grid wall: 0.3366 s, 2.970 grids/sec                                   
+15:54:32   grid 158 done: 0 hits over 256 regions (219.23 TH/s)                   
+15:54:33   grid wall: 0.3380 s, 2.959 grids/sec                                   
+15:54:33   grid 159 done: 0 hits over 256 regions (218.64 TH/s)                   
+15:54:33   grid wall: 0.3378 s, 2.960 grids/sec                                   
+15:54:33   grid 160 done: 0 hits over 256 regions (218.74 TH/s)                   
+15:54:33   grid wall: 0.3371 s, 2.967 grids/sec                                   
+15:54:33   grid 161 done: 0 hits over 256 regions (218.94 TH/s)                   
+15:54:34   grid wall: 0.3390 s, 2.950 grids/sec                                   
+15:54:34   grid 162 done: 0 hits over 256 regions (217.95 TH/s)                   
+15:54:34   grid wall: 0.3380 s, 2.959 grids/sec                                   
+15:54:34   grid 163 done: 0 hits over 256 regions (218.63 TH/s)                   
+15:54:34   grid wall: 0.3368 s, 2.969 grids/sec                                   
+15:54:34   grid 164 done: 0 hits over 256 regions (219.36 TH/s)                   
+15:54:35   newer job (grid 165, 192 regions, 0 hits this grid)                    
+15:54:35 job d1ea3345_3571891 target=2^202 factor=1048576 bound=2^222             
+15:54:35   grid wall: 0.3373 s, 2.964 grids/sec                                   
+15:54:35   grid 1 done: 0 hits over 256 regions (219.05 TH/s)                     
+15:54:35   grid wall: 0.3379 s, 2.959 grids/sec                                   
+15:54:35   grid 2 done: 0 hits over 256 regions (218.71 TH/s)                     
+15:54:36   grid wall: 0.3360 s, 2.976 grids/sec                                   
+15:54:36   grid 3 done: 0 hits over 256 regions (219.68 TH/s)                     
+15:54:36   grid wall: 0.3376 s, 2.962 grids/sec                                   
+15:54:36   grid 4 done: 0 hits over 256 regions (218.80 TH/s)                     
+15:54:36   grid wall: 0.3367 s, 2.970 grids/sec                                   
+15:54:36   grid 5 done: 0 hits over 256 regions (219.22 TH/s)                     
+15:54:37   grid wall: 0.3375 s, 2.963 grids/sec                                   
+15:54:37   grid 6 done: 0 hits over 256 regions (218.94 TH/s)                     
+15:54:37   grid wall: 0.3377 s, 2.961 grids/sec                                   
+15:54:37   grid 7 done: 0 hits over 256 regions (218.70 TH/s)                     
+15:54:37   grid wall: 0.3377 s, 2.961 grids/sec                                   
+15:54:37   grid 8 done: 0 hits over 256 regions (218.85 TH/s)                     
+15:54:38   grid wall: 0.3384 s, 2.955 grids/sec                                   
+15:54:38   grid 9 done: 0 hits over 256 regions (218.34 TH/s)                     
+15:54:38   grid wall: 0.3369 s, 2.969 grids/sec                                   
+15:54:38   grid 10 done: 0 hits over 256 regions (219.10 TH/s)                    
+15:54:38   grid wall: 0.3366 s, 2.971 grids/sec                                   
+15:54:38   grid 11 done: 0 hits over 256 regions (219.47 TH/s)                    
+15:54:39   grid wall: 0.3385 s, 2.954 grids/sec                                   
+15:54:39   grid 12 done: 0 hits over 256 regions (218.24 TH/s)                    
+15:54:39   grid wall: 0.3394 s, 2.946 grids/sec                                   
+15:54:39   grid 13 done: 0 hits over 256 regions (217.64 TH/s)                    
+15:54:39   grid wall: 0.3365 s, 2.972 grids/sec                                   
+15:54:39   grid 14 done: 0 hits over 256 regions (219.35 TH/s)                    
+15:54:40   grid wall: 0.3375 s, 2.963 grids/sec                                   
+15:54:40   grid 15 done: 0 hits over 256 regions (219.00 TH/s)                    
+15:54:40   grid wall: 0.3385 s, 2.954 grids/sec                                   
+15:54:40   grid 16 done: 0 hits over 256 regions (218.18 TH/s)                    
+15:54:40   grid wall: 0.3381 s, 2.958 grids/sec                                   
+15:54:40   grid 17 done: 0 hits over 256 regions (218.60 TH/s)                    
+15:54:41   grid wall: 0.3367 s, 2.970 grids/sec                                   
+15:54:41   grid 18 done: 0 hits over 256 regions (219.34 TH/s)                    
+15:54:41   grid wall: 0.3393 s, 2.947 grids/sec                                   
+15:54:41   grid 19 done: 0 hits over 256 regions (217.80 TH/s)                    
+15:54:41   grid wall: 0.3377 s, 2.961 grids/sec                                   
+15:54:41   grid 20 done: 0 hits over 256 regions (218.71 TH/s)                    
+15:54:42   grid wall: 0.3382 s, 2.957 grids/sec                                   
+15:54:42   grid 21 done: 0 hits over 256 regions (218.47 TH/s)                    
+15:54:42   grid wall: 0.3365 s, 2.971 grids/sec                                   
+15:54:42   grid 22 done: 0 hits over 256 regions (219.45 TH/s)                    
+15:54:42   grid wall: 0.3370 s, 2.967 grids/sec                                   
+15:54:42   grid 23 done: 0 hits over 256 regions (219.01 TH/s)                    
+15:54:43   grid wall: 0.3377 s, 2.961 grids/sec                                   
+15:54:43   grid 24 done: 0 hits over 256 regions (218.84 TH/s)                    
+15:54:43   grid wall: 0.3382 s, 2.957 grids/sec                                   
+15:54:43   grid 25 done: 0 hits over 256 regions (218.24 TH/s)                    
+15:54:43   grid wall: 0.3378 s, 2.960 grids/sec                                   
+15:54:43   grid 26 done: 0 hits over 256 regions (218.77 TH/s)                    
+15:54:44   grid wall: 0.3370 s, 2.968 grids/sec                                   
+15:54:44   grid 27 done: 0 hits over 256 regions (219.00 TH/s)                    
+15:54:44   compute wall: 208.39 TH/s; effective wall: 208.39 TH/s over 60.0 s (rank=128, includes HIT/setup pauses)                                                  
+15:54:44   grid wall: 0.3380 s, 2.959 grids/sec                                   
+15:54:44   grid 28 done: 0 hits over 256 regions (218.56 TH/s)                    
+15:54:44   grid wall: 0.3381 s, 2.957 grids/sec                                   
+15:54:44   grid 29 done: 0 hits over 256 regions (218.46 TH/s)                    
+15:54:45   grid wall: 0.3387 s, 2.953 grids/sec                                   
+15:54:45   grid 30 done: 0 hits over 256 regions (218.15 TH/s)                    
+15:54:45   grid wall: 0.3371 s, 2.967 grids/sec                                   
+15:54:45   grid 31 done: 0 hits over 256 regions (219.21 TH/s)                    
+15:54:45   grid wall: 0.3371 s, 2.967 grids/sec                                   
+15:54:45   grid 32 done: 0 hits over 256 regions (219.21 TH/s)                    
+15:54:46   grid wall: 0.3381 s, 2.958 grids/sec                                   
+15:54:46   grid 33 done: 0 hits over 256 regions (218.44 TH/s)                    
+15:54:46   grid wall: 0.3377 s, 2.961 grids/sec                                   
+15:54:46   grid 34 done: 0 hits over 256 regions (218.85 TH/s)                    
+15:54:46   grid wall: 0.3374 s, 2.964 grids/sec                                   
+15:54:46   grid 35 done: 0 hits over 256 regions (219.03 TH/s)                    
+15:54:47   grid wall: 0.3387 s, 2.952 grids/sec                                   
+15:54:47   grid 36 done: 0 hits over 256 regions (218.15 TH/s)                    
+15:54:47   grid wall: 0.3375 s, 2.963 grids/sec                                   
+15:54:47   grid 37 done: 0 hits over 256 regions (219.09 TH/s)                    
+15:54:48   grid wall: 0.3383 s, 2.956 grids/sec                                   
+15:54:48   grid 38 done: 0 hits over 256 regions (218.42 TH/s)                    
+15:54:48   grid wall: 0.3376 s, 2.962 grids/sec                                   
+15:54:48   grid 39 done: 0 hits over 256 regions (218.79 TH/s)                    
+15:54:48   grid wall: 0.3372 s, 2.965 grids/sec                                   
+15:54:48   grid 40 done: 0 hits over 256 regions (219.23 TH/s)                    
+15:54:49   grid wall: 0.3367 s, 2.970 grids/sec                                   
+15:54:49   grid 41 done: 0 hits over 256 regions (219.67 TH/s)                    
+15:54:49   grid wall: 0.3395 s, 2.946 grids/sec                                   
+15:54:49   grid 42 done: 0 hits over 256 regions (217.52 TH/s)                    
+15:54:49   grid wall: 0.3380 s, 2.958 grids/sec                                   
+15:54:49   grid 43 done: 0 hits over 256 regions (218.54 TH/s)                    
+15:54:50   grid wall: 0.3364 s, 2.973 grids/sec                                   
+15:54:50   grid 44 done: 0 hits over 256 regions (219.65 TH/s)                    
+15:54:50   grid wall: 0.3381 s, 2.958 grids/sec                                   
+15:54:50   grid 45 done: 0 hits over 256 regions (218.55 TH/s)                    
+15:54:50   grid wall: 0.3377 s, 2.961 grids/sec                                   
+15:54:50   grid 46 done: 0 hits over 256 regions (218.73 TH/s)                    
+15:54:51   grid wall: 0.3366 s, 2.971 grids/sec                                   
+15:54:51   grid 47 done: 0 hits over 256 regions (219.56 TH/s)                    
+15:54:51   grid wall: 0.3390 s, 2.949 grids/sec                                   
+15:54:51   grid 48 done: 0 hits over 256 regions (217.82 TH/s)                    
+15:54:51   grid wall: 0.3360 s, 2.976 grids/sec                                   
+15:54:51   grid 49 done: 0 hits over 256 regions (220.03 TH/s)                    
+15:54:52   grid wall: 0.3364 s, 2.973 grids/sec                                   
+15:54:52   grid 50 done: 0 hits over 256 regions (219.53 TH/s)                    
+15:54:52   grid wall: 0.3374 s, 2.964 grids/sec                                   
+15:54:52   grid 51 done: 0 hits over 256 regions (218.69 TH/s)                    
+15:54:52   grid wall: 0.3375 s, 2.963 grids/sec                                   
+15:54:52   grid 52 done: 0 hits over 256 regions (218.90 TH/s)                    
+15:54:53   grid wall: 0.3379 s, 2.960 grids/sec                                   
+15:54:53   grid 53 done: 0 hits over 256 regions (218.69 TH/s)                    
+15:54:53   grid wall: 0.3383 s, 2.956 grids/sec                                   
+15:54:53   grid 54 done: 0 hits over 256 regions (218.36 TH/s)                    
+15:54:53   grid wall: 0.3387 s, 2.953 grids/sec                                   
+15:54:53   grid 55 done: 0 hits over 256 regions (217.92 TH/s)                    
+15:54:54   grid wall: 0.3367 s, 2.970 grids/sec                                   
+15:54:54   grid 56 done: 0 hits over 256 regions (219.58 TH/s)                    
+15:54:54   grid wall: 0.3374 s, 2.963 grids/sec                                   
+15:54:54   grid 57 done: 0 hits over 256 regions (218.88 TH/s)                    
+15:54:54   grid wall: 0.3383 s, 2.956 grids/sec                                   
+15:54:54   grid 58 done: 0 hits over 256 regions (218.08 TH/s)                    
+15:54:55   grid wall: 0.3381 s, 2.957 grids/sec                                   
+15:54:55   grid 59 done: 0 hits over 256 regions (218.25 TH/s)                    
+15:54:55   grid wall: 0.3376 s, 2.962 grids/sec                                   
+15:54:55   grid 60 done: 0 hits over 256 regions (218.86 TH/s)                    
+15:54:55   grid wall: 0.3375 s, 2.963 grids/sec                                   
+15:54:55   grid 61 done: 0 hits over 256 regions (218.90 TH/s)                    
+15:54:56   grid wall: 0.3382 s, 2.956 grids/sec                                   
+15:54:56   grid 62 done: 0 hits over 256 regions (218.33 TH/s)                    
+15:54:56   grid wall: 0.3375 s, 2.963 grids/sec                                   
+15:54:56   grid 63 done: 0 hits over 256 regions (218.68 TH/s)                    
+15:54:56   grid wall: 0.3371 s, 2.966 grids/sec                                   
+15:54:56   grid 64 done: 0 hits over 256 regions (219.24 TH/s)                    
+15:54:57   grid wall: 0.3382 s, 2.957 grids/sec                                   
+15:54:57   grid 65 done: 0 hits over 256 regions (218.49 TH/s)                    
+15:54:57   grid wall: 0.3372 s, 2.966 grids/sec                                   
+15:54:57   grid 66 done: 0 hits over 256 regions (219.14 TH/s)                    
+

@@ -1,0 +1,56 @@
+Status: proposed source diff and CPU event model only. No CUDA build, racecheck,
+benchmark, production edit, or claimed performance improvement.
+
+Objective: move a real operand copy before the original handoff, using only
+named barriers and retaining the current8+4 grouping and operand ownership.
+
+Region: A rows32..63, K64,2048bytes/stage. Writers W4..7; readers W0,W4,W8.
+Read-only participants W0,W8 publish after old-region LDSM is complete.
+Writer participants W4..7 sync before overwriting this region in the next loop.
+W4 is both reader and writer: it contributes ONLY its sync, never a second arrive.
+Participant set {0,4,5,6,7,8},count192. All participating lanes are full warps.
+Use barrier.cta.arrive/sync without .aligned for these conditional subsets.
+
+IDs1 and2 alternate by consumedK parity. Original IDs0,4..7 retained.
+A single ID FAILED the event model:W8 can publish the next round before every
+writer has arrived for the current round. Alternating IDs avoid this modeled
+lap; next-stage publication gates prevent advancing two reuse rounds ahead.
+
+Per consumedK k (0..61):
+W0,W8: old reads + own cp.wait -> original peer arrive -> regional arrive
+       -> remaining arithmetic/transcript -> original handoff.
+W4..7: finish own arithmetic/transcript for k -> regional sync(k)
+       -> issue original first A copy for K(k+2),now early
+       -> original own handoff(k) -> remaining copies for K(k+2),commit
+       -> LDSM for K(k+1).
+Otherwarps:original handoff remains ahead of all their copies/LDSM.
+The unchanged cp.wait0 later covers the early copy and remaining committed copies.
+There is no added cp.async.commit_group. Hardware ordering still needs validation.
+
+Bootstrap:prologueK0 and first loop's K1 copy unchanged;no regional wait needed.
+Regional publications k0..61 pair with copiesK2..63. No publications k62,k63.
+Drain:last original handoff(k63) remains before final CTA synchronization/output.
+
+Why not move allA0..63:requiring W0..7 at the new barrier retains the same slow
+own-group tail quorum. Choosing W4..7 removes W0..3 tail completion from this
+copy's direct gate;W0 read completion remains mandatory. Which warps actually
+lead in native scheduling remains a hypothesis from source traces,not a fact.
+
+Cost per ordinary reusedstage,warp-instruction count:
+2extra arrive(W0,W8)+4extra sync(W4..7)=6/CTA,versus24existing named operations.
+64round total372extra named operations vs1536existing (+24.22%). Also adds
+region predicates,ID selection,and duplicated address-preparation potential.
+Only2KiB/28KiB stage bytes move earlier. No added data copies,shared state,
+atomic arrivals,polling,consumer warps,or changed tile geometry.
+Do not call it zero-overhead. SASS/resource audit must check compiler placement.
+
+CPU model:1000random plus2fixed-priority schedules,64rounds;verified arrival
+counts,duplicate exclusion,phase transitions,complete barriers at exit,
+same data-copy count,abstract read-before-ready/overwrite hazards,deadlock.
+This is not exhaustive state-space proof or CUDA memory-model validation.
+
+Review artifacts:design-only.diff,design-only.cu,model.json.
+Reproduce:python tools/prepare_named_a0_design.py;python tools/model_named_a0.py.
+Source diff is against recompiled source_control,not a frozen-native SASS patch.
+Before performance claims require a matched unmodified source control AND native,
+actual SASS publication positions,bit-exact tests,racecheck,and GPU0 timings.

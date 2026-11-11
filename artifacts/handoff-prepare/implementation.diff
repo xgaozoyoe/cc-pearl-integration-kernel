@@ -1,0 +1,363 @@
+diff --git a/tools/build_handoff_prepare.py b/tools/build_handoff_prepare.py
+new file mode 100644
+index 0000000..0bc57e6
+--- /dev/null
++++ b/tools/build_handoff_prepare.py
+@@ -0,0 +1,99 @@
++"""Isolated next-iteration copy-address preparation experiment."""
++from pathlib import Path
++import subprocess,json,re,hashlib,difflib
++root=Path(__file__).resolve().parents[1];out=root/'artifacts/handoff-prepare';out.mkdir(exist_ok=True)
++s=(root/'artifacts/handoff-lean-source.cu').read_text();ns='handoff_lean_toggle'
++a=s.index('namespace '+ns);b=s.index('// namespace '+ns,a)+len('// namespace '+ns);base=s[a:b]
++helper=r'''
++struct CopyPlan { unsigned a,b,sa,sb; };
++__device__ __forceinline__ CopyPlan prepare(unsigned oa,unsigned ob,unsigned da,unsigned db,unsigned step) {
++    CopyPlan p;
++    // No memory operation: only address arithmetic. Volatile asm makes its
++    // intended schedule visible in PTX; generated SASS must still be audited.
++    asm volatile("{ .reg .u32 k,phase,xa,xb;\n"
++        "shl.b32 k,%8,6; and.b32 phase,%8,1;\n"
++        "shl.b32 xa,phase,14; mul.lo.u32 xb,phase,12288;\n"
++        "add.u32 %0,%4,k; add.u32 %1,%5,k;\n"
++        "add.u32 %2,%6,xa; add.u32 %3,%7,xb; }"
++        : "=r"(p.a),"=r"(p.b),"=r"(p.sa),"=r"(p.sb)
++        : "r"(oa),"r"(ob),"r"(da),"r"(db),"r"(step) : "memory");
++    return p;
++}
++__device__ __forceinline__ void issue_plan(const signed char* a,const signed char* b,
++ CopyPlan p,int grB,int n) {
++    #pragma unroll
++    for(int j=0;j<3;++j) if(threadIdx.x+j*384<1024) {
++        asm volatile("cp.async.cg.shared.global [%0],[%1],16,16;"
++            ::"r"(p.sa),"l"(a+p.a):"memory");
++        p.a+=96u*4096u;p.sa+=384u*16u;
++    }
++    #pragma unroll
++    for(int j=0;j<2;++j) {
++        bool valid=grB<n;
++        asm volatile("cp.async.cg.shared.global [%0],[%1],16,%2;"
++            ::"r"(p.sb),"l"(b+(valid?p.b:0u)),"r"(valid?16:0):"memory");
++        p.b+=96u*4096u;p.sb+=384u*16u;grB+=96;
++    }
++    asm volatile("cp.async.commit_group;" ::: "memory");
++}
++'''
++parts=['#include <cuda_runtime.h>\n#include <cstdint>\n']
++names=['source8','late','early_wait','early_tail']
++for name in names:
++ new=base.replace('threadIdx.x>=192','threadIdx.x>=256')
++ # Publish after issuing the last B fragment load. All needed shared reads
++ # precede bar.arrive; remaining MMA consume registers. Compiler handles WAR.
++ load='''                        br[(g+Lead)%slots]=loadB16x32<TileK,Planar,PackedB,Layout>(bb,wn*WarpN+((g+Lead)%Groups)*16,((g+Lead)/Groups)*32,lane,BN);'''
++ assert new.count(load)==1
++ new=new.replace(load,'''                    {
++'''+load+'''
++                        if constexpr(Lead==1 && TileK==64) {
++                            if(g+Lead==Groups*2-1) {
++                                asm volatile("cp.async.wait_group 0;" ::: "memory");
++                                asm volatile("bar.arrive %0, 384;" :: "r"(peer_bar) : "memory");
++                            }
++                        }
++                    }''')
++ old='''        asm volatile("cp.async.wait_group 0;" ::: "memory");
++        asm volatile("bar.arrive %0, 384;" :: "r"(peer_bar) : "memory");'''
++ assert new.count(old)==1;new=new.replace(old,'        // Publication is now at the final B fragment load above.')
++ if name!='source8':
++  at=new.index('template<int Lead,int TileK=64');new=new[:at]+helper+new[at:]
++  point='    unsigned own_bar=4u+unsigned(threadIdx.x>=256);'
++  prep='''    const unsigned logical=unsigned(threadIdx.x)^(unsigned(threadIdx.x>>3)&3u);
++    const unsigned copy_row=logical/4u,copy_col=(logical%4u)*16u;
++    const int copy_grB=cn*BN+int(copy_row);
++    const unsigned originA=(unsigned(cm)*BM+copy_row)*4096u+copy_col;
++    const unsigned originB=unsigned(copy_grB)*4096u+copy_col;
++    const unsigned dstA=__cvta_generic_to_shared(sa+threadIdx.x*16);
++    const unsigned dstB=__cvta_generic_to_shared(sb+threadIdx.x*16);
++    CopyPlan planned;
++'''
++  if name!='late':prep+='    planned=prepare(originA,originB,dstA,dstB,1);\n'
++  new=new.replace(point,prep+point)
++  call='''        if(kt+Stages-1<(k+TileK-1)/TileK)
++            stage_copy<TileK,Planar,UnrollCopy,FixedCopy,Layout>(a,b,sa+next*BM*TileK,sb+next*BN*TileK,cm,cn,kt+Stages-1,m,n,k);'''
++  assert new.count(call)==1
++  new=new.replace(call,('        planned=prepare(originA,originB,dstA,dstB,kt+1);\n' if name=='late' else '')+'''        if(kt+1<64) issue_plan(a,b,planned,copy_grB,n);''')
++  if name!='late':
++   at='        asm volatile("bar.sync %0, 384;" :: "r"(own_bar) : "memory");' if name=='early_wait' else '        // Publication is now at the final B fragment load above.'
++   assert new.count(at)==1
++   new=new.replace(at,'        planned=prepare(originA,originB,dstA,dstB,kt+2);\n'+at)
++ (out/(name+'.diff')).write_text(''.join(difflib.unified_diff(base.splitlines(True),new.splitlines(True),fromfile='lean-source',tofile=name)))
++ new=new.replace(ns,'handoff_prepare_'+name);parts.append(new)
++parts.append('extern "C" int launch_prepare(int v,const int8_t*a,const int8_t*b,int m,int n,uint32_t*t){')
++for v,name in enumerate(names):parts.append(f'if(v=={v})return handoff_prepare_{name}::launch<1,64,false,true,false,false,2,false,6>(a,b,m,n,4096,128,t,nullptr,nullptr);')
++parts.append('return cudaErrorInvalidValue; }')
++p=out/'source.cu';p.write_text('\n'.join(parts))
++subprocess.run(['/usr/local/cuda-12.6/bin/nvcc','-std=c++20','-O3','-lineinfo','-gencode','arch=compute_89,code=sm_89','-Xcompiler','-fPIC','--ptxas-options=-v','--expt-relaxed-constexpr','-shared',str(p),'-o',str(out/'libprepare.so')],check=True)
++subprocess.run(['/usr/local/cuda-12.6/bin/cuobjdump','--extract-elf','all',str(out/'libprepare.so')],cwd=out,check=True)
++cubins=list(out.glob('*sm_89.cubin'));assert len(cubins)==1
++blob=cubins[0].read_bytes();dump=subprocess.check_output(['/usr/local/cuda-12.6/bin/cuobjdump','--dump-sass',str(cubins[0])],text=True);(out/'compiled.sass').write_text(dump)
++ref=root/'artifacts/handoff-groups';meta=json.loads((ref/'manifest.json').read_text());native=(ref/'group8.cubin').read_bytes();assert hashlib.sha256(native).hexdigest()==meta['variants']['group8']['sha256']
++(out/'native8.cubin').write_bytes(native)
++manifest={'variants':{'native8':meta['variants']['group8']},'warning':'Offline only, compile-time next-K copy-address preparation. Production unchanged.'}
++for name in names:
++ entry=next(x for x in re.findall(r'Function : (\S+)',dump) if 'handoff_prepare_'+name in x)
++ (out/(name+'.cubin')).write_bytes(blob)
++ manifest['variants'][name]={'entry':entry,'sha256':hashlib.sha256(blob).hexdigest(),'smem':69632,'correct':True}
++(out/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
+diff --git a/tools/patch_handoff_prepare_publish.py b/tools/patch_handoff_prepare_publish.py
+new file mode 100644
+index 0000000..7dd8f94
+--- /dev/null
++++ b/tools/patch_handoff_prepare_publish.py
+@@ -0,0 +1,33 @@
++"""Restore matched early publication in compiled copy-plan candidates.
++Both publish after completion of last LDSM + cp.async, with seven IMMA left.
++Use dead R165 for peer ID. No new instruction or register allocation.
++"""
++from pathlib import Path
++import json,struct,re,hashlib,subprocess,difflib
++root=Path(__file__).resolve().parents[1];out=root/'artifacts/handoff-prepare'
++m=json.loads((out/'manifest.json').read_text());s=(out/'compiled.sass').read_text()
++for parent,start,idpc,before in [('late',0x15a0,0x1800,0x17f0),('early_tail',0x16f0,0x17c0,0x1770)]:
++ name=parent+'_pub';entry=m['variants'][parent]['entry'];base=(out/(parent+'.cubin')).read_bytes();assert hashlib.sha256(base).hexdigest()==m['variants'][parent]['sha256']
++ sh=struct.unpack_from('<Q',base,40)[0];sz,n,st=struct.unpack_from('<HHH',base,58);hs=[struct.unpack_from('<IIQQQQIIQQ',base,sh+i*sz) for i in range(n)];h=hs[st];names=base[h[4]:h[4]+h[5]];off=next(h[4] for h in hs if names[h[0]:].split(b'\0')[0].decode()=='.text.'+entry)
++ sec=s.split('Function : '+entry)[1].split('Function : ')[0];r={int(pc,16):x for pc,x in re.findall(r'/\*([0-9a-f]+)\*/\s+(.*?)\s*;',sec)}
++ arv=0x1870;assert r[arv]=='BAR.ARV R96, 0x180'
++ assert not any(re.search(r'\bR165\b',x) for pc,x in r.items() if pc>=start)
++ for pc,x in r.items():
++  if start<=pc<=arv and 'IMMA.' in x:
++   regs=list(map(int,re.findall(r'\bR(\d+)',x)));assert not any(v<=165<v+w for v,w in zip(regs,[4,4,2,4]))
++ assert all(not any(t in r[pc] for t in ('BRA','BSSY','BSYNC','CALL')) for pc in range(start,arv,16))
++ ids=[pc for pc in range(start,arv+16,16) if pc not in (idpc,arv)];ids.insert(0,idpc);ids.insert(ids.index(before),arv)
++ expected=dict(r);data=bytearray(base)
++ for i,old in enumerate(ids):
++  pc=start+16*i;w=bytearray(base[off+old:off+old+16]);x=r[old]
++  if old==idpc:assert w[2]==96;w[2]=165;x=x.replace('R96,','R165,',1)
++  if old==arv:assert w[4]==96;w[4]=165;x=x.replace('R96,','R165,',1)
++  data[off+pc:off+pc+16]=w;expected[pc]=x
++ p=out/(name+'.cubin');p.write_bytes(data);dump=subprocess.check_output(['/usr/local/cuda-12.6/bin/cuobjdump','--dump-sass',str(p)],text=True);(out/(name+'.sass')).write_text(dump)
++ sec=dump.split('Function : '+entry)[1].split('Function : ')[0];got={int(pc,16):x for pc,x in re.findall(r'/\*([0-9a-f]+)\*/\s+(.*?)\s*;',sec)};assert got==expected
++ assert [x for x in got.values() if 'IMMA.' in x]==[x for x in r.values() if 'IMMA.' in x]
++ apc=next(pc for pc,x in got.items() if x.startswith('BAR.ARV'))
++ tail=sum('IMMA.' in x for pc,x in got.items() if apc<pc<=arv);assert tail==7,tail
++ (out/(name+'.diff')).write_text(''.join(difflib.unified_diff([f'{p:04x} {x}\n' for p,x in r.items()],[f'{p:04x} {x}\n' for p,x in got.items()],fromfile=parent,tofile=name)))
++ m['variants'][name]={**m['variants'][parent],'sha256':hashlib.sha256(data).hexdigest(),'mma_after_arrival':tail}
++(out/'manifest.json').write_text(json.dumps(m,indent=2)+'\n')
+diff --git a/tests/bench_handoff_prepare.py b/tests/bench_handoff_prepare.py
+new file mode 100644
+index 0000000..800cbb5
+--- /dev/null
++++ b/tests/bench_handoff_prepare.py
+@@ -0,0 +1,84 @@
++"""GPU0-only correct-arithmetic early-arrival diagnostic, never a mining backend."""
++import os
++os.environ['CUDA_VISIBLE_DEVICES']='0'
++from pathlib import Path
++import ctypes as C,json,subprocess,sys,argparse,time,hashlib
++import numpy as np
++root=Path(__file__).resolve().parents[1];out=root/'artifacts/handoff-prepare';sys.path.insert(0,str(root/'python'))
++p=argparse.ArgumentParser();p.add_argument('mode',choices=['validate','bench','profile']);p.add_argument('--variant',type=int,default=0,choices=range(5));p.add_argument('--allow-supervisor-pid',type=int,default=0);p.add_argument('--names',nargs='+');args=p.parse_args()
++sys.path.insert(0,str(root/'tools'))
++from check_gpu0_idle import check_gpu0_idle
++if args.mode!='profile':check_gpu0_idle(args.allow_supervisor_pid)
++import cuda_capi as cc
++P,I,U=C.c_void_p,C.c_int,C.c_uint
++# Force runtime primary-context creation before using the driver API.
++init=cc.DBuf(4)
++drv=C.CDLL('libcuda.so.1');drv.cuInit.argtypes=[U];drv.cuModuleLoad.argtypes=[C.POINTER(P),C.c_char_p];drv.cuModuleGetFunction.argtypes=[C.POINTER(P),P,C.c_char_p]
++drv.cuFuncSetAttribute.argtypes=[P,I,I];drv.cuFuncGetAttribute.argtypes=[C.POINTER(I),I,P];drv.cuOccupancyMaxActiveBlocksPerMultiprocessor.argtypes=[C.POINTER(I),P,I,C.c_size_t]
++drv.cuLaunchKernel.argtypes=[P,U,U,U,U,U,U,U,P,C.POINTER(P),P]
++def check(x):
++ if x:raise RuntimeError('CUDA driver status '+str(x))
++check(drv.cuInit(0));manifest=json.loads((out/'manifest.json').read_text());names=args.names or list(manifest['variants']);assert len(set(names))==len(names) and all(n in manifest['variants'] for n in names);mods=[];funcs=[];resources={}
++for name in names:
++ assert hashlib.sha256((out/(name+'.cubin')).read_bytes()).hexdigest()==manifest['variants'][name]['sha256']
++ path=out/(name+'.cubin')
++ mod,f=P(),P();check(drv.cuModuleLoad(C.byref(mod),str(path).encode()));check(drv.cuModuleGetFunction(C.byref(f),mod,manifest['variants'][name]['entry'].encode()))
++ check(drv.cuFuncSetAttribute(f,8,manifest['variants'][name]['smem']));check(drv.cuFuncSetAttribute(f,9,100))
++ info=[]
++ for key in (4,3,1):
++  val=I();check(drv.cuFuncGetAttribute(C.byref(val),key,f));info.append(val.value)
++ active=I();check(drv.cuOccupancyMaxActiveBlocksPerMultiprocessor(C.byref(active),f,384,manifest['variants'][name]['smem']));info.append(active.value)
++ assert info[0]<=168 and info[2:]==[0,1],info
++ resources[name]=info;mods.append(mod);funcs.append(f)
++print('resources [registers,local,static_shared,CTAs/SM]',resources,flush=True)
++def launch(v,a,b,m,n,t):
++ vals=[P(a.ptr.value if isinstance(a.ptr,P) else a.ptr),P(b.ptr.value if isinstance(b.ptr,P) else b.ptr),I(m),I(n),I(4096),I(128),P(t.ptr.value if isinstance(t.ptr,P) else t.ptr)]
++ pars=(P*len(vals))(*[C.cast(C.byref(x),P) for x in vals]);check(drv.cuLaunchKernel(funcs[v],(m+255)//256,(n+191)//192,1,384,1,1,manifest['variants'][names[v]]['smem'],None,pars,None))
++ref=C.CDLL(str(root/'artifacts/libpearl-rank.so'));ref.rank_fold.argtypes=[I,P,P,I,I,P,P]
++if args.mode=='validate':
++ rows=[]
++ for m,n in ((256,384),(256,400),(512,768),(512,800)):
++  for seed in (42,1234,9876):
++   rng=np.random.default_rng(seed);ah=rng.integers(-128,128,(m,4096),np.int8);bh=rng.integers(-128,128,(n,4096),np.int8)
++   a,b,t=cc.DBuf(ah.nbytes),cc.DBuf(bh.nbytes),cc.DBuf(m*n//256*64);a.from_host(ah);b.from_host(bh)
++   cc._chk(ref.rank_fold(128,a.ptr,b.ptr,m,n,t.ptr,None),'reference');expected=np.empty(m*n//256*16,np.uint32);t.to_host(expected)
++   for v,name in enumerate(names):
++    t.memset(0xa5);launch(v,a,b,m,n,t);got=np.empty_like(expected);t.to_host(got)
++    exp=expected if manifest['variants'][name]['correct'] else np.zeros_like(expected)
++    assert np.array_equal(got,exp),(name,m,n,seed,np.flatnonzero(got!=exp)[:8])
++    row=dict(name=name,m=m,n=n,seed=seed,expected_probe_semantics_pass=True,transcript_bit_exact=manifest['variants'][name]['correct']);rows.append(row);print(row,flush=True)
++   for buf in (a,b,t):buf.free()
++ (out/'validation.json').write_text(json.dumps(rows,indent=2)+'\n')
++else:
++ m=n=8192;a,b,t=cc.DBuf(m*4096),cc.DBuf(n*4096),cc.DBuf(m*n//256*64);rng=np.random.default_rng(42)
++ for buf in (a,b):buf.from_host(rng.integers(-128,128,(m,4096),np.int8))
++ if args.mode=='profile':
++  for _ in range(40):launch(args.variant,a,b,m,n,t);cc.sync()
++  sys.exit(0)
++ cc._chk(ref.rank_fold(128,a.ptr,b.ptr,m,n,t.ptr,None),'reference');expected=np.empty(m*n//256*16,np.uint32);t.to_host(expected)
++ for v in range(len(names)):
++  launch(v,a,b,m,n,t);got=np.empty_like(expected);t.to_host(got);assert np.array_equal(got,expected if manifest['variants'][names[v]]['correct'] else np.zeros_like(expected)),names[v]
++ runtime=C.CDLL('/usr/local/cuda-12.6/lib64/libcudart.so');runtime.cudaEventCreate.argtypes=[C.POINTER(P)];runtime.cudaEventRecord.argtypes=[P,P];runtime.cudaEventSynchronize.argtypes=[P];runtime.cudaEventElapsedTime.argtypes=[C.POINTER(C.c_float),P,P];runtime.cudaEventDestroy.argtypes=[P]
++ start,end=P(),P();cc._chk(runtime.cudaEventCreate(C.byref(start)),'event');cc._chk(runtime.cudaEventCreate(C.byref(end)),'event')
++ warm=time.perf_counter()
++ while time.perf_counter()-warm<3:
++  for _ in range(16):launch(0,a,b,m,n,t)
++  cc.sync()
++ rows=[]
++ for repeat in range(10):
++  for j in range(len(names)):
++   v=(repeat+j)%len(names)
++   for _ in range(100):launch(v,a,b,m,n,t)
++   cc.sync();values=[]
++   for _ in range(20):
++    cc._chk(runtime.cudaEventRecord(start,None),'event')
++    for _ in range(16):launch(v,a,b,m,n,t)
++    cc._chk(runtime.cudaEventRecord(end,None),'event');cc._chk(runtime.cudaEventSynchronize(end),'event');ms=C.c_float();cc._chk(runtime.cudaEventElapsedTime(C.byref(ms),start,end),'event');values.append(ms.value/16)
++   row=dict(name=names[v],variant=v,repeat=repeat,samples_ms=values,mean_ms=float(np.mean(values)),median_ms=float(np.median(values)),p95_ms=float(np.percentile(values,95)))
++   row['telemetry_end']=subprocess.check_output(['nvidia-smi','-i','0','--query-gpu=clocks.sm,clocks.mem,power.draw,temperature.gpu','--format=csv,noheader'],text=True).strip();rows.append(row);print(json.dumps({k:x for k,x in row.items() if k!='samples_ms'}),flush=True)
++ result=dict(resources=resources,measurements=rows,summaries={})
++ for name in names:
++  vals=np.array([x for r in rows if r['name']==name for x in r['samples_ms']]);result['summaries'][name]=dict(samples=len(vals),mean_ms=float(vals.mean()),median_ms=float(np.median(vals)),p95_ms=float(np.percentile(vals,95)))
++ (out/'events.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result['summaries'],indent=2),flush=True)
++ for x in (start,end):cc._chk(runtime.cudaEventDestroy(x),'event destroy')
++ for buf in (a,b,t):buf.free()
+diff --git a/tests/bench_handoff_prepare_grids.py b/tests/bench_handoff_prepare_grids.py
+new file mode 100644
+index 0000000..f053857
+--- /dev/null
++++ b/tests/bench_handoff_prepare_grids.py
+@@ -0,0 +1,92 @@
++"""GPU0-only correct-arithmetic early-arrival diagnostic, never a mining backend."""
++import os
++os.environ['CUDA_VISIBLE_DEVICES']='0'
++from pathlib import Path
++import ctypes as C,json,subprocess,sys,argparse,time,hashlib
++import numpy as np
++root=Path(__file__).resolve().parents[1];out=root/'artifacts/handoff-prepare';sys.path.insert(0,str(root/'python'))
++p=argparse.ArgumentParser();p.add_argument('mode',choices=['validate','grids']);p.add_argument('--variant',type=int,default=0,choices=range(5));p.add_argument('--allow-supervisor-pid',type=int,default=0);p.add_argument('--names',nargs='+');args=p.parse_args()
++sys.path.insert(0,str(root/'tools'))
++from check_gpu0_idle import check_gpu0_idle
++if args.mode!='profile':check_gpu0_idle(args.allow_supervisor_pid)
++import cuda_capi as cc
++P,I,U=C.c_void_p,C.c_int,C.c_uint
++# Force runtime primary-context creation before using the driver API.
++init=cc.DBuf(4)
++drv=C.CDLL('libcuda.so.1');drv.cuInit.argtypes=[U];drv.cuModuleLoad.argtypes=[C.POINTER(P),C.c_char_p];drv.cuModuleGetFunction.argtypes=[C.POINTER(P),P,C.c_char_p]
++drv.cuFuncSetAttribute.argtypes=[P,I,I];drv.cuFuncGetAttribute.argtypes=[C.POINTER(I),I,P];drv.cuOccupancyMaxActiveBlocksPerMultiprocessor.argtypes=[C.POINTER(I),P,I,C.c_size_t]
++drv.cuLaunchKernel.argtypes=[P,U,U,U,U,U,U,U,P,C.POINTER(P),P]
++def check(x):
++ if x:raise RuntimeError('CUDA driver status '+str(x))
++check(drv.cuInit(0));manifest=json.loads((out/'manifest.json').read_text());names=args.names or list(manifest['variants']);assert len(set(names))==len(names) and all(n in manifest['variants'] for n in names);mods=[];funcs=[];resources={}
++for name in names:
++ assert hashlib.sha256((out/(name+'.cubin')).read_bytes()).hexdigest()==manifest['variants'][name]['sha256']
++ path=out/(name+'.cubin')
++ mod,f=P(),P();check(drv.cuModuleLoad(C.byref(mod),str(path).encode()));check(drv.cuModuleGetFunction(C.byref(f),mod,manifest['variants'][name]['entry'].encode()))
++ check(drv.cuFuncSetAttribute(f,8,manifest['variants'][name]['smem']));check(drv.cuFuncSetAttribute(f,9,100))
++ info=[]
++ for key in (4,3,1):
++  val=I();check(drv.cuFuncGetAttribute(C.byref(val),key,f));info.append(val.value)
++ active=I();check(drv.cuOccupancyMaxActiveBlocksPerMultiprocessor(C.byref(active),f,384,manifest['variants'][name]['smem']));info.append(active.value)
++ assert info[0]<=168 and info[2:]==[0,1],info
++ resources[name]=info;mods.append(mod);funcs.append(f)
++print('resources [registers,local,static_shared,CTAs/SM]',resources,flush=True)
++def launch(v,a,b,m,n,t):
++ vals=[P(a.ptr.value if isinstance(a.ptr,P) else a.ptr),P(b.ptr.value if isinstance(b.ptr,P) else b.ptr),I(m),I(n),I(4096),I(128),P(t.ptr.value if isinstance(t.ptr,P) else t.ptr)]
++ pars=(P*len(vals))(*[C.cast(C.byref(x),P) for x in vals]);check(drv.cuLaunchKernel(funcs[v],(m+255)//256,(n+191)//192,1,384,1,1,manifest['variants'][names[v]]['smem'],None,pars,None))
++ref=C.CDLL(str(root/'artifacts/libpearl-rank.so'));ref.rank_fold.argtypes=[I,P,P,I,I,P,P]
++
++import statistics,re
++lib=C.CDLL(str(root/'artifacts/libpearl-handoff-lean.so'))
++blake=getattr(lib,'_Z19launch_pearl_blake3PKjiiS0_S0_PhPiS2_P11CUstream_st')
++blake.argtypes=[P,I,I,P,P,P,P,P,P];blake.restype=None
++ref.rank_pow.argtypes=[I,P,P,I,I,P,P,P,P,P,P]
++def pow_call(v,a,b,m,n,key,target,t,d=None,f=None,c=None):
++ launch(v,a,b,m,n,t)
++ blake(cc._as(t),(m//16)*(n//16),n,cc._as(key),cc._as(target),cc._as(d),cc._as(f),cc._as(c),None)
++if args.mode=='validate':
++ results=[]
++ for m,n in ((256,48),(256,400),(8192,8192)):
++  for seed in (42,1234):
++   rng=np.random.default_rng(seed);a,b,t,d=cc.DBuf(m*4096),cc.DBuf(n*4096),cc.DBuf(m*n//256*64),cc.DBuf(m*n//256*32)
++   key,target=cc.DBuf(32),cc.DBuf(32);key.from_host(rng.integers(0,256,32,np.uint8));target.memset(0)
++   a.from_host(rng.integers(-128,128,(m,4096),np.int8));b.from_host(rng.integers(-128,128,(n,4096),np.int8))
++   cc._chk(ref.rank_pow(128,a.ptr,b.ptr,m,n,key.ptr,target.ptr,t.ptr,d.ptr,None,None),'reference pow')
++   et=np.empty(m*n//256*16,np.uint32);ed=np.empty(m*n//256*32,np.uint8);t.to_host(et);d.to_host(ed)
++   for v,name in enumerate(names):
++    t.memset(0xa5);d.memset(0xa5);pow_call(v,a,b,m,n,key,target,t,d)
++    at=np.empty_like(et);ad=np.empty_like(ed);t.to_host(at);d.to_host(ad);assert np.array_equal(at,et),(name,'transcript');assert np.array_equal(ad,ed),(name,'digest')
++    row=dict(name=name,m=m,n=n,seed=seed,transcript_pass=True,digest_pass=True);results.append(row);print(row,flush=True)
++   for buf in (a,b,t,d,key,target):buf.free()
++ (out/'pow-validation.json').write_text(json.dumps(results,indent=2)+'\n')
++else:
++ import miner_capi as miner
++ import pool_common
++ miner.PROOF_PROCESS=False;miner.R=pool_common.R=128
++ class Pool:
++  def check_newer_job(self,job):return None
++ class Scheduler:
++  mode='user'
++  def __init__(self):self.grids=0
++  def note(self,elapsed):pass
++  def maybe_switch(self):self.grids+=1;return self.grids>=12
++ original_setup=cc.setup_job;results=[]
++ for repeat in range(6):
++  for j in range(len(names)):
++   v=(repeat+j)%len(names);scheduler=Scheduler();times=[];bufs=miner.Bufs(8192)
++   cc.setup_job=lambda *a:original_setup(*a[:-1],202610100000+scheduler.grids)
++   cc.pearl_pow_split=lambda a,b,m,n,k,r,key,target,t,dig,found,coord,variant:pow_call(v,a,b,m,n,key,target,t,dig,found,coord)
++   def log(line):
++    match=re.search(r'grid wall: ([\d.]+) s',line)
++    if match:times.append(float(match[1])*1000)
++   miner.mine_job(Pool(),pool_common.real_config(),bytes(80),0,'offline',8192,0,scheduler,bufs,dict(user=0,dev=0),None,log)
++   values=times[2:];mean=statistics.mean(values)
++   row=dict(name=names[v],variant=v,repeat=repeat,samples_ms=values,mean_ms=mean,median_ms=statistics.median(values),p95_ms=float(np.percentile(values,95)),grids_sec=1000/mean,consensus_equivalent_ths=(2**46/1e12)*1000/mean)
++   row['telemetry_end']=subprocess.check_output(['nvidia-smi','-i','0','--query-gpu=clocks.sm,clocks.mem,power.draw,temperature.gpu','--format=csv,noheader'],text=True).strip()
++   results.append(row);print(json.dumps({k:x for k,x in row.items() if k!='samples_ms'}),flush=True)
++   for value in vars(bufs).values():
++    if isinstance(value,cc.DBuf):value.free()
++    elif isinstance(value,list):
++     for x in value:
++      if isinstance(x,cc.DBuf):x.free()
++ (out/'grids.json').write_text(json.dumps(dict(resources=resources,measurements=results),indent=2)+'\n')
+diff --git a/tools/report_handoff_prepare.py b/tools/report_handoff_prepare.py
+new file mode 100644
+index 0000000..12c4afb
+--- /dev/null
++++ b/tools/report_handoff_prepare.py
+@@ -0,0 +1,25 @@
++from pathlib import Path
++import json,re,numpy as np
++p=Path(__file__).resolve().parents[1]/'artifacts/handoff-prepare'
++e=json.loads((p/'events-publish.json').read_text());g=json.loads((p/'grids.json').read_text());rows=g['measurements'];names=list(g['resources']);out={}
++lines=['Next-K address preparation: GPU0 offline results, no Nsight.',
++'200 region event samples/variant,16launches/sample;60full grids/variant,6rotating batches.',
++'Unfixed clocks; full grids include setup/noise/Merkle/transcript/PoW, not networking/proof delivery.',
++'variant event_mean_ms grid_mean_ms median_ms p95_ms grids/sec equivalent_THs regs/local/static_smem/CTAs_per_SM']
++for n in names:
++ v=np.array([x for r in rows if r['name']==n for x in r['samples_ms']]);mean=float(v.mean());out[n]=dict(mean_ms=mean,median_ms=float(np.median(v)),p95_ms=float(np.percentile(v,95)),n=len(v),grids_sec=1000/mean,equivalent_ths=2**46/mean/1e9)
++ lines.append(f'{n} {e["summaries"][n]["mean_ms"]:.6f} {mean:.3f} {np.median(v):.3f} {np.percentile(v,95):.3f} {1000/mean:.5f} {2**46/mean/1e9:.3f} {g["resources"][n]}')
++for base in ('native8','late_pub'):
++ for n in names:
++  if n==base:continue
++  means={r['repeat']:r['mean_ms'] for r in rows if r['name']==n};refs={r['repeat']:r['mean_ms'] for r in rows if r['name']==base}
++  paired=[100*(means[k]/refs[k]-1) for k in sorted(means)]
++  lines.append(f'{n} vs {base}: time {100*(out[n]["mean_ms"]/out[base]["mean_ms"]-1):+.3f}%; throughput {100*(out[base]["mean_ms"]/out[n]["mean_ms"]-1):+.3f}%; paired time deltas% '+', '.join(f'{x:+.3f}' for x in paired))
++lines += ['','Interpretation: judge net benefit against native8, then early_tail_pub against late_pub.',
++'SASS: both CopyPlan candidates have7IMMA after publication vs native8 16.',
++'Early preparation is real but source recompilation changed LDSM/MMA scheduling.',
++'No claim that isolated address arithmetic is the cause of the entire performance delta.',
++'early_wait rejected:40Bstack,36Bspillstores+36Bspillloads despite168register allocation.',
++'No production changes or deployment. Existing8+4 remains baseline unless a net winner is measured.',
++'See design.txt, compiled.sass, *_pub.sass, *.diff, validation and sanitizer logs.']
++(p/'grid-summary.json').write_text(json.dumps(out,indent=2)+'\n');(p/'report.txt').write_text('\n'.join(lines)+'\n');print('\n'.join(lines))

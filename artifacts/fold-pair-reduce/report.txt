@@ -1,0 +1,23 @@
+GPU0 offline paired K64 experiment; K4096/rank128, CTA256x192,384threads,2stages.
+Edge transcript comparisons: 48 PASS. Benchmark also checks8192x8192 transcripts.
+CUDA events:8192x8192 region,200 samples/variant,16 launches/sample,10 rotating batches.
+Clocks/power NOT locked. No Nsight, no full-grid or pool TH/s claim.
+variant mean_ms median_ms p95_ms vs_native_percent resources[regs,local,static_shared,active_CTAs]
+native 1.028513 1.024032 1.054976 +0.000 [168, 0, 0, 1]
+source8 1.446951 1.443520 1.479610 +40.684 [168, 120, 0, 1]
+defer2_copy 1.485579 1.486621 1.509649 +44.439 [168, 120, 0, 1]
+defer2_mma 1.694259 1.693660 1.725329 +64.729 [168, 160, 0, 1]
+source8 static SASS counts {'IMMA': 128, 'LDSM': 32, 'REDUX': 32, 'BRA': 14, 'LDL': 38, 'STL': 30}
+defer2_copy static SASS counts {'IMMA': 128, 'LDSM': 32, 'REDUX': 32, 'BRA': 26, 'LDL': 38, 'STL': 30}
+defer2_mma static SASS counts {'IMMA': 128, 'LDSM': 32, 'REDUX': 32, 'BRA': 31, 'LDL': 47, 'STL': 34}
+
+Interpretation: two K64 bodies are emitted (128staticIMMA,32LDSM), but even immediate-fold control spills.
+Static instruction counts are not dynamic throughput. No branch-only causal claim.
+Source recompilation also loses native fixed-SASS early publication; source8 is the matched unroll control.
+Deferred variants retain first-pair and first/second transcript-half handling; this is not a branch-free experiment.
+No candidate promoted. Do not spend full-grid/profiling time on these clearly slower candidates.
+
+Next bounded design: preserve native main loop and early publication. First test moving only REDUX after boundary local XOR, retaining existing transcript addresses and store block. Avoid full reduction helper across backedge.
+If crossing the backedge is required, separate prologue/steady-state/drain and first16/second16 folds; carry minimal reduced state, audit register reuse and all boundary writes before benchmarking.
+Moving REDUX alone can only target a fraction of measured transcript cost (~6.73% in prior baseline); it does not eliminate local accumulator XOR dependencies.
+Do not claim concurrent hardware execution from source or instruction interleaving alone.

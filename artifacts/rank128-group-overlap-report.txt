@@ -1,0 +1,95 @@
+Two-group transcript/MMA overlap, GPU0 only,2026-10-08.
+
+Comparison with earlier experiment: fold_interleave folded the immediately prior
+fragment after the next fragment's MMA,across15of16fragments. This experiment
+partitions16tiles/warp into A=N16groups0,1 (8tiles) and B=groups2,3 (8tiles).
+A completes the boundary before B's last K32 slice; B then provides independent
+MMA work while A is folded. No full-matrix/CTA/warp remapping was attempted.
+
+v1 group8 steady sequence: B_fragment_i MMA pair -> complete A_fragment_i fold.
+v2 split8: B_fragment_i MMA pair -> REDUX/publish prior pending A result -> local
+XOR current A fragment. One pending scalar; final A result drained after B7.
+Both variants retain B's8tile fold in the epilogue. This is a controlled half-fold
+overlap prototype,not a claim of a complete cross-iteration alternating pipeline.
+Current source order,operand reuse,K64 two stages and128Cwords/lane preserved.
+
+SASS:all64IMMA/16LDSM sites retained,no extra operand loads. Baseline REDUX sites
+only after64IMMA;group8 starts after50,then52,54,56,58,60,62,64;split8 after52 onward.
+This confirms machine instruction interleaving,not proof of simultaneous hardware
+execution. Both variants904static slots vs880 baseline. BSSY sites in compute/fold
+increase1->9;BRA sites5->21/20. Live accumulator count unchanged;baseline/group8
+168regs,split8=167;69632shared,384threads,1CTA/SM,zero stack/spills.
+
+An additional isolated build predicates interleaved shared updates with PTX to
+avoid lane branches. group8 then spills44bytes/48stack;split8 spills32bytes.
+Those two variants were rejected at compile inspection and NEVER benchmarked.
+They are not mining libraries and must not be promoted.
+
+Correctness:24 complete transcript/digest comparisons against accepted R128,
+2seeds x4shapes x3variants,including8192square and partialN,allPASS. Small-shape
+racecheck results saved in rank128-group-overlap-racecheck.log.
+Benchmark:GPU0 only,60measured full offline grids/variant,six rotated batches,
+2warmup+10measured each. M=N131072,K4096,R128,region8192. Includes actual GPU job
+setup/noise/Merkle/V3/fold/PoW;zero target,no proof/network. Clocks/power unchanged
+and not locked. Endpoint telemetry recorded. TH/s is offline equivalent work rate.
+
+[
+  {
+    "variant": 0,
+    "samples": 60,
+    "mean_ms": 307.6583333333334,
+    "median_ms": 307.2,
+    "p95_ms": 312.14,
+    "ths": 228.72367348302168,
+    "resources": [
+      168,
+      384,
+      69632,
+      1,
+      0
+    ],
+    "throughput_change_pct": 0.0
+  },
+  {
+    "variant": 1,
+    "samples": 60,
+    "mean_ms": 334.7266666666667,
+    "median_ms": 334.5,
+    "p95_ms": 338.40999999999997,
+    "ths": 210.22748165965464,
+    "resources": [
+      168,
+      384,
+      69632,
+      1,
+      0
+    ],
+    "throughput_change_pct": -8.086697604015203
+  },
+  {
+    "variant": 2,
+    "samples": 60,
+    "mean_ms": 333.20666666666665,
+    "median_ms": 333.1,
+    "p95_ms": 337.91499999999996,
+    "ths": 211.18648339668275,
+    "resources": [
+      167,
+      384,
+      69632,
+      1,
+      0
+    ],
+    "throughput_change_pct": -7.6674136171745015
+  }
+]
+
+
+Conclusion:both tested interleavings lose~8% throughput. Moving fold instructions
+between independent MMA fragments alone is insufficient; extra control flow and
+changed scheduling are real confounders. No new counter capture isolates their
+individual cost. Do not claim all possible group pipelines are impossible,or
+attribute the entire regression to nine reconvergence sites. The proposed limited
+prototype does not justify further expansion. Preserve current baseline.
+Production and A-stream candidate hashes verified unchanged,no live mining,
+no commits,isolated libraries only. Per-mode source diffs retained for review.

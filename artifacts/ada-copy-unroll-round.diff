@@ -1,0 +1,157 @@
+--- a/csrc/gemm/pearl-gemm-ada-v2.cu
++++ b/csrc/gemm/pearl-gemm-ada-v2.cu
+@@ -49,11 +49,11 @@
+         : "r"(a.v[0]),"r"(a.v[1]),"r"(a.v[2]),"r"(a.v[3]),
+           "r"(b.v[Packed?2*half:half]),"r"(b.v[Packed?2*half+1:half+2]));
+ }
+-template<int TileK,bool Planar>
++template<int TileK,bool Planar,bool UnrollCopy=false>
+ __device__ __forceinline__ void stage_copy(const signed char* a,const signed char* b,
+         signed char* sa,signed char* sb,int cm,int cn,int kt,int m,int n,int k) {
+-    #pragma unroll 1
+-    for(int i=threadIdx.x;i<BM*TileK/16;i+=blockDim.x) {
++    #pragma unroll (UnrollCopy ? 3 : 1)
++    for(int i=threadIdx.x;i<BM*TileK/16;i+=(UnrollCopy ? THREADS : blockDim.x)) {
+         int row=i/(TileK/16),col=(i%(TileK/16))*16,gr=cm*BM+row;
+         int gc=kt*TileK+col;
+         bool valid_row=gr<m && (TileK==64 || gc<k);
+@@ -64,8 +64,8 @@
+         int valid=valid_row?16:0;
+         asm volatile("cp.async.cg.shared.global [%0],[%1],16,%2;" :: "r"(dst),"l"(src),"r"(valid));
+     }
+-    #pragma unroll 1
+-    for(int i=threadIdx.x;i<BN*TileK/16;i+=blockDim.x) {
++    #pragma unroll (UnrollCopy ? 2 : 1)
++    for(int i=threadIdx.x;i<BN*TileK/16;i+=(UnrollCopy ? THREADS : blockDim.x)) {
+         int row=i/(TileK/16),col=(i%(TileK/16))*16,gr=cn*BN+row;
+         int gc=kt*TileK+col;
+         bool valid_row=gr<n && (TileK==64 || gc<k);
+@@ -79,7 +79,7 @@
+     asm volatile("cp.async.commit_group;");
+ }
+ 
+-template<int Lead,int TileK=64,bool Planar=false,bool PackedB=false>
++template<int Lead,int TileK=64,bool Planar=false,bool PackedB=false,bool UnrollCopy=false>
+ __global__ void __launch_bounds__(THREADS,1) kernel(const signed char* a,const signed char* b,int m,int n,int k,int r,unsigned* out) {
+     // Host launch rejects every K except4096. Retain dynamic-K code in
+     // unpacked controls, specialize only the packed-B experiment.
+@@ -98,13 +98,13 @@
+     // column=2*(lane%4) (+1 for c1,c3). Two halves form a16x16 tile.
+     unsigned c[4][4][2][4]={};
+     Fragment ar[4], br[Lead+1];
+-    stage_copy<TileK,Planar>(a,b,sa,sb,cm,cn,0,m,n,k);
++    stage_copy<TileK,Planar,UnrollCopy>(a,b,sa,sb,cm,cn,0,m,n,k);
+     for(int kt=0;kt<(k+TileK-1)/TileK;++kt) {
+         asm volatile("cp.async.wait_group 0;");
+         __syncthreads();
+         int current=kt&1,next=current^1;
+         if(kt+1<(k+TileK-1)/TileK)
+-            stage_copy<TileK,Planar>(a,b,sa+next*BM*TileK,sb+next*BN*TileK,cm,cn,kt+1,m,n,k);
++            stage_copy<TileK,Planar,UnrollCopy>(a,b,sa+next*BM*TileK,sb+next*BN*TileK,cm,cn,kt+1,m,n,k);
+         signed char* aa=sa+current*BM*TileK;
+         signed char* bb=sb+current*BN*TileK;
+         if constexpr(Lead==0 || Lead==3) {
+@@ -194,7 +194,7 @@
+         if(gr<m/16 && gc<n/16) out[((size_t)gr*(n/16)+gc)*16+i%16]=transcript[i];
+     }
+ }
+-template<int Lead,int TileK=64,bool Planar=false,bool PackedB=false>
++template<int Lead,int TileK=64,bool Planar=false,bool PackedB=false,bool UnrollCopy=false>
+ cudaError_t launch(const int8_t* a,const int8_t* b,int m,int n,int k,int r,
+                    uint32_t* t,int* info,cudaStream_t stream) {
+     if(m<=0 || n<=0 || m%16 || n%16 || r!=256 || k!=4096)
+@@ -203,20 +203,20 @@
+     static bool initialized=false; // Isolated benchmarks use device0 only.
+     cudaError_t err;
+     if(!initialized) {
+-        err=cudaFuncSetAttribute(kernel<Lead,TileK,Planar,PackedB>,cudaFuncAttributeMaxDynamicSharedMemorySize,smem);
++        err=cudaFuncSetAttribute(kernel<Lead,TileK,Planar,PackedB,UnrollCopy>,cudaFuncAttributeMaxDynamicSharedMemorySize,smem);
+         if(err!=cudaSuccess)return err;
+-        err=cudaFuncSetAttribute(kernel<Lead,TileK,Planar,PackedB>,cudaFuncAttributePreferredSharedMemoryCarveout,100);
++        err=cudaFuncSetAttribute(kernel<Lead,TileK,Planar,PackedB,UnrollCopy>,cudaFuncAttributePreferredSharedMemoryCarveout,100);
+         if(err!=cudaSuccess)return err;
+         initialized=true;
+     }
+     if(info) {
+-        cudaFuncAttributes attr;err=cudaFuncGetAttributes(&attr,kernel<Lead,TileK,Planar,PackedB>);if(err!=cudaSuccess)return err;
+-        int active;err=cudaOccupancyMaxActiveBlocksPerMultiprocessor(&active,kernel<Lead,TileK,Planar,PackedB>,THREADS,smem);
++        cudaFuncAttributes attr;err=cudaFuncGetAttributes(&attr,kernel<Lead,TileK,Planar,PackedB,UnrollCopy>);if(err!=cudaSuccess)return err;
++        int active;err=cudaOccupancyMaxActiveBlocksPerMultiprocessor(&active,kernel<Lead,TileK,Planar,PackedB,UnrollCopy>,THREADS,smem);
+         if(err!=cudaSuccess)return err;
+         info[0]=attr.numRegs;info[1]=THREADS;info[2]=smem+attr.sharedSizeBytes;info[3]=active;info[4]=attr.localSizeBytes;
+         return cudaSuccess;
+     }
+-    kernel<Lead,TileK,Planar,PackedB><<<dim3((m+BM-1)/BM,(n+BN-1)/BN),THREADS,smem,stream>>>(a,b,m,n,k,r,t);
++    kernel<Lead,TileK,Planar,PackedB,UnrollCopy><<<dim3((m+BM-1)/BM,(n+BN-1)/BN),THREADS,smem,stream>>>(a,b,m,n,k,r,t);
+     return cudaGetLastError();
+ }
+ } // namespace pearl_ada_v2
+@@ -230,5 +230,6 @@
+     if(lead==4)return pearl_ada_v2::launch<2,64,true>(a,b,m,n,k,r,t,info,stream);
+     if(lead==5)return pearl_ada_v2::launch<2,96,true>(a,b,m,n,k,r,t,info,stream);
+     if(lead==6)return pearl_ada_v2::launch<2,64,false,true>(a,b,m,n,k,r,t,info,stream);
++    if(lead==7)return pearl_ada_v2::launch<2,64,false,true,true>(a,b,m,n,k,r,t,info,stream);
+     return cudaErrorInvalidValue;
+ }
+--- a/tests/fold_ops.cu
++++ b/tests/fold_ops.cu
+@@ -158,6 +158,7 @@
+         case 108:return launch_pearl_gemm_ada_v2(5,a,b,m,n,k,r,t,info,nullptr);
+         case 109:return launch_pearl_gemm_ada_v2(2,a,b,m,n,k,r,t,info,nullptr);
+         case 110:return launch_pearl_gemm_ada_v2(6,a,b,m,n,k,r,t,info,nullptr);
++        case 111:return launch_pearl_gemm_ada_v2(7,a,b,m,n,k,r,t,info,nullptr);
+ #endif
+ #if !defined(PEARL_FOCUS_SQUARE) && !defined(PEARL_PURE_BENCH_ONLY)
+         case 21:return variant<128,256,4,-1,false,32,4,2,4>(a,b,m,n,k,r,t,info);
+--- a/tests/bench_fold_ablation.py
++++ b/tests/bench_fold_ablation.py
+@@ -28,7 +28,7 @@
+ reuse_trial = len(sys.argv)>1 and sys.argv[1]=='reuse'
+ mapping_trial = len(sys.argv)>1 and sys.argv[1]=='mapping'
+ operand_trial = len(sys.argv)>1 and sys.argv[1]=='operand'
+-prefetch_trial = len(sys.argv)>1 and sys.argv[1] in ('prefetch','prefetch2','ldsm','ldsm-order','rhythm','ring','ada-v2','ada-layout','ada-bpack')
++prefetch_trial = len(sys.argv)>1 and sys.argv[1] in ('prefetch','prefetch2','ldsm','ldsm-order','rhythm','ring','ada-v2','ada-layout','ada-bpack','ada-copy')
+ if occupancy:
+     names={11:'8x1 full transcript',20:'2x4 full transcript',
+            27:'128x128 BK32 warp2x4',28:'128x128 BK64 warp2x4',
+@@ -82,6 +82,8 @@
+         names={109:'raw address regrouping',107:'K64 planar K32',108:'K96 planar K32'}
+     if sys.argv[1]=='ada-bpack':
+         names={109:'raw address regrouping',110:'MMA-packed B x4'}
++if prefetch_trial and sys.argv[1]=='ada-copy':
++    names={110:'packed B fixed K baseline',111:'unrolled async copies'}
+ full_variants = occupancy or cache_trial or square_trial or mainloop_trial or reuse_trial or mapping_trial or operand_trial or prefetch_trial
+ def gate(m,n,seed):
+     rng=np.random.default_rng(seed); k=4096; r=256
+@@ -142,7 +144,7 @@
+     for v,row in results.items():
+         row['median_ms']=statistics.median(row['samples_ms'])
+         row['equivalent_GEMM_TOPS']=2*m*n*k/(row['median_ms']/1000)/1e12
+-    Path('/tmp/pearl-fold-'+('ada-bpack' if prefetch_trial and sys.argv[1]=='ada-bpack' else 'ada-layout' if prefetch_trial and sys.argv[1]=='ada-layout' else 'ada-v2' if prefetch_trial and sys.argv[1]=='ada-v2' else 'ring' if prefetch_trial and sys.argv[1]=='ring' else 'rhythm' if prefetch_trial and sys.argv[1]=='rhythm' else 'ldsm-order' if prefetch_trial and sys.argv[1]=='ldsm-order' else 'ldsm' if prefetch_trial and sys.argv[1]=='ldsm' else 'prefetch2' if prefetch_trial and sys.argv[1]=='prefetch2' else 'prefetch' if prefetch_trial else 'operand' if operand_trial else 'mapping' if mapping_trial else 'reuse' if reuse_trial else 'mainloop' if mainloop_trial else 'square' if square_trial else 'l1' if cache_trial else 'occupancy' if occupancy else 'ablation')+'-results.json').write_text(json.dumps(results,indent=2))
++    Path('/tmp/pearl-fold-'+('ada-copy' if prefetch_trial and sys.argv[1]=='ada-copy' else 'ada-bpack' if prefetch_trial and sys.argv[1]=='ada-bpack' else 'ada-layout' if prefetch_trial and sys.argv[1]=='ada-layout' else 'ada-v2' if prefetch_trial and sys.argv[1]=='ada-v2' else 'ring' if prefetch_trial and sys.argv[1]=='ring' else 'rhythm' if prefetch_trial and sys.argv[1]=='rhythm' else 'ldsm-order' if prefetch_trial and sys.argv[1]=='ldsm-order' else 'ldsm' if prefetch_trial and sys.argv[1]=='ldsm' else 'prefetch2' if prefetch_trial and sys.argv[1]=='prefetch2' else 'prefetch' if prefetch_trial else 'operand' if operand_trial else 'mapping' if mapping_trial else 'reuse' if reuse_trial else 'mainloop' if mainloop_trial else 'square' if square_trial else 'l1' if cache_trial else 'occupancy' if occupancy else 'ablation')+'-results.json').write_text(json.dumps(results,indent=2))
+     print(json.dumps(results,indent=2),flush=True)
+ finally:
+     for buf in (a,b,t):buf.free()
+--- a/tests/bench_mainloop_grids.py
++++ b/tests/bench_mainloop_grids.py
+@@ -5,9 +5,9 @@
+ os.environ.setdefault('PEARL_TRIAL_LIBRARY','/tmp/libpearl-pure-gemm.so')
+ candidate=int(sys.argv[1]) if len(sys.argv)>1 else 53
+ baseline=int(sys.argv[2]) if len(sys.argv)>2 else 20
+-assert baseline in (20,61,67,88,89,104,109) and baseline != candidate
+-assert candidate in range(53,111)
+-names=[str(i) for i in range(111)]
++assert baseline in (20,61,67,88,89,104,109,110) and baseline != candidate
++assert candidate in range(53,112)
++names=[str(i) for i in range(112)]
+ names[0]='production';names[20]='current best';names[53]='B LDSM x4'
+ names[54]='K128 s2 streaming';names[55]='K128 s2 full load'
+ names[56]='K32 lookahead joint';names[57]='K32 lookahead staggered'
+@@ -33,6 +33,7 @@
+ names[107]='K64 planar K32';names[108]='K96 planar K32'
+ names[109]='raw address regrouping'
+ names[110]='MMA-packed B x4'
++names[111]='unrolled async copies'
+ os.environ['PEARL_TRIAL_NAMES']=json.dumps(names)
+ import bench_cute_grid as grid
+ candidate_library=grid.lib

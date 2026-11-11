@@ -1,0 +1,17 @@
+Deliberately racy offline diagnostic: remove 16d0 BAR.ARV and2a00 BAR.SYNC.
+Original64IMMA, A/B input, loop, copies, LDSM, cp.async wait, initial/final CTA barriers and transcript retained.
+Removed barrier producer annotations; original instruction slots, wait masks and static stalls retained.
+Registers168, shared69632, CTA384threads,1CTA/SM unchanged.
+Output invalid. Timing difference includes altered warp phasing and shared-memory races; not isolated barrier instruction latency or a safe optimization.
+UNLOCKED region timings are DVFS-confounded; fixed-clock counters needed.
+
+UNLOCKED region events:200samples/variant,16launches/sample,10rotating blocks. ms,notfullgrid.
+native {"samples": 200, "mean_ms": 1.02430350959301, "median_ms": 1.0228480100631714, "p95_ms": 1.048622912168503}
+block-end SMclock min/max 2415/2655MHz;not timeaveraged.
+no_named_barriers {"samples": 200, "mean_ms": 0.984844044148922, "median_ms": 0.9842000007629395, "p95_ms": 1.0180671989917753}
+block-end SMclock min/max 2325/2565MHz;not timeaveraged.
+native->no_named_barriers:time -3.852%
+native fixed-clock {"imma_per_SM_elapsed_cycle": 0.20863482934436559, "imma_per_SMSP_elapsed_cycle": 0.052158707336091396, "tensor_Ginst_sec": 59.15287610003922, "kernel_ms": 1.1433813333333334}
+{"kernel_ns": 1143381.3333333333, "tensor_pct": 85.79333333333334, "l2_util_pct": 48.82, "l2_bytes": 2534011232.0, "barrier_pct": 14.273333333333333, "long_scoreboard_pct": 2.8266666666666667, "short_scoreboard_pct": 7.68, "math_throttle_pct": 40.92, "eligible_warps_per_scheduler": 0.36, "active_warps_per_scheduler": 3.0, "issued_warps_per_cycle": 0.24}
+no_named_barriers fixed-clock {"imma_per_SM_elapsed_cycle": 0.22215256205501052, "imma_per_SMSP_elapsed_cycle": 0.05553814051375263, "tensor_Ginst_sec": 63.10470684447844, "kernel_ms": 1.071808}
+{"kernel_ns": 1071808.0, "tensor_pct": 91.31, "l2_util_pct": 52.056666666666665, "l2_bytes": 2533941066.6666665, "barrier_pct": 1.24, "long_scoreboard_pct": 1.4033333333333333, "short_scoreboard_pct": 6.78, "math_throttle_pct": 56.96333333333333, "eligible_warps_per_scheduler": 0.39, "active_warps_per_scheduler": 3.0, "issued_warps_per_cycle": 0.25}

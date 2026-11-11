@@ -1,0 +1,17 @@
+{
+  "warning": "Incorrect Pearl arithmetic except native. C input uses current four A registers as nonzero INT32 bit patterns. A/B work and output destinations unchanged. No wait edits.",
+  "variants": {
+    "native": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "104c0c1b265260dea5c9ab0bb174ebbbe7ee9cceb0cf0acebf2a9d1dfa4d50aa",
+      "smem": 69632,
+      "correct": true
+    },
+    "a_as_c": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "928439d52762ed16ee1e119f8969424a4aceac722a65f82e39b890db0dd5cc97",
+      "smem": 69632,
+      "correct": false
+    }
+  }
+}

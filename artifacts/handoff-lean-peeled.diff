@@ -1,0 +1,18 @@
+--- validated-handoff_named_overlap
++++ peeled
+@@ -131,11 +131,11 @@
+     #pragma unroll
+     for(int p=0;p<Stages-1;++p)
+         stage_copy<TileK,Planar,UnrollCopy,FixedCopy,Layout>(a,b,sa+p*BM*TileK,sb+p*BN*TileK,cm,cn,p,m,n,k);
++    static_assert(Stages==2 && TileK==64 && !Wide);
++    // Initial stage publication is prologue-only, not a per-iteration branch.
++    asm volatile("cp.async.wait_group 0;" ::: "memory");
++    __syncthreads();
+     for(int kt=0;kt<(k+TileK-1)/TileK;++kt) {
+-        if(kt==0) {
+-            asm volatile("cp.async.wait_group 0;" ::: "memory");
+-            __syncthreads();
+-        }
+         // Two groups of six warps, no dedicated producers. IDs1/2 for
+         // even iterations,3/4 for odd; barrier0 remains initialization/output.
+         const unsigned group=threadIdx.x/192;

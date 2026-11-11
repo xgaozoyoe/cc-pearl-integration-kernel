@@ -1,0 +1,37 @@
+Copy-address PTX bundle and XOR timing controls;2026-10-08,GPU0 only.
+
+Variant0: unmodified validated A-stream.
+Variant1: PTX copy bundle + original transcript implementation.
+Variant2: same PTX copy bundle + early local XOR (4short-lived partials).
+Variant3: same PTX copy bundle + same XOR helper evaluated after all MMA.
+
+Bundled cp.async stage keeps A shared base fixed and uses native shared
+immediate offsets0,0x1800,0x3000. A copies0/1 are full;third only tid<256.
+GlobalA addresses are computed from4096-row stride. B retains zero-fill and
+safe source pointer for both partial-N rounds. Full-A M%256 guard unchanged.
+All three A copies and both B copies plus commit use one volatile PTX block.
+This removes shared-address increment dependencies between A copies.
+No Hopper features; unchanged SM89 mma.sync/ldmatrix semantics.
+
+All four kernels:168registers/thread,0spill,69632Bshared,384threads,
+1CTA/SM,12warps/SM,CTA256x192,K64,2stages,R128,K4096.
+Static instructions:original880,bundled-original872,bundled-early848,
+bundled-late856. Same useful GEMM and transcript workload.
+
+Important limit: ptxas still schedules and allocates inside/across PTX.
+Early/late native copy segments are NOT identical even up to simple placement:
+15vs19instructions from firstLDGSTS throughcommit,global pointer prep and
+Bpredicate placement differ. Shared-address base+offset pattern IS achieved.
+This is a targeted copy dependency change crossed with XOR variants,not a
+strict fixed-SASS XOR-only timing experiment. No such claim should be made.
+
+Benchmark uses real offline mine_job,131072x131072,K4096,R128,region8192,
+actual generation/noise/Merkle/V3/transcript/PoW,zero target/no pool.
+8rounds rotated order;2warmups+10measured grids per batch=80pervariant.
+Identical deterministic setup seed sequence. Clock/power settings unchanged,
+not locked;batch-end telemetry recorded,not a kernel-average clock measure.
+No new Nsight hardware-counter capture. Timing resolution0.1ms in grid logs.
+
+All32 full transcript/digest comparisons passed against acceptedR128,
+2seeds x4shapes x4variants;includes8192x8192 and partialNtails.
+Known working source/libraries and live GPU1/GPU2 untouched.

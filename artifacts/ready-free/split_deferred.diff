@@ -1,0 +1,99 @@
+--- source8
++++ split_deferred
+@@ -1,4 +1,4 @@
+-namespace fold_defer_source8 {
++namespace ready_free_split_deferred {
+ constexpr int BM=256, BN=192, THREADS=384;
+ constexpr int WORDS=(BM/16)*(BN/16)*16;
+ struct Fragment { unsigned v[4]; };
+@@ -108,6 +108,20 @@
+     asm volatile("cp.async.commit_group;");
+ }
+ 
++
++__device__ __forceinline__ void rf_wait(unsigned bar,unsigned parity) {
++ unsigned done;
++ do {
++  asm volatile("{ .reg .pred p; mbarrier.test_wait.parity.shared.b64 p,[%1],%2; selp.u32 %0,1,0,p; }" : "=r"(done) : "r"(bar),"r"(parity) : "memory");
++ } while(!done);
++}
++__device__ __forceinline__ void rf_ready(unsigned bar) {
++ // One asynchronous arrival per thread, count384; no extra normal arrival.
++ asm volatile("cp.async.mbarrier.arrive.noinc.shared.b64 [%0];" :: "r"(bar) : "memory");
++}
++__device__ __forceinline__ void rf_free(unsigned bar) {
++ asm volatile("mbarrier.arrive.shared.b64 _,[%0];" :: "r"(bar) : "memory");
++}
+ template<int Lead,int TileK=64,bool Planar=false,bool PackedB=false,bool UnrollCopy=false,bool FixedCopy=false,int Stages=2,bool Wide=false,int Layout=0>
+ __global__ void __launch_bounds__(Wide?256:THREADS,1) kernel(const signed char* a,const signed char* b,int m,int n,int k,int r,unsigned* out) {
+     constexpr int WarpN=Wide?96:64, Groups=WarpN/16, Threads=Wide?256:THREADS;
+@@ -126,23 +140,33 @@
+     int wm=warp%4,wn=warp/4;
+     // Native MMA lane ownership: row=lane/4 (+8 for c2,c3),
+     // column=2*(lane%4) (+1 for c1,c3). Two halves form a16x16 tile.
++    unsigned bars=(unsigned)__cvta_generic_to_shared(shared+Stages*(BM+BN)*TileK+WORDS*sizeof(unsigned));
++    if(threadIdx.x<4) {
++        unsigned addr=bars+8*threadIdx.x;
++        asm volatile("mbarrier.init.shared.b64 [%0],384;" :: "r"(addr) : "memory");
++    }
++    __syncthreads();
+     unsigned c[4][Groups][2][4]={};
+     Fragment ar[4], br[Lead+1];
+     #pragma unroll
+     for(int p=0;p<Stages-1;++p)
+         stage_copy<TileK,Planar,UnrollCopy,FixedCopy,Layout>(a,b,sa+p*BM*TileK,sb+p*BN*TileK,cm,cn,p,m,n,k);
+     static_assert(Stages==2 && TileK==64 && !Wide);
+-    // Initial stage publication is prologue-only, not a per-iteration branch.
+-    asm volatile("cp.async.wait_group 0;" ::: "memory");
+-    __syncthreads();
++    rf_ready(bars); // prologue publishes K0 in slot0
+     unsigned own_bar=4u+unsigned(threadIdx.x>=256);
+     for(int kt=0;kt<(k+TileK-1)/TileK;++kt) {
+         // IDs4/5 and6/7 alternate. Same two-group protocol; no division,
+         // parity shift or add is needed to select the barriers each iteration.
+         const unsigned peer_bar=own_bar^1u;
+         int current=kt%Stages,next=(kt+Stages-1)%Stages;
+-        if(kt+Stages-1<(k+TileK-1)/TileK)
+-            stage_copy<TileK,Planar,UnrollCopy,FixedCopy,Layout>(a,b,sa+next*BM*TileK,sb+next*BN*TileK,cm,cn,kt+Stages-1,m,n,k);
++        if(kt+1<k/64) {
++            // Slot(next) previously held K(kt-1), except pristine slot1 at kt0.
++            if(kt>0) rf_wait(bars+16+8*next,unsigned((kt-1)/2)&1u);
++            stage_copy<TileK,Planar,UnrollCopy,FixedCopy,Layout>(a,b,sa+next*BM*TileK,sb+next*BN*TileK,cm,cn,kt+1,m,n,k);
++            rf_ready(bars+8*next);
++        }
++        rf_wait(bars+8*current,unsigned(kt/2)&1u);
++
+         signed char* aa=sa+current*BM*TileK;
+         signed char* bb=sb+current*BN*TileK;
+         if constexpr(Lead==0 || Lead==3) {
+@@ -213,8 +237,7 @@
+         }
+         }
+         // Publish this group's completed future copies and old-stage reads.
+-        asm volatile("cp.async.wait_group 0;" ::: "memory");
+-        asm volatile("bar.arrive %0, 384;" :: "r"(peer_bar) : "memory");
++        rf_free(bars+16+8*current);
+         if constexpr(TileK==64) {
+         if((kt+1)%2==0) {
+             unsigned rb=unsigned((kt+1)/2-1);
+@@ -238,12 +261,18 @@
+             }
+         }
+         }
+-        asm volatile("bar.sync %0, 384;" :: "r"(own_bar) : "memory");
+-        own_bar^=2u;
++
+     }
+     __syncthreads();
++    if(threadIdx.x<4) {
++        unsigned addr=bars+8*threadIdx.x;
++        asm volatile("mbarrier.inval.shared.b64 [%0];" :: "r"(addr) : "memory");
++    }
+     for(int i=threadIdx.x;i<WORDS;i+=Threads) {
+         int tile=i/16,gr=cm*(BM/16)+tile/(BN/16),gc=cn*(BN/16)+tile%(BN/16);
+         if(gr<m/16 && gc<n/16) out[((size_t)gr*(n/16)+gc)*16+i%16]=transcript[i];
+     }
+ }
++
++template __global__ void kernel<1,64,false,true,false,false,2,false,6>(const signed char*,const signed char*,int,int,int,int,unsigned*);
++}

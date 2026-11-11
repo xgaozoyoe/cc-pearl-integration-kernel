@@ -1,0 +1,44 @@
+{
+  "baseline": {
+    "static_imma": 64,
+    "static_ldsm": 16,
+    "registers": 168,
+    "threads": 384,
+    "smem": 69632,
+    "ctas_per_sm": 1,
+    "warps_per_sm": 12,
+    "local_bytes": 0,
+    "matches_previous_instruction_text_and_pcs": true
+  },
+  "spin": {
+    "static_imma": 64,
+    "static_ldsm": 16,
+    "registers": 168,
+    "threads": 384,
+    "smem": 69640,
+    "ctas_per_sm": 1,
+    "warps_per_sm": 12,
+    "local_bytes": 0,
+    "matches_previous_instruction_text_and_pcs": true
+  },
+  "token": {
+    "static_imma": 64,
+    "static_ldsm": 16,
+    "registers": 168,
+    "threads": 384,
+    "smem": 69640,
+    "ctas_per_sm": 1,
+    "warps_per_sm": 12,
+    "local_bytes": 0
+  },
+  "delegate": {
+    "static_imma": 64,
+    "static_ldsm": 16,
+    "registers": 168,
+    "threads": 384,
+    "smem": 69640,
+    "ctas_per_sm": 1,
+    "warps_per_sm": 12,
+    "local_bytes": 0
+  }
+}

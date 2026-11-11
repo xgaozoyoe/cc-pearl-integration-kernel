@@ -1,0 +1,62 @@
+Baseline machine-code operand-dependency probes,2026-10-09,GPU0 only.
+Deliberately WRONG arithmetic;diagnostic cubins only,not a mining backend.
+
+Source:extracted baseline cubin from the measured handoff-control library.
+No CUDA recompilation for variants.Original instruction registers were
+calibrated against all64IMMA disassemblies;ELF text-section offset parsed
+with Python struct.Only operand bytes changed;cuobjdump verified every
+instruction afterward.Original scheduling/reuse/control bits,metadata,
+register allocation,instruction order,memory operations and barriers remain.
+
+Variants:
+ baseline:unaltered cubin.
+ c_zero:64C-input bytes replaced byRZ;MMA overwrites C with A*B,not A*B+C.
+ a_zero:64A-input bytes replaced byRZ.
+ b_zero:64B-input bytes replaced byRZ.
+ ab_zero:128A/B-input bytes replaced byRZ.
+All keep64IMMA/K64,256x192CTA,384threads,168registers,69632Bshared,
+1CTA/SM,12warps,zero local/spill memory.Only baseline is valid Pearl math.
+
+Semantic validation20/20:2seeds x2shapes(256x384,256x400) x5variants.
+Baseline compared with accepted R128 transcript.C-zero compared with CPU
+transcript formed from only the last32K at each128K boundary.A/B-zero
+compared with zero transcript.All wrong variants differ from accepted math.
+8192baseline transcript also validated before timing.The altered C values
+never feed pointer generation;no memory addressing or synchronization edit.
+
+Timing:8192region CUDA events,200samples/variant,10rotated blocks,
+100warmup launches/block,16launches/sample,initial3secondwarmup.
+Variant    mean ms    median ms   p95 ms     change from baseline
+baseline   1.074774   1.068544    1.106991    --
+c_zero     1.064285   1.057312    1.092736    -0.976%
+a_zero     1.017088   1.017530    1.018758    -5.367%
+b_zero     1.018762   1.018053    1.019959    -5.212%
+ab_zero    1.009036   1.008774    1.010822    -6.116%
+No full-grid or pool TH/s reported for invalid math.
+
+Critical limits:
+1.RZ substitutes arithmetic operands but original scoreboard wait masks
+  and fixed stall counts are retained.A/B tests therefore do NOT fully
+  remove LDSM readiness waits.C-zero also retains compiler-inserted timing.
+  Small/no speedup cannot rule out a dependency whose encoded wait remains.
+2.Zeroing changes arithmetic switching,register reads and power.Baseline
+  block-end SM clocks2580..2715MHz;C-zero2520..2715;A/B-zero mostly2715.
+  Clock settings were unchanged,not locked.Power/state changes can explain
+  part or all of the apparent operand-probe gains;no causal fraction claimed.
+3.This is NOT evidence of5-6% available correct-mining optimization.
+4.No new hardware counters yet.This first round verifies a controlled
+  machine-code mutation method and supplies timings,not final attribution.
+
+Next:run prepared tools/profile_dependency_ablation.sh to measure direct
+IMMA/elapsed-SM-cycle,Tensor activity and exact per-PC scoreboard stalls for
+these same cubins,before deciding which dependency to relax next.
+For a true load-dependency cut,encoded waits must be selectively removed
+or relocated while preserving unrelated RAW/WAR/WAW and memory safety.
+Blindly clearing masks or CTA barriers is not part of this experiment.
+
+Build:tools/build_dependency_ablation.py
+Harness:tests/bench_dependency_ablation.py (CUDA Driver API,explicit cubins).
+Profile:sudo bash tools/profile_dependency_ablation.sh
+Counter output pointer:/tmp/pearl-dependency-ablation-last.txt
+Per-cubin hashes and changed-byte counts:manifest.json.
+All original production libraries unchanged.No live submissions or commits.

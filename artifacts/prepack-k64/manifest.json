@@ -1,0 +1,22 @@
+{
+  "variants": {
+    "native": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "104c0c1b265260dea5c9ab0bb174ebbbe7ee9cceb0cf0acebf2a9d1dfa4d50aa",
+      "smem": 69632,
+      "correct": true
+    },
+    "source": {
+      "entry": "_ZN14prepack_source6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "39369ab69bd8a51c85afcd5faf9d12ac2f46903733b5089f5362551569a8e3bc",
+      "smem": 69632,
+      "correct": true
+    },
+    "packed": {
+      "entry": "_ZN14prepack_packed6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "39369ab69bd8a51c85afcd5faf9d12ac2f46903733b5089f5362551569a8e3bc",
+      "smem": 69632,
+      "correct": true
+    }
+  }
+}

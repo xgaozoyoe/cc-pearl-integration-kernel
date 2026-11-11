@@ -1,0 +1,18 @@
+A half0 dependency diagnostic: offline only, not valid Pearl mining arithmetic.
+Frozen baseline: fold-preamble/both_compact.cubin; production hashes unchanged.
+32/64 static MMA sites substitute live nonzero B quartet for A. Other 32 retain A.
+All B quartets checked against intervening register writes; oracle validates altered arithmetic.
+Wait-only control: SB1 1130->11a0; SB3 1140->11b0. No scoreboard producer reuse between either pair.
+No added/deleted instructions, unchanged C dependencies, copy, LDSM, barrier and loop structure.
+168 registers/thread, 69632 bytes dynamic shared, 0 local bytes, 384 threads, 1 CTA/SM.
+36 edge comparisons pass; all 3 variants pass large-region oracle check before timing.
+200 event samples/variant;16 launches/sample;10 rotating blocks;8192x8192x4096 region.
+Means are unlocked and DVFS-confounded; fixed-clock counters required.
+native: {"samples": 200, "mean_ms": 1.0295149606466294, "median_ms": 1.029021978378296, "p95_ms": 1.0505023837089538}
+b_as_a_half: {"samples": 200, "mean_ms": 1.0197660499811172, "median_ms": 1.0172479748725891, "p95_ms": 1.0354008436203004}
+b_as_a_half_release: {"samples": 200, "mean_ms": 1.0174746680259705, "median_ms": 1.0165110230445862, "p95_ms": 1.0291719675064086}
+A substitution changes register bank access/correlation as well as dependency. Do not interpret native-vs-probe time as isolated dependency cost.
+Only two initial A waits moved. A negative result does not exclude all A operand dependencies.
+Accumulator dependency ablation intentionally deferred to a separate experiment.
+Next: sudo bash tools/profile_a_half_dependency.sh; base clocks during NCU capture, GPU0 only.
+Sanitizer: memcheck 0 errors; racecheck 0 hazards/errors.

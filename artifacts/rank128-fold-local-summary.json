@@ -1,0 +1,66 @@
+[
+  {
+    "experiment": "fold_local_late1",
+    "variant": 0,
+    "samples": 80,
+    "mean_ms": 309.12,
+    "median_ms": 309.09999999999997,
+    "p95_ms": 310.90500000000003,
+    "ths": 227.64215895983438,
+    "resources": [
+      168,
+      384,
+      69632,
+      1,
+      0
+    ]
+  },
+  {
+    "experiment": "fold_local_late1",
+    "variant": 1,
+    "samples": 80,
+    "mean_ms": 313.26875,
+    "median_ms": 313.3,
+    "p95_ms": 315.10999999999996,
+    "ths": 224.6273979695198,
+    "resources": [
+      167,
+      384,
+      69632,
+      1,
+      0
+    ]
+  },
+  {
+    "experiment": "fold_local_tail2",
+    "variant": 0,
+    "samples": 80,
+    "mean_ms": 309.225,
+    "median_ms": 309.5,
+    "p95_ms": 311.59999999999997,
+    "ths": 227.56486111298892,
+    "resources": [
+      168,
+      384,
+      69632,
+      1,
+      0
+    ]
+  },
+  {
+    "experiment": "fold_local_tail2",
+    "variant": 1,
+    "samples": 80,
+    "mean_ms": 323.56375,
+    "median_ms": 323.5,
+    "p95_ms": 325.005,
+    "ths": 217.4803085254884,
+    "resources": [
+      168,
+      384,
+      69632,
+      1,
+      0
+    ]
+  }
+]

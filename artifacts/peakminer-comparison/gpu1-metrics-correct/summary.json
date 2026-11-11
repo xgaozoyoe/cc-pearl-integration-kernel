@@ -1,0 +1,164 @@
+[
+  {
+    "metric": "Sync Copy Engine Active [Throughput %]",
+    "samples": 30105,
+    "mean": 0,
+    "p05": 0.0,
+    "median": 0.0,
+    "p95": 0.0,
+    "fraction_below90": 1.0
+  },
+  {
+    "metric": "Async Copy Engine Active 0 [Throughput %]",
+    "samples": 30105,
+    "mean": 0,
+    "p05": 0.0,
+    "median": 0.0,
+    "p95": 0.0,
+    "fraction_below90": 1.0
+  },
+  {
+    "metric": "Async Copy Engine Active 1 [Throughput %]",
+    "samples": 30105,
+    "mean": 0,
+    "p05": 0.0,
+    "median": 0.0,
+    "p95": 0.0,
+    "fraction_below90": 1.0
+  },
+  {
+    "metric": "Async Copy Engine Active 2 [Throughput %]",
+    "samples": 30105,
+    "mean": 0,
+    "p05": 0.0,
+    "median": 0.0,
+    "p95": 0.0,
+    "fraction_below90": 1.0
+  },
+  {
+    "metric": "GR Active [Throughput %]",
+    "samples": 30105,
+    "mean": 99.69001826939046,
+    "p05": 100.0,
+    "median": 100.0,
+    "p95": 100.0,
+    "fraction_below90": 0.009068261086198307
+  },
+  {
+    "metric": "Sync Compute in Flight [Throughput %]",
+    "samples": 30105,
+    "mean": 0,
+    "p05": 0.0,
+    "median": 0.0,
+    "p95": 0.0,
+    "fraction_below90": 1.0
+  },
+  {
+    "metric": "Async Compute in Flight [Throughput %]",
+    "samples": 30105,
+    "mean": 99.677761169241,
+    "p05": 100.0,
+    "median": 100.0,
+    "p95": 100.0,
+    "fraction_below90": 0.009134695233349942
+  },
+  {
+    "metric": "SMs Active [Throughput %]",
+    "samples": 30105,
+    "mean": 99.5401096163428,
+    "p05": 100.0,
+    "median": 100.0,
+    "p95": 100.0,
+    "fraction_below90": 0.012157448928749377
+  },
+  {
+    "metric": "SM Issue [Throughput %]",
+    "samples": 30105,
+    "mean": 12.961434977578476,
+    "p05": 13.0,
+    "median": 13.0,
+    "p95": 13.0,
+    "fraction_below90": 1.0
+  },
+  {
+    "metric": "Tensor Active [Throughput %]",
+    "samples": 30105,
+    "mean": 97.31004816475668,
+    "p05": 98.0,
+    "median": 98.0,
+    "p95": 98.0,
+    "fraction_below90": 0.014549078226208271
+  },
+  {
+    "metric": "Vertex/Tess/Geometry Warps in Flight [Throughput %]",
+    "samples": 30105,
+    "mean": 0,
+    "p05": 0.0,
+    "median": 0.0,
+    "p95": 0.0,
+    "fraction_below90": 1.0
+  },
+  {
+    "metric": "Pixel Warps in Flight [Throughput %]",
+    "samples": 30105,
+    "mean": 0,
+    "p05": 0.0,
+    "median": 0.0,
+    "p95": 0.0,
+    "fraction_below90": 1.0
+  },
+  {
+    "metric": "Compute Warps in Flight [Throughput %]",
+    "samples": 30105,
+    "mean": 17.0071416708188,
+    "p05": 17.0,
+    "median": 17.0,
+    "p95": 17.0,
+    "fraction_below90": 1.0
+  },
+  {
+    "metric": "Unallocated Warps in Active SMs [Throughput %]",
+    "samples": 30105,
+    "mean": 82.53339976748049,
+    "p05": 83.0,
+    "median": 83.0,
+    "p95": 83.0,
+    "fraction_below90": 1.0
+  },
+  {
+    "metric": "DRAM Read Bandwidth [Throughput %]",
+    "samples": 30105,
+    "mean": 7.021092841720645,
+    "p05": 4.0,
+    "median": 4.0,
+    "p95": 11.0,
+    "fraction_below90": 1.0
+  },
+  {
+    "metric": "DRAM Write Bandwidth [Throughput %]",
+    "samples": 30105,
+    "mean": 0.6639096495598737,
+    "p05": 0.0,
+    "median": 1.0,
+    "p95": 1.0,
+    "fraction_below90": 1.0
+  },
+  {
+    "metric": "PCIe RX Throughput [Throughput %]",
+    "samples": 30105,
+    "mean": 0.8985218402258761,
+    "p05": 0.0,
+    "median": 1.0,
+    "p95": 1.0,
+    "fraction_below90": 1.0
+  },
+  {
+    "metric": "PCIe TX Throughput [Throughput %]",
+    "samples": 30105,
+    "mean": 1,
+    "p05": 1.0,
+    "median": 1.0,
+    "p95": 1.0,
+    "fraction_below90": 1.0
+  }
+]

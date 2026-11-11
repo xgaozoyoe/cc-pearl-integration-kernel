@@ -1,0 +1,20 @@
+Balanced lane XOR experiment, GPU0 only,2026-10-08.
+
+Current8word lane XOR uses4serial logical levels in inspected first REDUX dependency cone. Balanced3+3+2 tree uses4logical operations but2dependency levels;SASS confirmed. Warp REDUX,fold positions,K loop,operand-loading source,transcript stores remain unchanged. Static machine scheduling/allocation not fixed.
+
+Two implementation forms: (1) one volatile PTX block with3independent partials andfinalXOR3;(2) C++subtrees with onlyfinalXOR3 opaque inlinePTX. Both produce2level representative SASS dependency cones. Balanced kernels888instructions vs880baseline;64IMMA/16LDSM main-loop sites same. Tree167regs vs168baseline,69632Bshared,384threads,1CTA/SM,zero spills. Two tree forms differ at48instruction positions despite equal counts,so second test is not identical machine code.
+
+Each pair:8alternating batches,2warmups+10measured grids each ->80samples/variant. Real offline mine_job,131072x131072,K4096,R128,region8192,actual setup/noise/Merkle/V3/transcript/PoW,zero target/no network. Inputs seeded identically,clocks/power unmodified/unlocked,batch-end telemetry retained;grid log resolution0.1ms.
+
+{"experiment": "xor-tree", "variant": 0, "samples": 80, "mean_ms": 307.6, "median_ms": 307.25, "p95_ms": 312.31, "ths": 228.7670486920156, "resources": [168, 384, 69632, 1, 0]}
+{"experiment": "xor-tree", "variant": 1, "samples": 80, "mean_ms": 366.52125, "median_ms": 366.59999999999997, "p95_ms": 368.71000000000004, "ths": 191.99089869322447, "resources": [167, 384, 69632, 1, 0]}
+Throughput change:-16.075807%
+{"experiment": "xor-tree-flex", "variant": 0, "samples": 80, "mean_ms": 308.30125, "median_ms": 308.09999999999997, "p95_ms": 313.005, "ths": 228.24670408460557, "resources": [168, 384, 69632, 1, 0]}
+{"experiment": "xor-tree-flex", "variant": 1, "samples": 80, "mean_ms": 367.46, "median_ms": 367.5, "p95_ms": 369.5, "ths": 191.50041957672673, "resources": [167, 384, 69632, 1, 0]}
+Throughput change:-16.099371%
+
+Each pair passed16full transcript/digest comparisons against acceptedR128,two seeds,four shapes including8192x8192 and partialNtails. No new memory layout or synchronization.
+
+No performance benefit;retain current A-stream. Shorter local logic depth is verified but does not establish that this chain determines global critical path. Original compiler can interleave independent fragment reductions. PTX changes also alter machine register allocation/scheduling;no new hardware-counter capture,so do not claim the full regression is intrinsically caused by tree XOR. Production/accepted and current-candidate hashes unchanged. No live mining,commits,or deployment.
+
+CORRECTION 2026-10-08: Subsequent matched serial-asm and nonvolatile controls identify an implementation-induced compiler regression. Removing volatile preserves the balanced tree but eliminates the large slowdown. See rank128-xor-cause-report.txt; old timings remain valid for the old binaries, not as evidence that tree XOR is intrinsically slower.

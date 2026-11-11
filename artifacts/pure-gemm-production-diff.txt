@@ -1,0 +1,267 @@
+diff --git a/csrc/capi/p40_capi.cu b/csrc/capi/p40_capi.cu
+index 1f322f6..1b48c99 100644
+--- a/csrc/capi/p40_capi.cu
++++ b/csrc/capi/p40_capi.cu
+@@ -135,7 +135,7 @@ P40_API int p40_setup_job(void* A, void* B, void* Bt, const void* key,
+   tensor_hash((const uint8_t*)Bt, (uint32_t)((int64_t)N * K), B_root,
+               (const uint8_t*)key, nbB, tpb, 2, 512, scratch, prop, s);
+   commitment_hash_from_merkle_roots(A_root, B_root, (const uint8_t*)key,
+-                                     (uint8_t*)nsA, (uint8_t*)nsB, prop, s);
++                                     (uint8_t*)nsA, (uint8_t*)nsB, prop, s, M, N);
+   cudaError_t e = cudaGetLastError();
+   cudaFree(A_root);
+   cudaFree(B_root);
+diff --git a/csrc/gemm/bindings.cpp b/csrc/gemm/bindings.cpp
+index 3625457..c0ffe66 100644
+--- a/csrc/gemm/bindings.cpp
++++ b/csrc/gemm/bindings.cpp
+@@ -486,7 +486,7 @@ std::vector<at::Tensor> setup_job(at::Tensor key,
+       A_root.data_ptr<uint8_t>(), B_root.data_ptr<uint8_t>(),
+       key.data_ptr<uint8_t>(),
+       noise_seed_A.data_ptr<uint8_t>(), noise_seed_B.data_ptr<uint8_t>(),
+-      dprops, stream);
++      dprops, stream, M, N);
+ 
+   return {A, B, noise_seed_A, noise_seed_B};
+ }
+diff --git a/csrc/tensor_hash/commitment_hash_from_merkle_roots_kernel.hpp b/csrc/tensor_hash/commitment_hash_from_merkle_roots_kernel.hpp
+index aa85f64..f4efed2 100644
+--- a/csrc/tensor_hash/commitment_hash_from_merkle_roots_kernel.hpp
++++ b/csrc/tensor_hash/commitment_hash_from_merkle_roots_kernel.hpp
+@@ -21,6 +21,7 @@ class CommitmentHashFromMerkleRootsKernel {
+     Element const* const ptr_key;
+     Element* const ptr_A_commitment_hash;
+     Element* const ptr_B_commitment_hash;
++    uint32_t m = 0, n = 0;
+   };
+ 
+   // Kernel entry point API
+@@ -30,11 +31,12 @@ class CommitmentHashFromMerkleRootsKernel {
+     Element const* const ptr_key;
+     Element* const ptr_A_commitment_hash;
+     Element* const ptr_B_commitment_hash;
++    uint32_t m = 0, n = 0;
+   };
+ 
+   static Params to_underlying_arguments(Arguments const& args) {
+     return {args.ptr_A_merkle_root, args.ptr_B_merkle_root, args.ptr_key,
+-            args.ptr_A_commitment_hash, args.ptr_B_commitment_hash};
++            args.ptr_A_commitment_hash, args.ptr_B_commitment_hash, args.m, args.n};
+   }
+ 
+   static dim3 get_grid_shape(Params const& params) { return dim3(1); }
+@@ -44,6 +46,29 @@ class CommitmentHashFromMerkleRootsKernel {
+   CUTLASS_DEVICE
+   void operator()(Params const& params, char* smem_buf) {
+ 
++    // V3 binds raw keyed Merkle roots to the row counts. Zero dimensions
++    // retain the legacy raw-root API for existing callers.
++    Tensor saltedA = make_tensor<uint32_t>(RmemChainingValueLayout{});
++    Tensor saltedB = make_tensor<uint32_t>(RmemChainingValueLayout{});
++    uint32_t const* A_root = (uint32_t const*)params.ptr_A_merkle_root;
++    uint32_t const* B_root = (uint32_t const*)params.ptr_B_merkle_root;
++    if (params.m && params.n) {
++      constexpr uint32_t saltA[8] = {0x6c404982, 0x1615eda0, 0x92f61696, 0xf876f0fc,
++                                    0x2adbdb92, 0x52b82370, 0x1977d4f0, 0x7b0190c3};
++      constexpr uint32_t saltB[8] = {0x32063011, 0xca0163ec, 0x71afe22b, 0x4f4d3f8b,
++                                    0x39c6e91a, 0x04cce888, 0x1d304448, 0xa99ab871};
++      Tensor block = make_tensor<uint32_t>(RmemBlockLayout{});
++      constexpr blake3::CompressParams bind_params = {
++          .counter = 0, .block_len = 64,
++          .flags = blake3::KEYED_HASH | blake3::CHUNK_START | blake3::CHUNK_END | blake3::ROOT};
++      for (int i = 0; i < 16; ++i) block(i) = i < 8 ? A_root[i] : (i == 8 ? params.m : 0);
++      for (int i = 0; i < 8; ++i) saltedA(i) = saltA[i];
++      blake3::compress_msg_block_u32(block, saltedA, bind_params);
++      for (int i = 0; i < 16; ++i) block(i) = i < 8 ? B_root[i] : (i == 8 ? params.n : 0);
++      for (int i = 0; i < 8; ++i) saltedB(i) = saltB[i];
++      blake3::compress_msg_block_u32(block, saltedB, bind_params);
++    }
++
+     // First calculate B commitment hash: BLAKE3(key || B_merkle_root)
+     Tensor rBlockB = make_tensor<uint32_t>(RmemBlockLayout{});
+     Tensor rChainingValueB = make_tensor<uint32_t>(RmemChainingValueLayout{});
+@@ -55,7 +80,7 @@ class CommitmentHashFromMerkleRootsKernel {
+     CUTLASS_PRAGMA_UNROLL
+     for (int i = 0; i < blake3::CHAINING_VALUE_SIZE_U32; ++i) {
+       rBlockB(i) = key_u32[i];
+-      rBlockB(i + blake3::CHAINING_VALUE_SIZE_U32) = B_merkle_root_u32[i];
++      rBlockB(i + blake3::CHAINING_VALUE_SIZE_U32) = (params.m && params.n) ? saltedB(i) : B_merkle_root_u32[i];
+     }
+     CUTLASS_PRAGMA_UNROLL
+     for (int i = 0; i < blake3::CHAINING_VALUE_SIZE_U32; ++i) {
+@@ -81,7 +106,7 @@ class CommitmentHashFromMerkleRootsKernel {
+     CUTLASS_PRAGMA_UNROLL
+     for (int i = 0; i < blake3::CHAINING_VALUE_SIZE_U32; ++i) {
+       rBlockA(i) = rChainingValueB(i);  // Use B's result, not the key!
+-      rBlockA(i + blake3::CHAINING_VALUE_SIZE_U32) = A_merkle_root_u32[i];
++      rBlockA(i + blake3::CHAINING_VALUE_SIZE_U32) = (params.m && params.n) ? saltedA(i) : A_merkle_root_u32[i];
+     }
+     CUTLASS_PRAGMA_UNROLL
+     for (int i = 0; i < blake3::CHAINING_VALUE_SIZE_U32; ++i) {
+diff --git a/csrc/tensor_hash/tensor_hash_decl.hpp b/csrc/tensor_hash/tensor_hash_decl.hpp
+index 24670a9..a2551d0 100644
+--- a/csrc/tensor_hash/tensor_hash_decl.hpp
++++ b/csrc/tensor_hash/tensor_hash_decl.hpp
+@@ -20,4 +20,4 @@ void tensor_hash(
+ void commitment_hash_from_merkle_roots(
+     const uint8_t* A_merkle_root, const uint8_t* B_merkle_root,
+     const uint8_t* key, uint8_t* A_commitment_hash, uint8_t* B_commitment_hash,
+-    cudaDeviceProp& deviceProp, cudaStream_t stream);
++    cudaDeviceProp& deviceProp, cudaStream_t stream, uint32_t m = 0, uint32_t n = 0);
+diff --git a/csrc/tensor_hash/tensor_hash_host.hpp b/csrc/tensor_hash/tensor_hash_host.hpp
+index 27f5f51..446770f 100644
+--- a/csrc/tensor_hash/tensor_hash_host.hpp
++++ b/csrc/tensor_hash/tensor_hash_host.hpp
+@@ -263,7 +263,7 @@ void tensor_hash(
+ void commitment_hash_from_merkle_roots(
+     const uint8_t* A_merkle_root, const uint8_t* B_merkle_root,
+     const uint8_t* key, uint8_t* A_commitment_hash, uint8_t* B_commitment_hash,
+-    cudaDeviceProp& deviceProp, cudaStream_t stream) {
++    cudaDeviceProp& deviceProp, cudaStream_t stream, uint32_t m, uint32_t n) {
+ 
+   using CommitmentHashFromMerkleRootsKernel =
+       pearl::CommitmentHashFromMerkleRootsKernel;
+@@ -273,7 +273,7 @@ void commitment_hash_from_merkle_roots(
+       static_cast<const uint8_t*>(B_merkle_root),
+       static_cast<const uint8_t*>(key),
+       static_cast<uint8_t*>(A_commitment_hash),
+-      static_cast<uint8_t*>(B_commitment_hash)};
++      static_cast<uint8_t*>(B_commitment_hash), m, n};
+ 
+   typename CommitmentHashFromMerkleRootsKernel::Params kernel_params =
+       CommitmentHashFromMerkleRootsKernel::to_underlying_arguments(args);
+diff --git a/csrc/tensor_hash/tensor_hash_host_sm61.hpp b/csrc/tensor_hash/tensor_hash_host_sm61.hpp
+index 7b3374c..c30e990 100644
+--- a/csrc/tensor_hash/tensor_hash_host_sm61.hpp
++++ b/csrc/tensor_hash/tensor_hash_host_sm61.hpp
+@@ -173,10 +173,10 @@ void tensor_hash(const uint8_t* data, uint32_t data_size, uint8_t* out,
+ void commitment_hash_from_merkle_roots(
+     const uint8_t* A_merkle_root, const uint8_t* B_merkle_root,
+     const uint8_t* key, uint8_t* A_commitment_hash, uint8_t* B_commitment_hash,
+-    cudaDeviceProp& /*deviceProp*/, cudaStream_t stream) {
++    cudaDeviceProp& /*deviceProp*/, cudaStream_t stream, uint32_t m, uint32_t n) {
+   using K = pearl::CommitmentHashFromMerkleRootsKernel;
+   typename K::Arguments args{A_merkle_root, B_merkle_root, key,
+-                             A_commitment_hash, B_commitment_hash};
++                             A_commitment_hash, B_commitment_hash, m, n};
+   typename K::Params p = K::to_underlying_arguments(args);
+   auto k = cutlass::device_kernel<K>;
+   constexpr static int smem = K::SharedStorageSize;
+diff --git a/python/miner_capi.py b/python/miner_capi.py
+index b917534..61943a1 100644
+--- a/python/miner_capi.py
++++ b/python/miner_capi.py
+@@ -25,6 +25,7 @@ import cuda_capi as cc
+ import pearl_host
+ from pool_common import (DEV_ADDRESS, DEV_FEE, K, M, N, R, DevFeeScheduler,
+                          LuckyPool, real_config)
++import pearl_mining as pm
+ 
+ VARIANT = 1  # pearl_pow_split S=128 4x4 MINB4
+ 
+@@ -117,7 +118,7 @@ def mine_job(pool, cfg, header, target_int, job_id, region, max_regions,
+ 
+     Returns ('NEWJOB', newjob) or ('SWITCH', None)."""
+     factor = cfg.hash_tile_h * cfg.hash_tile_w * cfg.rounded_common_dim
+-    bound = min(target_int * factor, (1 << 256) - 1)
++    bound = pm.penalized_target_bound(target_int, cfg)
+     log(f"job {job_id} target=2^{target_int.bit_length()-1} "
+         f"factor={factor} bound=2^{bound.bit_length()-1}")
+ 
+@@ -133,10 +134,12 @@ def mine_job(pool, cfg, header, target_int, job_id, region, max_regions,
+     t_acct = time.time()      # wall time charged to the dev-fee scheduler so far
+     while True:
+         grid += 1
++        grid_t0 = time.perf_counter()
+         # ---- fresh random grid (new commitment) for this same job ----
+         bufs.dkeyjob.from_host(np.frombuffer(key, np.uint8).copy())
+         cc.setup_job(bufs.dA, bufs.dB, bufs.dBt_full, bufs.dkeyjob, bufs.dnsA, bufs.dnsB,
+                      M, N, K, R, time.time_ns() & 0xFFFFFFFFFFFFFFFF)
++
+         cc.noise_gen(bufs.dEAL, bufs.dEAR, bufs.dEBL, bufs.dEBR, bufs.dnsA, bufs.dnsB, M, N, K, R)
+         cc.transpose_i8(bufs.dEAR, bufs.dEAR_t, R, K, K, 0)   # [R,K]->[K,R] (Y for noise_A)
+         cc.sync()
+@@ -223,6 +226,8 @@ def mine_job(pool, cfg, header, target_int, job_id, region, max_regions,
+         flush_batch()   # drain any partial last batch
+ 
+         ths = searched * tiles_per_region * 1048576.0 / max(time.time() - search_t0, 1e-9) / 1e12
++        grid_seconds = time.perf_counter() - grid_t0
++        log(f"  grid wall: {grid_seconds:.4f} s, {1.0 / grid_seconds:.3f} grids/sec")
+         log(f"  grid {grid} done: {hits} hits over {searched} regions ({ths:.2f} TH/s)")
+ 
+         # charge elapsed wall time to the dev fee and switch wallets if it's time
+@@ -571,7 +576,7 @@ def _solo_gateway_round(args, cfg, bufs, sched, log):
+                 if header != cur_header:
+                     cur_header = header
+                     key = pearl_host.derive_key(header, cfg)
+-                    bound = min(target_int * factor, (1 << 256) - 1)
++                    bound = pm.penalized_target_bound(target_int, cfg)
+                     bufs.dtgt.from_host(
+                         np.frombuffer(int(bound).to_bytes(32, "little"), np.uint8).copy())
+                     log(f"solo: new template target=2^{target_int.bit_length()-1} "
+diff --git a/python/pearl_host.py b/python/pearl_host.py
+index 7aa362f..24326f6 100644
+--- a/python/pearl_host.py
++++ b/python/pearl_host.py
+@@ -31,6 +31,61 @@ def commitment_hashes(A: np.ndarray, B: np.ndarray, key: bytes) -> tuple[bytes,
+     return commitment_A, commitment_B
+ 
+ 
++
++# Pearl certificate V3 salted noise-seed derivation.
++# Consensus definition:
++#   salted_A = BLAKE3(root_A || LE32(m) || 28*0, key=SEED_SALT_A)
++#   salted_B = BLAKE3(root_B || LE32(n) || 28*0, key=SEED_SALT_B)
++#   noise_B  = BLAKE3(job_key || salted_B)
++#   noise_A  = BLAKE3(noise_B || salted_A)
++
++_SEED_SALT_A = bytes([
++    0x82,0x49,0x40,0x6c,0xa0,0xed,0x15,0x16,
++    0x96,0x16,0xf6,0x92,0xfc,0xf0,0x76,0xf8,
++    0x92,0xdb,0xdb,0x2a,0x70,0x23,0xb8,0x52,
++    0xf0,0xd4,0x77,0x19,0xc3,0x90,0x01,0x7b
++])
++
++_SEED_SALT_B = bytes([
++    0x11,0x30,0x06,0x32,0xec,0x63,0x01,0xca,
++    0x2b,0xe2,0xaf,0x71,0x8b,0x3f,0x4d,0x4f,
++    0x1a,0xe9,0xc6,0x39,0x88,0xe8,0xcc,0x04,
++    0x48,0x44,0x30,0x1d,0x71,0xb8,0x9a,0xa9
++])
++
++
++def _v3_bind_root(root: bytes, dim: int, salt: bytes) -> bytes:
++    msg = root + int(dim).to_bytes(4, "little") + bytes(28)
++    assert len(msg) == 64
++    return blake3.blake3(msg, key=salt).digest()
++
++
++def commitment_hashes_bt_v3(
++    A: np.ndarray,
++    Bt: np.ndarray,
++    key: bytes,
++) -> tuple[bytes, bytes]:
++    """Return (noise_seed_A, noise_seed_B) using Pearl certificate-V3 rules.
++
++    A  : [m,k]
++    Bt : [n,k]
++    """
++    m, k = A.shape
++    n, k2 = Bt.shape
++    assert k == k2
++
++    raw_root_A = bytes(_merkle_tree(A, key).root)
++    raw_root_B = bytes(_merkle_tree(Bt, key).root)
++
++    hash_A = _v3_bind_root(raw_root_A, m, _SEED_SALT_A)
++    hash_B = _v3_bind_root(raw_root_B, n, _SEED_SALT_B)
++
++    noise_seed_B = blake3.blake3(key + hash_B).digest()
++    noise_seed_A = blake3.blake3(noise_seed_B + hash_A).digest()
++
++    return noise_seed_A, noise_seed_B
++
++
+ def build_proof(A: np.ndarray, B: np.ndarray, winning_row: int, winning_col: int,
+                 key: bytes, noise_rank: int):
+     """Consensus-valid PlainProof for a winning 16x16 tile (host numpy version)."""

@@ -1,0 +1,46 @@
+B-fragment lifetime experiment, 2026-10-09
+
+Objective: preserve overlapping B fragment lifetimes in the first K32
+half of the current K64 A-stream kernel, rather than assuming source
+prefetch distance survives compilation.
+
+Isolated library: libpearl-rank128-bpair-experimental.so
+Build: .venv/bin/python tools/build_rank128_bpair.py
+Diffs: rank128-bpair-row.diff and rank128-bpair-half.diff
+
+Baseline: original A-stream kernel.
+Row: pair two B groups; for each A row issue both halves of B0, then B1.
+Half: pair two B groups; for each A row/half alternate B0 and B1.
+Both preserve CTA256x192, K64, 12 warps, two shared stages, arithmetic
+and transcript code. No production source, seeds, targets or proof edits.
+
+Compile / SASS results:
+                registers  spill store/load bytes  IMMA  LDSM  LDL  STL
+baseline        168        0/0                     64    16    0    0
+row             168        32/44                   64    16    11   8
+half            168        32/36                   64    16    9    8
+Spill byte counts are ptxas reporting, not measured full-grid traffic.
+Instruction counts are static SASS sites, not dynamic operation counts.
+
+B LDSM -> first-use intervening IMMA counts, in load order:
+baseline: 0,0,0,0,0,4,4,4
+row:      0,0,0,2,3,4,0,2
+half:     0,0,0,1,2,2,0,2
+The source change does not reliably preserve early B loads in machine code.
+Both introduce local-memory spill instructions, so neither meets the
+predeclared zero-spill / improved dependency-distance test gate.
+
+Initial builds prefetched next A before row work. A follow-up loaded A
+after its last old use to reduce requested lifetimes; ptxas spill counts
+were unchanged. The initial source/build log are retained under the
+rank128-bpair-prefetch prefix. This does not prove A overlap caused spills.
+
+No candidate correctness test or GPU benchmark was run. No performance
+improvement or regression is claimed. GPU0 was checked idle; no other GPU
+was used. Production libraries unchanged. No commit.
+
+Conclusion: this particular paired-group source rewrite is rejected at
+the compile/SASS gate. It does not falsify the broader overlap hypothesis.
+Further experiments should first demonstrate the intended register
+lifetimes and scheduling in SASS without spilling; simply reordering
+independent MMA in C++ does not ensure that machine scheduling follows it.

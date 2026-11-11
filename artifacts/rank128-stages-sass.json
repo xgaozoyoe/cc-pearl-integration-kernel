@@ -1,0 +1,40 @@
+[
+  {
+    "function": "_ZN20rank128_stages_three6kernelILi2ELi64ELb0ELb1ELb0ELb0ELi3ELb0ELi6EEEvPKaS2_iiiiPj",
+    "counts": {
+      "IMMA": 64,
+      "LDSM": 16,
+      "LDGSTS": 6,
+      "LDGDEPBAR": 3,
+      "DEPBAR": 2,
+      "BAR": 2,
+      "LDL": 0,
+      "STL": 0
+    },
+    "wait_instructions": [
+      "/*09f0*/                   LDGDEPBAR ;                                              /* 0x00000000000079af */",
+      "/*0d40*/                   LDGDEPBAR ;                                              /* 0x00000000000079af */",
+      "/*11a0*/                   DEPBAR.LE SB0, 0x0 ;                                     /* 0x000080000000791a */",
+      "/*11c0*/                   DEPBAR.LE SB0, 0x1 ;                                     /* 0x000080400000791a */",
+      "/*16d0*/                   LDGDEPBAR ;                                              /* 0x00000000000079af */"
+    ]
+  },
+  {
+    "function": "_ZN23rank128_stages_baseline6kernelILi2ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+    "counts": {
+      "IMMA": 64,
+      "LDSM": 16,
+      "LDGSTS": 4,
+      "LDGDEPBAR": 2,
+      "DEPBAR": 1,
+      "BAR": 2,
+      "LDL": 0,
+      "STL": 0
+    },
+    "wait_instructions": [
+      "/*0990*/                   LDGDEPBAR ;                                              /* 0x00000000000079af */",
+      "/*0dd0*/                   DEPBAR.LE SB0, 0x0 ;                                     /* 0x000080000000791a */",
+      "/*1250*/                   LDGDEPBAR ;                                              /* 0x00000000000079af */"
+    ]
+  }
+]

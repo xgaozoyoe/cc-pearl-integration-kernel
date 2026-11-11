@@ -1,0 +1,99 @@
+K-split cost model and realized IMMA throughput,2026-10-08.
+No new CUDA kernel or GPU workload was run. Transcript tuning is paused.
+Model code:tools/analyze_ksplit_cost.py; numerical output:ksplit-cost-model.json.
+
+Consensus constraint
+Current R128 has32cumulative boundaries overK4096,not16. Let D_p=A_p*B_p
+be a128K partial matrix. Pearl requires XOR of entries of C_p=sum(q<=p)D_q.
+XOR(D_p) and XOR(prefix) cannot recover XOR(prefix+D_p) due carries. An ordinary
+split-K endpoint reduction is therefore insufficient for the full transcript.
+
+Global-memory materialization scenario (optimistic bounds)
+FullM=N131072: oneINT32 output matrix64GiB;32partial matrices2TiB across all
+output regions. Writing and reading once4TiB;1008GB/s nominal DRAM floor4.363s.
+This is cumulative work volume,not a required simultaneous2TiB allocation.
+For one8192square region,scratch8GiB and traffic16GiB;streaming256regions avoids
+impossible whole-grid allocation but does not eliminate total byte traffic.
+A fused serial per-entry prefix scan needs31*131072^2=532575944704 INT32 additions;
+XOR/rotate/output add more work. A multi-pass parallel scan adds memory traffic.
+
+For coarseS-way K splitting,first partition can fold locally. Others must retain
+all local cumulative boundaries until offsets are known. Optimistically retain
+Q=32-32/S+1 INT32 matrices:all non-first boundaries plus first partition endpoint.
+S=2:Q17,per-region4.25GiB,totalread/write2.125TiB,DRAMfloor2.318s.
+S=4:Q25,per-region6.25GiB,totalread/write3.125TiB,DRAMfloor3.409s.
+S=8:Q29,per-region7.25GiB,totalread/write3.625TiB,DRAMfloor3.954s.
+These omit extra offset-scan traffic and compute. They are bounds for this specific
+materialized design,not mathematical lower bounds for every possible K-split.
+If partials stay on chip/are consumed in small batches,the DRAM assumption changes.
+
+Cache and on-chip alternatives
+One256x192 CTA's32INT32 partial tiles total6MiB. An illustrative48MiB cache budget
+fits8suchCTAsets;128concurrentCTAsets require768MiB. A small L2-resident batch
+therefore conflicts with broad GPU parallelism unless generation and consumption
+are pipelined differently. Required effective cache bandwidth just to move naive
+4TiB in24ms is183.25TB/s;this is a requirement,not a measured cache bandwidth.
+One full256x192 INT32 partial alone192KiB,so a shared-only design cannot simply
+add whole-CTA partial arrays to the existing69632Ballocation. A smaller output
+subtile or phased reduction is required and may reduce existing operand reuse.
+
+Recomputation alternative:checkpoint partition endpoints,then recompute non-first
+partitions with correct offsets. This trades materialization for extra GEMM work
+and endpoint traffic. If first partition's transcript is preserved in pass1,
+minimum partition work of this particular2-pass schedule is2(S-1)/S times original.
+S2 gives no extra GEMM but its two partitions execute dependently (no K speedup).
+S4 costs1.5x;S8 costs1.75x,excluding scan/traffic. Not automatically competitive.
+
+Launch and synchronization model
+A producer grid with grid.z=S needs one launch,notS launches. A fused prefix/fold
+consumer adds one launch per region;256extra launches/grid. Assuming3/5/10/20us
+unhidden overhead each gives0.768/1.28/2.56/5.12ms. Two extra stages double these.
+These are sensitivity assumptions,not measured launch latencies. Same-stream
+ordering suffices between kernels; no CPU cudaDeviceSynchronize is inherently
+required. Producer->prefix->consumer remains a true data dependency. Independent
+regions could overlap,while same-region offset users must wait. Do not add stall
+percentages as milliseconds or assume all launch overhead is unhidden.
+
+Realized IMMA throughput from existing latest NCU capture
+Capture:artifacts/rank128-astream-ablation-profile(v0/v1/v4),3launches each.
+Dynamic SourceCounters give67633152 warp-level IMMA instructions per launch.
+Matches32*43CTAs*12warps*64Kiterations*64IMMA. Useful-equivalent67108864;0.78125%
+padding overhead. One m16n8k32 is4096MAC. Count is NOT multiplied by32threads.
+Baseline v0:1.040245ms,65.0165G warpIMMA/s. Using measured GPCelapsed cycles as
+an SM-clock proxy gives0.191686IMMA/SM/cycle,0.047922/SMSP/cycle,or20.867cycles
+perIMMA perSMSP on average. This is sustained executed throughput,not latency.
+Dense architectural roof0.25IMMA/SM/cycle (1024INT8 MAC/SM/cycle),so~76.67%.
+Off v1:0.955605ms,70.7752GIMMA/s,estimated0.206295/SM/cycle,82.52%roof.
+Matched full v4:1.049344ms,64.4528GIMMA/s,estimated0.190108/SM/cycle,76.04%roof.
+GPC-derived effective clocks:2.650/2.680/2.649GHz;conditions are not clock-locked.
+Direct sm__cycles_elapsed.sum is absent from that capture,so per-SM-cycle numbers
+are labeled estimates,not exact counter-normalized rates. Instructions/time are
+measured. Tensor-active% is a distinct measure with an active-cycle denominator.
+
+Prepared tools/profile_imma_issue.sh captures direct SM/SMSP elapsed-cycle sums,
+tensor_v2 dynamic instruction count and all previous metrics,usingGPU0 only.
+Metric names verified against installed NCU ad102 catalog. Analyzer checks tensor
+count against known SASS IMMA count. User runs sudo bash tools/profile_imma_issue.sh
+because this machine requires a sudo password for counters. No new kernel needed.
+
+PeakMiner comparison audit
+Current NCU IMMAactive78.75% cannot be divided into Peak's NsightSystems~98%.
+Earlier same NsightSystems10..30s captures DID compare the same metric:
+copywalk-fulla GPU0 TensorActive mean68.29695%,median74%;PeakGPU1 mean97.4674%,
+median98%. Those are different physical cards and unmatched clocks/temperatures,
+and the Open-Pearl version is older than current A-stream. Metric/sampling matched,
+operating conditions not fully matched. No current claim of98/75 speedup factor.
+See rank128-copyfinal-tensor/conclusions.txt for complete caveats.
+
+Decision
+Do not implement global materialized split-K; byte-cost floor already disqualifies
+it under this design. Keep within-CTA/on-chip K splitting as a separate design
+question,not rejected by this model. First obtain exact elapsed-cycle IMMA rates,
+then model2-way on-chip partial reduction with preserved reuse/occupancy before
+coding. Do not resume XOR insertion experiments on these results alone.
+
+Hardware assumptions source:NVIDIA Ada architecture whitepaper,RTX4090 AppendixA:
+128SM,2.52GHz boost,660.6denseINT8TOPS,1008GB/s,72MiB L2.
+https://images.nvidia.com/aem-dam/Solutions/geforce/ada/nvidia-ada-gpu-architecture.pdf
+Bandwidth bound uses nominal peak,so is optimistic for sustained DRAM traffic.
+No production changes,commits,or new GPU benchmark;GPU1/2 not touched.

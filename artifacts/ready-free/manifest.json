@@ -1,0 +1,29 @@
+{
+  "description": "Experimental separate ready/free mbarriers,2stages. Source controls may differ from frozen optimized SASS. Offline only.",
+  "variants": {
+    "native": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "104c0c1b265260dea5c9ab0bb174ebbbe7ee9cceb0cf0acebf2a9d1dfa4d50aa",
+      "smem": 69632,
+      "correct": true
+    },
+    "source_control": {
+      "entry": "_ZN25ready_free_source_control6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "ec85d362f3e64de787433af230672d321228c087853ff26714bc5c7a70bd47df",
+      "smem": 69632,
+      "correct": true
+    },
+    "split_late": {
+      "entry": "_ZN21ready_free_split_late6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "0a2299d74c2e3f1049672983c848e1643a4a0dead28c9262877418862aa593e3",
+      "smem": 69664,
+      "correct": true
+    },
+    "split_deferred": {
+      "entry": "_ZN25ready_free_split_deferred6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "f2294fad4fe5eaaca6dab6eabfd86fe97ee5bb2447ab941d50ad9cb149187a06",
+      "smem": 69664,
+      "correct": true
+    }
+  }
+}

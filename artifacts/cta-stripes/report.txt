@@ -1,0 +1,21 @@
+GPU0-only frozen-SASS CTA traversal experiment. No production/library changes.
+Only immediate fields at0050,0450,05c0,08a0 changed;all bytes from08b0 onward identical.
+CTA256x192,warp64x64,K64/2stages,rank128,K4096,384threads,168regs,0local,69632Bshared,1CTA/SM.
+Four stripe widths8(baseline),4,16,32;140CPUshape/order bijection checks PASS.
+48transcript comparisons PASS;12transcript+PoWdigest comparisons acrossstripe8/32 PASS.
+Region8192x8192 CUDA-event timing100samples/variant,5rotatingblocks,16launches/sample,10s warmup.
+Unlocked clocks;region timing noise limits interpretation. name mean median p95ms:
+stripe8 1.025946 1.023975 1.054019
+stripe4 1.013103 1.011293 1.031131
+stripe16 1.016848 1.016538 1.048310
+stripe32 1.010168 1.011017 1.029320
+Full offline gridM=N131072,K4096,realsetup/noise/Merkle/V3/GEMM/transcript/PoW;zero target,no pool.
+30measured grids/variant,3rotatingbatches,2warmup+10measured perbatch. Same seed sequence.
+name mean_ms median_ms grids/s equivalentTH/s:
+stripe8 291.883333 291.600000 3.426026 241.085174
+stripe32 293.866667 294.050000 3.402904 239.458068
+stripe32 fullgrid time delta:0.6795%
+EquivalentTH/s is offline work rate,not pool statistics. Three paired batch deltas all unfavorable.
+Conclusion:region timing advantage didnot translate to fullgrid. Keep stripe8 baseline.
+No new racecheck:shared synchronization and kernel body unchanged;no hardware counters measured.
+No claim about cache hit-rate changes without counter evidence.

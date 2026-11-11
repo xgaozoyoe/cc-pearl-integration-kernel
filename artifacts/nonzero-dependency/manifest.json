@@ -1,0 +1,23 @@
+{
+  "warning": "Incorrect Pearl arithmetic except native. B operand uses current A fragment half, not zero. Keep original B memory work.",
+  "variants": {
+    "native": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "104c0c1b265260dea5c9ab0bb174ebbbe7ee9cceb0cf0acebf2a9d1dfa4d50aa",
+      "smem": 69632,
+      "correct": true
+    },
+    "a_as_b": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "150110bc6b86818c05d275c7d67a1f853130435682d536dd4739fcc4e7455065",
+      "smem": 69632,
+      "correct": false
+    },
+    "a_as_b_release": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "22330e9455cac6f7bf15e1c237d3908e06bda73542da602f3aecbe95dd20bea8",
+      "smem": 69632,
+      "correct": false
+    }
+  }
+}

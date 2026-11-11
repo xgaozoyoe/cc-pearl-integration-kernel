@@ -1,0 +1,26 @@
+{
+  "baseline": {
+    "samples": 60,
+    "mean_ms": 303.75833333333327,
+    "median_ms": 303.54999999999995,
+    "p95_ms": 309.12999999999994,
+    "grids_per_sec": 3.292090751968397,
+    "consensus_equivalent_ths": 231.6602919349176
+  },
+  "tail5": {
+    "samples": 60,
+    "mean_ms": 298.9866666666667,
+    "median_ms": 298.5,
+    "p95_ms": 303.51,
+    "grids_per_sec": 3.3446307527648944,
+    "consensus_equivalent_ths": 235.35746581006063
+  },
+  "tail9": {
+    "samples": 60,
+    "mean_ms": 296.9933333333332,
+    "median_ms": 296.70000000000005,
+    "p95_ms": 301.70000000000005,
+    "grids_per_sec": 3.3670789467777067,
+    "consensus_equivalent_ths": 236.93711703179878
+  }
+}

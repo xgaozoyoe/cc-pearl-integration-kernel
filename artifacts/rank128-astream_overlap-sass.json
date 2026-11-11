@@ -1,0 +1,70 @@
+[
+  {
+    "name": "_ZN28rank128_astream_overlap_fast6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+    "mma": 64,
+    "ldsm_after_mma": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      8,
+      16,
+      24,
+      29,
+      32,
+      32,
+      32,
+      32,
+      33,
+      41,
+      42
+    ],
+    "copies_after_mma": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      32,
+      32
+    ]
+  },
+  {
+    "name": "_ZN32rank128_astream_overlap_baseline6kernelILi2ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+    "mma": 64,
+    "ldsm_after_mma": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      8,
+      16,
+      24,
+      31,
+      32,
+      32,
+      32,
+      32,
+      32,
+      44,
+      48
+    ],
+    "copies_after_mma": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+]

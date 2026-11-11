@@ -1,0 +1,20 @@
+Frozen baseline, GPU0 only. Production libraries unchanged.
+Matched control: named sync + independent P6 instruction + oldID toggle ->33instruction address prefix.
+Candidate:33instruction address prefix -> named sync + independent P6 instruction + oldID toggle.
+Both preserve early BAR.ARV,64late sync arrivals,initial/final CTA barriers,all cp.wait and shared-memory accesses.
+Old R161 is unchanged by prefix, consumed before toggle. P6 dummy retains proven scheduling gap without clobbering prepared P2.
+Prefix begins with original waitmask6 protecting operand reads of previous transcript stores/early arrival.
+Final K iteration has original sync/exit path; first iteration executes original prefix; all other prefix executions branch directly to dc0.
+Same registers168,dynamicshared69632,local0,384threads,1CTA/SM.64staticIMMA and16LDSM unchanged.
+No new CTA-wide synchronization and no deleted synchronization. Same instruction multiset between matched candidates.
+Code movement changes layout and dependencies; causal interpretation still needs measured timing/counters.
+
+Unlocked region8192x8192,K4096,R128.200samples/variant,16launches/sample,10rotating blocks.
+native {"samples": 200, "mean_ms": 1.0290741914510726, "median_ms": 1.0287869572639465, "p95_ms": 1.0489599704742432} time_change_vs_native_pct=+0.000000 time_change_vs_control_pct=+0.844130
+matched_control {"samples": 200, "mean_ms": 1.0204601764678956, "median_ms": 1.0217840075492859, "p95_ms": 1.0371583700180054} time_change_vs_native_pct=-0.837065 time_change_vs_control_pct=+0.000000
+late_sync {"samples": 200, "mean_ms": 1.0229900205135345, "median_ms": 1.0203840136528015, "p95_ms": 1.0424574494361878} time_change_vs_native_pct=-0.591228 time_change_vs_control_pct=+0.247912
+========= RACECHECK SUMMARY: 0 hazards displayed (0 errors, 0 warnings)
+Full transcript+PoW:18cases PASS.
+native base-clock-policy {"imma_per_SM_elapsed_cycle": 0.20877620383321807, "imma_per_SMSP_elapsed_cycle": 0.05219405095830452, "tensor_Ginst_sec": 59.4233047233518, "kernel_ms": 1.1381653333333333} IMMA_per_cycle_change_pct=+0.000000
+matched_control base-clock-policy {"imma_per_SM_elapsed_cycle": 0.2092964902364817, "imma_per_SMSP_elapsed_cycle": 0.052324122559120424, "tensor_Ginst_sec": 59.28631049369568, "kernel_ms": 1.1408319999999998} IMMA_per_cycle_change_pct=+0.249208
+late_sync base-clock-policy {"imma_per_SM_elapsed_cycle": 0.20970527510616557, "imma_per_SMSP_elapsed_cycle": 0.05242631877654139, "tensor_Ginst_sec": 59.64039094293527, "kernel_ms": 1.1340586666666668} IMMA_per_cycle_change_pct=+0.445008

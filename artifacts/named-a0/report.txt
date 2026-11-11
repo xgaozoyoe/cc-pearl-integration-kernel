@@ -1,0 +1,39 @@
+GPU0-only named A32:64 early-copy implementation. No production library replaced.
+8192x8192 region,K4096,rank128,CTA256x192,12warps,K64/2stages.
+Two independent runs x120samples/variant,16launches/sample,6rotatingblocks,3s warmup plus100launch/block. Unlocked clocks;regional CUDA event timing,not full-grid or pool hashrate.
+
+Protocol:2KiB A rows32..63 copied by W4..7 before original handoff. Readers W0,W4,W8;W0,W8 arrive early, W4..7 sync before overwrite,count192. IDs1/2 alternate;original8+4 grouping and IDs4..7 preserved. Bootstrap/drain omit unused free publications.
+late_control uses identical added region protocol but retains original handoff BEFORE regional sync/copy;early_a puts original handoff AFTER the region sync/copy. Both then perform remaining unchanged data copies and original commit.
+All4variants168regs,0local/spills,69632Bdynamicshared,1CTA/SM. Experimental ptxas reserves16barriers;actual named IDs0,1,2,4,5,6,7. No mbarriers,polling,ATOMS.ARRIVE or extra shared state.
+48transcript comparisons PASS (4variants,4shapes,3seeds). Both experimental variants512x800/seed9876 racecheck0hazards/errors/warnings. Full8192outputs checked before timings in bothruns. No live mining or PoW/full-grid tests:timing does not justify promotion.
+
+Run variant mean_ms median_ms p95_ms
+1 native 1.025243 1.016928 1.049972
+1 source_control 1.069699 1.063639 1.093987
+1 late_control 1.170413 1.163193 1.197747
+1 early_a 1.175382 1.170871 1.202112
+2 native 1.024694 1.017278 1.048771
+2 source_control 1.069234 1.063359 1.094723
+2 late_control 1.172775 1.168162 1.198275
+2 early_a 1.175685 1.168441 1.202057
+
+Combined240samples:variant mean_ms median_ms p95_ms
+native 1.024968 1.017088 1.048835
+source_control 1.069467 1.063487 1.094544
+late_control 1.171594 1.163648 1.197826
+early_a 1.175533 1.169967 1.202112
+
+early vs late_control:+0.336%time;early vs native:+14.690%;late_control vs source:+9.549%.
+
+SASS audit:
+late_control:64staticIMMA,16LDSM,0ATOMS.ARRIVE;
+  0x1b50 BAR.ARV R108, 0x180:after59staticIMMA
+  0x1c40 BAR.ARV R0, 0xc0:after64staticIMMA
+early_a:64staticIMMA,16LDSM,0ATOMS.ARRIVE;
+  0x1b30 BAR.ARV R108, 0x180:after59staticIMMA
+  0x1c20 BAR.ARV R0, 0xc0:after64staticIMMA
+early_a:region sync0xc00 ->real LDGSTS0xd40 ->original384-thread sync0xd60. Real copy moved,not merely address calculation.
+Both experiments original peer publication after59IMMA;regional read-complete publication after64. Frozen fastest peer publication after48. Therefore neither experiment preserves native overlap/code scheduling. Matchedlate/early comparison is closer but codegen still differs.
+No observed net benefit. Added6warp-level named ops/reuse round,guards/address prep and code scheduling change collectively cost time;no per-component latency or hardware stall attribution measured.
+Do not infer that named barriers are intrinsically slow or that ideal native-position region publication cannot help. This particular source implementation is not promotable. Keep frozen native.
+Artifacts:early_a.diff,late_control.diff,validation.log,racecheck.log,bench-run1/2.log,events-run1/2.json. Tools:build_named_a0.py,bench_named_a0.py. Production checksums PASS;no commits.

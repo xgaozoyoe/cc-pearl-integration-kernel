@@ -1,0 +1,82 @@
+--- baseline/tests/fold_ops.cuh
++++ tests/fold_ops.cuh
+@@ -162,7 +162,7 @@
+             if (knext < k_tiles) stage_copy(knext,ww);
+             cp_async_fence();
+         }
+-        if constexpr ((Schedule >= 12 && Schedule <= 14) || Schedule == 16) {
++        if constexpr ((Schedule >= 12 && Schedule <= 14) || Schedule == 16 || Schedule == 17 || Schedule == 18) {
+             static_assert(decltype(size<1>(tXrB))::value*2 == decltype(size<2>(tCrC))::value);
+             CUTE_UNROLL
+             for(int kk=0; kk<size<2>(tCrA); ++kk) {
+@@ -183,6 +183,17 @@
+                         int tn=2*bn+half;
+                         CUTE_UNROLL
+                         for(int tm=0; tm<size<1>(tCrC); ++tm) {
++                            if constexpr (Schedule == 17 || Schedule == 18) {
++                                // Empty compiler fences: retain the intended LDSM
++                                // placement without emitting GPU synchronization.
++                                constexpr int split = Schedule == 17 ? 2 : 3;
++                                if (half==0 && tm==split && bn+1<size<1>(tXrB)) {
++                                    asm volatile("" :: "r"(tCrC(0,tm-1,tn)) : "memory");
++                                    copy(s2r_B,tXsB(_,bn+1,kk,wr),tXrB(_,bn+1,kk));
++                                    auto packed_next_B = recast<uint32_t>(tXrB(_,bn+1,kk));
++                                    asm volatile("" :: "r"(packed_next_B(0)) : "memory");
++                                }
++                            }
+                             if constexpr (Schedule == 14) {
+                                 if (half==0 && tm==2 && bn+1<size<1>(tXrB))
+                                     copy(s2r_B,tXsB(_,bn+1,kk,wr),tXrB(_,bn+1,kk));
+--- baseline/tests/fold_ops.cu
++++ tests/fold_ops.cu
+@@ -138,6 +138,8 @@
+         case 92:return variant<256,192,3,100,false,64,9,4,3,-108,true,false,12>(a,b,m,n,k,r,t,info);
+         case 93:return variant<256,192,2,100,false,64,9,4,3,-108,true,false,16>(a,b,m,n,k,r,t,info);
+         case 94:return variant<256,192,3,100,false,64,9,4,3,-108,true,false,16>(a,b,m,n,k,r,t,info);
++        case 95:return variant<256,192,2,100,false,64,9,4,3,-108,true,false,17>(a,b,m,n,k,r,t,info);
++        case 96:return variant<256,192,2,100,false,64,9,4,3,-108,true,false,18>(a,b,m,n,k,r,t,info);
+ #if !defined(PEARL_FOCUS_SQUARE) && !defined(PEARL_PURE_BENCH_ONLY)
+         case 21:return variant<128,256,4,-1,false,32,4,2,4>(a,b,m,n,k,r,t,info);
+         case 22:return variant<128,256,3,-1,false,64,4,1,8>(a,b,m,n,k,r,t,info);
+--- baseline/tests/bench_fold_ablation.py
++++ tests/bench_fold_ablation.py
+@@ -28,7 +28,7 @@
+ reuse_trial = len(sys.argv)>1 and sys.argv[1]=='reuse'
+ mapping_trial = len(sys.argv)>1 and sys.argv[1]=='mapping'
+ operand_trial = len(sys.argv)>1 and sys.argv[1]=='operand'
+-prefetch_trial = len(sys.argv)>1 and sys.argv[1] in ('prefetch','prefetch2')
++prefetch_trial = len(sys.argv)>1 and sys.argv[1] in ('prefetch','prefetch2','ldsm')
+ if occupancy:
+     names={11:'8x1 full transcript',20:'2x4 full transcript',
+            27:'128x128 BK32 warp2x4',28:'128x128 BK64 warp2x4',
+@@ -67,6 +67,8 @@
+            90:'B prefetch after first half',91:'B prefetch midway first half'}
+     if sys.argv[1]=='prefetch2':
+         names={89:'B prefetch baseline',92:'B prefetch s3',93:'dead-row A prefetch s2',94:'dead-row A prefetch s3'}
++    if sys.argv[1]=='ldsm':
++        names={89:'B prefetch baseline',95:'LDSM after two MMA rows',96:'LDSM after three MMA rows'}
+ full_variants = occupancy or cache_trial or square_trial or mainloop_trial or reuse_trial or mapping_trial or operand_trial or prefetch_trial
+ def gate(m,n,seed):
+     rng=np.random.default_rng(seed); k=4096; r=256
+@@ -127,7 +129,7 @@
+     for v,row in results.items():
+         row['median_ms']=statistics.median(row['samples_ms'])
+         row['equivalent_GEMM_TOPS']=2*m*n*k/(row['median_ms']/1000)/1e12
+-    Path('/tmp/pearl-fold-'+('prefetch2' if prefetch_trial and sys.argv[1]=='prefetch2' else 'prefetch' if prefetch_trial else 'operand' if operand_trial else 'mapping' if mapping_trial else 'reuse' if reuse_trial else 'mainloop' if mainloop_trial else 'square' if square_trial else 'l1' if cache_trial else 'occupancy' if occupancy else 'ablation')+'-results.json').write_text(json.dumps(results,indent=2))
++    Path('/tmp/pearl-fold-'+('ldsm' if prefetch_trial and sys.argv[1]=='ldsm' else 'prefetch2' if prefetch_trial and sys.argv[1]=='prefetch2' else 'prefetch' if prefetch_trial else 'operand' if operand_trial else 'mapping' if mapping_trial else 'reuse' if reuse_trial else 'mainloop' if mainloop_trial else 'square' if square_trial else 'l1' if cache_trial else 'occupancy' if occupancy else 'ablation')+'-results.json').write_text(json.dumps(results,indent=2))
+     print(json.dumps(results,indent=2),flush=True)
+ finally:
+     for buf in (a,b,t):buf.free()
+--- baseline/tests/bench_mainloop_grids.py
++++ tests/bench_mainloop_grids.py
+@@ -6,8 +6,8 @@
+ candidate=int(sys.argv[1]) if len(sys.argv)>1 else 53
+ baseline=int(sys.argv[2]) if len(sys.argv)>2 else 20
+ assert baseline in (20,61,67,88,89) and baseline != candidate
+-assert candidate in range(53,95)
+-names=[str(i) for i in range(95)]
++assert candidate in range(53,97)
++names=[str(i) for i in range(97)]
+ names[0]='production';names[20]='current best';names[53]='B LDSM x4'
+ names[54]='K128 s2 streaming';names[55]='K128 s2 full load'
+ names[56]='K32 lookahead joint';names[57]='K32 lookahead staggered'

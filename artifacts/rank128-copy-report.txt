@@ -1,0 +1,37 @@
+R128 copy/address experiment — 2026-10-08
+
+Current large CTA preserved:256x192,12warps,warp64x64,K64,2stages,Layout6,
+R128,K4096,region8192,register accumulators,same transcript behavior.
+GPU0 only; GPU2 live miner and both existing libraries unchanged (SHA256 checked).
+
+Build-stage rejected designs:
+Full five-address precomputed plan:48Bstack,48Bspill stores,56Bspill loads.
+Compressed base/offset plan:compiler also produces48Bstack,48/56Bspill traffic.
+Full A/B copy unroll:32Bstack,32Bspill stores,36Bspill loads.
+None promoted or live tested. Precomputed generator and compile logs archived.
+
+Measured candidate:unroll only the two Bcopy iterations and use compile-time
+THREADS stride,while leaving Aloop and producer/consumer mapping unchanged.
+Baseline168 vs candidate167registers;69632Bshared,384threads,1CTA/SM,zero
+local memory/spills in both. Both64static IMMA and16LDSM main-loop instructions.
+Static LDGSTS instruction sites4->8 due expansion/codegen; this does NOT imply
+doubled dynamic bytes. Logical copy addresses and bytes per Kstage unchanged.
+
+Correctness:12 transcript+digest comparisons passed against frozen accepted R128
+kernel:2variants x2seeds x3shapes (32x48,256x384,8192x8192).
+
+Bench:real setup,V3,noise,GEMM,transcript,PoW;target0,no proof/submission work.
+4warmup+40samples pervariant perrun;2repetitions reversedorder;clocks not locked.
+Baseline medians331.35/331.95ms,means331.0875/331.9425ms,
+p95 333.415/333.640ms,212.54/211.99TH/s.
+B-unroll medians331.40/333.20ms,means331.680/333.215ms,
+p95 335.705/334.805ms,212.16/211.18TH/s.
+Across run means:331.5150 vs332.4475ms;
+candidate0.281% longer. No repeatable performance gain.
+Do not promote. No additional privileged profile required to reject this version.
+Optional profile script retained for reproducibility only.
+
+Interpretation:precomputing more address state conflicts with the largeCTA's
+register budget; removing only Bloop control does not deliver measurable speedup.
+This does not prove all address scheduling optimizations impossible, but these
+specific paths provide no evidence toward300TH/s. Keep current live kernel.

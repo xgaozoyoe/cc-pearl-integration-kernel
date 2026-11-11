@@ -1,0 +1,194 @@
+[
+  {
+    "name": "native",
+    "m": 256,
+    "n": 48,
+    "seed": 42,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "name": "masked_control",
+    "m": 256,
+    "n": 48,
+    "seed": 42,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "name": "middle4",
+    "m": 256,
+    "n": 48,
+    "seed": 42,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "name": "rows6",
+    "m": 256,
+    "n": 48,
+    "seed": 42,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "name": "native",
+    "m": 256,
+    "n": 48,
+    "seed": 1234,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "name": "masked_control",
+    "m": 256,
+    "n": 48,
+    "seed": 1234,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "name": "middle4",
+    "m": 256,
+    "n": 48,
+    "seed": 1234,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "name": "rows6",
+    "m": 256,
+    "n": 48,
+    "seed": 1234,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "name": "native",
+    "m": 256,
+    "n": 400,
+    "seed": 42,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "name": "masked_control",
+    "m": 256,
+    "n": 400,
+    "seed": 42,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "name": "middle4",
+    "m": 256,
+    "n": 400,
+    "seed": 42,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "name": "rows6",
+    "m": 256,
+    "n": 400,
+    "seed": 42,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "name": "native",
+    "m": 256,
+    "n": 400,
+    "seed": 1234,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "name": "masked_control",
+    "m": 256,
+    "n": 400,
+    "seed": 1234,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "name": "middle4",
+    "m": 256,
+    "n": 400,
+    "seed": 1234,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "name": "rows6",
+    "m": 256,
+    "n": 400,
+    "seed": 1234,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "name": "native",
+    "m": 8192,
+    "n": 8192,
+    "seed": 42,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "name": "masked_control",
+    "m": 8192,
+    "n": 8192,
+    "seed": 42,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "name": "middle4",
+    "m": 8192,
+    "n": 8192,
+    "seed": 42,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "name": "rows6",
+    "m": 8192,
+    "n": 8192,
+    "seed": 42,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "name": "native",
+    "m": 8192,
+    "n": 8192,
+    "seed": 1234,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "name": "masked_control",
+    "m": 8192,
+    "n": 8192,
+    "seed": 1234,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "name": "middle4",
+    "m": 8192,
+    "n": 8192,
+    "seed": 1234,
+    "transcript_pass": true,
+    "digest_pass": true
+  },
+  {
+    "name": "rows6",
+    "m": 8192,
+    "n": 8192,
+    "seed": 1234,
+    "transcript_pass": true,
+    "digest_pass": true
+  }
+]

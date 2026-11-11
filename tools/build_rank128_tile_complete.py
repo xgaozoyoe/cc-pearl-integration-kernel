@@ -1,0 +1,129 @@
+"""Finish each16x16 fragment's complete R128 chunk,then XOR it immediately."""
+from pathlib import Path
+import subprocess
+root=Path(__file__).resolve().parents[1]
+original=(root/'artifacts/rank128-astream-candidate-source.cu').read_text()
+ns='rank128_astream_candidate_fast';a=original.index('namespace '+ns);b=original.index('// namespace '+ns,a)+len('// namespace '+ns)
+base=original[a:b].replace(ns,'tile_complete_original')
+helpers=original[original.index('namespace rank128_astream_candidate_baseline'):original.index('template<int TileK,bool Planar,bool UnrollCopy')].replace('rank128_astream_candidate_baseline','tile_complete_trial')
+new=helpers+r'''
+constexpr int TK=128,SMEM=(BM+BN)*TK+WORDS*4;
+__device__ __forceinline__ void copy_chunk(const int8_t* a,const int8_t* b,int8_t* sa,int8_t* sb,int cm,int cn,int kt,int m,int n) {
+ #pragma unroll 1
+ for(int j=0;j<(BM*TK/16+THREADS-1)/THREADS;++j) {
+  int i=threadIdx.x+j*THREADS;
+  if(i<BM*TK/16) {
+   int row=i/8,col=(i%8)*16,gr=cm*BM+row;
+   const int8_t* src=a+(size_t)(gr<m?gr:0)*4096+kt*TK+col;
+   unsigned dst=__cvta_generic_to_shared(sa+offset<TK,false,6>(row,col,BM));
+   asm volatile("cp.async.cg.shared.global [%0],[%1],16,%2;"::"r"(dst),"l"(src),"r"(gr<m?16:0));
+  }
+ }
+ #pragma unroll 1
+ for(int j=0;j<(BN*TK/16+THREADS-1)/THREADS;++j) {
+  int i=threadIdx.x+j*THREADS;
+  if(i<BN*TK/16) {
+   int row=i/8,col=(i%8)*16,gr=cn*BN+row;
+   const int8_t* src=b+(size_t)(gr<n?gr:0)*4096+kt*TK+col;
+   unsigned dst=__cvta_generic_to_shared(sb+offset<TK,false,6>(row,col,BN));
+   asm volatile("cp.async.cg.shared.global [%0],[%1],16,%2;"::"r"(dst),"l"(src),"r"(gr<n?16:0));
+  }
+ }
+ asm volatile("cp.async.commit_group;");
+}
+__device__ __forceinline__ void fold_tile(unsigned c[2][4],unsigned* transcript,int wm,int wn,int row,int group,int rb,int lane) {
+ unsigned x=0;
+ #pragma unroll
+ for(int h=0;h<2;++h) {
+  #pragma unroll
+  for(int v=0;v<4;++v)x^=c[h][v];
+ }
+ x=__reduce_xor_sync(0xffffffffu,x);
+ if(lane==0) {
+  int idx=((wm*4+row)*(BN/16)+wn*4+group)*16+rb%16;
+  if(rb<16)transcript[idx]=x;
+  else {unsigned old=transcript[idx];transcript[idx]=((old<<13)|(old>>19))^x;}
+ }
+}
+template<bool Fuse>
+__global__ void __launch_bounds__(THREADS,1) kernel(const int8_t* a,const int8_t* b,int m,int n,unsigned* out) {
+ extern __shared__ int8_t shared[];
+ int8_t* sa=shared;int8_t* sb=shared+BM*TK;
+ unsigned* transcript=reinterpret_cast<unsigned*>(shared+(BM+BN)*TK);
+ int linear=blockIdx.x+gridDim.x*blockIdx.y;
+ int first=linear/(8*gridDim.x)*8;
+ int cols=min(8,int(gridDim.y)-first),pos=linear%(8*gridDim.x);
+ int cm=pos/cols,cn=first+pos%cols;
+ int warp=threadIdx.x/32,lane=threadIdx.x%32,wm=warp%4,wn=warp/4;
+ unsigned c[4][4][2][4]={};
+ for(int kt=0;kt<4096/TK;++kt) {
+  // Entire R128 chunk is available before visiting output fragments.
+  // Reuse the same buffer only after every warp finishes the previous chunk.
+  if(kt)__syncthreads();
+  copy_chunk(a,b,sa,sb,cm,cn,kt,m,n);
+  asm volatile("cp.async.wait_group 0;");__syncthreads();
+  #pragma unroll
+  for(int row=0;row<4;++row) {
+   #pragma unroll
+   for(int group=0;group<4;++group) {
+    // Complete ALL K128 products for this16x16 before moving to the next.
+    #pragma unroll 1
+    for(int slice=0;slice<TK/32;++slice) {
+     Fragment av=load16x32<TK,false,6>(sa,wm*64+row*16,slice*32,lane,BM);
+     Fragment bv=loadB16x32<TK,false,true,6>(sb,wn*64+group*16,slice*32,lane,BN);
+     mma<true>(c[row][group][0],av,bv,0);
+     mma<true>(c[row][group][1],av,bv,1);
+    }
+    if constexpr(Fuse)fold_tile(c[row][group],transcript,wm,wn,row,group,kt,lane);
+   }
+  }
+  if constexpr(!Fuse) {
+   #pragma unroll
+   for(int row=0;row<4;++row) {
+    #pragma unroll
+    for(int group=0;group<4;++group)fold_tile(c[row][group],transcript,wm,wn,row,group,kt,lane);
+   }
+  }
+ }
+ __syncthreads();
+ for(int i=threadIdx.x;i<WORDS;i+=THREADS) {
+  int tile=i/16,gr=cm*(BM/16)+tile/(BN/16),gc=cn*(BN/16)+tile%(BN/16);
+  if(gr<m/16 && gc<n/16)out[((size_t)gr*(n/16)+gc)*16+i%16]=transcript[i];
+ }
+}
+template<bool Fuse>
+int launch(const int8_t* a,const int8_t* b,int m,int n,unsigned* t,int* info) {
+ if(m<=0||n<=0||m%16||n%16)return cudaErrorInvalidValue;
+ static bool initialized=false;
+ cudaError_t e;
+ if(!initialized) {
+  e=cudaFuncSetAttribute(kernel<Fuse>,cudaFuncAttributeMaxDynamicSharedMemorySize,SMEM);if(e)return e;
+  e=cudaFuncSetAttribute(kernel<Fuse>,cudaFuncAttributePreferredSharedMemoryCarveout,100);if(e)return e;
+  initialized=true;
+ }
+ if(info) {
+  cudaFuncAttributes attr;e=cudaFuncGetAttributes(&attr,kernel<Fuse>);if(e)return e;
+  int active;e=cudaOccupancyMaxActiveBlocksPerMultiprocessor(&active,kernel<Fuse>,THREADS,SMEM);if(e)return e;
+  info[0]=attr.numRegs;info[1]=THREADS;info[2]=SMEM+attr.sharedSizeBytes;info[3]=active;info[4]=attr.localSizeBytes;return 0;
+ }
+ kernel<Fuse><<<dim3((m+BM-1)/BM,(n+BN-1)/BN),THREADS,SMEM>>>(a,b,m,n,t);
+ return cudaGetLastError();
+}
+}
+'''
+wrapper=r'''
+void launch_pearl_blake3(const uint32_t*,int,int,const uint32_t*,const uint32_t*,uint8_t*,int*,int*,cudaStream_t);
+extern "C" int tile_complete_fold(int v,const int8_t* a,const int8_t* b,int m,int n,uint32_t* t,int* info) {
+ if(m%256||m>1048576||n>1048576)return cudaErrorInvalidValue;
+ if(v==0)return tile_complete_original::launch<1,64,false,true,false,false,2,false,6>(a,b,m,n,4096,128,t,info,nullptr);
+ if(v==1)return tile_complete_trial::launch<false>(a,b,m,n,t,info);
+ if(v==2)return tile_complete_trial::launch<true>(a,b,m,n,t,info);
+ return cudaErrorInvalidValue;
+}
+extern "C" int tile_complete_pow(int v,const int8_t* a,const int8_t* b,int m,int n,const uint32_t* key,const uint32_t* target,uint32_t* t,uint8_t* dig,int* found,int* coord) {
+ auto e=tile_complete_fold(v,a,b,m,n,t,nullptr);if(e)return e;
+ launch_pearl_blake3(t,(m/16)*(n/16),n,key,target,dig,found,coord,nullptr);return cudaGetLastError();
+}
+'''
+path=root/'artifacts/rank128-tile-complete-source.cu';path.write_text('#include <cuda_runtime.h>\n#include <cstdint>\n'+base+'\n'+new+wrapper)
+subprocess.run(['/usr/local/cuda-12.6/bin/nvcc','-std=c++20','-O3','-lineinfo','-gencode','arch=compute_89,code=sm_89','-Xcompiler','-fPIC','--ptxas-options=-v','--expt-relaxed-constexpr','-I'+str(root/'csrc/gemm'),'-I'+str(root/'csrc'),'-I/home/xgao/cutlass/include','-shared',str(path),str(root/'csrc/gemm/pearl_blake3_sm61.cu'),'-o',str(root/'artifacts/libpearl-rank128-tile-complete-experimental.so')],check=True)

@@ -1,0 +1,27 @@
+Nonzero accumulator recurrence diagnostic, GPU0 only; not a mining kernel.
+Frozen baseline: fold-preamble/both_compact.cubin.
+IMMA D,A,B,C becomes IMMA D,A,B,A. Packed INT8 A register words are interpreted as INT32 seeds for C; they are runtime matrix data, not constants.
+All 64 C source fields changed. Builder verifies all other binary bytes identical: loads, instruction count, wait masks, stalls, barriers, resources, loop and transcript remain.
+Removes old C RAW recurrence, retains WAW on D, A/B load readiness, transcript result consumers, original static stalls and schedule.
+Changes source register aliasing and numerical switching activity; negative results do not exclude benefits from rescheduling or register renaming.
+Independent compiled PTX oracle uses A words for C. It is never timed. Oracle has145 registers; both TIMED cubins have168, zero local memory,69632 dynamic shared,1CTA/SM,384threads.
+24 boundary/seed comparisons and both8192-square outputs passed. C diagnostic is bit-exact to altered arithmetic only.
+200 event samples per variant,16launches/sample,10rotating blocks. Region timing, not fullgrid.
+Fixed-SASS nonzero C dependency diagnostic; incorrect Pearl arithmetic except native.
+All 64 IMMA C inputs use the current A quartet as INT32 bit patterns.
+Original A/B loads, MMA destinations, loop, transcript instructions, scheduling controls, registers and barriers retained.
+No compiler runs on timed binary; independent source oracle checks altered arithmetic.
+C recurrence removed, but destination WAW hazards and transcript consumers remain.
+A/C register aliasing and numeric switching activity change too; this is not an implementable mining optimization.
+UNLOCKED events are region timings, not full grids. Fixed-clock counters required.
+
+UNLOCKED region events:200samples/variant,16launches/sample,10rotating blocks. ms,notfullgrid.
+native {"samples": 200, "mean_ms": 1.023391758799553, "median_ms": 1.0169260501861572, "p95_ms": 1.0501937508583068}
+block-end SMclock min/max 2415/2505MHz;not timeaveraged.
+a_as_c {"samples": 200, "mean_ms": 1.010023568868637, "median_ms": 1.0046080350875854, "p95_ms": 1.0319744169712066}
+block-end SMclock min/max 2460/2610MHz;not timeaveraged.
+native->a_as_c:time -1.306%
+
+Fixed-clock next step: sudo bash tools/profile_c_dependency.sh. All dynamic IMMA counts must match67,633,152; compare IMMA/SMcycle, Tensor%, wait PCs and clock metrics.
+Production hashes unchanged; no live mining.
+Sanitizers: memcheck0errors;racecheck0hazards0errors0warnings.

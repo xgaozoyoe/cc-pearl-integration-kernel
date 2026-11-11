@@ -1,0 +1,20 @@
+GPU0,8192x8192 region,K4096,rank128. CUDA events; unlocked clocks.
+Each run200samples/variant,16launches/sample,10rotating blocks. Not full-grid/pool throughput.
+Run1
+variant mean_ms median_ms p95_ms delta_native_pct delta_three_early_pct
+native           1.023643 1.017536 1.050342 +0.0000 -1.0748
+three_early      1.034765 1.024381 1.067900 +1.0865 +0.0000
+clear_tail       1.036487 1.032283 1.065475 +1.2547 +0.1664
+split_read_sb    1.034173 1.027360 1.066048 +1.0287 -0.0572
+Run2
+variant mean_ms median_ms p95_ms delta_native_pct delta_three_early_pct
+native           1.029617 1.028664 1.053496 +0.0000 -0.2529
+three_early      1.032228 1.024123 1.068480 +0.2536 +0.0000
+clear_tail       1.034587 1.028996 1.065606 +0.4827 +0.2285
+split_read_sb    1.035925 1.030214 1.065856 +0.6126 +0.3582
+48 transcript+24 transcript/PoW comparisons PASS; racecheck0 hazards/errors/warnings.
+Native168regs; all three-group variants167regs,0local,69632B shared,384threads,1CTA/SM.
+clear_tail: clear old LDSM wait masks at0x16f0 and0x1730; publication already waits both loads at0x16d0. The first old wait now targets BAR read scoreboard1, not an MMA operand.
+split_read_sb: additionally assign second BAR.ARV read toSB2; waitSB2 at0x2a20 before updating its ID register. First ID update retainsSB1 wait.
+Same instruction sequence/operands for all three-group variants; only control fields changed. See *.diff for exact bit changes.
+No production modifications; no hardware-counter or live-mining measurements. Numerical changes in wall time alone do not identify a hardware stall cause.

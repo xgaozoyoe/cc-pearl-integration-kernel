@@ -1,0 +1,46 @@
+R128 real-workload copy optimization, 2026-10-08
+GPU0 only; GPU1 PeakMiner and GPU2 accepted miner left running.
+
+Variant                  baseline ms   candidate ms   throughput gain
+addr32                     331.85875      329.94875           0.579%
+addr32_afull               332.09250      330.21250           0.569%
+copywalk                   333.38125      327.64875           1.750%
+copywalk_unroll            333.21000      320.84250           3.855%
+
+Selected: copywalk_unroll
+Baseline: mean333.210ms,median333.100ms,p95 335.325ms,3.00111grids/s,211.184TH/s.
+Candidate: mean320.8425ms,median320.800ms,p95 322.600ms,3.11679grids/s,219.325TH/s.
+Time reduction12.3675ms/grid (3.71%); throughput+3.8547%.
+2 runs x40 measured grids per variant,4 warm-up grids per batch; order B/C then C/B.
+Both independent comparisons win:332.7875->320.6675ms and333.6325->321.0175ms.
+Whole mine_job grids,region8192,M=N131072,K4096,R128. Real random A/B, noise, GPU Merkle/V3, transcript and PoW included.
+Matched setup seeds by grid index. Target0 disables hits/submission; proof subprocess off. No network/proof-hit delays included.
+Rates use 2^46 work/grid and actual grid wall log. No live pool hashrate claim.
+Clocks/power settings unchanged and unlocked; other two live GPUs remained active. Fine-grained telemetry not recorded in this round.
+
+Implementation:
+K64/Layout6,384-thread copy stride preserves low7 swizzle chunk bits. Compute row/column once, then increment row96,global offset96*K,shared offset6144.
+Use bounded32-bit regional offsets; wrapper falls back to frozen kernel when m or n exceeds1048576.
+Exactly3 A copy rounds (third only256 lanes),2 B rounds. Invalid rows use valid base pointer with cp.async size0 zero fill.
+No changes to load sets,CTA256x192,warp64x64,12warps,K64,2stages,MMA count,transcript,PoW,V3,target,or proof construction.
+Both168registers/thread,69632shared bytes/CTA,1CTA/SM,12resident warps/SM,zero local bytes and ptxas spills.
+SASS static instructions928->896;64IMMA and16LDSM unchanged. Static LDGSTS sites4->10 due loop expansion; dynamic copy count unchanged.
+Direct unrolling before address simplification spilled32B; interior uniform branch experiment spilled40B: both rejected before GPU benchmarks.
+
+Validation:
+16 seeded comparisons across32x48,256x384,256x400,8192x8192: full transcript and BLAKE3 digest bit-exact against accepted library.
+Packaged rank_pow ABI independently repeats validation PASS.
+compute-sanitizer memcheck small shapes:0errors;racecheck:0hazards.
+Packaged library GPU SASS is instruction-identical to benchmarked library.
+No new live shares claimed for this candidate. Accepted production libraries preserved.
+
+Artifacts / usage:
+Library: artifacts/libpearl-rank128-copywalk-candidate.so
+Hash: artifacts/rank128-copywalk-candidate.sha256
+Kernel diff: artifacts/rank128-copywalk-kernel.diff
+Tooling diff: artifacts/rank128-copywalk-tools.patch
+Rebuild: .venv/bin/python tools/package_rank128_copywalk.py
+Opt-in existing launcher: tools/run_rank128.py --gpu 0 --region 8192 --library artifacts/libpearl-rank128-copywalk-candidate.so (plus wallet/worker arguments).
+Rollback: omit --library to use artifacts/libpearl-rank.so. No running worker was switched.
+
+Interpretation: a reproducible real-grid gain from reducing copy-loop address/control work; it does not recover the entire20% diagnostic gap. Tensor-active counters were not collected, so no utilization increase is claimed.

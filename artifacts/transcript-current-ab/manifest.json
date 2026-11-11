@@ -1,0 +1,27 @@
+{
+  "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+  "variants": {
+    "full": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "5108fe0168279247a99b83c47dc7d0524ac0b35df098b7533a55f9d5c725ddf6",
+      "smem": 69632,
+      "correct": true,
+      "sink": false
+    },
+    "fold_sink": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "0c046f80e34877c644e426e1d8e2dea7c6a01a89f1ae426cf89053ca25c91335",
+      "smem": 69632,
+      "correct": false,
+      "sink": true
+    },
+    "gemm_sink": {
+      "entry": "_ZN19handoff_lean_toggle6kernelILi1ELi64ELb0ELb1ELb0ELb0ELi2ELb0ELi6EEEvPKaS2_iiiiPj",
+      "sha256": "97aa648db1572f744d3638ac1731802723d85c57ed78b5201942e7c596d084e6",
+      "smem": 69632,
+      "correct": false,
+      "sink": true
+    }
+  },
+  "warning": "Diagnostic-only. Sink modes produce no Pearl transcript/proof; never mine."
+}

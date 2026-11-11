@@ -1,0 +1,34 @@
+GPU0 offline, fastest fold-preamble/both_compact frozen baseline.
+Only fixed-SASS edits; no source recompilation or register allocation changes.
+tid_move:PC0xdd0 S2R R98,SR_TID.X -> LOP3 R98,R162,0 (register copy).
+R162 is initialized from TID atPC0x40 and is not overwritten until after the K loop.
+New fixed-latency ALU instruction uses no write scoreboard; all other instruction positions and controls unchanged.
+tid_bounds:also replace2always-false comparisons withNOP and remove10 corresponding instruction predicates.
+For384threads,tid<=383 andtid+384<=767, always <=1023; third A-copy bound remains.
+NOP slots retained: no total issued-instruction-count reduction claim.
+Native64IMMA,16LDSM,K64,2stages,CTA256x192,384threads,early arrival and transcript retained.
+All168registers,69632Bshared,0spill/local,1CTA/SM. V3,rank target and proofs untouched.
+
+Kernel:200samples/variant,16launches/sample,10rotating blocks,8192x8192 region.
+name mean_ms median_ms p95_ms
+native 1.030134 1.028992 1.054976
+tid_move 1.017979 1.014489 1.044046
+tid_bounds 1.023055 1.023136 1.042832
+
+Full grid131072x131072x4096,rank128,region8192.60samples/variant,6rotating blocks.
+Includes real setup/noise/Merkle/V3/GEMM/transcript/PoW,target0 excludes proof delivery/network.
+Clocks/power unchanged and unlocked; reported TH/s is consensus-equivalent, not pool hashrate.
+name mean_ms median_ms p95_ms grids_sec equivalent_THs
+native 292.982 293.200 297.315 3.413183 240.181
+tid_move 292.615 292.500 298.015 3.417460 240.482
+tid_bounds 293.427 293.500 298.815 3.408007 239.817
+tid_move:work-rate vs native +0.125%
+Paired block changes%: +0.003, +0.154, +0.144, -0.092, +0.284, +0.260
+tid_bounds:work-rate vs native -0.152%
+Paired block changes%: -0.225, -0.102, -0.201, -0.262, -0.072, -0.048
+
+Validation:36edge transcript comparisons and18full transcript+PoW comparisons including8192x8192 PASS.
+Interpretation:single-instruction substitution preserves the existing fastest scheduling. Causal claim limited to this substitution including scoreboard change; no new Tensor utilization or stall measurements.
+No production deployment. See diffs for exact edits.
+
+Decision:no promotion. +0.125%full-grid work-rate is too small and not consistent across all six paired batches to call a robust improvement under unlocked clocks. Bounds variant loses in all six paired batches. Source of kernel-vs-grid gap not isolated; cache/thermal/clock/launch context differ. No sanitizer run this round.

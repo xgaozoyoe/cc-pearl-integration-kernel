@@ -1,0 +1,33 @@
+GPU0 offline attribution,192x192 CTA,9MMA+1consumer,warp64x64,K64/2stages,K4096/rank128.
+Control is batch_reduce (not the original5.3ms consumer). Production unchanged.
+Instrumentation:clock32 intervals per warp,lane0 exports counters at end;5 launches,1849 CTAs each.
+Elapsed intervals include descheduling,waiting and timing instructions. Not hardware stall percentages or active compute cycles.
+Counters are normalized separately by producer/consumer elapsed lifetime;do not sum across warps.
+CPU launch+synchronize wall mean control=3.884205ms timed=3.995211ms delta=2.858%. Not CUDA event timings.
+Compiler spill store/load control44/44B,timed56/52B;instrumentation perturbs schedule. All168regs,1CTA/SM.
+producer total_cycles_mean: 698093.71471666
+producer wait_fraction: 0.57105289
+producer process_fraction: 0.00000000
+producer stagebar_fraction: 0.00388966
+consumer total_cycles_mean: 702859.34451055
+consumer wait_fraction: 0.27121850
+consumer process_fraction: 0.52549337
+consumer stagebar_fraction: 0.00000000
+Consumer processing interval includes payload loads,free notification,REDUX,state addressing/load/store;not just XOR.
+Consumer ready wait interval includes polling. Producer free wait interval includes polling.
+Consumer full-mask observations at task entry:all2130048tasks/launch full mask for5launches.
+This does NOT count actual execution of compiler fallback paths at later PCs.
+SASS has BRA.DIV/REDUX fallback paths;no claim those are hot without PC measurements.
+Estimated consumer process elapsed cycles/task:320.61452155068804
+Estimated producer free-wait elapsed cycles/publication (127 waits):3138.964012043113
+Ready-any numerical-check-only variant scans9producers within current group,all-lane acquire plus warp vote;single slot retained.
+Noninstrumented CUDA-event comparison40samples/variant,16launches/sample:
+control mean=3.508664 median=3.508542 p95=3.508902ms
+ready_any mean=6.530681 median=6.530272 p95=6.532432ms
+Both event variants168regs,48Blocal,44/44Bspill,63120Bshared,1CTA/SM,64staticIMMA.
+Ready-any EXCLUDED after racecheck reported4errors;its timings are not accepted correctness-preserving evidence.
+Evidence:major producer waiting is new queue-free protocol,not old stage named barrier in this instrumented candidate.
+Consumer servicing serializes9producers and causes backpressure;remaining exact cost breakdown unresolved.
+No numerical mismatch found.12ready-any validation cases PASS;all10full-region diagnosis outputs bit-exact.
+No Nsight counters,PoW suite,live mining or production replacement.
+Timed variant standalone racecheck512x800 seed9876:0hazards/errors/warnings.

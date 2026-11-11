@@ -1,0 +1,188 @@
+{
+  "88": {
+    "dram__bytes.sum": {
+      "median": 0.0,
+      "unit": "byte",
+      "samples": [
+        0.0,
+        128.0,
+        0.0
+      ],
+      "bytes_per_update": 0.0,
+      "bytes_per_useful_MMA": 0.0,
+      "bytes_per_issued_MMA": 0.0
+    },
+    "gpu__time_duration.sum": {
+      "median": 383.936,
+      "unit": "us",
+      "samples": [
+        383.936,
+        383.936,
+        383.808
+      ],
+      "microseconds": 383.936
+    },
+    "lts__t_bytes.sum": {
+      "median": 641.941696,
+      "unit": "Mbyte",
+      "samples": [
+        642.110656,
+        641.933344,
+        641.941696
+      ],
+      "bytes_per_update": 612.2033081054688,
+      "bytes_per_useful_MMA": 38.2627067565918,
+      "bytes_per_issued_MMA": 37.103230794270836
+    },
+    "lts__throughput.avg.pct_of_peak_sustained_elapsed": {
+      "median": 36.713577,
+      "unit": "%",
+      "samples": [
+        36.713577,
+        36.705518,
+        36.717605
+      ]
+    },
+    "sm__pipe_tensor_op_imma_cycles_active_v2.avg.pct_of_peak_sustained_active": {
+      "median": 69.360742,
+      "unit": "%",
+      "samples": [
+        69.322477,
+        69.366956,
+        69.360742
+      ]
+    },
+    "sm__sass_data_bytes_mem_shared_op_ldsm.sum": {
+      "median": 2.214593,
+      "unit": "Gbyte",
+      "samples": [
+        2.214593,
+        2.214593,
+        2.214593
+      ],
+      "bytes_per_update": 2112.0004653930664,
+      "bytes_per_useful_MMA": 132.00002908706665,
+      "bytes_per_issued_MMA": 128.00002820564038
+    },
+    "smsp__warp_issue_stalled_barrier_per_warp_active.pct": {
+      "median": 5.544493,
+      "unit": "%",
+      "samples": [
+        5.546462,
+        5.54078,
+        5.544493
+      ]
+    },
+    "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.pct": {
+      "median": 1.096558,
+      "unit": "%",
+      "samples": [
+        1.086017,
+        1.096558,
+        1.099956
+      ]
+    },
+    "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.pct": {
+      "median": 6.074597,
+      "unit": "%",
+      "samples": [
+        6.06644,
+        6.076623,
+        6.074597
+      ]
+    }
+  },
+  "89": {
+    "dram__bytes.sum": {
+      "median": 0.0,
+      "unit": "byte",
+      "samples": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "bytes_per_update": 0.0,
+      "bytes_per_useful_MMA": 0.0,
+      "bytes_per_issued_MMA": 0.0
+    },
+    "gpu__time_duration.sum": {
+      "median": 382.112,
+      "unit": "us",
+      "samples": [
+        382.272,
+        382.112,
+        382.016
+      ],
+      "microseconds": 382.112
+    },
+    "lts__t_bytes.sum": {
+      "median": 641.937632,
+      "unit": "Mbyte",
+      "samples": [
+        642.061888,
+        641.930816,
+        641.937632
+      ],
+      "bytes_per_update": 612.1994323730469,
+      "bytes_per_useful_MMA": 38.26246452331543,
+      "bytes_per_issued_MMA": 37.10299590139678
+    },
+    "lts__throughput.avg.pct_of_peak_sustained_elapsed": {
+      "median": 36.881897,
+      "unit": "%",
+      "samples": [
+        36.869319,
+        36.881897,
+        36.888392
+      ]
+    },
+    "sm__pipe_tensor_op_imma_cycles_active_v2.avg.pct_of_peak_sustained_active": {
+      "median": 69.634053,
+      "unit": "%",
+      "samples": [
+        69.598427,
+        69.634053,
+        69.636581
+      ]
+    },
+    "sm__sass_data_bytes_mem_shared_op_ldsm.sum": {
+      "median": 2.214593,
+      "unit": "Gbyte",
+      "samples": [
+        2.214593,
+        2.214593,
+        2.214593
+      ],
+      "bytes_per_update": 2112.0004653930664,
+      "bytes_per_useful_MMA": 132.00002908706665,
+      "bytes_per_issued_MMA": 128.00002820564038
+    },
+    "smsp__warp_issue_stalled_barrier_per_warp_active.pct": {
+      "median": 12.787063,
+      "unit": "%",
+      "samples": [
+        12.762193,
+        12.787063,
+        12.790085
+      ]
+    },
+    "smsp__warp_issue_stalled_long_scoreboard_per_warp_active.pct": {
+      "median": 1.015128,
+      "unit": "%",
+      "samples": [
+        1.014968,
+        1.020204,
+        1.015128
+      ]
+    },
+    "smsp__warp_issue_stalled_short_scoreboard_per_warp_active.pct": {
+      "median": 3.478889,
+      "unit": "%",
+      "samples": [
+        3.478889,
+        3.478718,
+        3.486155
+      ]
+    }
+  }
+}

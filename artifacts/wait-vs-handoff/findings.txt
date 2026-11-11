@@ -1,0 +1,28 @@
+Offline wrong-arithmetic 2x2 diagnostic; exact frozen binary, no code motion/recompilation.
+Factor1 replaces16c0 DEPBAR.LE SB0,0 (main-loop cp.async.wait_group0) withNOP.
+Factor2 replaces16d0 BAR.ARV and2a00 BAR.SYNC withNOP.
+All async copies/commits, LDSM, IMMA, prologue wait/barrier, final CTA barrier, transcript and loop retained.
+Registers168, shared69632,384threads,1CTA/SM unchanged. Static stalls/wait masks retained; removed BAR producer annotations cleared.
+Removing copy completion does not remove implicit queue throttling or all address/register waits.
+Wrong data/races can change numerical switching and warp phasing; these timings are not safe optimization gains.
+No per-warp arrival timestamps collected. This compares the two synchronization mechanisms and their interaction.
+
+Unlocked events:200samples/variant,16launches/sample,10rotating blocks. Region8192x8192x4096, not full mining grid.
+native {"samples": 200, "mean_ms": 1.0278941017389298, "median_ms": 1.0288640260696411, "p95_ms": 1.050569200515747}
+no_copy_wait {"samples": 200, "mean_ms": 1.0150891715288162, "median_ms": 1.0111360549926758, "p95_ms": 1.0294002890586853}
+no_barrier {"samples": 200, "mean_ms": 0.9809235838055611, "median_ms": 0.9782319962978363, "p95_ms": 0.9981092900037765}
+both {"samples": 200, "mean_ms": 0.9836288717389107, "median_ms": 0.9842240214347839, "p95_ms": 1.004035198688507}
+unlocked ms: {"native": 1.0278941017389298, "no_copy_wait": 1.0150891715288162, "no_barrier": 0.9809235838055611, "both": 0.9836288717389107}
+Copy-wait removal gain with barriers 1.2457%; without barriers -0.2758%.
+Barrier removal gain original copy wait 4.5696%; removed copy wait 3.0993%.
+Interaction (T00-T10)-(T01-T11):0.015510218 unlocked ms; 1.5089% of native. Positive means part of copy-wait-removal benefit overlaps barrier-removal benefit.
+
+End-of-block SM clock samples (not time averages):
+native:2430..2655MHz
+no_copy_wait:2415..2640MHz
+no_barrier:2340..2565MHz
+both:2400..2625MHz
+Preliminary unlocked result: removing cp.async completion wait adds no benefit once named barriers are removed. Cannot claim causality without cycle-normalized fixed-clock capture.
+The retained copy/address scoreboards may still throttle async progress. This experiment removes the explicit wait only, not every memory dependency.
+No correctness claim. Only offline bounded execution. No production libraries modified.
+Next: sudo bash tools/profile_wait_vs_handoff.sh. Verify equal dynamicIMMA counts, L2bytes, per-cycleIMMA, barrier and scoreboard samples, and the factorial interaction.

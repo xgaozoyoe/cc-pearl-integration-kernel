@@ -1,0 +1,29 @@
+[
+  {
+    "variant": "stable copywalk-fulla",
+    "samples": 80,
+    "mean_ms": 314.11875,
+    "median_ms": 313.65,
+    "p95_ms": 318.555,
+    "grids_sec": 3.1835094211981936,
+    "ths": 224.01956004747885
+  },
+  {
+    "variant": "A stream Lead1",
+    "samples": 80,
+    "mean_ms": 310.30625,
+    "median_ms": 309.9,
+    "p95_ms": 315.315,
+    "grids_sec": 3.2226228121412315,
+    "ths": 226.77192024867045
+  },
+  {
+    "variant": "A stream + delayed B copy",
+    "samples": 80,
+    "mean_ms": 310.6075,
+    "median_ms": 310.25,
+    "p95_ms": 315.40500000000003,
+    "grids_sec": 3.2194972755004305,
+    "ths": 226.55198016037605
+  }
+]

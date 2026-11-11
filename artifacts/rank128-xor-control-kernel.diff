@@ -1,0 +1,24 @@
+--- early-local-xor.cu
++++ late-local-xor.cu
+@@ -199,15 +199,12 @@
+                     if(slice+1<TileK/32 && (TileK==64 || kt*TileK+(slice+1)*32<k) && group==Groups-1 && half==1)
+                         ar[row]=nextA;
+                 }
+-                // One fragment of independent MMA separates its producer
+-                // from local XOR. No REDUX or transcript access here.
+-                if(slice==1 && (kt+1)%2==0 && group*4+row>0) {
+-                    int pr=(row+3)%4,pg=group-(row==0);
+-                    if(pg>=Groups-1)partial[pr][pg-(Groups-1)]=local_xor(c[pr][pg][0],c[pr][pg][1]);
+-                }
+-                if(slice==1 && (kt+1)%2==0 && group==Groups-1 && row==3) {
+-                    if(group>=Groups-1)partial[row][group-(Groups-1)]=local_xor(c[row][group][0],c[row][group][1]);
+-                }
++            }
++            // Same four partials, same PTX XOR, only evaluated after all MMA.
++            if(slice==1 && (kt+1)%2==0 && group==Groups-1) {
++                #pragma unroll
++                for(int row=0;row<4;++row)
++                    partial[row][0]=local_xor(c[row][group][0],c[row][group][1]);
+             }
+             if constexpr(TileK!=64) {
+         if(group==Groups-1 && (kt*TileK+(slice+1)*32)%128==0) {

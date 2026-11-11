@@ -1,0 +1,15 @@
+Capture:/tmp/pearl-deferred-prefix-v3.Hzegzm
+All hashes verified;3profiled launches/variant;67,633,152dynamicIMMA each.
+native {"imma_per_SM_elapsed_cycle": 0.20881383863137284, "imma_per_SMSP_elapsed_cycle": 0.05220345965784321, "tensor_Ginst_sec": 59.5843496330627, "kernel_ms": 1.1350826666666667} IMMA_per_cycle_delta_pct=+0.000000
+barrier_sample_hotspots=[["0x2a30", 129942.0, "@!P2  CALL.REL.NOINC 0x7fc3e125d750"], ["0x2a70", 1236.0, "@P0   EXIT"], ["0xc60", 603.0, "UMOV UR5, 0x3000"]]
+relocated_control {"imma_per_SM_elapsed_cycle": 0.2080588513276159, "imma_per_SMSP_elapsed_cycle": 0.052014712831903974, "tensor_Ginst_sec": 58.92690153123975, "kernel_ms": 1.1477866666666665} IMMA_per_cycle_delta_pct=-0.361560
+barrier_sample_hotspots=[["0x37e0", 123954.0, "BRA 0x7e342326e6f0"], ["0x2a70", 1349.0, "@P0   EXIT"], ["0x2a30", 857.0, "@!P2  CALL.REL.NOINC 0x7e342326d950"], ["0xc60", 659.0, "UMOV UR5, 0x3000"], ["0x2a10", 11.0, "PLOP3.LUT P2, PT, PT, PT, UP1, 0x80, 0x0"]]
+deferred_prefix {"imma_per_SM_elapsed_cycle": 0.20696867711089323, "imma_per_SMSP_elapsed_cycle": 0.05174216927772331, "tensor_Ginst_sec": 58.618467450935285, "kernel_ms": 1.153824} IMMA_per_cycle_delta_pct=-0.883639
+barrier_sample_hotspots=[["0x37e0", 126020.0, "NOP"], ["0x2a70", 1451.0, "@P0   EXIT"], ["0x2a30", 880.0, "@!P2  CALL.REL.NOINC 0x759bc927df50"], ["0xc60", 608.0, "UMOV UR5, 0x3000"], ["0x2a10", 22.0, "PLOP3.LUT P2, PT, PT, PT, UP1, 0x80, 0x0"]]
+Conclusion: candidate still stalls at37e0(NOP), immediately before relocated prefix starts37f0.
+Control stalls at the same37e0(BRA). Replacing that branch does NOT postpone observed blocking into/after the33instruction prefix.
+NOP is the sampled waiting position, not evidence that NOP itself is expensive or causes the wait.
+Aggregate PC sampling does not reconstruct every warp timeline, but no evidence supports the intended33instruction overlap.
+Do not interpret this as proof that truly postponing BAR.SYNC is ineffective. Current candidate keeps BAR.SYNC before the prefix.
+Next possible design must actually move named sync issuance after safe address preparation, preserving old barrierID, prefixP2,readscoreboards and final-iteration path. Not implemented in this analysis.
+Correctness/racecheck remains passed; no production changes; current candidate is slower and should not be promoted.
